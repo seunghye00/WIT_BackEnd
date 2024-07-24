@@ -1,0 +1,181 @@
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f2f2f2;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	margin: 0;
+}
+
+.membership, .find_id_container, .registration_container,
+	.profile_update_container {
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	display: none;
+}
+
+.membership.active, .find_id_container.active, .registration_container.active,
+	.profile_update_container.active {
+	display: block;
+	width: 25%;
+}
+
+.membership h2, .find_id_container h2, .registration_container h2,
+	.profile_update_container h2 {
+	margin-bottom: 20px;
+}
+
+.membership input[type="text"], .membership input[type="password"],
+	.find_id_container input[type="text"], .find_id_container input[type="email"],
+	.registration_container input[type="text"], .registration_container input[type="password"],
+	.registration_container select, .profile_update_container input[type="text"],
+	.profile_update_container input[type="email"] {
+	width: 85%;
+	padding: 15px;
+	margin: 10px 0;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+}
+
+.registration_container select {
+	width: 90%;
+}
+
+.profile_update_container .address-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	margin: 10px 0;
+}
+
+.profile_update_container .address-container input[type="text"] {
+	width: 85%;
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	margin-bottom: 10px;
+}
+
+.profile_update_container .address-container input[type="button"] {
+	width: 20%;
+	padding: 10px;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+	font-size: 15px;
+}
+
+.membership button, .find_id_container button, .registration_container button,
+	.profile_update_container button {
+	width: 85%;
+	padding: 10px;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+	font-size: 16px;
+	margin-top: 15px;
+}
+
+.registration_container button, .profile_update_container button {
+	width: 40%;
+}
+
+.membership button:hover, .find_id_container button:hover,
+	.registration_container button:hover, .profile_update_container button:hover
+	{
+	background-color: #45a049;
+}
+
+.membership .find_id, .membership .find_pw, .employee_container .insert_employee,
+	.back_to_login a {
+	color: #4CAF50;
+	text-decoration: none;
+	margin: 0 10px;
+}
+
+.membership .find_id:hover, .membership .find_pw:hover,
+	.employee_container .insert_employee:hover, .back_to_login a:hover {
+	text-decoration: underline;
+}
+
+.find_container {
+	display: flex;
+	justify-content: center;
+	margin-top: 15px;
+}
+
+.employee_container {
+	text-align: right;
+	margin-bottom: 20px;
+	margin-right: 25px;
+}
+
+.hidden {
+	display: none;
+}
+
+/* Popup styling */
+.popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.popup h2 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.popup input {
+	width: 85%;
+	padding: 15px;
+	margin: 10px 0;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	box-sizing: border-box;
+}
+
+.popup button {
+	width: 35%;
+	padding: 10px;
+	margin: 10px 0;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.popup .address-button {
+	background-color: #4CAF50;
+	color: white;
+}
+
+.popup .address-button:hover {
+	background-color: #45a049;
+}
+
+.popup .submit-button {
+	background-color: #4CAF50;
+	color: white;
+}
+
+.popup .submit-button:hover {
+	background-color: #45a049;
+}
