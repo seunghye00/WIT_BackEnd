@@ -48,6 +48,8 @@ public class EmployeeController {
 	public String mypage(Model model) {
 		String empNo = (String) session.getAttribute("loginID");
 		EmployeeDTO employee = service.findByEmpNo(empNo);
+		session.setAttribute("loginName", employee.getName());
+		session.setAttribute("loginRole", employee.getRole());
 		model.addAttribute("employee", employee);
 		return "mypage";
 	}
@@ -89,7 +91,8 @@ public class EmployeeController {
 			session.setAttribute("loginID", emp_no);
 			session.setAttribute("loginName", employee.getName());
 			boolean isFirstLogin = service.FirstLogin(emp_no);
-			session.setAttribute("FirstLogin", isFirstLogin); // FirstLogin 값을 세션에 저장
+			// FirstLogin 값을 세션에 저장
+			session.setAttribute("FirstLogin", isFirstLogin); 
 			response.put("success", true);
 		} else {
 			response.put("success", false);
@@ -118,8 +121,8 @@ public class EmployeeController {
 	// 추가 정보 업데이트
 	@RequestMapping("/update_info")
 	public String updateInfo(EmployeeDTO dto, HttpSession session) throws Exception {
-		String empNo = (String) session.getAttribute("loginID"); // 세션 가져오기
-		dto.setEmp_no(empNo); // EMP_NO 가져오기
+		String empNo = (String) session.getAttribute("loginID");
+		dto.setEmp_no(empNo);
 		service.updateInfo(dto);
 		session.setAttribute("FirstLogin", false);
 		return "redirect:/";

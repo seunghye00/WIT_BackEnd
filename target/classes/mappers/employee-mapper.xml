@@ -5,107 +5,116 @@
 
 <mapper namespace="employee">
 
-    <!-- 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 생성) -->
-    <select id="getHighestEmployeeIDByDept" parameterType="string"
-        resultType="string">
-        SELECT emp_no
-        FROM (
-            SELECT emp_no,
-            ROW_NUMBER() OVER
-            (PARTITION BY dept ORDER BY TO_NUMBER(SUBSTR(emp_no, -2)) DESC)
-            as rnk
-            FROM employee
-            WHERE dept = #{dept}
-        )
-        WHERE rnk = 1
-    </select>
+	<!-- 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 생성) -->
+	<select id="getHighestEmployeeIDByDept" parameterType="string"
+		resultType="string">
+		SELECT emp_no
+		FROM (
+		SELECT emp_no,
+		ROW_NUMBER() OVER
+		(PARTITION BY dept ORDER BY TO_NUMBER(SUBSTR(emp_no, -2)) DESC)
+		as rnk
+		FROM employee
+		WHERE dept = #{dept}
+		)
+		WHERE rnk = 1
+	</select>
 
-    <!-- 회원가입 -->
-    <insert id="insert" parameterType="com.wit.dto.EmployeeDTO">
-        INSERT INTO employee (
-            emp_no, pw, name, dept, role, join_date, nickname, ssn, phone, email,
-            zip_code, address, detail_address
-        ) VALUES (
-            #{emp_no}, #{pw}, #{name}, #{dept}, #{role}, SYSDATE, ' ', ' ', ' ', ' ', ' ', ' ', ' '
-        )
-    </insert>
+	<!-- 회원가입 -->
+	<insert id="insert" parameterType="com.wit.dto.EmployeeDTO">
+		INSERT INTO employee (
+		emp_no, pw, name, dept, role, join_date, nickname, ssn, phone, email,
+		zip_code, address, detail_address
+		) VALUES (
+		#{emp_no}, #{pw}, #{name}, #{dept}, #{role}, SYSDATE, ' ', ' ', ' ', ' ', ' ', '
+		', ' '
+		)
+	</insert>
 
-    <!-- 로그인 -->
-    <select id="login" resultType="com.wit.dto.EmployeeDTO">
-        SELECT * FROM employee WHERE
-        emp_no = #{emp_no, jdbcType=VARCHAR} AND pw = #{pw}
-    </select>
+	<!-- 로그인 -->
+	<select id="login" resultType="com.wit.dto.EmployeeDTO">
+		SELECT * FROM employee WHERE
+		emp_no = #{emp_no, jdbcType=VARCHAR} AND pw = #{pw}
+	</select>
 
-    <!-- 회원탈퇴 -->
-    <delete id="delete" parameterType="String">
-        DELETE FROM employee WHERE
-        emp_no = #{emp_no}
-    </delete>
+	<!-- 회원탈퇴 -->
+	<delete id="delete" parameterType="String">
+		DELETE FROM employee WHERE
+		emp_no = #{emp_no}
+	</delete>
 
-    <!-- 추가 정보 업데이트 를 위한 직원 정보 조회 -->
-    <!-- 마이페이지 조회 -->
-    <select id="findByEmpNo" resultType="com.wit.dto.EmployeeDTO">
-        SELECT e.emp_no, e.pw,
-        e.name, e.nickname,
-        CASE
-            WHEN SUBSTR(e.ssn, 8, 1) IN ('1', '2') THEN
-                '19' || SUBSTR(e.ssn, 1, 2) || '년' || SUBSTR(e.ssn, 3, 2) || '월' || SUBSTR(e.ssn, 5, 2) || '일'
-            WHEN SUBSTR(e.ssn, 8, 1) IN ('3', '4') THEN
-                '20' || SUBSTR(e.ssn, 1, 2) || '년' || SUBSTR(e.ssn, 3, 2) || '월' || SUBSTR(e.ssn, 5, 2) || '일'
-            ELSE NULL
-        END AS ssn,
-        e.phone, e.email,
-        e.zip_code, e.address, e.detail_address,
-        d.dept_title AS dept,
-        r.role_title AS role,
-        e.join_date, e.quit_date, e.quit_yn
-        FROM employee e
-        JOIN dept d ON e.dept = d.dept_code
-        JOIN role r ON e.role = r.role_code
-        WHERE e.emp_no = #{emp_no}
-    </select>
+	<!-- 추가 정보 업데이트 를 위한 직원 정보 조회 -->
+	<!-- 마이페이지 조회 -->
+	<select id="findByEmpNo" resultType="com.wit.dto.EmployeeDTO">
+		SELECT e.emp_no, e.pw,
+		e.name, e.nickname,
+		CASE
+		WHEN SUBSTR(e.ssn, 8, 1) IN ('1', '2') THEN
+		'19' || SUBSTR(e.ssn, 1, 2) || '년' || SUBSTR(e.ssn, 3, 2) || '월' ||
+		SUBSTR(e.ssn, 5, 2) || '일'
+		WHEN SUBSTR(e.ssn, 8, 1) IN ('3', '4') THEN
+		'20' || SUBSTR(e.ssn, 1, 2) || '년' || SUBSTR(e.ssn, 3, 2) || '월' ||
+		SUBSTR(e.ssn, 5, 2) || '일'
+		ELSE NULL
+		END AS ssn,
+		e.phone, e.email,
+		e.zip_code, e.address, e.detail_address,
+		d.dept_title AS dept,
+		r.role_title AS role,
+		e.join_date, e.quit_date, e.quit_yn
+		FROM employee e
+		JOIN dept d ON e.dept = d.dept_code
+		JOIN role r ON e.role = r.role_code
+		WHERE e.emp_no = #{emp_no}
+	</select>
 
-    <!-- 추가 정보 업데이트 -->
-    <update id="updateInfo" parameterType="com.wit.dto.EmployeeDTO">
-        UPDATE employee
-        SET
-            nickname = #{nickname}, ssn = #{ssn}, phone = #{phone}, email = #{email},
-            zip_code = #{zip_code}, address = #{address}, detail_address = #{detail_address}, pw = #{pw}
-        WHERE emp_no = #{emp_no}
-    </update>
 
-    <!-- 마이페이지 정보 업데이트 - 비밀번호 -->
-    <update id="updatePassword" parameterType="com.wit.dto.EmployeeDTO">
-        UPDATE employee
-        SET pw = #{pw, jdbcType=VARCHAR}
-        WHERE emp_no = #{emp_no, jdbcType=VARCHAR}
-    </update>
+	<!-- 추가 정보 업데이트 -->
+	<update id="updateInfo" parameterType="com.wit.dto.EmployeeDTO">
+		UPDATE employee
+		SET
+		nickname = #{nickname}, ssn = #{ssn}, phone = #{phone}, email = #{email},
+		zip_code = #{zip_code}, address = #{address}, detail_address =
+		#{detail_address}, pw = #{pw}
+		WHERE emp_no = #{emp_no}
+	</update>
 
-    <!-- 마이페이지 정보 업데이트 - 닉네임 -->
-    <update id="updateNickname" parameterType="com.wit.dto.EmployeeDTO">
-        UPDATE employee
-        SET nickname = #{nickname, jdbcType=VARCHAR}
-        WHERE emp_no = #{emp_no, jdbcType=VARCHAR}
-    </update>
+	<!-- 마이페이지 정보 업데이트 - 비밀번호 -->
+	<update id="updatePassword"
+		parameterType="com.wit.dto.EmployeeDTO">
+		UPDATE employee
+		SET pw = #{pw, jdbcType=VARCHAR}
+		WHERE emp_no = #{emp_no, jdbcType=VARCHAR}
+	</update>
 
-    <!-- 아이디(사번) 찾기 -->
-    <select id="findID" parameterType="map" resultType="com.wit.dto.EmployeeDTO">
-        SELECT emp_no FROM employee WHERE name = #{name} AND ssn = #{ssn}
-    </select>
+	<!-- 마이페이지 정보 업데이트 - 닉네임 -->
+	<update id="updateNickname"
+		parameterType="com.wit.dto.EmployeeDTO">
+		UPDATE employee
+		SET nickname = #{nickname, jdbcType=VARCHAR}
+		WHERE emp_no = #{emp_no, jdbcType=VARCHAR}
+	</update>
 
-    <!-- 모든 직급 정보 가져오기 -->
-    <select id="AllRoles" resultType="com.wit.dto.RoleDTO">
-        SELECT role_code, role_title FROM role
-    </select>
+	<!-- 아이디(사번) 찾기 -->
+	<select id="findID" parameterType="map"
+		resultType="com.wit.dto.EmployeeDTO">
+		SELECT emp_no FROM employee WHERE name = #{name} AND ssn = #{ssn}
+	</select>
 
-    <!-- 모든 부서 정보 가져오기 -->
-    <select id="AllDepts" resultType="com.wit.dto.DeptDTO">
-        SELECT dept_code, dept_title FROM dept
-    </select>
+	<!-- 모든 직급 정보 가져오기 -->
+	<select id="AllRoles" resultType="com.wit.dto.RoleDTO">
+		SELECT role_code, role_title FROM role
+	</select>
 
-    <!-- 닉네임 중복 체크 -->
-    <select id="checkNickname" parameterType="string" resultType="int">
-        SELECT COUNT(*) FROM employee WHERE nickname = #{nickname, jdbcType=VARCHAR}
-    </select>
+	<!-- 모든 부서 정보 가져오기 -->
+	<select id="AllDepts" resultType="com.wit.dto.DeptDTO">
+		SELECT dept_code, dept_title FROM dept
+	</select>
+
+	<!-- 닉네임 중복 체크 -->
+	<select id="checkNickname" parameterType="string"
+		resultType="int">
+		SELECT COUNT(*) FROM employee WHERE nickname = #{nickname, jdbcType=VARCHAR}
+	</select>
 
 </mapper>
