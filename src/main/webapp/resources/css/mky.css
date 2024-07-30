@@ -1,22 +1,3 @@
-/* 사이드 영역 CSS */
-.sideAbout {
-    padding: 40px 20px;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    border-radius: 25px;
-    color: #333;
-}
-
-/* 사이드 타이틀 */
-.sideAbout .sideTit {
-    font-size: 26px;
-    padding-bottom: 30px;
-    color: #333;
-}
-
 /* 사이드 버튼 */
 .sideAbout .sideBtnBox {
     padding-bottom: 30px;
@@ -61,7 +42,7 @@
     display: block;
     width: 20px;
     height: 23px;
-    background-image: url(./images/icon/toggle.png);
+    background-image: url(../images/icon/toggle.png);
     background-size: 10px 8px;
     background-repeat: no-repeat;
     background-position: center;
@@ -87,6 +68,14 @@
     opacity: 1;
 }
 
+.subList.active .newList a {
+    color: #888;
+}
+
+.subList.active .newList a span {
+    margin-left: 5px;
+}
+
 .subList li:not(:last-child) {
     padding-bottom: 8px;
 }
@@ -109,45 +98,7 @@
 }
 
 /* 주소록 검색창 */
-.searchBox {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 5px 10px;
-    width: 300px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    height: 5%;
-}
-
-.searchBox input {
-    border: none;
-    outline: none;
-    flex-grow: 1;
-    padding: 5px 10px;
-    border-radius: 25px;
-    font-size: 16px;
-}
-
-.searchBox button.searchBtn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: #333;
-    border-radius: 50%;
-    transition: background 0.3s;
-}
-
-.searchBox button.searchBtn:hover {
-    background: #f0f0f0;
-}
-
-/*  */
+/* 주소록 테이블 영역 */
 .tableCont {
     flex: 3;
     display: flex;
@@ -230,6 +181,11 @@
     border-bottom: 1px solid #c1c1c1;
 }
 
+.listBox .rows:hover {
+    background-color: #eee;
+    cursor: pointer;
+}
+
 .listBox .rows:last-child {
     border-bottom: 2px solid #888888;
 }
@@ -273,49 +229,38 @@
     border-radius: 25px;
 }
 
-/* 페이지네이션 */
-.pagination {
+/* 주소록 수정/등록 팝업 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 30px;
+    border: 3px solid #558BCF;
+    width: 50%;
+    border-radius: 25px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    /* margin: 20px 0; */
-    height: 5%;
-    gap: 5px;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.pagination a {
-    padding: 10px 15px;
-    cursor: pointer;
-    color: #333;
-}
-
-.pagination a.active {
-    background-color: #558BCF;
-    color: white;
-    border-radius: 100%;
-}
-
-.pagination a.prev,
-.pagination a.next {
+.popTit {
     font-size: 24px;
-    color: #ccc;
     font-weight: bold;
 }
 
-.pagination a.prev,
-.pagination a.next {
-    background-color: unset;
-    border: none;
-    font-size: 24px;
-    padding: 5px 10px;
-}
-
-.pagination a.prev.active,
-.pagination a.next.active {
-    color: #333;
-}
-
-/* 주소록 수정/등록 */
 .sideContents.addressContDetail {
     gap: 30px;
 }
@@ -359,6 +304,7 @@
 .formGroup label {
     width: 100px;
     margin-right: 10px;
+    font-size: 18px;
 }
 
 .formGroup input[type="text"],
@@ -371,7 +317,7 @@
 
 .formGroup .photoWrapper {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
 }
 
 .photoWrapper img {
@@ -404,11 +350,12 @@
     margin-left: 10px;
     width: 50px;
     text-align: center;
+    font-size: 13.3px;
 }
 
 .actions {
     text-align: center;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     display: flex;
     justify-content: center;
     gap: 10px;
@@ -475,7 +422,7 @@
 
 .createChatBtn {
     font-size: 20px;
-    padding: 8px 20px;
+    padding: 6px 20px;
 }
 
 .toggleBtn.active,
@@ -515,21 +462,21 @@
     padding: 20px;
 }
 
-.chatList .chatEtc {
+.chatList .chatTitle {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 5px;
 }
 
 .chatList .notiBox {}
 
 .notificationCount {
     color: #fff;
-    border-radius: 50%;
-    font-size: 12px;
+    border-radius: 100%;
+    font-size: 10px;
     font-weight: 600;
-    background-color: #558BCF;
-    padding: 3px 6px;
+    background-color: #f93453;
+    padding: 3px 5.5px;
 }
 
 .exitBtn {
