@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="attendance">
+
+    <!-- 출근 기록을 삽입 -->
+    <insert id="startAtd">
+        INSERT INTO Attendance (atd_seq, work_date, start_time, start_status, emp_no)
+        VALUES (atd_seq.NEXTVAL, #{work_date}, #{start_time}, #{start_status}, #{emp_no})
+    </insert>
+
+    <!-- 특정 직원의 특정 날짜 출근 기록을 조회 -->
+    <select id="select" resultType="com.wit.dto.AttendanceDTO">
+        SELECT * FROM Attendance WHERE emp_no = #{emp_no} AND work_date = #{work_date}
+    </select>
+
+    <!-- 퇴근 기록을 업데이트 -->
+    <update id="endAtd">
+        UPDATE Attendance
+        SET end_time = #{end_time}, work_hours = #{work_hours}, end_status = #{end_status}
+        WHERE atd_seq = #{atd_seq}
+    </update>
+
+</mapper>
