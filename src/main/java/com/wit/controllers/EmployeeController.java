@@ -48,6 +48,8 @@ public class EmployeeController {
 	public String mypage(Model model) {
 		String empNo = (String) session.getAttribute("loginID");
 		EmployeeDTO employee = service.findByEmpNo(empNo);
+		session.setAttribute("loginName", employee.getName());
+		session.setAttribute("loginRole", employee.getRole());
 		model.addAttribute("employee", employee);
 		return "mypage";
 	}

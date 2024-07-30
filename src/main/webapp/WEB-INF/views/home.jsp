@@ -62,9 +62,10 @@
 					<div class="header">
 						<!--마이페이지로 이동-->
 						<span class="myName"> <img src="images/프로필.jpg"><a
-							href="/employee/mypage">백민주 사원</a></span> <span class="alert"><a
-							href=""><i class='bx bx-bell'></i></a></span> <span class="logOut"><a
-							href="/employee/logout"><i class='bx bx-log-in'></i></a></span>
+							href="/employee/mypage">${loginName} ${loginRole}</a></span> </a></span> <span
+							class="alert"><a href=""><i class='bx bx-bell'></i></a></span> <span
+							class="logOut"><a href="/employee/logout"><i
+								class='bx bx-log-in'></i></a></span>
 					</div>
 					<div class="contents">
 						<div class="left">
@@ -189,40 +190,39 @@
 
 	<!-- JavaScript 파일 포함 -->
 
-    <script>
-    $(document).ready(function() {
-        // 사이드바 토글 버튼
-        let btn = document.querySelector("#btn");
-        let sideBar = document.querySelector(".sideBar");
+	<script>
+		$(document).ready(function() {
+			// 사이드바 토글 버튼
+			let btn = document.querySelector("#btn");
+			let sideBar = document.querySelector(".sideBar");
 
-        btn.onclick = function() {
-            sideBar.classList.toggle("active");
-        };
+			btn.onclick = function() {
+				sideBar.classList.toggle("active");
+			};
 
-        // 첫 로그인시 추가 정보 입력 팝업
-        var firstLogin = "${sessionScope.FirstLogin}" === "true";
-        if (firstLogin) {
-            $(".overlay").show();
-            $("#popup").show();
-        }
+			// 첫 로그인시 추가 정보 입력 팝업
+			var firstLogin = "${sessionScope.FirstLogin}" === "true";
+			if (firstLogin) {
+				$(".overlay").show();
+				$("#popup").show();
+			}
 
-        $("#insertForm").on("submit", function() {
-            // 팝업 제출 후 오버레이와 팝업 숨기기
-            $(".overlay").hide();
-            $("#popup").hide();
-        });
+			$("#insertForm").on("submit", function() {
+				// 팝업 제출 후 오버레이와 팝업 숨기기
+				$(".overlay").hide();
+				$("#popup").hide();
+			});
 
-        // 팝업 외부 클릭 방지
-        $(".overlay").on("click", function(e) {
-            e.stopPropagation();
-            alert("추가 정보를 입력 후 제출하세요.");
-        });
+			// 팝업 외부 클릭 방지
+			$(".overlay").on("click", function(e) {
+				e.stopPropagation();
+				alert("추가 정보를 입력 후 제출하세요.");
+			});
 
-        $("#popup").on("click", function(e) {
-            e.stopPropagation(); // 팝업 내부 클릭 시 이벤트 전파 방지
-        });
-    });
-
-    </script>
+			$("#popup").on("click", function(e) {
+				e.stopPropagation(); // 팝업 내부 클릭 시 이벤트 전파 방지
+			});
+		});
+	</script>
 </body>
 </html>
