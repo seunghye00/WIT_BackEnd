@@ -12,6 +12,11 @@ a {
     color: #333;
 }
 
+input,
+button {
+    font-size: 16px;
+}
+
 @font-face {
     font-family: Interop;
     src: url("https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff2") format("woff2"), url("https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff") format("woff");
@@ -419,4 +424,84 @@ body {
     box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
 }
 
-/* 게시판 css start */
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin: 20px 0; */
+    height: 5%;
+    gap: 5px;
+}
+
+.pagination a {
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #333;
+}
+
+.pagination a.active {
+    background-color: #558BCF;
+    color: white;
+    border-radius: 100%;
+}
+
+.pagination a.prev,
+.pagination a.next {
+    font-size: 24px;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.pagination a.prev,
+.pagination a.next {
+    background-color: unset;
+    border: none;
+    font-size: 24px;
+    padding: 5px 10px;
+}
+
+.pagination a.prev.active,
+.pagination a.next.active {
+    color: #333;
+}
+
+/* 검색창 */
+.searchBox {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 5px 10px;
+    width: 300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* height: 5%; */
+    height: 40px;
+}
+
+.searchBox input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    padding: 5px 10px;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
+.searchBox button.searchBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #333;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.searchBox button.searchBtn:hover {
+    background: #f0f0f0;
+}
