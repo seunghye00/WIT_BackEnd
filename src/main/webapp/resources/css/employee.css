@@ -58,6 +58,11 @@
 	font-size: 15px;
 }
 
+.registration_container input[type="text"], .registration_container input[type="password"]
+	{
+	width: 90%;
+}
+
 .registration_container select {
 	width: 90%;
 }
@@ -162,29 +167,29 @@
 }
 
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* 반투명한 배경 */
-    z-index: 999; /* 팝업보다 낮고 다른 모든 요소보다 높은 z-index */
-    display: none; /* 기본은 보이지 않도록 설정 */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5); /* 반투명한 배경 */
+	z-index: 999; /* 팝업보다 낮고 다른 모든 요소보다 높은 z-index */
+	display: none; /* 기본은 보이지 않도록 설정 */
 }
 
 .popup {
-    display: none;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 25%;
-    padding: 20px;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    z-index: 1000; /* 오버레이보다 높은 z-index */
+	display: none;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 25%;
+	padding: 20px;
+	background-color: white;
+	border: 1px solid #ccc;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+	z-index: 1000; /* 오버레이보다 높은 z-index */
 }
 
 .popup h2 {
