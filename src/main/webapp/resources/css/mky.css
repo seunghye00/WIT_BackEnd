@@ -42,7 +42,7 @@
     display: block;
     width: 20px;
     height: 23px;
-    background-image: url(../images/icon/toggle.png);
+    background-image: url("/resources/img/toggle.png"); /* 절대 경로 */
     background-size: 10px 8px;
     background-repeat: no-repeat;
     background-position: center;
