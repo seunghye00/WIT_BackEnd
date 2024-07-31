@@ -59,7 +59,7 @@
 			<div class="header">
 				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
 				<span class="myName"> <img src="/resources/images/메인게임.webp"><a
-					href="/employee/mypage">${employee.name} ${employee.role}</a>
+					href="/employee/mypage">${employee.name} ${employee.role_code}</a>
 				</span> <span class="logOut"><a href="/employee/logout">LogOut</a></span>
 			</div>
 			<div class="contents">
@@ -120,12 +120,12 @@
 							</div>
 							<div class="form-row">
 								<div class="form-group">
-									<span>부서</span> <input type="text" value="${employee.dept}"
-										readonly>
+									<span>부서</span> <input type="text"
+										value="${employee.dept_code}" readonly>
 								</div>
 								<div class="form-group">
-									<span>직급</span> <input type="text" value="${employee.role}"
-										readonly>
+									<span>직급</span> <input type="text"
+										value="${employee.role_code}" readonly>
 								</div>
 							</div>
 							<div class="form-row hidden" id="passwordRow">

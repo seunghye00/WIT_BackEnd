@@ -33,6 +33,7 @@
 					<p></p>
 				</div>
 			</div>
+
 			<ul>
 				<li><a href="#"> <i class='bx bxs-home-alt-2'></i> <span
 						class="navItem">홈</span>
@@ -100,116 +101,105 @@
 				<div class="sideContents Attendance">
 					<h2>근태관리</h2>
 					<div class="Attendance_container">
-						<div class="Attendance_sections">
-							<div class="status_container">
-								<h3>근태현황</h3>
-								<div class="status_row status_header">
-									<div class="status_col">
-										<span>지각</span>
-									</div>
-									<div class="status_col">
-										<span>조퇴</span>
-									</div>
-									<div class="status_col">
-										<span>결근</span>
-									</div>
-								</div>
-								<div class="status_row">
-									<div class="status_col">5회</div>
-									<div class="status_col">5회</div>
-									<div class="status_col">5회</div>
-								</div>
-							</div>
-							<div class="hours_container">
-								<h3>근무시간</h3>
-								<div class="hours_row status_header">
-									<div class="hours_col">
-										<span>근무일수</span>
-									</div>
-									<div class="hours_col">
-										<span>총 근무시간</span>
-									</div>
-								</div>
-								<div class="hours_row">
-									<div class="hours_col">5 / 31</div>
-									<div class="hours_col">56시간</div>
-								</div>
-							</div>
-						</div>
-						<div class="week_status">
-							<h3>주간 근무현황</h3>
-							<div class="week_row week_header">
-								<div class="week_col">
+						<div class="month_status">
+							<h3>월간 근무현황</h3>
+							<div class="month_row month_header">
+								<div class="month_col">
 									<span>근무일</span>
 								</div>
-								<div class="week_col">
+								<div class="month_col">
 									<span>출근시간</span>
 								</div>
-								<div class="week_col">
+								<div class="month_col">
 									<span>퇴근시간</span>
 								</div>
-								<div class="week_col">
+								<div class="month_col">
 									<span>근무시간</span>
 								</div>
 							</div>
-							<div class="week_row">
-								<div class="week_col">2024-07-18</div>
-								<div class="week_col">09:00:00</div>
-								<div class="week_col">18:00:00</div>
-								<div class="week_col">8H</div>
+							<div class="month_row">
+								<div class="month_col">2024-07-18</div>
+								<div class="month_col">09:00:00</div>
+								<div class="month_col">18:00:00</div>
+								<div class="month_col">8H</div>
 							</div>
-							<div class="week_row">
-								<div class="week_col">2024-07-18</div>
-								<div class="week_col">09:00:00</div>
-								<div class="week_col">18:00:00</div>
-								<div class="week_col">8H</div>
+							<div class="month_row">
+								<div class="month_col">2024-07-18</div>
+								<div class="month_col">09:00:00</div>
+								<div class="month_col">18:00:00</div>
+								<div class="month_col">8H</div>
 							</div>
-							<div class="week_row">
-								<div class="week_col">2024-07-18</div>
-								<div class="week_col">09:00:00</div>
-								<div class="week_col">18:00:00</div>
-								<div class="week_col">8H</div>
+							<div class="month_row">
+								<div class="month_col">2024-07-18</div>
+								<div class="month_col">09:00:00</div>
+								<div class="month_col">18:00:00</div>
+								<div class="month_col">8H</div>
 							</div>
-							<div class="week_row">
-								<div class="week_col">2024-07-18</div>
-								<div class="week_col">09:00:00</div>
-								<div class="week_col">18:00:00</div>
-								<div class="week_col">8H</div>
+							<div class="month_row">
+								<div class="month_col">2024-07-18</div>
+								<div class="month_col">09:00:00</div>
+								<div class="month_col">18:00:00</div>
+								<div class="month_col">8H</div>
 							</div>
-							<div class="week_row">
-								<div class="week_col">2024-07-18</div>
-								<div class="week_col">09:00:00</div>
-								<div class="week_col">18:00:00</div>
-								<div class="week_col">8H</div>
+							<div class="month_row">
+								<div class="month_col">2024-07-18</div>
+								<div class="month_col">09:00:00</div>
+								<div class="month_col">18:00:00</div>
+								<div class="month_col">8H</div>
 							</div>
-							<div class="week_row">
-								<div class="week_col">2024-07-18</div>
-								<div class="week_col">09:00:00</div>
-								<div class="week_col">18:00:00</div>
-								<div class="week_col">8H</div>
+							<div class="month_row">
+								<div class="month_col">2024-07-18</div>
+								<div class="month_col">09:00:00</div>
+								<div class="month_col">18:00:00</div>
+								<div class="month_col">8H</div>
 							</div>
-							<div class="week_row">
-								<div class="week_col">2024-07-18</div>
-								<div class="week_col">09:00:00</div>
-								<div class="week_col">18:00:00</div>
-								<div class="week_col">8H</div>
+							<div class="month_row">
+								<div class="month_col">2024-07-18</div>
+								<div class="month_col">09:00:00</div>
+								<div class="month_col">18:00:00</div>
+								<div class="month_col">8H</div>
+							</div>
+							<div class="month_row">
+								<div class="month_col">2024-07-18</div>
+								<div class="month_col">09:00:00</div>
+								<div class="month_col">18:00:00</div>
+								<div class="month_col">8H</div>
+							</div>
+							<div class="month_row">
+								<div class="month_col">2024-07-18</div>
+								<div class="month_col">09:00:00</div>
+								<div class="month_col">18:00:00</div>
+								<div class="month_col">8H</div>
+							</div>
+							<div class="month_row">
+								<div class="month_col">2024-07-18</div>
+								<div class="month_col">09:00:00</div>
+								<div class="month_col">18:00:00</div>
+								<div class="month_col">8H</div>
 							</div>
 						</div>
+					</div>
+					<div class="pagination">
+						<a href="javascript:;" class="prev "><i
+							class='bx bx-chevron-left'></i></a> <a href="javascript:;"
+							class="active">1</a> <a href="javascript:;">2</a> <a
+							href="javascript:;">3</a> <a href="javascript:;">4</a> <a
+							href="javascript:;">5</a> <a href="javascript:;"
+							class="next active"><i class='bx bx-chevron-right'></i></a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<!-- sidebar 공통요소 script -->
-	<script>
-		let btn = document.querySelector("#btn")
-		let sideBar = document.querySelector(".sideBar")
-
-		btn.onclick = function() {
-			sideBar.classList.toggle("active")
-		};
-	</script>
 </body>
+<!-- sidebar 공통요소 script -->
+<script>
+	let btn = document.querySelector("#btn")
+	let sideBar = document.querySelector(".sideBar")
+
+	btn.onclick = function() {
+		sideBar.classList.toggle("active")
+	};
+</script>
 
 </html>

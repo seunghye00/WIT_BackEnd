@@ -51,19 +51,17 @@ public class AttendanceController {
 	public String attendance() {
 		return "Attendance/attendance";
 	}
-	
+
 	// 월간 근태현황 이동
 	@RequestMapping("/attendance_month")
 	public String attendance_month() {
-		return "Attendance/attendance_month";
+		return "Attendance/attendanceMonth";
 	}
-	
+
 	// 휴가관리 이동
 	@RequestMapping("/attendance_vacation")
 	public String attendance_vacation() {
-		return "Attendance/attendance_vacation";
+		return "Attendance/attendanceVacation";
 	}
-
-
 
 }
