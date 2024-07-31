@@ -4,17 +4,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>사원번호 찾기</title>
+<title>사번 찾기</title>
 <link rel="stylesheet" href="/resources/css/employee.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="/resources/js/employee.js"></script>
 </head>
-<body>
+<body class="membership_body">
 	<div class="find_id_container active">
-		<h2>ID 찾기</h2>
-		<form action="/employee/find_id" method="post">
-			<input type="text" name="name" placeholder="Name" required> 
-			<input type="email" name="email" placeholder="Email" required>
+		<img src="/resources/img/logo.png" alt="로고 이미지">
+		<form id="findId" action="/employee/findID" method="post">
+			<input type="text" name="name" placeholder="Name" required> <input
+				type="text" name="ssn" placeholder="SSN" required>
 			<button type="submit">Find ID</button>
 		</form>
 	</div>
