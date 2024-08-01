@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,12 +104,4 @@ public class AttendanceService {
         return result;
     }
 
-    public List<AttendanceDTO> getWeeklyWorkStatus(String empNo, String start_date, String end_date) {
-        List<AttendanceDTO> weeklyWorkStatus = dao.getWeeklyWorkStatus(empNo, start_date, end_date);
-
-        // 로그 출력
-        System.out.println("서비스 : " + weeklyWorkStatus);
-
-        return weeklyWorkStatus;
-    }
 }

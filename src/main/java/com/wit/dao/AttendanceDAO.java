@@ -1,7 +1,6 @@
 package com.wit.dao;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Date;
 import org.apache.ibatis.annotations.Param;
@@ -45,15 +44,4 @@ public class AttendanceDAO {
 		return result;
 	}
 
-	// 주간 근무현황 조회
-	public List<AttendanceDTO> getWeeklyWorkStatus(@Param("emp_no") String emp_no,
-			@Param("start_date") String start_date, @Param("end_date") String end_date) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("emp_no", emp_no);
-		params.put("start_date", start_date);
-		params.put("end_date", end_date);
-		List<AttendanceDTO> result = mybatis.selectList("attendance.getWeeklyWorkStatus", params);
-		System.out.println("DAO : " + result);
-		return result;
-	}
 }

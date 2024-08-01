@@ -116,14 +116,6 @@
                                 <div class="week_col"><span>퇴근시간</span></div>
                                 <div class="week_col"><span>근무시간</span></div>
                             </div>
-                            <c:forEach var="item" items="${weeklyWorkStatus}">
-                                <div class="week_row">
-                                    <div class="week_col"><span>${item.workDate}</span></div>
-                                    <div class="week_col"><span>${item.startTime}</span></div>
-                                    <div class="week_col"><span>${item.endTime}</span></div>
-                                    <div class="week_col"><span>${item.workHours}</span></div>
-                                </div>
-                            </c:forEach>
                         </div>
                     </div>
                 </div>

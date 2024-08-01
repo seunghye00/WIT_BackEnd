@@ -89,28 +89,5 @@
 		end_date FROM date_range)
 	</select>
 
-	<!-- 주간 근무현황 조회 -->
-	<select id="getWeeklyWorkStatus"
-		resultType="com.wit.dto.AttendanceDTO">
-		WITH date_range AS (
-		SELECT
-		TRUNC(SYSDATE, 'D') - 1 AS start_date, -- 현재 주의 시작 날짜 (월요일)
-		TRUNC(SYSDATE, 'D') + 5 AS end_date -- 현재 주의 종료 날짜 (일요일)
-		FROM dual
-		)
-		SELECT
-		work_date AS workDate,
-		start_time AS startTime,
-		end_time AS endTime,
-		work_hours AS workHours
-		FROM
-		Attendance
-		WHERE
-		emp_no = #{emp_no}
-		AND work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT
-		end_date FROM date_range)
-		ORDER BY
-		work_date
-	</select>
 
 </mapper>
