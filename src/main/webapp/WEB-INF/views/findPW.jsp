@@ -93,7 +93,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            url: '/employee/updatePassword',
+            url: '/employee/modifyPassword',
             type: 'POST',
             data: formData,
             dataType: 'json',
@@ -102,7 +102,7 @@ $(document).ready(function() {
                     alert("비밀번호가 성공적으로 변경되었습니다.");
                     $('#overlay').hide();
                     $('#pwChangeModal').hide();
-                    window.location.href = "/"; // 비밀번호 변경 성공 시 홈으로 이동
+                    window.location.href = "/";
                 } else {
                     alert("비밀번호 변경에 실패하였습니다.");
                 }
