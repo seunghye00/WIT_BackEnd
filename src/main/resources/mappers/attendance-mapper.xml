@@ -93,7 +93,8 @@
 		WITH date_range AS (
 		SELECT
 		TRUNC(SYSDATE, 'IW') AS start_date,
-		TRUNC(SYSDATE, 'IW') + 6 AS end_date
+		TRUNC(SYSDATE, 'IW') + 6 AS
+		end_date
 		FROM dual
 		)
 		SELECT
@@ -105,8 +106,24 @@
 		Attendance
 		WHERE
 		emp_no = #{emp_no}
-		AND work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT
+		AND work_date BETWEEN (SELECT
+		start_date FROM date_range) AND (SELECT
 		end_date FROM date_range)
+	</select>
+
+	<!-- 월간 근무현황 조회 -->
+	<select id="getMonthlyWorkStatus" resultType="java.util.HashMap">
+		SELECT
+		work_date,
+		start_time,
+		end_time,
+		work_hours
+		FROM
+		Attendance
+		WHERE
+		emp_no = #{emp_no}
+		AND TO_CHAR(work_date, 'YYYY-MM') = #{month}
+		ORDER BY work_date
 	</select>
 
 </mapper>

@@ -111,5 +111,10 @@ public class AttendanceService {
 	public List<Map<String, Object>> getWeeklyStatus(String emp_no) {
 		return dao.getWeeklyStatus(emp_no);
 	}
+	
+	// 월간 근무현황 조회
+	public List<Map<String, Object>> getMonthlyWorkStatus(String emp_no, String month) {
+	    return dao.getMonthlyWorkStatus(emp_no, month);
+	}
 
 }
