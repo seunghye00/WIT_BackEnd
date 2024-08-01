@@ -154,7 +154,8 @@
             <div class="membership active">
                 <img src="/resources/img/logo.png" alt="로고 이미지">
                 <div class="find_container">
-                    <a href="/employee/find_ID" class="find_id">ID 찾기</a>
+                    <a href="/employee/find_ID" class="find_id">ID 찾기</a> /
+                    <a href="/employee/find_PW" class="find_pw">PW 찾기</a>
                 </div>
                 <form id="loginForm">
                     <input type="text" name="emp_no" placeholder="User ID" required>
