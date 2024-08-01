@@ -32,6 +32,13 @@ public class AttendanceController {
 		String empNo = (String) session.getAttribute("loginID");
 		try {
 			service.startAtd(empNo);
+
+			// 이전 날이 결근인지 확인하고 결근으로 처리
+			LocalDate previousDay = LocalDate.now().minusDays(1);
+			java.sql.Date previousDate = java.sql.Date.valueOf(previousDay);
+			service.markAbsence(empNo, previousDate);
+			System.out.println("결근 처리 완료: " + empNo + ", 날짜: " + previousDate);
+
 			return "출근 처리 완료";
 		} catch (Exception e) {
 			return e.getMessage();
@@ -45,6 +52,14 @@ public class AttendanceController {
 		String empNo = (String) session.getAttribute("loginID");
 		try {
 			service.endAtd(empNo);
+
+			// 이전 날이 결근인지 확인하고 결근으로 처리
+			LocalDate previousDay = LocalDate.now().minusDays(1);
+			java.sql.Date previousDate = java.sql.Date.valueOf(previousDay);
+			service.markAbsence(empNo, previousDate);
+
+			System.out.println("결근 처리 완료: " + empNo + ", 날짜: " + previousDate);
+
 			return "퇴근 처리 완료";
 		} catch (Exception e) {
 			return e.getMessage();
@@ -63,9 +78,9 @@ public class AttendanceController {
 		List<Map<String, Object>> weeklyStatus = service.getWeeklyStatus(empNo);
 
 		model.addAttribute("monthlyStatus", monthlyStatus);
+		System.out.println("컨트롤러:" + monthlyStatus);
 		model.addAttribute("monthlyWorkHours", monthlyWorkHours);
 		model.addAttribute("weeklyStatus", weeklyStatus);
-		System.out.println("컨트롤러:" + weeklyStatus);
 
 		return "Attendance/attendance";
 	}
@@ -74,10 +89,10 @@ public class AttendanceController {
 	@RequestMapping("/attendance_month")
 	public String attendanceMonth(Model model) {
 		String empNo = (String) session.getAttribute("loginID");
-		
+
 		// 현재 월을 가져옵니다. 예: "2024-08"
 		String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
-		
+
 		List<Map<String, Object>> monthlyWorkStatus = service.getMonthlyWorkStatus(empNo, month);
 		model.addAttribute("monthlyWorkStatus", monthlyWorkStatus);
 		return "Attendance/attendanceMonth";

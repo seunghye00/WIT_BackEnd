@@ -36,7 +36,9 @@ public class AttendanceDAO {
 
 	// 월간 근태현황 조회
 	public Map<String, Integer> getMonthlyStatus(String emp_no) {
-		return mybatis.selectOne("attendance.getMonthlyStatus", emp_no);
+		Map<String, Integer> result = mybatis.selectOne("attendance.getMonthlyStatus", emp_no);
+		System.out.println("DAO: " + result);
+		return result;
 	}
 
 	// 월간 근무시간 조회
@@ -49,7 +51,7 @@ public class AttendanceDAO {
 	public List<Map<String, Object>> getWeeklyStatus(String emp_no) {
 		return mybatis.selectList("attendance.getWeeklyStatus", emp_no);
 	}
-	
+
 	// 월간 근무현황 조회
 	public List<Map<String, Object>> getMonthlyWorkStatus(String emp_no, String month) {
 		Map<String, String> params = new HashMap<>();
@@ -58,4 +60,11 @@ public class AttendanceDAO {
 		return mybatis.selectList("attendance.getMonthlyWorkStatus", params);
 	}
 
+	// 결근
+	public void markAbsence(String emp_no, java.sql.Date work_date) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("emp_no", emp_no);
+		params.put("work_date", work_date);
+		mybatis.update("attendance.markAbsence", params);
+	}
 }

@@ -92,7 +92,9 @@ public class AttendanceService {
 
 	// 월간 근태현황 조회
 	public Map<String, Integer> getMonthlyStatus(String empNo) {
-		return dao.getMonthlyStatus(empNo);
+		Map<String, Integer> monthlyStatus = dao.getMonthlyStatus(empNo);
+		System.out.println("서비스: " + monthlyStatus);
+		return monthlyStatus;
 	}
 
 	// 월간 근무시간 조회
@@ -111,10 +113,15 @@ public class AttendanceService {
 	public List<Map<String, Object>> getWeeklyStatus(String emp_no) {
 		return dao.getWeeklyStatus(emp_no);
 	}
-	
+
 	// 월간 근무현황 조회
 	public List<Map<String, Object>> getMonthlyWorkStatus(String emp_no, String month) {
-	    return dao.getMonthlyWorkStatus(emp_no, month);
+		return dao.getMonthlyWorkStatus(emp_no, month);
 	}
 
+	public void markAbsence(String emp_no, java.sql.Date work_date) {
+		System.out.println("결근 체크 시작: " + emp_no + ", 날짜: " + work_date);
+		dao.markAbsence(emp_no, work_date);
+		System.out.println("결근 체크 완료: " + emp_no + ", 날짜: " + work_date);
+	}
 }
