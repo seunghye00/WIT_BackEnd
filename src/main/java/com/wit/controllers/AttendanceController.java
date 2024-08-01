@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wit.services.AttendanceService;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import com.wit.dto.AttendanceDTO;
 
 @Controller
 @RequestMapping("/attendance")
@@ -61,31 +58,14 @@ public class AttendanceController {
 		// 월간 근태현황과 근무시간을 조회하여 모델에 추가합니다.
 		Map<String, Integer> monthlyStatus = service.getMonthlyStatus(empNo);
 		Map<String, Object> monthlyWorkHours = service.getMonthlyWorkHours(empNo);
-
-		// 주간 근무현황 조회 (현재 주)
-		String startDate = getStartOfWeek();
-		String endDate = getEndOfWeek();
-		List<AttendanceDTO> weeklyWorkStatus = service.getWeeklyWorkStatus(empNo, startDate, endDate);
+		List<Map<String, Object>> weeklyStatus = service.getWeeklyStatus(empNo);
 
 		model.addAttribute("monthlyStatus", monthlyStatus);
 		model.addAttribute("monthlyWorkHours", monthlyWorkHours);
-		model.addAttribute("weeklyWorkStatus", weeklyWorkStatus);
-		System.out.println("컨트롤러 : " + weeklyWorkStatus);
+		model.addAttribute("weeklyStatus", weeklyStatus);
+		System.out.println("컨트롤러:" + weeklyStatus);
+
 		return "Attendance/attendance";
-	}
-
-	// 주의 시작 날짜 계산
-	private String getStartOfWeek() {
-		LocalDate now = LocalDate.now();
-		LocalDate startOfWeek = now.with(DayOfWeek.MONDAY);
-		return startOfWeek.toString();
-	}
-
-	// 주의 종료 날짜 계산
-	private String getEndOfWeek() {
-		LocalDate now = LocalDate.now();
-		LocalDate endOfWeek = now.with(DayOfWeek.SUNDAY);
-		return endOfWeek.toString();
 	}
 
 	// 월간 근태현황 이동

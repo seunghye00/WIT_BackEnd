@@ -46,14 +46,8 @@ public class AttendanceDAO {
 	}
 
 	// 주간 근무현황 조회
-	public List<AttendanceDTO> getWeeklyWorkStatus(@Param("emp_no") String emp_no,
-			@Param("start_date") String start_date, @Param("end_date") String end_date) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("emp_no", emp_no);
-		params.put("start_date", start_date);
-		params.put("end_date", end_date);
-		List<AttendanceDTO> result = mybatis.selectList("attendance.getWeeklyWorkStatus", params);
-		System.out.println("DAO : " + result);
-		return result;
+	public List<Map<String, Object>> getWeeklyStatus(String emp_no) {
+		return mybatis.selectList("attendance.getWeeklyStatus", emp_no);
 	}
+
 }

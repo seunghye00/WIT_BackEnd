@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,12 +50,11 @@
                 </a> <span class="toolTip">조직도</span></li>
             </ul>
         </div>
-        
+
         <div class="main-content">
             <div class="header">
                 <span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
-                <span class="myName"><img src="메인게임.webp"><a href="/employee/mypage">백민주 사원</a></span>
-                <span class="logOut"><a href="/employee/logout">LogOut</a></span>
+                <span class="myName"><img src="메인게임.webp"><a href="/employee/mypage">백민주 사원</a></span> <span class="logOut"><a href="/employee/logout">LogOut</a></span>
             </div>
             <div class="contents">
                 <div class="sideAbout">
@@ -86,42 +86,78 @@
                             <div class="status_container">
                                 <h3>월간 근태현황</h3>
                                 <div class="status_row status_header">
-                                    <div class="status_col"><span>지각</span></div>
-                                    <div class="status_col"><span>조퇴</span></div>
-                                    <div class="status_col"><span>결근</span></div>
+                                    <div class="status_col">
+                                        <span>지각</span>
+                                    </div>
+                                    <div class="status_col">
+                                        <span>조퇴</span>
+                                    </div>
+                                    <div class="status_col">
+                                        <span>결근</span>
+                                    </div>
                                 </div>
                                 <div class="status_row">
-                                    <div class="status_col"><span>${monthlyStatus.LATE}회</span></div>
-                                    <div class="status_col"><span>${monthlyStatus.EARLYLEAVE}회</span></div>
-                                    <div class="status_col"><span>${monthlyStatus.ABSENCE}회</span></div>
+                                    <div class="status_col">
+                                        <span>${monthlyStatus.LATE}회</span>
+                                    </div>
+                                    <div class="status_col">
+                                        <span>${monthlyStatus.EARLYLEAVE}회</span>
+                                    </div>
+                                    <div class="status_col">
+                                        <span>${monthlyStatus.ABSENCE}회</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="hours_container">
                                 <h3>월간 근무시간</h3>
                                 <div class="hours_row status_header">
-                                    <div class="hours_col"><span>근무일수</span></div>
-                                    <div class="hours_col"><span>총 근무시간</span></div>
+                                    <div class="hours_col">
+                                        <span>근무일수</span>
+                                    </div>
+                                    <div class="hours_col">
+                                        <span>총 근무시간</span>
+                                    </div>
                                 </div>
                                 <div class="hours_row">
-                                    <div class="hours_col"><span>${monthlyWorkHours.WORKINGDAYS}일</span></div>
-                                    <div class="hours_col"><span>${monthlyWorkHours.totalWorkingHours}</span></div>
+                                    <div class="hours_col">
+                                        <span>${monthlyWorkHours.WORKINGDAYS}일</span>
+                                    </div>
+                                    <div class="hours_col">
+                                        <span>${monthlyWorkHours.totalWorkingHours}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="week_status">
                             <h3>주간 근무현황</h3>
                             <div class="week_row week_header">
-                                <div class="week_col"><span>근무일</span></div>
-                                <div class="week_col"><span>출근시간</span></div>
-                                <div class="week_col"><span>퇴근시간</span></div>
-                                <div class="week_col"><span>근무시간</span></div>
+                                <div class="week_col">
+                                    <span>근무일</span>
+                                </div>
+                                <div class="week_col">
+                                    <span>출근시간</span>
+                                </div>
+                                <div class="week_col">
+                                    <span>퇴근시간</span>
+                                </div>
+                                <div class="week_col">
+                                    <span>근무시간</span>
+                                </div>
                             </div>
-                            <c:forEach var="item" items="${weeklyWorkStatus}">
+                            <c:forEach var="status" items="${weeklyStatus}">
                                 <div class="week_row">
-                                    <div class="week_col"><span>${item.workDate}</span></div>
-                                    <div class="week_col"><span>${item.startTime}</span></div>
-                                    <div class="week_col"><span>${item.endTime}</span></div>
-                                    <div class="week_col"><span>${item.workHours}</span></div>
+                                    <div class="week_col">
+                                        <fmt:formatDate value="${status.WORK_DATE}" pattern="yyyy-MM-dd" />
+                                    </div>
+                                    <div class="week_col">
+                                        <span>${status.START_TIME}</span>
+                                    </div>
+                                    <div class="week_col">
+                                        <span>${status.END_TIME}</span>
+                                    </div>
+                                    <div class="week_col">
+                                        <span>${status.WORK_HOURS}</span>
+                                    </div>
                                 </div>
                             </c:forEach>
                         </div>
