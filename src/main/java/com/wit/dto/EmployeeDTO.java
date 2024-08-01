@@ -3,24 +3,45 @@ package com.wit.dto;
 import java.sql.Timestamp;
 
 public class EmployeeDTO {
-    private String emp_no;
-    private String pw;
-    private String name;
-    private String nickname;
-    private String ssn;
-    private String phone;
-    private String email;
-    private String zip_code;
-    private String address;
-    private String detail_address;
-    private String dept;
-    private String role;
-    private Timestamp join_date;
-    private Timestamp quit_date;
-    private char quit_yn;
+	private String emp_no;
+	private String pw;
+	private String name;
+	private String nickname;
+	private String ssn;
+	private String phone;
+	private String email;
+	private String zip_code;
+	private String address;
+	private String detail_address;
+	private String dept_code;
+	private String role_code;
+	private Timestamp join_date;
+	private Timestamp quit_date;
+	private char quit_yn;
 
-    public EmployeeDTO() {
-    }
+	public EmployeeDTO() {
+	}
+
+	public EmployeeDTO(String emp_no, String pw, String name, String nickname, String ssn, String phone, String email,
+			String zip_code, String address, String detail_address, String dept_code, String role_code,
+			Timestamp join_date, Timestamp quit_date, char quit_yn) {
+		super();
+		this.emp_no = emp_no;
+		this.pw = pw;
+		this.name = name;
+		this.nickname = nickname;
+		this.ssn = ssn;
+		this.phone = phone;
+		this.email = email;
+		this.zip_code = zip_code;
+		this.address = address;
+		this.detail_address = detail_address;
+		this.dept_code = dept_code;
+		this.role_code = role_code;
+		this.join_date = join_date;
+		this.quit_date = quit_date;
+		this.quit_yn = quit_yn;
+	}
 
 	public String getEmp_no() {
 		return emp_no;
@@ -102,20 +123,20 @@ public class EmployeeDTO {
 		this.detail_address = detail_address;
 	}
 
-	public String getDept() {
-		return dept;
+	public String getDept_code() {
+		return dept_code;
 	}
 
-	public void setDept(String dept) {
-		this.dept = dept;
+	public void setDept_code(String dept_code) {
+		this.dept_code = dept_code;
 	}
 
-	public String getRole() {
-		return role;
+	public String getRole_code() {
+		return role_code;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRole_code(String role_code) {
+		this.role_code = role_code;
 	}
 
 	public Timestamp getJoin_date() {
@@ -141,5 +162,5 @@ public class EmployeeDTO {
 	public void setQuit_yn(char quit_yn) {
 		this.quit_yn = quit_yn;
 	}
-    
+
 }
