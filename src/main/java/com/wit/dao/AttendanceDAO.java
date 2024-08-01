@@ -1,6 +1,7 @@
 package com.wit.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Date;
 import org.apache.ibatis.annotations.Param;
@@ -42,6 +43,11 @@ public class AttendanceDAO {
 	public Map<String, Object> getMonthlyWorkHours(String emp_no) {
 		Map<String, Object> result = mybatis.selectOne("attendance.getMonthlyWorkHours", emp_no);
 		return result;
+	}
+
+	// 주간 근무현황 조회
+	public List<Map<String, Object>> getWeeklyStatus(String emp_no) {
+		return mybatis.selectList("attendance.getWeeklyStatus", emp_no);
 	}
 
 }

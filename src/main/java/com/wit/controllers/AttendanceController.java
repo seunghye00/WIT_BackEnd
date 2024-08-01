@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wit.services.AttendanceService;
+
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -56,9 +58,13 @@ public class AttendanceController {
 		// 월간 근태현황과 근무시간을 조회하여 모델에 추가합니다.
 		Map<String, Integer> monthlyStatus = service.getMonthlyStatus(empNo);
 		Map<String, Object> monthlyWorkHours = service.getMonthlyWorkHours(empNo);
+		List<Map<String, Object>> weeklyStatus = service.getWeeklyStatus(empNo);
 
 		model.addAttribute("monthlyStatus", monthlyStatus);
 		model.addAttribute("monthlyWorkHours", monthlyWorkHours);
+		model.addAttribute("weeklyStatus", weeklyStatus);
+		System.out.println("컨트롤러:" + weeklyStatus);
+
 		return "Attendance/attendance";
 	}
 
