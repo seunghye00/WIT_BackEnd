@@ -79,6 +79,44 @@ $(document).ready(function() {
             }
         });
     });
+
+    // 비밀번호 유효성 검사 및 체크 표시
+    $("#newPassword").on("keyup", function () {
+        let password = $(this).val().trim();
+        let regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{10,}$/;
+        let resultLabel = $("#resultpw");
+        let pwCheck = $("#pwCheck");
+
+        if (password === "") {
+            resultLabel.text("");
+            pwCheck.removeClass("show success error").html(''); // 표시 없음
+        } else if (regex.test(password)) {
+            resultLabel.text("사용 가능").css("color", "green");
+            pwCheck.removeClass("error").addClass("show success").html('&#x2714;'); // 체크 표시
+        } else {
+            resultLabel.text("사용 불가능").css("color", "red");
+            pwCheck.removeClass("success").addClass("show error").html('&#x2716;'); // X 표시
+        }
+    });
+
+    // 비밀번호 재확인
+    $("#confirmPassword").on("keyup", function () {
+        let password = $("#newPassword").val();
+        let confirmPassword = $(this).val();
+        let resultLabel = $("#resultcheckpw");
+        let checkpwCheck = $("#checkpwCheck");
+
+        if (confirmPassword === "") {
+            resultLabel.text("");
+            checkpwCheck.removeClass("show success error").html('');
+        } else if (password === confirmPassword) {
+            resultLabel.text("비밀번호가 일치합니다").css("color", "green");
+            checkpwCheck.removeClass("error").addClass("show success").html('&#x2714;');
+        } else {
+            resultLabel.text("비밀번호가 일치하지 않습니다").css("color", "red");
+            checkpwCheck.removeClass("success").addClass("show error").html('&#x2716;');
+        }
+    });
 });
 </script>
 </head>
@@ -98,11 +136,22 @@ $(document).ready(function() {
     <div class="find_pw_popup" id="pwChangeModal" style="display:none;">
         <h2>비밀번호 변경</h2>
         <form id="changePasswordForm" method="post">
-            <input type="password" id="newPassword" name="newPassword" placeholder="새 비밀번호" required>
-            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 확인" required>
+            <div class="change">
+                <input type="password" id="newPassword" name="newPassword" placeholder="새 비밀번호" required>
+                <label class="password-validation-message">
+                    <span id="resultpw"></span>
+                    <span class="valid-check" id="pwCheck">&#x2716;</span>
+                </label>
+            </div>
+            <div class="change">
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 확인" required>
+                <label class="password-validation-message">
+                    <span id="resultcheckpw"></span>
+                    <span class="valid-check" id="checkpwCheck">&#x2716;</span>
+                </label>
+            </div>
             <button type="submit" class="submit-button">변경</button>
         </form>
     </div>
-
 </body>
 </html>
