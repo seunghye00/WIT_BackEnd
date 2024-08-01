@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="/resources/css/employee.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/employee.js"></script>
-<script src="/resources/js/mky.js"></script>
 </head>
 
 <body>
@@ -70,8 +69,8 @@
 			<div class="header">
 				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
 				<!--마이페이지로 이동-->
-				<span class="myName"> <img src="메인게임.webp"><a href="/employee/mypage">백민주
-						사원</a></span> <span class="logOut"><a href="/employee/logout">LogOut</a></span>
+				<span class="myName"> <img src="메인게임.webp"><a href="/employee/mypage">${employeeInfo.name}
+						${employeeInfo.role_code}</a></span> <span class="logOut"><a href="/employee/logout">LogOut</a></span>
 			</div>
 			<div class="contents">
 				<div class="sideAbout">
@@ -192,13 +191,25 @@
 	</div>
 </body>
 <!-- sidebar 공통요소 script -->
-<script>
-	let btn = document.querySelector("#btn")
-	let sideBar = document.querySelector(".sideBar")
+	<script>
+		let btn = document.querySelector("#btn")
+		let sideBar = document.querySelector(".sideBar")
 
-	btn.onclick = function() {
-		sideBar.classList.toggle("active")
-	};
-</script>
+		btn.onclick = function() {
+			sideBar.classList.toggle("active")
+		};
+
+		// 주소록 토글 이벤트 설정
+		const toggleItems = document.querySelectorAll('.toggleItem')
+		toggleItems.forEach(function(toggleItem) {
+			const toggleTit = toggleItem.querySelector('.toggleTit')
+			const subList = toggleItem.querySelector('.subList')
+
+			toggleTit.addEventListener('click', function() {
+				subList.classList.toggle('active')
+				toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
+			})
+		})
+	</script>
 
 </html>
