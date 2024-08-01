@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="/resources/css/employee.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/employee.js"></script>
-<script src="/resources/js/mky.js"></script>
 </head>
 
 <body>
@@ -192,13 +191,25 @@
 	</div>
 </body>
 <!-- sidebar 공통요소 script -->
-<script>
-	let btn = document.querySelector("#btn")
-	let sideBar = document.querySelector(".sideBar")
+	<script>
+		let btn = document.querySelector("#btn")
+		let sideBar = document.querySelector(".sideBar")
 
-	btn.onclick = function() {
-		sideBar.classList.toggle("active")
-	};
-</script>
+		btn.onclick = function() {
+			sideBar.classList.toggle("active")
+		};
+
+		// 주소록 토글 이벤트 설정
+		const toggleItems = document.querySelectorAll('.toggleItem')
+		toggleItems.forEach(function(toggleItem) {
+			const toggleTit = toggleItem.querySelector('.toggleTit')
+			const subList = toggleItem.querySelector('.subList')
+
+			toggleTit.addEventListener('click', function() {
+				subList.classList.toggle('active')
+				toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
+			})
+		})
+	</script>
 
 </html>

@@ -49,5 +49,13 @@ public class AttendanceDAO {
 	public List<Map<String, Object>> getWeeklyStatus(String emp_no) {
 		return mybatis.selectList("attendance.getWeeklyStatus", emp_no);
 	}
+	
+	// 월간 근무현황 조회
+	public List<Map<String, Object>> getMonthlyWorkStatus(String emp_no, String month) {
+		Map<String, String> params = new HashMap<>();
+		params.put("emp_no", emp_no);
+		params.put("month", month);
+		return mybatis.selectList("attendance.getMonthlyWorkStatus", params);
+	}
 
 }

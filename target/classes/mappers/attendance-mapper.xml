@@ -57,7 +57,6 @@
 	</select>
 
 	<!-- 월간 근무시간 조회 -->
-	<!-- 월간 근무시간 조회 -->
 	<select id="getMonthlyWorkHours" resultType="java.util.HashMap">
 		WITH date_range AS (
 		SELECT
@@ -90,27 +89,41 @@
 	</select>
 
 	<!-- 주간 근무현황 조회 -->
-	<select id="getWeeklyWorkStatus"
-		resultType="com.wit.dto.AttendanceDTO">
+	<select id="getWeeklyStatus" resultType="java.util.HashMap">
 		WITH date_range AS (
 		SELECT
-		TRUNC(SYSDATE, 'D') - 1 AS start_date, -- 현재 주의 시작 날짜 (월요일)
-		TRUNC(SYSDATE, 'D') + 5 AS end_date -- 현재 주의 종료 날짜 (일요일)
+		TRUNC(SYSDATE, 'IW') AS start_date,
+		TRUNC(SYSDATE, 'IW') + 6 AS
+		end_date
 		FROM dual
 		)
 		SELECT
-		work_date AS workDate,
-		start_time AS startTime,
-		end_time AS endTime,
-		work_hours AS workHours
+		work_date,
+		start_time,
+		end_time,
+		work_hours
 		FROM
 		Attendance
 		WHERE
 		emp_no = #{emp_no}
-		AND work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT
+		AND work_date BETWEEN (SELECT
+		start_date FROM date_range) AND (SELECT
 		end_date FROM date_range)
-		ORDER BY
-		work_date
+	</select>
+
+	<!-- 월간 근무현황 조회 -->
+	<select id="getMonthlyWorkStatus" resultType="java.util.HashMap">
+		SELECT
+		work_date,
+		start_time,
+		end_time,
+		work_hours
+		FROM
+		Attendance
+		WHERE
+		emp_no = #{emp_no}
+		AND TO_CHAR(work_date, 'YYYY-MM') = #{month}
+		ORDER BY work_date
 	</select>
 
 </mapper>

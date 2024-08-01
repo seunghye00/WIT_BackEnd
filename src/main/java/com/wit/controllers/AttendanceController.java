@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wit.services.AttendanceService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +72,14 @@ public class AttendanceController {
 
 	// 월간 근태현황 이동
 	@RequestMapping("/attendance_month")
-	public String attendance_month() {
+	public String attendanceMonth(Model model) {
+		String empNo = (String) session.getAttribute("loginID");
+		
+		// 현재 월을 가져옵니다. 예: "2024-08"
+		String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
+		
+		List<Map<String, Object>> monthlyWorkStatus = service.getMonthlyWorkStatus(empNo, month);
+		model.addAttribute("monthlyWorkStatus", monthlyWorkStatus);
 		return "Attendance/attendanceMonth";
 	}
 
