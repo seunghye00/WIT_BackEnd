@@ -14,8 +14,7 @@
 	margin: 0;
 }
 
-.membership, .find_id_container, .registration_container,
-	.profile_update_container {
+.membership, .find_id_container, .find_pw_container, .registration_container, .profile_update_container {
 	background-color: #fff;
 	padding: 20px;
 	border-radius: 8px;
@@ -24,8 +23,7 @@
 	display: none;
 }
 
-.membership.active, .find_id_container.active, .registration_container.active,
-	.profile_update_container.active {
+.membership.active, .find_id_container.active, .find_pw_container.active, .registration_container.active, .profile_update_container.active {
 	display: block;
 	width: 25%;
 	margin: auto;
@@ -36,20 +34,15 @@
 	margin: auto;
 }
 
-.find_id_container.active {
-	margin-top: 15%;
+.find_id_container.active, .find_pw_container.active {
+	margin: auto;
 }
 
-.membership h2, .find_id_container h2, .registration_container h2,
-	.profile_update_container h2 {
+.membership h2, .find_id_container h2, .find_pw_container h2, .registration_container h2, .profile_update_container h2 {
 	margin-bottom: 20px;
 }
 
-.membership input[type="text"], .membership input[type="password"],
-	.find_id_container input[type="text"], .find_id_container input[type="email"],
-	.registration_container input[type="text"], .registration_container input[type="password"],
-	.registration_container select, .profile_update_container input[type="text"],
-	.profile_update_container input[type="email"] {
+.membership input[type="text"], .membership input[type="password"], .find_id_container input[type="text"], .find_id_container input[type="email"], .find_pw_container input[type="text"], .registration_container input[type="text"], .registration_container input[type="password"], .registration_container select, .profile_update_container input[type="text"], .profile_update_container input[type="email"] {
 	width: 100%;
 	padding: 15px;
 	margin: 10px 0;
@@ -58,8 +51,7 @@
 	font-size: 15px;
 }
 
-.registration_container input[type="text"], .registration_container input[type="password"]
-	{
+.registration_container input[type="text"], .registration_container input[type="password"] {
 	width: 90%;
 }
 
@@ -94,8 +86,7 @@
 	font-size: 15px;
 }
 
-.membership button, .find_id_container button, .registration_container button,
-	.profile_update_container button {
+.membership button, .find_id_container button, .find_pw_container button, .registration_container button, .profile_update_container button {
 	width: 100%;
 	padding: 10px;
 	background-color: #558BCF;
@@ -111,31 +102,27 @@
 	width: 40%;
 }
 
-.membership button:hover, .find_id_container button:hover,
-	.registration_container button:hover, .profile_update_container button:hover
-	{
+.membership button:hover, .find_id_container button:hover, .find_pw_container button:hover, .registration_container button:hover, .profile_update_container button:hover {
 	background-color: #558BCF;
 }
 
-.membership .find_id, .membership .find_pw, .employee_container .insert_employee,
-	.back_to_login a {
+.membership .find_id, .membership .find_pw, .employee_container .insert_employee, .back_to_login a {
 	color: #558BCF;
 	text-decoration: none;
-	margin: 0 -25px;
 }
 
-.membership .find_id:hover, .membership .find_pw:hover,
-	.employee_container .insert_employee:hover, .back_to_login a:hover {
+.membership .find_id:hover, .membership .find_pw:hover, .employee_container .insert_employee:hover, .back_to_login a:hover {
 	text-decoration: underline;
 }
 
 .find_container {
 	text-align: right;
-	margin-bottom: 20px;
-	margin-right: 25px;
+	display: flex;
+	justify-content: flex-end;
+	gap: 5px;
 }
 
-.find_id_container.active img {
+.find_id_container.active img, .find_pw_container.active img {
 	width: 155px;
 }
 
@@ -563,4 +550,61 @@
 
 #clock{
 	margin-top: 5px;
+}
+
+
+/* PW 찾기*/
+.find_pw_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.find_pw_popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 25%;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    z-index: 1000;
+}
+
+.find_pw_popup h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.find_pw_popup input {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+.find_pw_popup button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #558BCF;
+    color: white;
+}
+
+.find_pw_popup .submit-button:hover {
+    background-color: #558BCF;
 }
