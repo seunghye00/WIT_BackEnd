@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.wit.dao.AttendanceDAO;
 import com.wit.dto.AttendanceDTO;
+import com.wit.dto.EmployeeDTO;
 
 @Service
 public class AttendanceService {
@@ -119,9 +120,15 @@ public class AttendanceService {
 		return dao.getMonthlyWorkStatus(emp_no, month);
 	}
 
+	// 결근
 	public void markAbsence(String emp_no, java.sql.Date work_date) {
 		System.out.println("결근 체크 시작: " + emp_no + ", 날짜: " + work_date);
 		dao.markAbsence(emp_no, work_date);
 		System.out.println("결근 체크 완료: " + emp_no + ", 날짜: " + work_date);
 	}
+
+	// 직원 정보 조회 메소드 추가
+    public EmployeeDTO getEmployeeInfo(String emp_no) {
+        return dao.getEmployeeInfo(emp_no);
+    }
 }

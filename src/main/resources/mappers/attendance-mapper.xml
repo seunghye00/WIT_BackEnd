@@ -40,16 +40,20 @@
 		FROM dual
 		)
 		SELECT
-		SUM(CASE WHEN start_status = '지각' THEN 1 ELSE 0 END) AS late,
-		SUM(CASE WHEN end_status = '조퇴' THEN 1 ELSE 0 END) AS earlyLeave,
-		SUM(CASE WHEN start_status = '결근' OR end_status = '결근' THEN 1 ELSE 0 END) AS
+		SUM(CASE WHEN start_status = '지각' THEN 1 ELSE 0 END)
+		AS late,
+		SUM(CASE WHEN end_status = '조퇴' THEN 1 ELSE 0 END) AS
+		earlyLeave,
+		SUM(CASE WHEN start_status = '결근' OR end_status = '결근' THEN
+		1 ELSE 0 END) AS
 		absence
 		FROM
 		Attendance
 		WHERE
 		emp_no = #{emp_no}
 		AND
-		work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT end_date FROM
+		work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT
+		end_date FROM
 		date_range)
 	</select>
 
@@ -143,5 +147,13 @@
 		)
 	</update>
 
+	<!-- 직원 정보 조회 -->
+	<select id="getEmployeeInfo"
+		resultType="com.wit.dto.EmployeeDTO">
+		SELECT e.name, r.role_title as role_code
+		FROM Employee e
+		JOIN Role r ON e.role_code = r.role_code
+		WHERE e.emp_no = #{emp_no}
+	</select>
 
 </mapper>
