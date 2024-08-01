@@ -23,13 +23,51 @@ links.forEach(function (link) {
     })
 })
 // 주소록 연락처 추가 팝업
+let editingRow = null
+// 팝업 열기 함수 (수정용)
 
-// 팝업 열기
+function handleRowClick(event, row) {
+    if (event.target.type === 'checkbox') {
+        // 체크박스 클릭 시에는 행 수정 이벤트를 발생시키지 않음
+        event.stopPropagation()
+    } else {
+        // 체크박스 외의 영역 클릭 시 수정 이벤트 발생
+        editContact(row)
+    }
+}
+
+function editContact(row) {
+    editingRow = row
+    var cols = row.getElementsByClassName('cols')
+    var name = cols[1].innerText
+    var phone = cols[2].innerText
+    var email = cols[3].innerText
+    var group = cols[4].innerText
+
+    document.getElementById('name').value = name
+    document.getElementById('phone').value = phone
+    document.getElementById('email').value = email
+    document.getElementById('group').value = group
+
+    document.getElementById('popupTitle').innerHTML = '연락처 수정'
+    document.querySelector('.delete').style.display = 'inline-block'
+    openPopup()
+}
+// 팝업 열기 함수 (추가용)
+function openAddContactPopup() {
+    editingRow = null
+    document.getElementById('addressForm').reset()
+    document.getElementById('photo').src = 'placeholder.jpg'
+    document.querySelector('.delete').style.display = 'none'
+    document.getElementById('popupTitle').innerHTML = '연락처 추가'
+    // 폼 초기화
+    openPopup()
+}
+// 공통 팝업 열기 함수
 function openPopup() {
     var modal = document.getElementById('popupModal')
     modal.style.display = 'block'
 }
-
 // 팝업 닫기 함수
 function closePopup() {
     var modal = document.getElementById('popupModal')

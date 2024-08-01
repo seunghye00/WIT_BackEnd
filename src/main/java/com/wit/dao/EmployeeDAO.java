@@ -8,9 +8,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.RoleDTO;
-import com.wit.dto.DeptDTO;
 
 @Repository
 public class EmployeeDAO {

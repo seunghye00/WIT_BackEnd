@@ -42,7 +42,7 @@
     display: block;
     width: 20px;
     height: 23px;
-    background-image: url("/resources/img/toggle.png"); /* 절대 경로 */
+    background-image: url(/resources/img/toggle.png);
     background-size: 10px 8px;
     background-repeat: no-repeat;
     background-position: center;
@@ -87,7 +87,7 @@
 
 /* 주소록 메인 콘텐츠 */
 .sideContents.addressCont {
-    gap: 10px;
+    gap: 15px;
 }
 
 
@@ -179,6 +179,7 @@
     flex: 1;
     display: flex;
     border-bottom: 1px solid #c1c1c1;
+    max-height: 56px;
 }
 
 .listBox .rows:hover {
@@ -344,13 +345,13 @@
 .photoWrapper label {
     background-color: #558BCF;
     color: white;
-    padding: 5px 10px;
+    padding: 5px 12px;
     border-radius: 4px;
     cursor: pointer;
     margin-left: 10px;
-    width: 50px;
+    width: 52px;
     text-align: center;
-    font-size: 13.3px;
+    font-size: 16px;
 }
 
 .actions {
