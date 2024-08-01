@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wit.dto.EmployeeDTO;
 import com.wit.services.AttendanceService;
 
 import java.time.LocalDate;
@@ -77,10 +78,14 @@ public class AttendanceController {
 		Map<String, Object> monthlyWorkHours = service.getMonthlyWorkHours(empNo);
 		List<Map<String, Object>> weeklyStatus = service.getWeeklyStatus(empNo);
 
+		// 직원 정보 가져오기
+		EmployeeDTO employeeInfo = service.getEmployeeInfo(empNo);
+		System.out.println("Employee Info: " + employeeInfo); // 로그 추가
+
 		model.addAttribute("monthlyStatus", monthlyStatus);
-		System.out.println("컨트롤러:" + monthlyStatus);
 		model.addAttribute("monthlyWorkHours", monthlyWorkHours);
 		model.addAttribute("weeklyStatus", weeklyStatus);
+		model.addAttribute("employeeInfo", employeeInfo); // 직원 정보 모델에 추가
 
 		return "Attendance/attendance";
 	}
@@ -94,13 +99,25 @@ public class AttendanceController {
 		String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
 
 		List<Map<String, Object>> monthlyWorkStatus = service.getMonthlyWorkStatus(empNo, month);
+		
+		// 직원 정보 가져오기
+		EmployeeDTO employeeInfo = service.getEmployeeInfo(empNo);
+		
 		model.addAttribute("monthlyWorkStatus", monthlyWorkStatus);
+		model.addAttribute("employeeInfo", employeeInfo); // 직원 정보 모델에 추가
 		return "Attendance/attendanceMonth";
 	}
 
 	// 휴가관리 이동
 	@RequestMapping("/attendance_vacation")
-	public String attendance_vacation() {
+	public String attendance_vacation(Model model) {
+		String empNo = (String) session.getAttribute("loginID");
+		
+		// 직원 정보 가져오기
+		EmployeeDTO employeeInfo = service.getEmployeeInfo(empNo);
+		
+		model.addAttribute("employeeInfo", employeeInfo); // 직원 정보 모델에 추가
+		
 		return "Attendance/attendanceVacation";
 	}
 }

@@ -69,8 +69,8 @@
 			<div class="header">
 				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
 				<!--마이페이지로 이동-->
-				<span class="myName"> <img src="메인게임.webp"><a href="/employee/mypage">백민주
-						사원</a></span> <span class="logOut"><a href="/employee/logout">LogOut</a></span>
+				<span class="myName"> <img src="메인게임.webp"><a href="/employee/mypage">${employeeInfo.name}
+						${employeeInfo.role_code}</a></span> <span class="logOut"><a href="/employee/logout">LogOut</a></span>
 			</div>
 			<div class="contents">
 				<div class="sideAbout">

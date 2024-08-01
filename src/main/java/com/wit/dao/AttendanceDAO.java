@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.wit.dto.AttendanceDTO;
+import com.wit.dto.EmployeeDTO;
 
 @Repository
 public class AttendanceDAO {
@@ -67,4 +68,9 @@ public class AttendanceDAO {
 		params.put("work_date", work_date);
 		mybatis.update("attendance.markAbsence", params);
 	}
+
+	// 직원 정보 조회 메소드 추가
+    public EmployeeDTO getEmployeeInfo(String emp_no) {
+        return mybatis.selectOne("attendance.getEmployeeInfo", emp_no);
+    }
 }
