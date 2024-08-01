@@ -53,6 +53,7 @@ public class AttendanceDAO {
 		params.put("start_date", start_date);
 		params.put("end_date", end_date);
 		List<AttendanceDTO> result = mybatis.selectList("attendance.getWeeklyWorkStatus", params);
+		System.out.println("DAO : " + result);
 		return result;
 	}
 }

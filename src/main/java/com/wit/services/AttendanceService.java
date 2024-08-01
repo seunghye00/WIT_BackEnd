@@ -101,16 +101,16 @@ public class AttendanceService {
         BigDecimal totalHours = (BigDecimal) result.get("TOTALWORKINGHOURS");
         int hours = totalHours.intValue();
         int minutes = totalHours.subtract(new BigDecimal(hours)).multiply(new BigDecimal(60)).intValue();
-
-        System.out.println("totalHours: " + totalHours);
-        System.out.println("hours: " + hours);
-        System.out.println("minutes: " + minutes);
-
         result.put("totalWorkingHours", hours + "시간 " + minutes + "분");
         return result;
     }
 
     public List<AttendanceDTO> getWeeklyWorkStatus(String empNo, String start_date, String end_date) {
-        return dao.getWeeklyWorkStatus(empNo, start_date, end_date);
+        List<AttendanceDTO> weeklyWorkStatus = dao.getWeeklyWorkStatus(empNo, start_date, end_date);
+
+        // 로그 출력
+        System.out.println("서비스 : " + weeklyWorkStatus);
+
+        return weeklyWorkStatus;
     }
 }

@@ -70,7 +70,7 @@ public class AttendanceController {
 		model.addAttribute("monthlyStatus", monthlyStatus);
 		model.addAttribute("monthlyWorkHours", monthlyWorkHours);
 		model.addAttribute("weeklyWorkStatus", weeklyWorkStatus);
-
+		System.out.println("컨트롤러 : " + weeklyWorkStatus);
 		return "Attendance/attendance";
 	}
 
