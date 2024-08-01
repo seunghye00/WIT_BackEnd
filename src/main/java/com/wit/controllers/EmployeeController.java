@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +42,32 @@ public class EmployeeController {
 	@RequestMapping("/find_ID")
 	public String findID() {
 		return "findID";
+	}
+
+	// PW 찾기 폼으로 이동
+	@RequestMapping("/find_PW")
+	public String findPW() {
+		return "findPW";
+	}
+
+	// 직원 정보 확인
+	@ResponseBody
+	@RequestMapping("/verifyEmployee")
+	public Map<String, Object> verifyEmployee(String emp_no, String name, String ssn) throws Exception {
+		boolean employeeExists = service.verifyEmployee(emp_no, name, ssn);
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", employeeExists);
+		return response;
+	}
+
+	// 비밀번호 업데이트
+	@ResponseBody
+	@RequestMapping("/updatePassword")
+	public Map<String, Object> updatePassword(String emp_no, String newPassword) throws Exception {
+		boolean isUpdated = service.modifyPassword(emp_no, newPassword);
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", isUpdated);
+		return response;
 	}
 
 	// 마이페이지로 이동
@@ -92,7 +119,7 @@ public class EmployeeController {
 			session.setAttribute("loginName", employee.getName());
 			boolean isFirstLogin = service.FirstLogin(emp_no);
 			// FirstLogin 값을 세션에 저장
-			session.setAttribute("FirstLogin", isFirstLogin); 
+			session.setAttribute("FirstLogin", isFirstLogin);
 			response.put("success", true);
 		} else {
 			response.put("success", false);

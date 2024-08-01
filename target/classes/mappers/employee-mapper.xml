@@ -54,10 +54,14 @@
 		SELECT e.emp_no, e.pw,
 		e.name, e.nickname,
 		CASE
-		WHEN SUBSTR(e.ssn, 8, 1) IN ('1', '2') THEN '19' || SUBSTR(e.ssn, 1, 2) ||
-		'년' || SUBSTR(e.ssn, 3, 2) || '월' || SUBSTR(e.ssn, 5, 2) || '일'
-		WHEN SUBSTR(e.ssn, 8, 1) IN ('3', '4') THEN '20' || SUBSTR(e.ssn, 1, 2) ||
-		'년' || SUBSTR(e.ssn, 3, 2) || '월' || SUBSTR(e.ssn, 5, 2) || '일'
+		WHEN SUBSTR(e.ssn, 8, 1) IN ('1', '2') THEN
+		'19' || SUBSTR(e.ssn, 1, 2) ||
+		'년' || SUBSTR(e.ssn, 3, 2) || '월' ||
+		SUBSTR(e.ssn, 5, 2) || '일'
+		WHEN SUBSTR(e.ssn, 8, 1) IN ('3', '4') THEN
+		'20' || SUBSTR(e.ssn, 1, 2) ||
+		'년' || SUBSTR(e.ssn, 3, 2) || '월' ||
+		SUBSTR(e.ssn, 5, 2) || '일'
 		ELSE NULL
 		END AS ssn,
 		e.phone, e.email,
@@ -65,9 +69,11 @@
 		d.dept_title AS dept_code,
 		r.role_title AS role_code,
 		e.join_date, e.quit_date, e.quit_yn
-		FROM employee e
+		FROM
+		employee e
 		JOIN dept d ON e.dept_code = d.dept_code
-		JOIN role r ON e.role_code = r.role_code
+		JOIN role r ON
+		e.role_code = r.role_code
 		WHERE e.emp_no = #{emp_no}
 	</select>
 
@@ -126,5 +132,19 @@
 		SELECT COUNT(*) FROM employee WHERE nickname = #{nickname,
 		jdbcType=VARCHAR}
 	</select>
+
+	<!-- 직원 정보 확인 -->
+	<select id="findEmployee" parameterType="map"
+		resultType="com.wit.dto.EmployeeDTO">
+		SELECT * FROM employee WHERE emp_no = #{emp_no} AND name =
+		#{name} AND ssn =
+		#{ssn}
+	</select>
+
+	<!-- 비밀번호 찾기 -->
+	<update id="modifyPassword" parameterType="map">
+		UPDATE employee SET pw
+		= #{newPassword} WHERE emp_no = #{emp_no}
+	</update>
 
 </mapper>
