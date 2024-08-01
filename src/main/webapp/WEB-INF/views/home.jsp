@@ -1,13 +1,21 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>Home</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메인 페이지</title>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<link rel="stylesheet" href="/resources/css/style.main.css">
+<link rel="stylesheet" href="/resources/css/mky.css">
+<link rel="stylesheet" href="/resources/css/employee.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="/resources/js/employee.js"></script>
 </head>
-<body>
-<h1>
-	Hello world!  
-</h1>
 
 <body class="membership_body">
     <c:choose>
