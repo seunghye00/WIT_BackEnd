@@ -107,7 +107,7 @@
 		WHERE emp_no = #{emp_no, jdbcType=VARCHAR}
 	</update>
 
-	<!-- 아이디(사번) 찾기 -->
+	<!-- ID찾기 -->
 	<select id="findID" parameterType="map"
 		resultType="com.wit.dto.EmployeeDTO">
 		SELECT emp_no FROM employee WHERE name = #{name} AND ssn =
@@ -141,7 +141,7 @@
 		#{ssn}
 	</select>
 
-	<!-- 비밀번호 찾기 -->
+	<!-- PW찾기 (수정) -->
 	<update id="modifyPassword" parameterType="map">
 		UPDATE employee SET pw
 		= #{newPassword} WHERE emp_no = #{emp_no}

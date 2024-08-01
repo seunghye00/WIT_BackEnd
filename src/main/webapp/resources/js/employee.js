@@ -4,12 +4,12 @@ $(document).ready(function() {
     const checkpwCheck = document.getElementById("checkpwCheck");
 
     pwCheck.classList.remove("show", "success", "error");
-    pwCheck.innerHTML = ''; // 내용을 초기화합니다.
+    pwCheck.innerHTML = ''; //
     
     checkpwCheck.classList.remove("show", "success", "error");
-    checkpwCheck.innerHTML = ''; // 내용을 초기화합니다.
+    checkpwCheck.innerHTML = '';
 
-    // 비밀번호 찾기 버튼 클릭 이벤트
+    // PW찾기(수정) 버튼 클릭 이벤트
     $('#openModalButton').on('click', function(e) {
         e.preventDefault();
         var formData = $('#findId').serialize();
@@ -34,7 +34,7 @@ $(document).ready(function() {
         });
     });
 
-    // 비밀번호 변경 폼 제출 이벤트
+    // PW찾기(수정) 모달
     $('#changePasswordForm').on('submit', function(e) {
         e.preventDefault();
         var newPassword = $('#newPassword').val().trim();
@@ -58,7 +58,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            url: '/employee/updatePassword',
+            url: '/employee/modifyPassword',
             type: 'POST',
             data: formData,
             dataType: 'json',
@@ -67,7 +67,7 @@ $(document).ready(function() {
                     alert("비밀번호가 성공적으로 변경되었습니다.");
                     $('#overlay').hide();
                     $('#pwChangeModal').hide();
-                    window.location.href = "/"; // 비밀번호 변경 성공 시 홈으로 이동
+                    window.location.href = "/";
                 } else {
                     alert("비밀번호 변경에 실패하였습니다.");
                 }
@@ -79,7 +79,7 @@ $(document).ready(function() {
         });
     });
 
-    // 비밀번호 유효성 검사 및 체크 표시
+    // PW찾기(수정) 정규표현식
     $("#newPassword").on("keyup", function () {
         let password = $(this).val().trim();
         let regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{10,}$/;
@@ -88,17 +88,17 @@ $(document).ready(function() {
 
         if (password === "") {
             resultLabel.text("");
-            pwCheck.removeClass("show success error").html(''); // 표시 없음
+            pwCheck.removeClass("show success error").html('');
         } else if (regex.test(password)) {
             resultLabel.text("사용 가능").css("color", "green");
-            pwCheck.removeClass("error").addClass("show success").html('&#x2714;'); // 체크 표시
+            pwCheck.removeClass("error").addClass("show success").html('&#x2714;');
         } else {
             resultLabel.text("사용 불가능").css("color", "red");
-            pwCheck.removeClass("success").addClass("show error").html('&#x2716;'); // X 표시
+            pwCheck.removeClass("success").addClass("show error").html('&#x2716;');
         }
     });
 
-    // 비밀번호 재확인
+    // PW찾기(수정) 비밀번호 재확인 정규표현식
     $("#confirmPassword").on("keyup", function () {
         let password = $("#newPassword").val();
         let confirmPassword = $(this).val();
@@ -117,7 +117,7 @@ $(document).ready(function() {
         }
     });
 
-    // 로그인 버튼 클릭 이벤트
+    // 로그인
     $('#login_button').on('click', function () {
         var formData = $('#loginForm').serialize();
         $.ajax({
@@ -126,7 +126,7 @@ $(document).ready(function() {
             data: formData,
             success: function (response) {
                 if (response.success) {
-                    window.location.href = '/'; // 로그인 성공 시 리다이렉트할 페이지
+                    window.location.href = '/';
                 } else {
                     alert('ID 및 PW를 확인 해주세요.');
                 }
@@ -193,6 +193,7 @@ $(document).ready(function() {
         }
     });
 
+/*
     // 회원탈퇴 버튼
     $("#del_btn").on("click", function(event) {
         event.preventDefault();
@@ -200,27 +201,28 @@ $(document).ready(function() {
             window.location.href = '/employee/delete';
         }
     });
+*/
 
-    // 사용자 첫 로그인 시 비밀번호 정규표현식 검사
+    // 추가 정보 입력 정규표현식
     $("#pw").on("keyup", function () {
-        let password = $(this).val().trim();  // 양 끝 공백 제거
+        let password = $(this).val().trim();
         let regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{10,}$/;
         let resultLabel = $("#resultpw");
         let pwCheck = $("#pwCheck");
 
         if (password === "") {
             resultLabel.text("");
-            pwCheck.removeClass("show success error").html(''); // 표시 없음
+            pwCheck.removeClass("show success error").html('');
         } else if (regex.test(password)) {
             resultLabel.text("사용 가능").css("color", "green");
-            pwCheck.removeClass("error").addClass("show success").css("color", "green").html('&#x2714;'); // 체크 표시
+            pwCheck.removeClass("error").addClass("show success").css("color", "green").html('&#x2714;');
         } else {
             resultLabel.text("사용 불가능").css("color", "red");
-            pwCheck.removeClass("success").addClass("show error").css("color", "red").html('&#x2716;'); // X 표시
+            pwCheck.removeClass("success").addClass("show error").css("color", "red").html('&#x2716;');
         }
     });
 
-    // 비밀번호 재확인
+    // 추가 정보 입력 비밀번호 재확인 정규표현식
     $("#checkpw").on("keyup", function () {
         let password = $("#pw").val();
         let confirmPassword = $(this).val();
@@ -397,15 +399,17 @@ $(document).ready(function() {
         }
     });
 
+	// 마이페이지 닉네임만 수정할때!
     // 닉네임 필드 변경 시 닉네임 중복 체크 필요
     $('#nickname').on('input', function() {
-        nicknameChecked = false; // 닉네임이 변경될 때마다 중복 체크 상태를 초기화
+    // 닉네임이 변경될 때마다 중복 체크 상태를 초기화
+        nicknameChecked = false; 
     });
 
     // 닉네임 중복 체크 버튼 클릭 이벤트
     $("#checkNickname").click(function() {
         var nickname = $("#nickname").val().trim();
-        let regex = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,7}$/; // 정규표현식 추가
+        let regex = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,7}$/;
 
         if (nickname === "") {
             alert("닉네임을 입력해주세요.");
@@ -424,7 +428,8 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.value) {
                     alert("사용 가능합니다.");
-                    nicknameChecked = true; // 중복 체크 완료 상태로 설정
+                    // 중복 체크 완료 상태로 설정
+                    nicknameChecked = true; 
                 } else {
                     alert("사용이 불가합니다.");
                     $("#nickname").val("");
