@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+$(document).ready(function() {
     // 초기 상태로 x 표시를 숨깁니다.
     const pwCheck = document.getElementById("pwCheck");
     const checkpwCheck = document.getElementById("checkpwCheck");
@@ -8,9 +8,115 @@ document.addEventListener("DOMContentLoaded", function() {
     
     checkpwCheck.classList.remove("show", "success", "error");
     checkpwCheck.innerHTML = ''; // 내용을 초기화합니다.
-});
 
-$(document).ready(function () {
+    // 비밀번호 찾기 버튼 클릭 이벤트
+    $('#openModalButton').on('click', function(e) {
+        e.preventDefault();
+        var formData = $('#findId').serialize();
+
+        $.ajax({
+            url: '/employee/verifyEmployee',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    $('#overlay').show();
+                    $('#pwChangeModal').show();
+                } else {
+                    alert("사번, 이름, 주민등록번호를 다시 확인해 주세요.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert("AJAX 에러!");
+            }
+        });
+    });
+
+    // 비밀번호 변경 폼 제출 이벤트
+    $('#changePasswordForm').on('submit', function(e) {
+        e.preventDefault();
+        var newPassword = $('#newPassword').val().trim();
+        var confirmPassword = $('#confirmPassword').val().trim();
+
+        // 사용자 정의 정규표현식을 사용한 비밀번호 유효성 검사
+        var passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{10,}$/;
+        if (!passwordRegex.test(newPassword)) {
+            alert("비밀번호는 10자 이상이며, 소문자, 숫자 및 특수문자(!@#$%^&*)를 포함해야 합니다.");
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            alert("비밀번호 확인이 일치하지 않습니다.");
+            return;
+        }
+
+        var formData = {
+            emp_no: $("input[name='emp_no']").val(),
+            newPassword: newPassword
+        };
+
+        $.ajax({
+            url: '/employee/updatePassword',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    alert("비밀번호가 성공적으로 변경되었습니다.");
+                    $('#overlay').hide();
+                    $('#pwChangeModal').hide();
+                    window.location.href = "/"; // 비밀번호 변경 성공 시 홈으로 이동
+                } else {
+                    alert("비밀번호 변경에 실패하였습니다.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert("AJAX 에러!");
+            }
+        });
+    });
+
+    // 비밀번호 유효성 검사 및 체크 표시
+    $("#newPassword").on("keyup", function () {
+        let password = $(this).val().trim();
+        let regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{10,}$/;
+        let resultLabel = $("#resultpw");
+        let pwCheck = $("#pwCheck");
+
+        if (password === "") {
+            resultLabel.text("");
+            pwCheck.removeClass("show success error").html(''); // 표시 없음
+        } else if (regex.test(password)) {
+            resultLabel.text("사용 가능").css("color", "green");
+            pwCheck.removeClass("error").addClass("show success").html('&#x2714;'); // 체크 표시
+        } else {
+            resultLabel.text("사용 불가능").css("color", "red");
+            pwCheck.removeClass("success").addClass("show error").html('&#x2716;'); // X 표시
+        }
+    });
+
+    // 비밀번호 재확인
+    $("#confirmPassword").on("keyup", function () {
+        let password = $("#newPassword").val();
+        let confirmPassword = $(this).val();
+        let resultLabel = $("#resultcheckpw");
+        let checkpwCheck = $("#checkpwCheck");
+
+        if (confirmPassword === "") {
+            resultLabel.text("");
+            checkpwCheck.removeClass("show success error").html('');
+        } else if (password === confirmPassword) {
+            resultLabel.text("비밀번호가 일치합니다").css("color", "green");
+            checkpwCheck.removeClass("error").addClass("show success").html('&#x2714;');
+        } else {
+            resultLabel.text("비밀번호가 일치하지 않습니다").css("color", "red");
+            checkpwCheck.removeClass("success").addClass("show error").html('&#x2716;');
+        }
+    });
+
     // 로그인 버튼 클릭 이벤트
     $('#login_button').on('click', function () {
         var formData = $('#loginForm').serialize();
@@ -41,12 +147,12 @@ $(document).ready(function () {
     };
 
     function generateEmployeeID(year, deptCode, entryOrder) {
-     // 년도, 부서 코드, 입사 순서 (두 자리) 합쳐서 사원번호 생성
+        // 년도, 부서 코드, 입사 순서 (두 자리) 합쳐서 사원번호 생성
         return year + '-' + deptCode + entryOrder.toString().padStart(2, '0');
     }
 
     $('#generate_id_button').on('click', function () {
-     	// 현재 연도의 4자리 추출
+        // 현재 연도의 4자리 추출
         var currentYear = new Date().getFullYear().toString();
         // 선택된 부서 코드
         var deptSelectVal = $('#dept_select').val(); 
@@ -59,19 +165,19 @@ $(document).ready(function () {
                 method: 'post',
                 data: { dept: deptSelectVal },
                 success: function (highestID) {
-                	// 기본 순서는 1
+                    // 기본 순서는 1
                     var entryOrder = 1; 
 
                     if (highestID) {
                         var parts = highestID.split('-');
                         if (parts.length === 2) {
-                        // 부서 코드 이후의 입사 순서만 추출
+                            // 부서 코드 이후의 입사 순서만 추출
                             var lastEntryOrder = parseInt(parts[1].substring(2)); 
                             entryOrder = lastEntryOrder + 1;
                         }
                     }
-					
-					// 사원번호 생성
+                    
+                    // 사원번호 생성
                     var employeeID = generateEmployeeID(currentYear, deptCode, entryOrder);
                     // 생성된 사원번호를 입력 필드에 설정
                     $('#employee_id').val(employeeID); 
@@ -82,7 +188,7 @@ $(document).ready(function () {
                 }
             });
         } else {
-        	// 부서가 선택되지 않은 경우 경고 메시지 표시
+            // 부서가 선택되지 않은 경우 경고 메시지 표시
             alert("부서를 선택하세요."); 
         }
     });
@@ -95,8 +201,8 @@ $(document).ready(function () {
         }
     });
 
-    // 사용자 첫 로그인시 팝업 업데이트 정규표현식
-	$("#pw").on("keyup", function () {
+    // 사용자 첫 로그인 시 비밀번호 정규표현식 검사
+    $("#pw").on("keyup", function () {
         let password = $(this).val().trim();  // 양 끝 공백 제거
         let regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{10,}$/;
         let resultLabel = $("#resultpw");
@@ -112,10 +218,10 @@ $(document).ready(function () {
             resultLabel.text("사용 불가능").css("color", "red");
             pwCheck.removeClass("success").addClass("show error").css("color", "red").html('&#x2716;'); // X 표시
         }
-	});
+    });
 
-	// 비밀번호 재확인
-	$("#checkpw").on("keyup", function () {
+    // 비밀번호 재확인
+    $("#checkpw").on("keyup", function () {
         let password = $("#pw").val();
         let confirmPassword = $(this).val();
         let resultLabel = $("#resultcheckpw");
@@ -131,8 +237,9 @@ $(document).ready(function () {
             resultLabel.text("비밀번호가 일치하지 않습니다").css("color", "red");
             checkpwCheck.removeClass("success").addClass("show error").css("color", "red").html('&#x2716;');
         }
-	});
+    });
 
+    // 주민등록번호 유효성 검사
     $("#ssn").on("keyup", function () {
         let ssn = $(this).val();
         let regex = /^(?:[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01]))-[1-4][0-9]{6}$/;
@@ -151,6 +258,7 @@ $(document).ready(function () {
         }
     });
 
+    // 전화번호 유효성 검사
     $("#phone").on("keyup", function () {
         let phone = $(this).val();
         let regex = /^010-\d{3,4}-\d{4}$/;
@@ -169,6 +277,7 @@ $(document).ready(function () {
         }
     });
 
+    // 이메일 유효성 검사
     $("#email").on("keyup", function () {
         let email = $(this).val();
         let regex = /^[^\s@]+@[^\s@]+\.(com|net)$/;
@@ -187,7 +296,7 @@ $(document).ready(function () {
         }
     });
 
-	// 우편번호
+    // 우편번호 검색
     $("#postcode").on("click", function () {
         new daum.Postcode({
             oncomplete: function (data) {
@@ -197,6 +306,7 @@ $(document).ready(function () {
         }).open();
     });
 
+    // 회원 정보 입력 폼 유효성 검사
     $("#insertForm").on("submit", function () {
         if ($("#nickname").val() == "" || !/^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,7}$/.test($("#nickname").val())) {
             alert("닉네임을 올바르게 입력하세요.");
@@ -249,8 +359,8 @@ $(document).ready(function () {
         });
     });
 
-	// 출근버튼
-	$("#start_button").click(function() {
+    // 출근버튼
+    $("#start_button").click(function() {
         var now = new Date();
         var hours = now.getHours();
         if (hours >= 18) {
@@ -271,7 +381,7 @@ $(document).ready(function () {
         }
     });
 
-	// 퇴근버튼
+    // 퇴근버튼
     $("#end_button").click(function() {
         if (confirm("퇴근 하시겠습니까?")) {
             $.ajax({
