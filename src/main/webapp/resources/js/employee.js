@@ -93,6 +93,7 @@ $(document).ready(function () {
         }
     })
 
+/*
     // 회원탈퇴 버튼
     $('#del_btn').on('click', function (event) {
         event.preventDefault()
@@ -347,6 +348,7 @@ $(document).ready(function () {
         }
     })
 
+	// 마이페이지 닉네임만 수정할때!
     // 닉네임 필드 변경 시 닉네임 중복 체크 필요
     $('#nickname').on('input', function () {
         nicknameChecked = false // 닉네임이 변경될 때마다 중복 체크 상태를 초기화

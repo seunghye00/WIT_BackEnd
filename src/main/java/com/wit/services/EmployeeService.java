@@ -72,7 +72,7 @@ public class EmployeeService {
 		return 1;
 	}
 
-	// 아이디(사번) 찾기
+	// ID찾기
 	public String findID(String name, String ssn) {
 		EmployeeDTO employee = dao.findID(name, ssn);
 		return (employee != null) ? employee.getEmp_no() : null;
@@ -98,13 +98,13 @@ public class EmployeeService {
 		return dao.findByEmpNo(empNo);
 	}
 
-	// 직원 정보 확인
+	// PW찾기(수정) 직원 정보 확인
 	public boolean verifyEmployee(String empNo, String name, String ssn) {
 		EmployeeDTO employee = dao.findEmployee(empNo, name, ssn);
 		return employee != null;
 	}
 
-	// 비밀번호 찾기
+	// PW찾기 (수정)
 	public boolean modifyPassword(String empNo, String newPassword) {
 		String encryptedPassword = PWUtill.encryptPassword(newPassword); // 비밀번호 암호화
 		return dao.modifyPassword(empNo, encryptedPassword) > 0;
