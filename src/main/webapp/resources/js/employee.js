@@ -20,7 +20,7 @@ $(document).ready(function () {
             data: formData,
             success: function (response) {
                 if (response.success) {
-                    window.location.href = '/'; // 로그인 성공 시 리다이렉트할 페이지
+                    window.location.href = '/';
                 } else {
                     alert('ID 및 PW를 확인 해주세요.');
                 }
@@ -97,20 +97,20 @@ $(document).ready(function () {
 
     // 사용자 첫 로그인시 팝업 업데이트 정규표현식
 	$("#pw").on("keyup", function () {
-        let password = $(this).val().trim();  // 양 끝 공백 제거
+        let password = $(this).val().trim();
         let regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{10,}$/;
         let resultLabel = $("#resultpw");
         let pwCheck = $("#pwCheck");
 
         if (password === "") {
             resultLabel.text("");
-            pwCheck.removeClass("show success error").html(''); // 표시 없음
+            pwCheck.removeClass("show success error").html('');
         } else if (regex.test(password)) {
             resultLabel.text("사용 가능").css("color", "green");
-            pwCheck.removeClass("error").addClass("show success").css("color", "green").html('&#x2714;'); // 체크 표시
+            pwCheck.removeClass("error").addClass("show success").css("color", "green").html('&#x2714;');
         } else {
             resultLabel.text("사용 불가능").css("color", "red");
-            pwCheck.removeClass("success").addClass("show error").css("color", "red").html('&#x2716;'); // X 표시
+            pwCheck.removeClass("success").addClass("show error").css("color", "red").html('&#x2716;');
         }
 	});
 
