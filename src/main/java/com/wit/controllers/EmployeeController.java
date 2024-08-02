@@ -43,6 +43,32 @@ public class EmployeeController {
 		return "findID";
 	}
 
+	// PW 찾기 폼으로 이동
+	@RequestMapping("/find_PW")
+	public String findPW() {
+		return "findPW";
+	}
+
+	// PW찾기(수정) 을 위한 직원 정보 확인
+	@ResponseBody
+	@RequestMapping("/verifyEmployee")
+	public Map<String, Object> verifyEmployee(String emp_no, String name, String ssn) throws Exception {
+		boolean employeeExists = service.verifyEmployee(emp_no, name, ssn);
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", employeeExists);
+		return response;
+	}
+
+	// PW찾기 (수정)
+	@ResponseBody
+	@RequestMapping("/modifyPassword")
+	public Map<String, Object> modifyPassword(String emp_no, String newPassword) throws Exception {
+		boolean isUpdated = service.modifyPassword(emp_no, newPassword);
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", isUpdated);
+		return response;
+	}
+
 	// 마이페이지로 이동
 	@RequestMapping("/mypage")
 	public String mypage(Model model) {
@@ -92,7 +118,7 @@ public class EmployeeController {
 			session.setAttribute("loginName", employee.getName());
 			boolean isFirstLogin = service.FirstLogin(emp_no);
 			// FirstLogin 값을 세션에 저장
-			session.setAttribute("FirstLogin", isFirstLogin); 
+			session.setAttribute("FirstLogin", isFirstLogin);
 			response.put("success", true);
 		} else {
 			response.put("success", false);
@@ -128,7 +154,7 @@ public class EmployeeController {
 		return "redirect:/";
 	}
 
-	// 이름과 주민등록번호로 사번 찾기
+	// ID찾기
 	@ResponseBody
 	@RequestMapping("/findID")
 	public Map<String, Object> findID(String name, String ssn) throws Exception {
