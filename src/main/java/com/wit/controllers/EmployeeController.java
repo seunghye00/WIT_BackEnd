@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,7 +49,7 @@ public class EmployeeController {
 		return "findPW";
 	}
 
-	// 직원 정보 확인
+	// PW찾기(수정) 을 위한 직원 정보 확인
 	@ResponseBody
 	@RequestMapping("/verifyEmployee")
 	public Map<String, Object> verifyEmployee(String emp_no, String name, String ssn) throws Exception {
@@ -60,10 +59,10 @@ public class EmployeeController {
 		return response;
 	}
 
-	// 비밀번호 업데이트
+	// PW찾기 (수정)
 	@ResponseBody
-	@RequestMapping("/updatePassword")
-	public Map<String, Object> updatePassword(String emp_no, String newPassword) throws Exception {
+	@RequestMapping("/modifyPassword")
+	public Map<String, Object> modifyPassword(String emp_no, String newPassword) throws Exception {
 		boolean isUpdated = service.modifyPassword(emp_no, newPassword);
 		Map<String, Object> response = new HashMap<>();
 		response.put("success", isUpdated);
@@ -155,7 +154,7 @@ public class EmployeeController {
 		return "redirect:/";
 	}
 
-	// 이름과 주민등록번호로 사번 찾기
+	// ID찾기
 	@ResponseBody
 	@RequestMapping("/findID")
 	public Map<String, Object> findID(String name, String ssn) throws Exception {
