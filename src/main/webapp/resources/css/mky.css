@@ -80,9 +80,20 @@
     padding-bottom: 8px;
 }
 
+.subList li {
+	display:flex;
+    justify-content: space-between;
+}
+
 .subList li a.active {
     color: #558BCF;
     font-weight: 600;
+}
+
+.subList li button {
+  	background-color: unset;
+    border: none;
+    color: #333;
 }
 
 /* 주소록 메인 콘텐츠 */
@@ -257,6 +268,34 @@
     gap: 20px;
 }
 
+.modal-category {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 30px;
+    border: 3px solid #558BCF;
+    width: 25%;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position:relative;
+}
+.modal-category .close {
+	color: #aaa;
+    position: absolute;
+    font-size: 28px;
+    font-weight: bold;
+    right: 20px;
+}
+#addCategoryForm, #editCategoryForm {
+	display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+
+#addCategoryForm input, #editCategoryForm input {
+	width: calc(100% - 120px);
+}
 .popTit {
     font-size: 24px;
     font-weight: bold;
@@ -309,7 +348,8 @@
 }
 
 .formGroup input[type="text"],
-.formGroup input[type="file"] {
+.formGroup input[type="file"],
+.formGroup select{
     width: 50%;
     padding: 15px;
     border: 1px solid #ccc;
