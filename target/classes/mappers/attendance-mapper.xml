@@ -4,23 +4,157 @@
 
 <mapper namespace="attendance">
 
-    <!-- 출근 기록을 삽입 -->
-    <insert id="startAtd">
-        INSERT INTO Attendance (atd_seq, work_date, start_time, start_status, emp_no)
-        VALUES (atd_seq.NEXTVAL, #{work_date}, #{start_time}, #{start_status}, #{emp_no})
-    </insert>
+	<!-- 출근 기록을 삽입 -->
+	<insert id="startAtd">
+		INSERT INTO Attendance (atd_seq, work_date,
+		start_time, start_status,
+		emp_no)
+		VALUES (atd_seq.NEXTVAL, #{work_date},
+		#{start_time}, #{start_status},
+		#{emp_no})
+	</insert>
 
-    <!-- 특정 직원의 특정 날짜 출근 기록을 조회 -->
-    <select id="select" resultType="com.wit.dto.AttendanceDTO">
-        SELECT * FROM Attendance WHERE emp_no = #{emp_no} AND work_date = #{work_date}
-    </select>
+	<!-- 특정 직원의 특정 날짜 출근 기록을 조회 -->
+	<select id="select" resultType="com.wit.dto.AttendanceDTO">
+		SELECT * FROM Attendance WHERE
+		emp_no = #{emp_no} AND work_date =
+		#{work_date}
+	</select>
 
-    <!-- 퇴근 기록을 업데이트 -->
-    <update id="endAtd">
-        UPDATE Attendance
-        SET end_time = #{end_time}, work_hours = #{work_hours}, end_status = #{end_status}
-        WHERE atd_seq = #{atd_seq}
-    </update>
+	<!-- 퇴근 기록을 업데이트 -->
+	<update id="endAtd">
+		UPDATE Attendance
+		SET end_time = #{end_time},
+		work_hours = #{work_hours}, end_status =
+		#{end_status}
+		WHERE atd_seq =
+		#{atd_seq}
+	</update>
+
+	<!-- 월간 근태현황 조회 -->
+	<select id="getMonthlyStatus" resultType="java.util.HashMap">
+		WITH date_range AS (
+		SELECT
+		TRUNC(SYSDATE, 'MM') AS start_date,
+		LAST_DAY(SYSDATE) AS end_date
+		FROM dual
+		)
+		SELECT
+		SUM(CASE WHEN start_status = '지각' THEN 1 ELSE 0 END)
+		AS late,
+		SUM(CASE WHEN end_status = '조퇴' THEN 1 ELSE 0 END) AS
+		earlyLeave,
+		SUM(CASE WHEN start_status = '결근' OR end_status = '결근' THEN
+		1 ELSE 0 END) AS
+		absence
+		FROM
+		Attendance
+		WHERE
+		emp_no = #{emp_no}
+		AND
+		work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT
+		end_date FROM
+		date_range)
+	</select>
+
+	<!-- 월간 근무시간 조회 -->
+	<select id="getMonthlyWorkHours" resultType="java.util.HashMap">
+		WITH date_range AS (
+		SELECT
+		TRUNC(SYSDATE, 'MM') AS start_date,
+		LAST_DAY(SYSDATE) AS end_date
+		FROM dual
+		)
+		SELECT
+		COUNT(work_date) AS workingDays,
+		SUM(
+		CASE
+		WHEN
+		TO_DATE(end_time, 'HH24:MI') &gt; TO_DATE('12:00', 'HH24:MI')
+		AND
+		TO_DATE(start_time, 'HH24:MI') &lt; TO_DATE('13:00', 'HH24:MI') THEN
+		(TO_DATE(end_time, 'HH24:MI') - TO_DATE(start_time, 'HH24:MI')) * 24 -
+		1
+		ELSE
+		(TO_DATE(end_time, 'HH24:MI') - TO_DATE(start_time, 'HH24:MI')) *
+		24
+		END
+		) AS totalWorkingHours
+		FROM
+		Attendance
+		WHERE
+		emp_no = #{emp_no}
+		AND
+		work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT
+		end_date FROM date_range)
+	</select>
+
+	<!-- 주간 근무현황 조회 -->
+	<select id="getWeeklyStatus" resultType="java.util.HashMap">
+		WITH date_range AS (
+		SELECT
+		TRUNC(SYSDATE, 'IW') AS start_date,
+		TRUNC(SYSDATE, 'IW') + 6 AS
+		end_date
+		FROM dual
+		)
+		SELECT
+		work_date,
+		start_time,
+		end_time,
+		work_hours
+		FROM
+		Attendance
+		WHERE
+		emp_no = #{emp_no}
+		AND work_date BETWEEN (SELECT
+		start_date FROM date_range) AND (SELECT
+		end_date FROM date_range)
+		ORDER
+		BY work_date
+	</select>
+
+	<!-- 월간 근무현황 조회 -->
+	<select id="getMonthlyWorkStatus" resultType="java.util.HashMap">
+		SELECT
+		work_date,
+		start_time,
+		end_time,
+		work_hours
+		FROM
+		Attendance
+		WHERE
+		emp_no = #{emp_no}
+		AND TO_CHAR(work_date, 'YYYY-MM') = #{month}
+		ORDER BY work_date
+	</select>
+
+	<!-- 결근 -->
+	<update id="markAbsence">
+		INSERT INTO Attendance (atd_seq, work_date,
+		start_time, end_time,
+		work_hours, start_status, end_status, emp_no)
+		SELECT atd_seq.NEXTVAL, #{work_date}, '00:00', '00:00', '0H', '결근',
+		'결근',
+		#{emp_no}
+		FROM dual
+		WHERE NOT EXISTS (
+		SELECT 1
+		FROM Attendance
+		WHERE
+		emp_no = #{emp_no}
+		AND work_date = #{work_date}
+		)
+	</update>
+
+	<!-- 직원 정보 조회 -->
+	<select id="getEmployeeInfo"
+		resultType="com.wit.dto.EmployeeDTO">
+		SELECT e.name, r.role_title as role_code
+		FROM Employee e
+		JOIN Role r ON e.role_code = r.role_code
+		WHERE e.emp_no = #{emp_no}
+	</select>
 
     <!-- 월간 근태현황 조회 -->
     <select id="getMonthlyStatus" resultType="java.util.HashMap">

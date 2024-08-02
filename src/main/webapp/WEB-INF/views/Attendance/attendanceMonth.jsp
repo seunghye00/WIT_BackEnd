@@ -1,26 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>메인 페이지</title>
+<title>월간 근무현황</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
-<script
-	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="/resources/css/style.main.css">
 <link rel="stylesheet" href="/resources/css/mky.css">
 <link rel="stylesheet" href="/resources/css/employee.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/employee.js"></script>
-<script src="/resources/js/mky.js"></script>
 </head>
-
 <body>
-	<!-- 공통영역 -->
 	<div class="container">
 		<div class="sideBar">
 			<div class="top">
@@ -33,7 +29,6 @@
 					<p></p>
 				</div>
 			</div>
-
 			<ul>
 				<li><a href="#"> <i class='bx bxs-home-alt-2'></i> <span
 						class="navItem">홈</span>
@@ -64,14 +59,13 @@
 				</a> <span class="toolTip">조직도</span></li>
 			</ul>
 		</div>
-		<!-- 공통역역 끝 -->
 
 		<div class="main-content">
 			<div class="header">
 				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
-				<!--마이페이지로 이동-->
-				<span class="myName"> <img src="메인게임.webp"><a
-					href="/employee/mypage">백민주 사원</a></span> <span class="logOut"><a
+				<span class="myName"><img src="메인게임.webp"><a
+					href="/employee/mypage">${employeeInfo.name}
+						${employeeInfo.role_code}</a></span> <span class="logOut"><a
 					href="/employee/logout">LogOut</a></span>
 			</div>
 			<div class="contents">
@@ -99,7 +93,7 @@
 					</a>
 				</div>
 				<div class="sideContents Attendance">
-					<h2>근태관리</h2>
+					<h2>월간 근무현황</h2>
 					<div class="Attendance_container">
 						<div class="month_status">
 							<h3>월간 근무현황</h3>
@@ -117,70 +111,27 @@
 									<span>근무시간</span>
 								</div>
 							</div>
-							<div class="month_row">
-								<div class="month_col">2024-07-18</div>
-								<div class="month_col">09:00:00</div>
-								<div class="month_col">18:00:00</div>
-								<div class="month_col">8H</div>
-							</div>
-							<div class="month_row">
-								<div class="month_col">2024-07-18</div>
-								<div class="month_col">09:00:00</div>
-								<div class="month_col">18:00:00</div>
-								<div class="month_col">8H</div>
-							</div>
-							<div class="month_row">
-								<div class="month_col">2024-07-18</div>
-								<div class="month_col">09:00:00</div>
-								<div class="month_col">18:00:00</div>
-								<div class="month_col">8H</div>
-							</div>
-							<div class="month_row">
-								<div class="month_col">2024-07-18</div>
-								<div class="month_col">09:00:00</div>
-								<div class="month_col">18:00:00</div>
-								<div class="month_col">8H</div>
-							</div>
-							<div class="month_row">
-								<div class="month_col">2024-07-18</div>
-								<div class="month_col">09:00:00</div>
-								<div class="month_col">18:00:00</div>
-								<div class="month_col">8H</div>
-							</div>
-							<div class="month_row">
-								<div class="month_col">2024-07-18</div>
-								<div class="month_col">09:00:00</div>
-								<div class="month_col">18:00:00</div>
-								<div class="month_col">8H</div>
-							</div>
-							<div class="month_row">
-								<div class="month_col">2024-07-18</div>
-								<div class="month_col">09:00:00</div>
-								<div class="month_col">18:00:00</div>
-								<div class="month_col">8H</div>
-							</div>
-							<div class="month_row">
-								<div class="month_col">2024-07-18</div>
-								<div class="month_col">09:00:00</div>
-								<div class="month_col">18:00:00</div>
-								<div class="month_col">8H</div>
-							</div>
-							<div class="month_row">
-								<div class="month_col">2024-07-18</div>
-								<div class="month_col">09:00:00</div>
-								<div class="month_col">18:00:00</div>
-								<div class="month_col">8H</div>
-							</div>
-							<div class="month_row">
-								<div class="month_col">2024-07-18</div>
-								<div class="month_col">09:00:00</div>
-								<div class="month_col">18:00:00</div>
-								<div class="month_col">8H</div>
-							</div>
+							<c:forEach var="status" items="${monthlyWorkStatus}">
+								<div class="month_row">
+									<div class="month_col">
+										<fmt:formatDate value="${status.WORK_DATE}"
+											pattern="yyyy-MM-dd" />
+									</div>
+									<div class="month_col">
+										<span>${status.START_TIME}</span>
+									</div>
+									<div class="month_col">
+										<span>${status.END_TIME}</span>
+									</div>
+									<div class="month_col">
+										<span>${status.WORK_HOURS}</span>
+									</div>
+								</div>
+							</c:forEach>
 						</div>
 					</div>
 					<div class="pagination">
-						<a href="javascript:;" class="prev "><i
+						<a href="javascript:;" class="prev"><i
 							class='bx bx-chevron-left'></i></a> <a href="javascript:;"
 							class="active">1</a> <a href="javascript:;">2</a> <a
 							href="javascript:;">3</a> <a href="javascript:;">4</a> <a
@@ -191,15 +142,26 @@
 			</div>
 		</div>
 	</div>
+	<!-- sidebar 공통요소 script -->
+	<script>
+		let btn = document.querySelector("#btn")
+		let sideBar = document.querySelector(".sideBar")
+
+		btn.onclick = function() {
+			sideBar.classList.toggle("active")
+		};
+
+		// 주소록 토글 이벤트 설정
+		const toggleItems = document.querySelectorAll('.toggleItem')
+		toggleItems.forEach(function(toggleItem) {
+			const toggleTit = toggleItem.querySelector('.toggleTit')
+			const subList = toggleItem.querySelector('.subList')
+
+			toggleTit.addEventListener('click', function() {
+				subList.classList.toggle('active')
+				toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
+			})
+		})
+	</script>
 </body>
-<!-- sidebar 공통요소 script -->
-<script>
-	let btn = document.querySelector("#btn")
-	let sideBar = document.querySelector(".sideBar")
-
-	btn.onclick = function() {
-		sideBar.classList.toggle("active")
-	};
-</script>
-
 </html>

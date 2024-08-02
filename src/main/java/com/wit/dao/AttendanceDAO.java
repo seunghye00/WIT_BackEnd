@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.wit.dto.AttendanceDTO;
+import com.wit.dto.EmployeeDTO;
 
 @Repository
 public class AttendanceDAO {
@@ -38,7 +39,9 @@ public class AttendanceDAO {
 
 	// 월간 근태현황 조회
 	public Map<String, Integer> getMonthlyStatus(String emp_no) {
-		return mybatis.selectOne("attendance.getMonthlyStatus", emp_no);
+		Map<String, Integer> result = mybatis.selectOne("attendance.getMonthlyStatus", emp_no);
+		System.out.println("DAO: " + result);
+		return result;
 	}
 
 	// 월간 근무시간 조회
@@ -48,13 +51,28 @@ public class AttendanceDAO {
 	}
 
 	// 주간 근무현황 조회
-	public List<AttendanceDTO> getWeeklyWorkStatus(@Param("emp_no") String emp_no,
-			@Param("start_date") String start_date, @Param("end_date") String end_date) {
+	public List<Map<String, Object>> getWeeklyStatus(String emp_no) {
+		return mybatis.selectList("attendance.getWeeklyStatus", emp_no);
+	}
+
+	// 월간 근무현황 조회
+	public List<Map<String, Object>> getMonthlyWorkStatus(String emp_no, String month) {
+		Map<String, String> params = new HashMap<>();
+		params.put("emp_no", emp_no);
+		params.put("month", month);
+		return mybatis.selectList("attendance.getMonthlyWorkStatus", params);
+	}
+
+	// 결근
+	public void markAbsence(String emp_no, java.sql.Date work_date) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("emp_no", emp_no);
-		params.put("start_date", start_date);
-		params.put("end_date", end_date);
-		List<AttendanceDTO> result = mybatis.selectList("attendance.getWeeklyWorkStatus", params);
-		return result;
+		params.put("work_date", work_date);
+		mybatis.update("attendance.markAbsence", params);
 	}
+
+	// 직원 정보 조회 메소드 추가
+    public EmployeeDTO getEmployeeInfo(String emp_no) {
+        return mybatis.selectOne("attendance.getEmployeeInfo", emp_no);
+    }
 }
