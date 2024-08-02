@@ -435,7 +435,7 @@ body {
 }
 
 .pagination a {
-    padding: 10px 15px;
+    padding: 10px 12px;
     cursor: pointer;
     color: #333;
 }
@@ -444,6 +444,8 @@ body {
     background-color: #558BCF;
     color: white;
     border-radius: 100%;
+    width: 40px;
+    text-align: center;
 }
 
 .pagination a.prev,

@@ -7,10 +7,13 @@ public class AddressBookDTO {
 	private String email;
 	private String phone;
 	private String address;
-	private String category;
-	
+	private int category_id;
+	private String photo;
+	private String company;
+	private String position;
+
 	public AddressBookDTO(int addr_book_seq, String emp_no, String name, String email, String phone, String address,
-			String category) {
+			int category_id, String photo, String company, String position) {
 		super();
 		this.addr_book_seq = addr_book_seq;
 		this.emp_no = emp_no;
@@ -18,13 +21,16 @@ public class AddressBookDTO {
 		this.email = email;
 		this.phone = phone;
 		this.address = address;
-		this.category = category;
+		this.category_id = category_id;
+		this.photo = photo;
+		this.company = company;
+		this.position = position;
 	}
-	
+
 	public AddressBookDTO() {
 		super();
 	}
-	
+
 	public int getAddr_book_seq() {
 		return addr_book_seq;
 	}
@@ -40,9 +46,7 @@ public class AddressBookDTO {
 	public void setEmp_no(String emp_no) {
 		this.emp_no = emp_no;
 	}
-	/**
-	 * @return the name
-	 */
+
 	public String getName() {
 		return name;
 	}
@@ -75,11 +79,35 @@ public class AddressBookDTO {
 		this.address = address;
 	}
 
-	public String getCategory() {
-		return category;
+	public int getCategory_id() {
+		return category_id;
 	}
-	
-	public void setCategory(String category) {
-		this.category = category;
+
+	public void setCategory_id(int category_id) {
+		this.category_id = category_id;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 }

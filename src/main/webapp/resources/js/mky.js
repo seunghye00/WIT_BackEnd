@@ -80,27 +80,6 @@ const checkAll = document.getElementById('checkAll')
 // 개별 선택 체크박스들
 const individualChecks = document.querySelectorAll('.individual')
 
-// 전체 선택 체크박스 클릭 이벤트
-checkAll.addEventListener('change', () => {
-    individualChecks.forEach(checkbox => {
-        checkbox.checked = checkAll.checked
-    })
-})
-
-// 개별 선택 체크박스 클릭 이벤트
-individualChecks.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
-        if (!checkbox.checked) {
-            checkAll.checked = false
-        } else {
-            const allChecked = Array.from(individualChecks).every(
-                cb => cb.checked
-            )
-            checkAll.checked = allChecked
-        }
-    })
-})
-
 // 주소록 사진 변경
 function removePhoto() {
     document.getElementById('photo').src = 'placeholder.jpg' // 사진 제거
@@ -183,6 +162,28 @@ function createChat() {
         }
     })
     console.log('선택된 주소록:', selectedAddresses) // 선택된 주소록 출력
+}
+
+// 주소록 ajax 검색과 툴바 
+ function handleToolBarClick(event) {
+    event.preventDefault();
+    var chosung = $(this).text();
+    if (chosung === '전체') {
+        chosung = '';
+    }
+    currentChosung = chosung;
+    $('.toolBar a').removeClass('active');
+    $(this).addClass('active');
+    loadPage({ chosung: chosung, cpage: 1, category: currentCategory }, '/addressbook/addressTool');
+}
+
+function handleSearchFormSubmit(event) {
+    event.preventDefault();
+    var keyword = $('#searchInput').val();
+    $('.toolBar a').removeClass('active');
+    $('.toolBar a:first').addClass('active');
+    currentChosung = '전체';
+    loadPage({ keyword: keyword, cpage: 1 }, '/addressbook/search');
 }
 
 // 메시지를 전송하는 함수
