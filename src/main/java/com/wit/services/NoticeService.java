@@ -16,4 +16,12 @@ public class NoticeService {
 	public List<NoticeDTO> noticeList() throws Exception{
 		return ndao.noticeList();
 	}
+	
+	public NoticeDTO detail(int seq) throws Exception{
+		return ndao.detailPage(seq);
+	}
+	
+	public List<NoticeDTO> search(String searchNotice, String keyword, String sortOpt) throws Exception{
+		return ndao.search(searchNotice, keyword, sortOpt);
+	}
 }
