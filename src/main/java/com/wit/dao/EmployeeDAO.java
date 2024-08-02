@@ -61,7 +61,7 @@ public class EmployeeDAO {
 		return mybatis.update("employee.updateNickname", dto);
 	}
 
-	// 아이디(사번) 찾기
+	// ID찾기
 	public EmployeeDTO findID(String name, String ssn) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("name", name);
@@ -93,7 +93,7 @@ public class EmployeeDAO {
 		return mybatis.selectOne("employee.findEmployee", params);
 	}
 
-	// 비밀번호 찾기
+	// PW찾기 (수정)
 	public int modifyPassword(String empNo, String newPassword) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("emp_no", empNo);
