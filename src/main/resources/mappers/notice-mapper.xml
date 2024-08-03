@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="notice">
+	<select id="noticeList" resultType="com.wit.dto.NoticeDTO">
+		select * from notice
+	</select>
+	
+	<select id="detailPage" resultType="com.wit.dto.NoticeDTO">
+		select * from notice where notice_seq= #{notice_seq}
+	</select>
+	
+	<select id="search" resultType="com.wit.dto.NoticeDTO">
+		select * from notice where 1=1 
+		<if test="keyword != null and keyword != ''">
+			and ${searchNotice} like concat('%', #{keyword}, '%')
+		</if>
+		<choose>
+			<when test="sortOpt == 'latest'">
+				order by notice_seq desc
+			</when>
+			<when test="sortOpt == 'views'">
+				order by views desc
+			</when>
+			<otherwise>
+				order by notice_seq desc
+			</otherwise>
+		</choose>
+	</select>
+</mapper>
+
+
