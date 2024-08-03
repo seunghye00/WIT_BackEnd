@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="file">
-	<insert id="write">
-		insert into board_files values(board_files_seq.nextval,${board_seq},#{oriname},#{sysname})
-	</insert>
-</mapper>
