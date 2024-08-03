@@ -50,7 +50,7 @@
 						<ul class="GroupList">
 							<li class="toggleItem">
 								<h3 class="toggle">
-									<a href="free_board.html">자유 게시판</a>
+									<a href="/board/list">자유 게시판</a>
 								</h3>
 							</li>
 						</ul>
