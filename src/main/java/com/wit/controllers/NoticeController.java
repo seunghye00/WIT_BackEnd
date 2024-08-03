@@ -42,10 +42,10 @@ public class NoticeController {
     @RequestMapping("search")
     public String search(String searchNotice, String keyword, String sortOpt, Model model) throws Exception{
     	List<NoticeDTO> list = nserv.search(searchNotice, keyword, sortOpt);
-    	model.addAttribute("list",list);
-    	model.addAttribute("searchNotice",searchNotice);
-    	model.addAttribute("keyword",keyword);
-    	model.addAttribute("sortOpt",sortOpt);
+//    	model.addAttribute("list",list);
+//    	model.addAttribute("searchNotice",searchNotice);
+//    	model.addAttribute("keyword",keyword);
+//    	model.addAttribute("sortOpt",sortOpt);
     	return "/Notice/notice";
     }
     
