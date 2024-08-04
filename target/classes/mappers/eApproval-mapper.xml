@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="eApproval">
+	<select id="selectByStatus" resultType="com.wit.dto.RecentDocuListDTO">
+		select 
+			document_seq, write_date, emer_yn, title, status, name
+		from (
+			select 
+				document_seq, write_date, emer_yn, title, status, docu_code
+			from documents
+			where status = #{status} AND emp_no = #{emp_no}
+			order by write_date DESC
+		) d
+		join document_list dl ON d.docu_code = dl.docu_code
+		where ROWNUM &lt;= 5
+	</select>
+
+</mapper>
