@@ -2,7 +2,7 @@ package com.wit.dto;
 
 import java.sql.Timestamp;
 
-public class DocumentsDTO {
+public class DocuDTO {
 	private int document_seq;
 	private String emp_no;
 	private String title;
@@ -52,7 +52,7 @@ public class DocumentsDTO {
 	public void setDocu_code(String docu_code) {
 		this.docu_code = docu_code;
 	}
-	public DocumentsDTO(int document_seq, String emp_no, String title, Timestamp write_date, String status,
+	public DocuDTO(int document_seq, String emp_no, String title, Timestamp write_date, String status,
 			char emer_yn, String docu_code) {
 		super();
 		this.document_seq = document_seq;
@@ -63,7 +63,7 @@ public class DocumentsDTO {
 		this.emer_yn = emer_yn;
 		this.docu_code = docu_code;
 	}
-	public DocumentsDTO() {
+	public DocuDTO() {
 		super();
 	}
 }

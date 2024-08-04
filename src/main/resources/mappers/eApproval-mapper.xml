@@ -17,5 +17,8 @@
 		join document_list dl ON d.docu_code = dl.docu_code
 		where ROWNUM &lt;= 5
 	</select>
-
+	
+	<select id="getDocuList" resultType="com.wit.dto.DocuListDTO">
+		select * from document_list
+	</select>
 </mapper>

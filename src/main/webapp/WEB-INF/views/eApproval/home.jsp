@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
 <script defer src="/js/hsh.js"></script>
-<script defer src="/js/wit.js"></script>
+
 </head>
 
 <body>
@@ -89,13 +89,12 @@
 							</div>
 							<div class="choiCont">
 								<ul>
-									<li><input type="checkbox" name="docuName" id="prop"
-										value="prop"> <label for="prop">업무 기안</label></li>
-									<li><input type="checkbox" name="docuName" id="leave"
-										value="leave"> <label for="leave">휴가 신청서</label></li>
-									<li><input type="checkbox" name="docuName" id="lateness"
-										value="lateness"> <label for="lateness">지각 사유서</label>
-									</li>
+									
+										<li>
+											<input type="checkbox" name="docuName" id="100" value="100"> 
+											<label for="100">업무 기안</label>
+										</li>
+									
 								</ul>
 							</div>
 							<div class="modalBtnBox">
@@ -269,10 +268,9 @@
 												<span>${i.name}</span>
 											</div>
 											<div class="cols">
-												<span> 
-												<c:if test="${i.emer_yn eq 'Y'}">
-													<img src="/img/icon/siren.png" class="emer">
-												</c:if>
+												<span> <c:if test="${i.emer_yn eq 'Y'}">
+														<img src="/img/icon/siren.png" class="emer">
+													</c:if>
 												</span>
 											</div>
 											<div class="cols">
@@ -331,10 +329,9 @@
 												<span>${i.name}</span>
 											</div>
 											<div class="cols">
-												<span> 
-												<c:if test="${i.emer_yn eq 'Y'}">
-													<img src="/img/icon/siren.png" class="emer">
-												</c:if>
+												<span> <c:if test="${i.emer_yn eq 'Y'}">
+														<img src="/img/icon/siren.png" class="emer">
+													</c:if>
 												</span>
 											</div>
 											<div class="cols">
@@ -353,7 +350,6 @@
 			</div>
 		</div>
 	</div>
-
 </body>
 
 </html>

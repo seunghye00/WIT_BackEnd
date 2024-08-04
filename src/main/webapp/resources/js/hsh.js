@@ -1,7 +1,20 @@
 // 새 결재 진행 클릭 시 문서 양식 선택 모달창 띄우는 함수
 $('#startApprBtn').on('click', () => {
-    // 해당 모달창 활성화
+	
+	console.log("버튼");
+	
+	// 해당 모달창 활성화
     $('.eApprModal.docuChoiModal').css({ display: 'flex' })
+	
+	 $.ajax({
+        url: '/eApproval/getDocuList',
+        type: 'post',
+		dataType: "json"
+    }).done((resp)=>{
+    	console.log(resp);
+    }).fail((jqXHR, textStatus, errorThrown) => {
+    	console.error('AJAX 요청 실패:', textStatus, errorThrown);
+	});
 
     // 문서 종류를 저장할 변수
     let docu

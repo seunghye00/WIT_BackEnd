@@ -1,6 +1,6 @@
 package com.wit.dto;
 
-public class DocumentFilesDTO {
+public class DocuFilesDTO {
 	private int document_files_seq;
 	private int document_seq;
 	private String oriname;
@@ -29,14 +29,14 @@ public class DocumentFilesDTO {
 	public void setSysname(String sysname) {
 		this.sysname = sysname;
 	}
-	public DocumentFilesDTO(int document_files_seq, int document_seq, String oriname, String sysname) {
+	public DocuFilesDTO(int document_files_seq, int document_seq, String oriname, String sysname) {
 		super();
 		this.document_files_seq = document_files_seq;
 		this.document_seq = document_seq;
 		this.oriname = oriname;
 		this.sysname = sysname;
 	}
-	public DocumentFilesDTO() {
+	public DocuFilesDTO() {
 		super();
 	}
 }
