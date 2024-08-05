@@ -100,4 +100,5 @@ public class EmployeeDAO {
 		params.put("newPassword", newPassword);
 		return mybatis.update("employee.modifyPassword", params);
 	}
+	
 }
