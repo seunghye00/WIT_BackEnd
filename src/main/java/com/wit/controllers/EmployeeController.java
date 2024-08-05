@@ -116,7 +116,10 @@ public class EmployeeController {
 		Map<String, Object> response = new HashMap<>();
 		if (employee != null) {
 			session.setAttribute("loginID", emp_no);
+			// 우측상단 이름 및 직급 조회를 위한 코드!
 			session.setAttribute("loginName", employee.getName());
+			session.setAttribute("loginRole", employee.getRole_code());
+			// 첫 로그인시 추가 정보 입력을 위한 코드!
 			boolean isFirstLogin = service.FirstLogin(emp_no);
 			// FirstLogin 값을 세션에 저장
 			session.setAttribute("FirstLogin", isFirstLogin);
