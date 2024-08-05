@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.wit.dto.AddressBookDTO;
 import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.RoleDTO;
@@ -99,5 +100,48 @@ public class EmployeeDAO {
 		params.put("emp_no", empNo);
 		params.put("newPassword", newPassword);
 		return mybatis.update("employee.modifyPassword", params);
+	}
+	
+	// 직원 주소록 리스트 조회
+    public List<Map<String, Object>> getEmployeeAddressList(Map<String, Object> params) {
+        return mybatis.selectList("employee.getEmployeeAddressList", params);
+    }
+
+    // 직원 주소록 검색
+    public List<EmployeeDTO> searchEmployeeAddressList(String keyword, int cpage) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+        params.put("cpage", cpage);
+        return mybatis.selectList("employee.searchEmployeeAddressList", params);
+    }
+    
+    // 주소록 데이터 총 조회
+	public int totalCountPage() {
+	    return mybatis.selectOne("employee.totalCountPage");
+	}
+	
+	// 카테고리 목록 가져오기
+    public List<Map<String, Object>> getCategories() {
+        return mybatis.selectList("employee.getCategories");
+    }
+    
+	// 주소록 데이터 가져오기
+	public Map<String, Object> getContactByEmp_no(String emp_no) {
+	    return mybatis.selectOne("employee.getContactByEmp_no", emp_no);
+	}
+	
+	// 주소록 검색
+	public List<Map<String, Object>> selectByCon(String keyword, int startNum, int endNum) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("keyword", keyword);
+		params.put("startNum", startNum);
+		params.put("endNum", endNum);
+		List<Map<String, Object>> list = mybatis.selectList("employee.selectByCon", params);
+		return list;
+	}
+	
+	// 주소록 툴바 페이지네이션 총 카운트
+	public int totalCountPageSearch(String keyword) {
+		return mybatis.selectOne("employee.totalCountPageSearch", keyword);
 	}
 }

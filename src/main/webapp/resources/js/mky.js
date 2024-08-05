@@ -22,77 +22,12 @@ links.forEach(function (link) {
         this.classList.add('active') // 클릭한 링크에 active 클래스 추가
     })
 })
-// 주소록 연락처 추가 팝업
-let editingRow = null
-// 팝업 열기 함수 (수정용)
-
-function handleRowClick(event, row) {
-    if (event.target.type === 'checkbox') {
-        // 체크박스 클릭 시에는 행 수정 이벤트를 발생시키지 않음
-        event.stopPropagation()
-    } else {
-        // 체크박스 외의 영역 클릭 시 수정 이벤트 발생
-        editContact(row)
-    }
-}
-
-function editContact(row) {
-    editingRow = row
-    var cols = row.getElementsByClassName('cols')
-    var name = cols[1].innerText
-    var phone = cols[2].innerText
-    var email = cols[3].innerText
-    var group = cols[4].innerText
-
-    document.getElementById('name').value = name
-    document.getElementById('phone').value = phone
-    document.getElementById('email').value = email
-    document.getElementById('group').value = group
-
-    document.getElementById('popupTitle').innerHTML = '연락처 수정'
-    document.querySelector('.delete').style.display = 'inline-block'
-    openPopup()
-}
-// 팝업 열기 함수 (추가용)
-function openAddContactPopup() {
-    editingRow = null
-    document.getElementById('addressForm').reset()
-    document.getElementById('photo').src = 'placeholder.jpg'
-    document.querySelector('.delete').style.display = 'none'
-    document.getElementById('popupTitle').innerHTML = '연락처 추가'
-    // 폼 초기화
-    openPopup()
-}
-// 공통 팝업 열기 함수
-function openPopup() {
-    var modal = document.getElementById('popupModal')
-    modal.style.display = 'block'
-}
-// 팝업 닫기 함수
-function closePopup() {
-    var modal = document.getElementById('popupModal')
-    modal.style.display = 'none'
-}
 
 // 주소록 체크박스
 // 전체 선택 체크박스
 const checkAll = document.getElementById('checkAll')
 // 개별 선택 체크박스들
 const individualChecks = document.querySelectorAll('.individual')
-
-// 주소록 사진 변경
-function removePhoto() {
-    document.getElementById('photo').src = 'placeholder.jpg' // 사진 제거
-}
-
-function previewPhoto(event) {
-    const reader = new FileReader()
-    reader.onload = function () {
-        const output = document.getElementById('photo')
-        output.src = reader.result // 사진 미리보기
-    }
-    reader.readAsDataURL(event.target.files[0]) // 파일 읽기
-}
 
 // 채팅방 사이드 영역 보기 전환
 function toggleView(view) {
@@ -121,70 +56,9 @@ function toggleView(view) {
     }
 }
 
-// 주소록 클릭 시 프로필 팝업 표시
-function showProfile(event, element) {
-    const profilePopup = document.getElementById('profilePopup')
-    profilePopup.style.display = 'flex' // 팝업 표시
-    event.stopPropagation() // 이벤트 버블링 방지
-}
 
-// 프로필 팝업 닫기 버튼
-function closeProfilePopup() {
-    document.getElementById('profilePopup').style.display = 'none' // 팝업 숨기기
-}
 
-// 주소록 항목의 체크박스와 확인 버튼을 토글
-function toggleCheckboxes() {
-    const checkboxes = document.querySelectorAll('.addressCheckbox')
-    const confirmBtn = document.querySelector('.createChatConfirmBtn')
-    checkboxes.forEach(checkbox => {
-        checkbox.style.display =
-            checkbox.style.display === 'none' ? 'inline-block' : 'none' // 체크박스 토글
-    })
-    confirmBtn.style.display =
-        confirmBtn.style.display === 'none' ? 'inline-block' : 'none' // 확인 버튼 토글
-}
 
-// 주소록 항목의 체크박스를 클릭하여 선택 상태를 토글
-function toggleCheckbox(event, element) {
-    event.preventDefault()
-    const checkbox = element.querySelector('.addressCheckbox')
-    checkbox.checked = !checkbox.checked
-}
-
-// 선택된 주소록 항목을 수집하여 그룹 채팅 생성
-function createChat() {
-    const selectedAddresses = []
-    const checkboxes = document.querySelectorAll('.addressCheckbox')
-    checkboxes.forEach((checkbox, index) => {
-        if (checkbox.checked) {
-            selectedAddresses.push(`주소록 ${index + 1}`) // 체크된 항목의 이름을 배열에 추가
-        }
-    })
-    console.log('선택된 주소록:', selectedAddresses) // 선택된 주소록 출력
-}
-
-// 주소록 ajax 검색과 툴바 
- function handleToolBarClick(event) {
-    event.preventDefault();
-    var chosung = $(this).text();
-    if (chosung === '전체') {
-        chosung = '';
-    }
-    currentChosung = chosung;
-    $('.toolBar a').removeClass('active');
-    $(this).addClass('active');
-    loadPage({ chosung: chosung, cpage: 1, category: currentCategory }, '/addressbook/addressTool');
-}
-
-function handleSearchFormSubmit(event) {
-    event.preventDefault();
-    var keyword = $('#searchInput').val();
-    $('.toolBar a').removeClass('active');
-    $('.toolBar a:first').addClass('active');
-    currentChosung = '전체';
-    loadPage({ keyword: keyword, cpage: 1 }, '/addressbook/search');
-}
 
 // 메시지를 전송하는 함수
 function sendMessage() {

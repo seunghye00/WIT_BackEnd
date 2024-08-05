@@ -40,8 +40,33 @@ public class AddressBookDAO {
 		return mybatis.selectOne("addressbook.totalCountPageSearch", keyword);
 	}
 	
+	// 주소록 등록
+	public void insertContact(AddressBookDTO newContact) {
+		System.out.println("DAO: " + newContact.toString());
+		mybatis.insert("addressbook.insertContact", newContact);
+    }
+	
+	// 주소록 수정
+	public void updateContact(AddressBookDTO contact) throws Exception {
+		mybatis.update("addressbook.updateContact", contact);
+	}
+	
+	// 주소록 삭제
+	public void deleteContact(int addr_book_seq) throws Exception {
+		mybatis.delete("addressbook.deleteContact", addr_book_seq);
+	}
+	
+	// 주소록 데이터 가져오기
+	public AddressBookDTO getContactBySeq(int addr_book_seq) {
+	    return mybatis.selectOne("addressbook.getContactBySeq", addr_book_seq);
+	}
+
+	public String getCategoryNameById(int category_id) {
+	    return mybatis.selectOne("addressbook.getCategoryNameById", category_id);
+	}
+	
 	// 카테고리 목록 가져오기
-    public List<String> getCategories(String emp_no) {
+    public List<Map<String, Object>> getCategories(String emp_no) {
         return mybatis.selectList("addressbook.getCategories", emp_no);
     }
 
