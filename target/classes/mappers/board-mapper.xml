@@ -1,16 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
-<!DOCTYPE mapper 
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-     
-<mapper namespace="board"> 
-	<insert id="write"> 
-		insert into board values(board_seq.nextval, #{emp_no}, #{title}, #{contents}, sysdate,0)  
-		 
-		<selectKey resultType="int" order="AFTER" keyProperty="board_seq"> 
-		select board_seq.currval from dual 
-		</selectKey> 
-	</insert> 
-	 
- 
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	<!-- 게시물 등록 -->
+	<insert id="write" parameterType="com.wit.dto.BoardDTO">
+		INSERT INTO board (board_seq, emp_no, title, contents, write_date,
+		views)
+		VALUES (board_seq.NEXTVAL, #{emp_no}, #{title}, #{contents},
+		sysdate, 0)
+
+		<!-- 시퀀스 값 가져오기 -->
+		<selectKey resultType="int" order="AFTER"
+			keyProperty="board_seq">
+			SELECT board_seq.CURRVAL FROM dual
+		</selectKey>
+	</insert>
 </mapper>

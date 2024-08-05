@@ -79,9 +79,7 @@
 						<h2 class="sideTit">게시판</h2>
 					</div>
 					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn">
-							<a href="/board/write">글 작성
-						</button>
+						<button id="writeBtn" class="plusBtn sideBtn">글 작성</button>
 					</div>
 					<div class="addressListPrivate">
 						<ul class="privateList">
@@ -343,6 +341,11 @@
 			</div>
 		</div>
 	</div>
-
+	<script>
+		document.getElementById('writeBtn').addEventListener('click',
+				function() {
+					window.location.href = '/board/write';
+				});
+	</script>
 </body>
 </html>
