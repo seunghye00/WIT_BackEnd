@@ -1,13 +1,15 @@
 package com.wit.services;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wit.dao.EmployeeDAO;
-import com.wit.dto.EmployeeDTO;
-import com.wit.dto.RoleDTO;
 import com.wit.dto.DeptDTO;
+import com.wit.dto.EmployeeDTO;
+import com.wit.dto.EmployeeInfoDTO;
+import com.wit.dto.RoleDTO;
 import com.wit.utill.PWUtill;
 
 @Service
@@ -108,6 +110,16 @@ public class EmployeeService {
 	public boolean modifyPassword(String empNo, String newPassword) {
 		String encryptedPassword = PWUtill.encryptPassword(newPassword); // 비밀번호 암호화
 		return dao.modifyPassword(empNo, encryptedPassword) > 0;
+	}
+
+	// 부서별 사원 목록 조회
+	public List<EmployeeDTO> getListByDept(String deptCode) {
+		return dao.getListByDept(deptCode);
+	}
+
+	// 해당 사번을 가진 사원의 이름과 부서명 조회
+	public EmployeeInfoDTO getNameNDept(String emp_no) {
+		return dao.getNameNDept(emp_no);
 	}
 
 }

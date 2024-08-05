@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
 <script defer src="/js/hsh.js"></script>
-
 </head>
 
 <body>
@@ -83,24 +82,19 @@
 					</div>
 					<div class="sideBtnBox">
 						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
+						<div id="docuModalBack" class="modalBack">
 						<div class="eApprModal docuChoiModal">
 							<div class="eApprModalTitle">
 								문서 양식 선택 <span class="closeModal">X</span>
 							</div>
 							<div class="choiCont">
-								<ul>
-									
-										<li>
-											<input type="checkbox" name="docuName" id="100" value="100"> 
-											<label for="100">업무 기안</label>
-										</li>
-									
-								</ul>
+								<ul id="docuNameList"></ul>
 							</div>
 							<div class="modalBtnBox">
 								<button class="next">다음</button>
 								<button class="cancel red">취소</button>
 							</div>
+						</div>
 						</div>
 						<div class="eApprModal apprChoiModal">
 							<div class="eApprModalTitle">
@@ -108,36 +102,10 @@
 							</div>
 							<div class="choiCont">
 								<div class="deptList">
-									<ul>
-										<li><input type="checkbox" name="deptName" id="D1"
-											value="D1" hidden> <label for="D1">인사부</label></li>
-										<li><input type="checkbox" name="deptName" id="D2"
-											value="D2" hidden> <label for="D2">영업부</label></li>
-										<li><input type="checkbox" name="deptName" id="D3"
-											value="D3" hidden> <label for="D3">IT부</label></li>
-										<li><input type="checkbox" name="deptName" id="D4"
-											value="D4" hidden> <label for="D4">마케팅부</label></li>
-										<li><input type="checkbox" name="deptName" id="D5"
-											value="D5" hidden> <label for="D5">기술지원부</label></li>
-									</ul>
+									<ul id="deptList"></ul>
 								</div>
 								<div class="employeeList">
-									<ul>
-										<li><input type="checkbox" name="employeeName"
-											value="백밍주" id="1" hidden> <label for="1">백밍쥬
-												사장</label></li>
-										<li><input type="checkbox" name="employeeName "
-											value="손밍쏘" id="2" hidden> <label for="2">손밍쏘
-												부장</label></li>
-										<li><input type="checkbox" name="employeeName" id="3"
-											hidden> <label for="3">뭉타링 팀장</label></li>
-										<li><input type="checkbox" name="employeeName" id="4"
-											hidden> <label for="4">이웡히 면접예정자</label></li>
-										<li><input type="checkbox" name="employeeName" id="5"
-											hidden> <label for="5">승혜 체고 !!!</label></li>
-										<li><input type="checkbox" name="employeeName" id="6"
-											hidden> <label for="6">밍쥬귀요밍 인턴</label></li>
-									</ul>
+									<ul id="employeeList"></ul>
 								</div>
 								<div class="arrBtns">
 									<button id="addAppr">
@@ -158,41 +126,26 @@
 									<div class="apprList list">
 										<p>결재 순서</p>
 										<ul>
-											<li>
-												<div>첫번째 결재자</div> <input type="checkbox" name=""
-												id="firstAppr" hidden> <label for="firstAppr">백밍쥬
-													사장</label>
+											<li id="firAppr">
+												<div>첫번째 결재자</div>
 											</li>
-											<li>
-												<div>두번째 결재자</div> <input type="checkbox" name=""
-												id="secondAppr" hidden> <label for="secondAppr">백밍쥬
-													과장</label>
+											<li id="secAppr">
+												<div>두번째 결재자</div>
 											</li>
-											<li>
-												<div>세번째 결재자</div> <input type="checkbox" name=""
-												id="thirdAppr" hidden> <label for="thirdAppr">백밍쥬
-													팀장</label>
+											<li id="thirAppr">
+												<div>세번째 결재자</div>
 											</li>
 										</ul>
 									</div>
 									<div class="refeList list">
 										<p>참조 목록</p>
-										<ul>
-											<li><input type="checkbox" name="" id="13" hidden>
-												<label for="13">백밍쥬 사장</label></li>
-											<li><input type="checkbox" name="" id="12" hidden>
-												<label for="12">손밍쏘 과장</label></li>
-											<li><input type="checkbox" name="" id="11" hidden>
-												<label for="11">뭉타리 부장</label></li>
-											<li><input type="checkbox" name="" id="10" hidden>
-												<label for="10">이웡히 면접예정자</label></li>
-										</ul>
+										<ul id="refeList"></ul>
 									</div>
 								</div>
 							</div>
 							<div class="modalBtnBox">
 								<button class="done">완료</button>
-								<button class="prev red">이전</button>
+								<button class="prev red" type="button">이전</button>
 							</div>
 						</div>
 					</div>

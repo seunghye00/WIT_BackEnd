@@ -2223,6 +2223,13 @@ button.grey:active {
     background-color: #555;
 }
 
+/* 비활성화된 버튼 스타일 */
+button.disabled {
+	background-color: #558BCF !important;
+    color: #fff !important;
+    pointer-events: none; 
+}
+
 /* 전자 결제 메인 화면 */
 .eApproval {
     gap: 10px;
@@ -2358,6 +2365,21 @@ button.grey:active {
 
 .eApprWrite .document .choiBox {
     height: 8%;
+}
+
+.eApprWrite .document .choiBox .refeModal {
+	display: none;
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid #555;
+    width: 134px;
+    min-height: 63px;
+    position: relative;
+    top: 5px;
+    right: -304px;
+    border-radius: 10px;
+    background: #fff;
+    padding: 20px 10px;
+    text-align: center;
 }
 
 .eApprWrite .document .docuCont {
@@ -2594,11 +2616,11 @@ td {
     border: 1px solid #e7e7e7;
     overflow-x: auto;
     width: 91%;
-    height: 48px;
-    padding: 0px 5px;
+    height: 50px;
+    padding: 0px 10px;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 25px;
     border-radius: 8px;
 }
 
@@ -2622,6 +2644,7 @@ td {
 
 .eApprWrite .document .docuCont .docuFiles .uploadFiles .delFileBtn {
     color: #c1c1c1;
+    padding-left: 5px;
 }
 
 .eApprWrite .document .docuCont .docuFiles .uploadFiles .delFileBtn:hover {
@@ -2682,6 +2705,10 @@ span:active {
     margin-bottom: 10px;
 }
 
+.eApprModal .choiCont ul li label{
+   	padding-left: 5px;
+}
+
 .eApprModal .modalBtnBox {
     flex: 1;
     display: flex;
@@ -2732,6 +2759,7 @@ span:active {
 .eApprModal.apprChoiModal .choiCont .employeeList ul {
     overflow-y: auto;
     height: 380px;
+    width: 227px;
 }
 
 .eApprModal.apprChoiModal .choiCont .employeeList ul::-webkit-scrollbar {
@@ -2847,6 +2875,7 @@ button:nth-child(5) img {
 
 .eApprModal.apprChoiModal .choiCont .resultAppr .list ul li {
     margin: 0;
+    height: 51px;
 }
 
 .eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar {
@@ -3000,35 +3029,6 @@ button:nth-child(5) img {
     display: flex;
     align-items: end;
     gap: 10px;
-}
-
-/* 전자 결재 참조 목록 확인용 모달창 */
-.refeModal {
-    display: none;
-    border: 1px solid #888;
-    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
-    background-color: #fff;
-    border-radius: 10px;
-    font-size: 18px;
-    position: absolute;
-    top: 24vh;
-    left: 41.5vw;
-    width: 140px;
-    min-height: 66px;
-    padding: 20px 10px;
-    z-index: 2;
-    flex-direction: column;
-    align-items: center;
-}
-
-.refeModal .closeModal {
-    cursor: pointer;
-    color: #999;
-    font-size: 13px;
-    font-weight: bold;
-    position: relative;
-    top: -10px;
-    right: -52px;
 }
 
 /* 승혜 css end */
