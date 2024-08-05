@@ -17,4 +17,17 @@
 			SELECT board_seq.CURRVAL FROM dual
 		</selectKey>
 	</insert>
+
+	<!-- 게시물 조회 -->
+	<!-- 조인을 통해 작성자 위치에 닉네임을 조회함! -->
+	<!-- 그리고 작성날짜가 최신순인게 맨위로 올라온다! -->
+	<!-- 조인 너무 어려워 밍쥬야... -->
+	<select id="list" resultType="com.wit.dto.BoardDTO">
+		SELECT b.board_seq, b.title, b.contents, b.write_date, b.views, e.nickname
+		AS emp_no
+		FROM board b
+		JOIN employee e ON b.emp_no = e.emp_no
+		ORDER BY b.write_date DESC
+	</select>
+
 </mapper>
