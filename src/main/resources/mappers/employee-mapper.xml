@@ -148,12 +148,6 @@
 		#{name} AND ssn =
 		#{ssn}
 	</select>
-
-	<!-- PW찾기 (수정) -->
-	<update id="modifyPassword" parameterType="map">
-		UPDATE employee SET pw
-		= #{newPassword} WHERE emp_no = #{emp_no}
-	</update>
 	
 	<!-- 직원 주소록 리스트 조회 -->
     <select id="getEmployeeAddressList" parameterType="map" resultType="map">
