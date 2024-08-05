@@ -36,6 +36,7 @@
 		)
 	</insert>
 
+	<!-- 로그인 -->
 	<select id="login" resultType="com.wit.dto.EmployeeDTO">
 		SELECT e.emp_no, e.pw, e.name, r.role_title AS role_code
 		FROM employee e
@@ -147,15 +148,5 @@
 		#{name} AND ssn =
 		#{ssn}
 	</select>
-
-	<!-- 직원 정보 조회(우측 상단 이름 및 직급 을 위한 코드) -->
-	<select id="getEmployeeInfo"
-		resultType="com.wit.dto.EmployeeDTO">
-		SELECT e.name, r.role_title as role_code
-		FROM Employee e
-		JOIN Role r ON e.role_code = r.role_code
-		WHERE e.emp_no = #{emp_no}
-	</select>
-
 
 </mapper>
