@@ -23,11 +23,56 @@
 	<!-- 그리고 작성날짜가 최신순인게 맨위로 올라온다! -->
 	<!-- 조인 너무 어려워 밍쥬야... -->
 	<select id="list" resultType="com.wit.dto.BoardDTO">
-		SELECT b.board_seq, b.title, b.contents, b.write_date, b.views, e.nickname
+		SELECT b.board_seq, b.title,
+		b.contents, b.write_date, b.views, e.nickname
 		AS emp_no
 		FROM board b
 		JOIN employee e ON b.emp_no = e.emp_no
 		ORDER BY b.write_date DESC
+	</select>
+
+	<!-- 게시물 상세 조회 -->
+	<select id="detailBoard" parameterType="int"
+		resultType="com.wit.dto.BoardDTO">
+		SELECT b.board_seq, b.title, b.contents, b.write_date,
+		b.views, e.nickname
+		AS emp_no
+		FROM board b
+		JOIN employee e ON b.emp_no =
+		e.emp_no
+		WHERE b.board_seq = #{board_seq}
+	</select>
+
+	<!-- 게시물 삭제 -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM board WHERE
+		board_seq = #{boardSeq}
+	</delete>
+
+	<!-- 조회수 -->
+	<update id="viewcount">
+		UPDATE board SET views = views + 1 WHERE board_seq =
+		#{board_seq}
+	</update>
+
+	<!-- 자유게시판 jstl 을 위한 닉네임 조회 -->
+	<!-- emp_no 를 문자열로 전달 해야해서서 파라미터타입 사용 -->
+	<!-- 쿼리의 결과로 반환되는 데이터는 문자열 타입, 단일 닉네임 값을 반환하며 String으로 매핑! -->
+	<select id="selectNickname" parameterType="String"
+		resultType="String">
+		SELECT nickname
+		FROM employee
+		WHERE emp_no =
+		#{emp_no,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 직원 정보 조회 -->
+	<select id="getEmployeeInfo"
+		resultType="com.wit.dto.EmployeeDTO">
+		SELECT e.name, r.role_title as role_code
+		FROM Employee e
+		JOIN Role r ON e.role_code = r.role_code
+		WHERE e.emp_no = #{emp_no}
 	</select>
 
 </mapper>

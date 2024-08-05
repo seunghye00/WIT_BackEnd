@@ -52,7 +52,7 @@
 				<li><a href="#"> <i class='bx bx-clipboard'></i> <span
 						class="navItem">전자결재</span>
 				</a> <span class="toolTip">전자결재</span></li>
-				<li><a href="#"> <i class='bx bxs-briefcase-alt-2'></i> <span
+				<li><a href="/attendance/attendance"> <i class='bx bxs-briefcase-alt-2'></i> <span
 						class="navItem">근태관리</span>
 				</a> <span class="toolTip">근태관리</span></li>
 				<li><a href="#"> <i class='bx bxs-check-square'></i> <span
@@ -70,7 +70,8 @@
 			<div class="header">
 				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
 				<!--마이페이지로 이동-->
-				<span class="myName"> <a href=" #">백민주 사원</a></span> <span
+				<span class="myName"> <a href="/employee/mypage">${employeeInfo.name}
+						${employeeInfo.role_code}</a></span> <span
 					class="logOut"><a href="#">LogOut</a></span>
 			</div>
 			<div class="contents">
@@ -158,7 +159,10 @@
 										<span>${status.index + 1}</span>
 									</div>
 									<div class="cols boardTitle">
-										<span>${board.title}</span>
+										<a
+											href="${pageContext.request.contextPath}/board/detail?board_seq=${board.board_seq}">
+											<span>${board.title}</span>
+										</a>
 									</div>
 									<div class="cols boardWriter">
 										<!-- 여기서 조인해서 emp_no 자리에 닉네임이 나오게끔 했어! -->
