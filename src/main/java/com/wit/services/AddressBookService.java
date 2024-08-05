@@ -57,14 +57,33 @@ public class AddressBookService {
 	}
 	
 	// 콘텐츠 등록
-//	public void addContact(AddressBookDTO contact) {
-//	    dao.insertContact(contact);
-//	}
+	public void addContact(AddressBookDTO newContact) {
+	    dao.insertContact(newContact);
+	}
+	
+	// 콘텐츠 수정
+	public void updateContact(AddressBookDTO contact) throws Exception {
+	    dao.updateContact(contact);
+	}
+	
+	// 콘텐츠 삭제
+	public void deleteContact(int addr_book_seq) throws Exception {
+	    dao.deleteContact(addr_book_seq);
+	}
+	
+	// 주소록 데이터 가져오기
+	public AddressBookDTO getContactBySeq(int addr_book_seq) {
+	    return dao.getContactBySeq(addr_book_seq);
+	}
+
+	public String getCategoryNameById(int category_id) {
+	    return dao.getCategoryNameById(category_id);
+	}
 	
 	// 카테고리
     // 카테고리 가져오기
     @Transactional
-    public List<String> getCategories(String emp_no) {
+    public List<Map<String, Object>> getCategories(String emp_no) {
         return dao.getCategories(emp_no);
     }
 

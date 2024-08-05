@@ -95,12 +95,60 @@
     
     <!-- 주소록 검색 -->
     <select id="selectByCon" resultType="map">
-    	select * from (select address_book.*, row_number() over(order by name asc) rown from address_book where name like '%'||#{keyword}||'%') where rown between #{startNum} and #{endNum}
+    	<![CDATA[
+		    select * from (
+		        select 
+		            ab.*, 
+		            c.category_name,
+		            row_number() over (order by ab.name asc) as rown
+		        from 
+		            address_book ab
+		        left join
+		            categories c on ab.category_id = c.category_id
+		        where 
+		            ab.name like '%' || #{keyword} || '%'
+		    )
+		    where rown between #{startNum} and #{endNum}
+		]]>
 	</select>
 	
+	<!-- 주소록 등록 -->
+	<insert id="insertContact" parameterType="com.wit.dto.AddressBookDTO">
+		insert into address_book values(addr_book_seq.nextval, #{emp_no}, #{name}, #{email}, #{phone}, #{address}, #{category_id}, #{photo}, #{company}, #{position})
+    </insert>
+    
+	<!-- 주소록 수정 -->
+	<update id="updateContact" parameterType="com.wit.dto.AddressBookDTO">
+	    update address_book
+	    set 
+	        name = #{name},
+	        email = #{email},
+	        phone = #{phone},
+	        address = #{address},
+	        category_id = #{category_id},
+	        photo = #{photo},
+	        company = #{company},
+	        position = #{position}
+	    where addr_book_seq = #{addr_book_seq}
+	</update>
+	
+	<!-- 주소록 삭제 -->
+	<delete id="deleteContact" parameterType="int">
+	    delete from address_book where addr_book_seq = #{addr_book_seq}
+	</delete>
+	
+	<!-- 주소록 데이터 가져오기 -->
+	<select id="getContactBySeq" parameterType="int" resultType="com.wit.dto.AddressBookDTO">
+	    select * from address_book where addr_book_seq = #{addr_book_seq}
+	</select>
+	
+	<select id="getCategoryNameById" parameterType="int" resultType="String">
+	    select category_name from categories where category_id = #{category_id}
+	</select>	
+	
     <!-- 카테고리 목록 가져오기 -->
-    <select id="getCategories" resultType="string">
-        select category_name from categories where emp_no = #{emp_no}
+    <select id="getCategories" resultType="map">
+        select * from categories where emp_no = #{emp_no}
     </select>
 
     <!-- 카테고리 추가 -->

@@ -37,6 +37,14 @@
     position: relative;
 }
 
+.toggleItem .addressTit {
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+}
+
 .toggleItem .toggleTit::after {
     content: "";
     display: block;
@@ -346,6 +354,9 @@
     margin-right: 10px;
     font-size: 18px;
 }
+.formGroup span {
+    font-size: 18px;
+}
 
 .formGroup input[type="text"],
 .formGroup input[type="file"],
@@ -354,6 +365,7 @@
     padding: 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
+    font-size: 16px;
 }
 
 .formGroup .photoWrapper {
@@ -803,4 +815,28 @@
 
 .profilePopup .closeButton:hover {
     background-color: #c51221;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#results {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.noData {
+    text-align: center;
+    font-size: 1.2em;
+    color: gray;
+    margin-top: 20px;
+}
+
+.required {
+    color: red;
+}
+
+.error {
+    border-color: red;
 }

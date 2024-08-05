@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -178,7 +179,99 @@ public class EmployeeController {
 		response.put("value", value);
 		return response;
 	}
+	
+	@RequestMapping("/addressList")
+	public String getEmployeeAddressList(String chosung, String cpage, String category, Model model) {
+		String emp_no = (String) session.getAttribute("loginID");
+        
+        if (cpage == null) {
+            cpage = "1";
+        }
+        
+        int cpage_num = Integer.parseInt(cpage);
+        
+        if (chosung == null || chosung.isEmpty() || "전체".equals(chosung)) {
+            chosung = "";
+        }
+        
+        if (category == null || category.isEmpty() || "전체".equals(category)) {
+            category = "";
+        }
+        
+        List<Map<String, Object>> list = service.getEmployeeList(chosung, category, cpage_num);
+        
+        List<Map<String, Object>> categoryList = service.getCategories();
+        
+        int totPage = service.totalCountPage();
+        //List<Map<String, Object>> categoryList = service.getCategories(emp_no);
+        model.addAttribute("totPage", totPage);
+        model.addAttribute("cpage", cpage_num);
+        model.addAttribute("addressBookGroupList", list);
+        return "AddressBook/addressBookGroup";
+	}
+	
+	@RequestMapping("/groupAddressTool")
+	@ResponseBody
+	public Map<String, Object> addressBookGroupAjax(String chosung, String cpage, String category,  Model model) {
+		String emp_no = (String) session.getAttribute("loginID");
+		
+		if (cpage == null) {
+			cpage = "1";
+		}
+		
+		int cpage_num = Integer.parseInt(cpage);
+		
+		if (chosung == null || chosung.isEmpty() || "전체".equals(chosung)) {
+			chosung = "";
+		}
+		
+		System.out.println(category);
+		if (category == null || category.isEmpty() || "전체".equals(category)) {
+            category = "";
+        }
+		
+		List<Map<String, Object>> list = service.getEmployeeList(chosung, category, cpage_num);
+		
+		List<Map<String, Object>> categoryList = service.getCategories();
+		int totPage = service.totalCountPage();
+		
+        Map<String, Object> response = new HashMap<>(); 
+        response.put("totPage", totPage);
+        response.put("cpage", cpage_num);
+        response.put("addressBookGroupList", list);
+        response.put("categoryList", categoryList);
+        return response;
+	}
+	
+	@RequestMapping("getCategories")
+    @ResponseBody
+    public List<Map<String, Object>> getCategories() {
+        return service.getCategories();
+    }
+	
+	@RequestMapping("getContactDetails")
+    @ResponseBody
+    public Map<String, Object> getContactDetails(String emp_no) {
+		Map<String, Object> contact = service.getContactByEmp_no(emp_no);
+        return contact;
+    }
+    @RequestMapping("search")
+    @ResponseBody
+    public Map<String, Object> search(String keyword, String cpage) {
+        if (cpage == null) {
+            cpage = "1";
+        }
+        int cpage_num = Integer.parseInt(cpage);
+        List<Map<String, Object>> list = service.selectByCon(keyword, cpage_num);
+        int totPage = service.totalCountPageSearch(keyword);
 
+        Map<String, Object> response = new HashMap<>();
+        response.put("totPage", totPage);
+        response.put("cpage", cpage_num);
+        response.put("addressBookGroupList", list);
+        return response;
+    }
+    
 	// 예외를 담당하는 메서드 생성
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception e) {

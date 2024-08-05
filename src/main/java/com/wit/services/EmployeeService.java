@@ -1,13 +1,18 @@
 package com.wit.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.wit.commons.BoardConfig;
 import com.wit.dao.EmployeeDAO;
+import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.RoleDTO;
-import com.wit.dto.DeptDTO;
 import com.wit.utill.PWUtill;
 
 @Service
@@ -109,5 +114,51 @@ public class EmployeeService {
 		String encryptedPassword = PWUtill.encryptPassword(newPassword); // 비밀번호 암호화
 		return dao.modifyPassword(empNo, encryptedPassword) > 0;
 	}
+	
+	// 주소록 조회 메소드 추가
+    public List<Map<String, Object>> getEmployeeList(String chosung, String category, int cpage) {
+    	int startNum = (cpage - 1) * BoardConfig.recordCountPerPage + 1;
+	    int endNum = cpage * BoardConfig.recordCountPerPage;
 
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("chosung", chosung);
+	    params.put("category", category);
+	    params.put("startNum", startNum);
+	    params.put("endNum", endNum);
+        return dao.getEmployeeAddressList(params);
+    }
+    // 주소록 조회 메소드 추가
+    public List<EmployeeDTO> searchEmployeeList(String keyword, int cpage) {
+        return dao.searchEmployeeAddressList(keyword, cpage);
+    }
+    
+    // 주소록 검색 카운트 값 조회
+    @Transactional
+    public int totalCountPage() {
+    	return dao.totalCountPage();
+    }
+    
+    // 주소록 카테고리 조회
+    @Transactional
+    public List<Map<String, Object>> getCategories() {
+        return dao.getCategories();
+    }
+    
+	// 주소록 데이터 가져오기
+	public Map<String, Object> getContactByEmp_no(String emp_no) {
+	    return dao.getContactByEmp_no(emp_no);
+	}
+	
+	// 주소록 검색 카운트 값 조회
+	@Transactional
+	public int totalCountPageSearch(String keyword) {
+		return dao.totalCountPageSearch(keyword);
+	}
+	
+	// 주소록 검색값 레코드 조회
+	@Transactional
+	public List<Map<String, Object>> selectByCon(String keyword, int cpage) {
+		return dao.selectByCon(keyword, cpage * BoardConfig.recordCountPerPage - (BoardConfig.recordCountPerPage - 1),
+				cpage * BoardConfig.recordCountPerPage);
+	}
 }
