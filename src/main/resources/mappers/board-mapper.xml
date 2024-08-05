@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+     
+<mapper namespace="board"> 
+	<insert id="write"> 
+		insert into board values(board_seq.nextval, #{emp_no}, #{title}, #{contents}, sysdate,0)  
+		 
+		<selectKey resultType="int" order="AFTER" keyProperty="board_seq"> 
+		select board_seq.currval from dual 
+		</selectKey> 
+	</insert> 
+	 
+ 
+</mapper>
