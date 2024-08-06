@@ -5,6 +5,8 @@
 
 <mapper namespace="board">
 	<!-- 게시물 등록 -->
+	<!-- 파라미터타입은 CUD에서 사용하고 -->
+	<!-- 리졸트타입은 R에서만 사용한다! -->
 	<insert id="write" parameterType="com.wit.dto.BoardDTO">
 		INSERT INTO board (board_seq, emp_no, title, contents, write_date,
 		views)
