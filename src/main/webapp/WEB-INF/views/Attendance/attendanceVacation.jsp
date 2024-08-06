@@ -26,7 +26,7 @@
 				<i class="bx bx-menu" id="btn"></i>
 			</div>
 			<div class="user">
-				<img src="메인게임.webp" alt="me" class="userImg">
+				<img src="/resources/img/WIT_logo1.png" alt="로고" class="userImg">
 				<div class="nickName">
 					<p class="bold">Wit Works</p>
 					<p></p>
@@ -60,8 +60,8 @@
 			<div class="header">
 				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
 				<!--마이페이지로 이동-->
-				<span class="myName"> <img src="메인게임.webp"><a
-					href="/employee/mypage">${employee.name}
+				<span class="myName"> <img src="/resources/img/푸바오.png"
+					alt="프로필 사진" class="userImg"><a href="/employee/mypage">${employee.name}
 						${employee.role_code}</a></span> <span class="logOut"><a
 					href="/employee/logout">LogOut</a></span>
 			</div>
@@ -137,36 +137,36 @@
 								<div class="week_col">1</div>
 								<div class="week_col">백민주</div>
 								<div class="week_col">연차</div>
-								<div class="week_col">2024-07-24 ~ 2024-07-25</div>
-								<div class="week_col">2일</div>
+								<div class="week_col">2024-07-21 ~ 2024-07-21</div>
+								<div class="week_col">1일</div>
 							</div>
 							<div class="vacation_row">
 								<div class="week_col">2</div>
 								<div class="week_col">백민주</div>
 								<div class="week_col">연차</div>
-								<div class="week_col">2024-07-24 ~ 2024-07-25</div>
-								<div class="week_col">2일</div>
+								<div class="week_col">2024-07-22 ~ 2024-07-22</div>
+								<div class="week_col">1일</div>
 							</div>
 							<div class="vacation_row">
 								<div class="week_col">3</div>
 								<div class="week_col">백민주</div>
 								<div class="week_col">연차</div>
-								<div class="week_col">2024-07-24 ~ 2024-07-25</div>
-								<div class="week_col">2일</div>
+								<div class="week_col">2024-07-23 ~ 2024-07-23</div>
+								<div class="week_col">1일</div>
 							</div>
 							<div class="vacation_row">
 								<div class="week_col">4</div>
 								<div class="week_col">백민주</div>
 								<div class="week_col">연차</div>
-								<div class="week_col">2024-07-24 ~ 2024-07-25</div>
-								<div class="week_col">2일</div>
+								<div class="week_col">2024-07-24 ~ 2024-07-24</div>
+								<div class="week_col">1일</div>
 							</div>
 							<div class="vacation_row">
 								<div class="week_col">5</div>
 								<div class="week_col">백민주</div>
 								<div class="week_col">연차</div>
-								<div class="week_col">2024-07-24 ~ 2024-07-25</div>
-								<div class="week_col">2일</div>
+								<div class="week_col">2024-07-25 ~ 2024-07-25</div>
+								<div class="week_col">1일</div>
 							</div>
 						</div>
 					</div>

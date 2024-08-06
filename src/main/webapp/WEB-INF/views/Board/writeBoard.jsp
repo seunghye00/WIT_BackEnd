@@ -32,6 +32,7 @@
 				<i class="bx bx-menu" id="btn"></i>
 			</div>
 			<div class="user">
+				<img src="/resources/img/WIT_logo1.png" alt="로고" class="userImg">
 				<div class="nickName">
 					<p class="bold">Wit Works</p>
 					<p></p>
@@ -66,7 +67,8 @@
 			<div class="header">
 				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
 				<!--마이페이지로 이동-->
-				<span class="myName"> <a href="/employee/mypage">${employee.name}
+				<span class="myName"> <img src="/resources/img/푸바오.png"
+					alt="프로필 사진" class="userImg"> <a href="/employee/mypage">${employee.name}
 						${employee.role_code}</a>
 				</span> <span class="logOut"><a href="/employee/logout">LogOut</a></span>
 			</div>
@@ -113,7 +115,8 @@
 								<span class="spanFile" id="fileName">선택된 파일이 없습니다.</span>
 							</div>
 							<div class="writeBtns">
-								<button type="button" class="btn btn-secondary" id="writeList">뒤로가기</button>
+								<button type="button" class="btn btn-secondary" id="writeList"
+									onclick="location.href='/board/list'">뒤로가기</button>
 								<button type="submit" class="btn btn-primary" id="writeInsert">등록하기</button>
 							</div>
 						</div>
