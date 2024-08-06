@@ -22,7 +22,7 @@
 	<resources mapping="/js/**" location="/resources/js/" />
 
 	<!-- New resource handler for uploads directory -->
-	<resources mapping="/uploads/**" location="file:C:/STS3/sts-bundle/Workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp1/wtpwebapps/WIT/uploads/" />
+	<resources mapping="/uploads/**" location="file:///C:Users/타리/Desktop/UploadServerFile/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->

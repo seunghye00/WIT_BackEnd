@@ -38,8 +38,10 @@
 
 	<!-- 로그인 -->
 	<select id="login" resultType="com.wit.dto.EmployeeDTO">
-		SELECT * FROM employee WHERE
-		emp_no = #{emp_no, jdbcType=VARCHAR} AND pw = #{pw}
+		SELECT e.emp_no, e.pw, e.name, r.role_title AS role_code
+		FROM employee e
+		JOIN role r ON e.role_code = r.role_code
+		WHERE e.emp_no = #{emp_no} AND e.pw = #{pw}
 	</select>
 
 	<!-- 회원탈퇴 -->
@@ -114,13 +116,13 @@
 		#{ssn}
 	</select>
 
-	<!-- 모든 직급 정보 가져오기 -->
+	<!-- 모든 직급 정보 가져오기(회원가입) -->
 	<select id="AllRoles" resultType="com.wit.dto.RoleDTO">
 		SELECT role_code, role_title
 		FROM role
 	</select>
 
-	<!-- 모든 부서 정보 가져오기 -->
+	<!-- 모든 부서 정보 가져오기(회원가입) -->
 	<select id="AllDepts" resultType="com.wit.dto.DeptDTO">
 		SELECT dept_code, dept_title
 		FROM dept
@@ -133,19 +135,19 @@
 		jdbcType=VARCHAR}
 	</select>
 
-	<!-- 직원 정보 확인 -->
+	<!-- PW찾기 (수정) -->
+	<update id="modifyPassword" parameterType="map">
+		UPDATE employee SET pw
+		= #{newPassword} WHERE emp_no = #{emp_no}
+	</update>
+
+	<!-- PW찾기(수정) 을 위한 직원 정보 확인 -->
 	<select id="findEmployee" parameterType="map"
 		resultType="com.wit.dto.EmployeeDTO">
 		SELECT * FROM employee WHERE emp_no = #{emp_no} AND name =
 		#{name} AND ssn =
 		#{ssn}
 	</select>
-
-	<!-- PW찾기 (수정) -->
-	<update id="modifyPassword" parameterType="map">
-		UPDATE employee SET pw
-		= #{newPassword} WHERE emp_no = #{emp_no}
-	</update>
 	
 	<!-- 직원 주소록 리스트 조회 -->
     <select id="getEmployeeAddressList" parameterType="map" resultType="map">
@@ -257,4 +259,25 @@
 		    where rown between #{startNum} and #{endNum}
 		]]>
 	</select>
+	
+	<!-- 메신저 주소록 목록 조회  -->
+	<select id="getAllMessengerEmp" resultType="map">
+		select emp_no, name, d.dept_title, r.role_title, phone, email
+		from employee em
+		left join
+	        dept d on em.dept_code = d.dept_code
+	    left join
+	        role r on em.role_code = r.role_code
+    </select>
+    
+    <!-- 메신저 주소록 상세 조회  -->
+	<select id="getContactByEmpNo" resultType="com.wit.dto.EmployeeDTO">
+		select emp_no, name, d.dept_title, r.role_title, phone, email
+		from employee em
+		left join
+	        dept d on em.dept_code = d.dept_code
+	    left join
+	        role r on em.role_code = r.role_code
+	    where emp_no = #{emp_no}
+    </select>
 </mapper>

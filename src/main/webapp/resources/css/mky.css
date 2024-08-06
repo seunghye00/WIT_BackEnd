@@ -731,8 +731,8 @@
     z-index: 1000;
     border-radius: 8px;
     flex-direction: column;
-    align-items: end;
     gap: 10px;
+    width: 500px;
 }
 
 .profileTit {
@@ -766,6 +766,7 @@
     background: #eee;
     padding: 20px;
     border-radius: 8px;
+    width: calc(100% - 100px);
 }
 
 .profilePopup .profileDetails .profileRow {
@@ -785,6 +786,7 @@
 .profilePopup .profilebtnBox {
     display: flex;
     gap: 10px;
+    justify-content: flex-end;
 }
 
 .profilePopup .chatButton {

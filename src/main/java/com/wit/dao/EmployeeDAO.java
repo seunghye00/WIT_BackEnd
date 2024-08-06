@@ -144,4 +144,14 @@ public class EmployeeDAO {
 	public int totalCountPageSearch(String keyword) {
 		return mybatis.selectOne("employee.totalCountPageSearch", keyword);
 	}
+	
+	// 메신저 주소록 조히
+    public List<Map<String, Object>> getAllMessengerEmp() {
+        return mybatis.selectList("employee.getAllMessengerEmp");
+    }
+    
+	// 메신저 주소록 상세 조히
+    public EmployeeDTO getContactByEmpNo(String emp_no) {
+        return mybatis.selectOne("employee.getContactByEmpNo", emp_no);
+    }
 }
