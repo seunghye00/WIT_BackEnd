@@ -67,6 +67,8 @@
 	</select>
 
 	<!-- 직원 정보 조회 -->
+	<!-- 조인을해서 깔끔하게 백밍쥬 사장 이렇게 하기위해서 추가했어 -->
+	<!-- 이건 공통코드로 쓰일거야 헤더 우측 프로필 옆에 뽑아야하니깐! -->
 	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
 		SELECT e.name, r.role_title
 		as role_code

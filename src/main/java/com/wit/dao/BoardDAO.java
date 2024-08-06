@@ -28,6 +28,11 @@ public class BoardDAO {
 	public BoardDTO detailBoard(int board_seq) {
 		return mybatis.selectOne("board.detailBoard", board_seq);
 	}
+	
+	// 닉네임 조회(자유게시판 JSTL)
+	public String selectNickname(String emp_no) {
+		return mybatis.selectOne("board.selectNickname", emp_no);
+	}
 
 	// 게시물 삭제
 	public void deleteBoard(int board_seq) {
@@ -39,12 +44,7 @@ public class BoardDAO {
 		return mybatis.update("board.viewcount", board_seq);
 	}
 
-	// 닉네임 조회
-	public String selectNickname(String emp_no) {
-		return mybatis.selectOne("board.selectNickname", emp_no);
-	}
-
-	// 직원 정보 조회 메소드 추가
+	// 직원 정보 조회
 	public EmployeeDTO employeeInfo(String emp_no) {
 		return mybatis.selectOne("board.employeeInfo", emp_no);
 	}

@@ -34,7 +34,7 @@ public class FileService {
 		}
 	}
 
-	// 게시물에 첨부된 파일 목록 조회
+	// 게시물에 첨부된 파일 조회
 	public List<BoardFilesDTO> detailFile(int board_seq) throws Exception {
 		return bdao.detailFile(board_seq);
 	}
