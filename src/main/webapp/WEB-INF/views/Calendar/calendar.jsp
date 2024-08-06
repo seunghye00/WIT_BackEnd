@@ -1,262 +1,284 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="/resources/css/style.main.css">
-    <link rel="stylesheet" href="/resources/css/lwh.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
+	rel='stylesheet'>
+<link rel="stylesheet" href="/resources/css/style.main.css">
+<link rel="stylesheet" href="/resources/css/lwh.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-    <!-- 공통영역 -->
-    <div class="container">
-        <div class="sideBar">
-            <div class="top">
-                <i class="bx bx-menu" id="btn"></i>
-            </div>
-            <div class="user">
-                <img src="../resources/images/WIT_logo1.png" alt="me" class="userImg">
-                <div class="nickName">
-                    <p class="bold">Wit Works</p>
-                    <p></p>
-                </div>
-            </div>
-            <ul>
-                <li><a href="#"><i class='bx bxs-home-alt-2'></i><span class="navItem">홈</span></a><span class="toolTip">홈</span></li>
-                <li><a href="#"><i class='bx bx-paperclip'></i><span class="navItem">주소록</span></a><span class="toolTip">주소록</span></li>
-                <li><a href="board2.html"><i class="bx bxs-grid-alt"></i><span class="navItem">게시판</span></a><span class="toolTip">게시판</span></li>
-                <li><a href="#"><i class='bx bx-calendar-alt'></i><span class="navItem">캘린더</span></a><span class="toolTip">캘린더</span></li>
-                <li><a href="#"><i class='bx bxs-message-dots'></i><span class="navItem">메신저</span></a><span class="toolTip">메신저</span></li>
-                <li><a href="#"><i class='bx bx-clipboard'></i><span class="navItem">전자결재</span></a><span class="toolTip">전자결재</span></li>
-                <li><a href="#"><i class='bx bxs-briefcase-alt-2'></i><span class="navItem">근태관리</span></a><span class="toolTip">근태관리</span></li>
-                <li><a href="#"><i class='bx bxs-check-square'></i><span class="navItem">예약</span></a><span class="toolTip">예약</span></li>
-                <li><a href="#"><i class='bx bx-sitemap'></i><span class="navItem">조직도</span></a><span class="toolTip">조직도</span></li>
-            </ul>
-        </div>
-        <!-- 공통역역 끝 -->
-        <div class="main-content">
-            <div class="header">
-                <span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
-                <!--마이페이지로 이동-->
-                <span class="myName"><img src="../images/프로필.jpg"><a href=" #">이원희 사원</a></span>
-                <span class="logOut"><a href="#">LogOut</a></span>
-            </div>
-            <div class="contents">
-                <div class="sideAbout">
-                    <div class="sideTxt">
-                        <h2 class="sideTit">캘린더</h2>
-                    </div>
-                    <div class="sideBtnBox">
-                        <button class="plusBtn sideBtn">일정 등록</button>
-                    </div>
-                    <div class="addressListPrivate">
-                        <ul class="privateList">
-                            <li class="toggleItem">
-                                <h3 class="toggleTit">내 캘린더</h3>
-                                <ul class="subList calendarList">
-                                    <li><input type="checkbox" id="myCheckBox" name="myCheckBox" class="active">
-                                        <label for="myCheckBox">내 일정(기본)</label></li>
-                                   	<c:forEach items="${list}" var="dto">
-                                    <li><input type="checkbox">
-                                        <label>${dto.calendar_name}</label>
-                                        <span class="sideSelectDel"  data-seq="${dto.calendar_seq}">&times;</span>
-                                        <input type="hidden" id="${dto.calendar_seq}" value="${dto.calendar_seq}">
-                                        </li>
-                                    </c:forEach>                                 
-                                    <div>
-                                        <span class="sideCalendarAdd"><i class='bx bx-plus-medical'></i>
-                                            <span class="myCalendarAdd">내 캘린더 추가</span>
-                                            <div class="myCalendarPopup">
-                                                <header>
-                                                    <h3>내 캘린더 추가<span class="myPopupClose">&times;</span></h3>
-                                                </header>
-                                                <div class="content">
-                                                	<form id="calendarForm" action="/calendar/insertCalendar" method="post">                                              	
-                                                	<input type="hidden" name="emp_no">
-                                                	<input type="hidden" name="dept_code">
-                                                	<input type="hidden" name="calendar_code">
-                                                    <input type="text" name="calendar_name" id="calendar_name">                                                   
-                                                    </form>
-                                                </div>
-                                                <footer>
-                                                    <div class="btns">
-                                                        <button id="sideMyAdd" class="okBtn">확인</button>
-                                                        <button id="sideMyCancel" class="cancelBtn">취소</button>
-                                                    </div>
-                                                </footer>
-                                            </div>
-                                        </span>
-                                    </div>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="addressListGroup">
-                        <ul class="GroupList">
-                            <li class="toggleItem">
-                                <h3 class="toggleTit">부서 캘린더</h3>
-                                <ul class="subList calendarList">
-                                    <li><input type="checkbox" id="deptMeeting" name="deptMeeting">
-                                        <label for="deptMeeting">회의 일정(기본)</label></li>
-                                    <li><input type="checkbox" id="deptBirthday" name="deptBirthday">
-                                        <label for="deptBirthday">부서원 생일(기본)</label></li>
-                                        <c:forEach items="${list}" var="dto">
-                                    <li><input type="checkbox">
-                                        <label>${dto.calendar_name}</label>
-                                        <span class="sideSelectDel"  data-seq="${dto.calendar_seq}">&times;</span>
-                                        <input type="hidden" id="${dto.calendar_seq}" value="${dto.calendar_seq}">
-                                        </li>
-                                    </c:forEach>
-                                    <div>
-                                        <span class="sideCalendarAdd"><i class='bx bx-plus-medical'></i>
-                                            <span class="deptCalendarAdd">부서 캘린더 추가</span>
-                                            <div class="deptCalendarPopup">
-                                                <header>
-                                                    <h3>부서 캘린더 추가<span class="deptPopupClose">&times;</span></h3>
-                                                </header>
-                                                <div class="content">
-                                                <form id="deptCalendarForm" action="/calendar/insertCalendar" method="post">
-                                                    <input type="hidden" name="emp_no">
-                                                	<input type="hidden" name="dept_code">
-                                                	<input type="hidden" name="calendar_code">
-                                                    <input type="text" name="calendar_name" id="calendar_name">
-                                                </form>
-                                                </div>
-                                                <footer>
-                                                    <div class="btns">
-                                                        <button id="sideDeptAdd" class="okBtn">확인</button>
-                                                        <button id="sideDeptCancel" class="cancelBtn">취소</button>
-                                                    </div>
-                                                </footer>
-                                            </div>
-                                        </span>
-                                    </div>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="sideContents calendarBox">
-                    <div id="calendar" class="calendar"></div>
-                </div>
-            </div>
-        </div>
-        <!-- 날짜 박스 눌렀을 시 모달 -->
-        <div id="calendarModal" class="modal">
-            <div class="modalContent">
-                <h1>일정등록<span class="modalClose">&times;</span></h1>
-                <div class="calendarAdd">
-                    <form id="eventForm" action="/events/save_event" method="post">
-                        <ul>
-                            <li><span>일정명</span>
-                                <div>
-                                    <input type="text" name="title">
-                                </div>
-                            </li>
-                            <li><span>일정기간</span>
-                                <div>
-                                    <input type="date" class="startDate dateInput" id="startDate" name="startDate">
-                                    <input type="time" class="startDate dateInput" id="startTime" name="startTime">
-                                    ~
-                                    <input type="date" class="endDate dateInput" id="endDate" name="endDate">
-                                    <input type="time" class="endDate dateInput" id="endTime" name="endTime">
-                                </div>
-                            </li>
-                            <li><span>내 캘린더</span>
-                                <div>
-                                    <select name="calendar_name" id="choiCalendar">
-                                        <option>웡히 캘린더</option>
-                                        <option>바보 캘린더</option>
-                                    </select>
-                                </div>
-                            </li>
-                            <li><span>장소</span>
-                                <div>
-                                    <input type="text" class="eventLocation" name="location">
-                                </div>
-                            </li>
-                            <li><span>내용</span>
-                                <div>
-                                    <textarea id="calendarText" name="content"></textarea>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="btns">
-                                    <button type="submit" id="addBtn" class="okBtn">완료</button>
-                                    <button type="button" class="cancelBtn">취소</button>
-                                </div>
-                            </li>
-                        </ul>
-                        <input type="hidden" name="start_at" id="start_at">
-                        <input type="hidden" name="end_at" id="end_at">
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- event 클릭 시 모달 -->
-        <div id="eventModal" class="modal">
-            <div class="modalContent">
-                <h1>일정 내용<span class="modalClose" id="eventModalClose">&times;</span></h1>
-                <div class="eventCheck">
-                	<form id="eventEditForm" action="events/editEvent" method="post">
-                    <input type="hidden" name="events_seq" id="eventSeq">
-                    <ul>
-                        <li><span>일정명</span>
-                            <div>
-                                <input type="text" class="eventName" name="title" disabled>
-                            </div>
-                        </li>
-                        <li><span>일정기간</span>
-                            <div>
-                                <input type="date" id="eventStartDate" class="startDate dateInput" name="editStartDate" disabled>
-                                <input type="time" id="eventStartTime" class="startDate dateInput" name="editStartTime" disabled>
-                                ~
-                                <input type="date" id="eventEndDate" class="endDate dateInput" name="editEndDate" disabled>
-                                <input type="time" id="eventEndTime" class="endDate dateInput" name="editEndTime" disabled>
-                            </div>
-                        </li>
-                        <li><span>내 캘린더</span>
-                            <div>
-                                <select id="choiEvent" name="calendar_name" disabled>
-                                    <option>웡히 캘린더</option>
-                                    <option>바보 캘린더</option>
-                                </select>
-                            </div>
-                        </li>
-                        <li><span>장소</span>
-                            <div>
-                                <input type="text" class="eventLocation" name="location" disabled>
-                            </div>
-                        </li>
-                        <li><span>내용</span>
-                            <div>
-                                <textarea id="eventText" name="content" disabled></textarea>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="btns">
-                                <button type="button" id="editBtn">수정</button>
-                                <button type="submit" id="confirmBtn" class="okBtn">확인</button>
-                                <button type="button" class="deleteBtn" id="eventDel">삭제</button>
-                                <button type="button" class="cancelBtn editCancelBtn">취소</button>
-                            </div>
-                        </li>
-                    </ul>
-                    <input type="hidden" name="editStartAt" id="editStartAt">
-                    <input type="hidden" name="editEndAt" id="editEndAt">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+	<!-- 공통영역 -->
+	<div class="container">
+		<div class="sideBar">
+			<div class="top">
+				<i class="bx bx-menu" id="btn"></i>
+			</div>
+			<div class="user">
+				<img src="/resources/img/WIT_logo1.png" alt="로고" class="userImg">
+				<div class="nickName">
+					<p class="bold">Wit Works</p>
+					<p></p>
+				</div>
+			</div>
+			<ul>
+				<li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span
+						class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
+				<li><a href="#"> <i class='bx bx-paperclip'></i> <span
+						class="navItem">주소록</span></a> <span class="toolTip">주소록</span></li>
+				<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i>
+						<span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
+				<li><a href="/calendar/calendar"> <i
+						class='bx bx-calendar-alt'></i> <span class="navItem">캘린더</span></a> <span
+					class="toolTip">캘린더</span></li>
+				<li><a href="#"> <i class='bx bxs-message-dots'></i> <span
+						class="navItem">메신저</span></a> <span class="toolTip">메신저</span></li>
+				<li><a href="#"> <i class='bx bx-clipboard'></i> <span
+						class="navItem">전자결재</span></a> <span class="toolTip">전자결재</span></li>
+				<li><a href="/attendance/attendance"> <i
+						class='bx bxs-briefcase-alt-2'></i> <span class="navItem">근태관리</span></a>
+					<span class="toolTip">근태관리</span></li>
+				<li><a href="#"> <i class='bx bxs-check-square'></i> <span
+						class="navItem">예약</span></a> <span class="toolTip">예약</span></li>
+				<li><a href="#"> <i class='bx bx-sitemap'></i> <span
+						class="navItem">조직도</span></a> <span class="toolTip">조직도</span></li>
+			</ul>
+		</div>
+		<!-- 공통역역 끝 -->
+		<div class="main-content">
+			<div class="header">
+				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
+				<!--마이페이지로 이동-->
+				<span class="myName"><img src="/resources/img/푸바오.png"
+					alt="프로필 사진" class="userImg"><a href="/employee/mypage">${employee.name}
+						${employee.role_code}</a></span> <span class="logOut"><a
+					href="/employee/logout">LogOut</a></span>
+			</div>
+			<div class="contents">
+				<div class="sideAbout">
+					<div class="sideTxt">
+						<h2 class="sideTit">캘린더</h2>
+					</div>
+					<div class="sideBtnBox">
+						<button class="plusBtn sideBtn">일정 등록</button>
+					</div>
+					<div class="addressListPrivate">
+						<ul class="privateList">
+							<li class="toggleItem">
+								<h3 class="toggleTit">내 캘린더</h3>
+								<ul class="subList calendarList">
+									<li><input type="checkbox" id="myCheckBox"
+										name="myCheckBox" class="active"> <label
+										for="myCheckBox">내 일정(기본)</label></li>
+									<c:forEach items="${list}" var="dto">
+										<li><input type="checkbox"> <label>${dto.calendar_name}</label>
+											<span class="sideSelectDel" data-seq="${dto.calendar_seq}">&times;</span>
+											<input type="hidden" id="${dto.calendar_seq}"
+											value="${dto.calendar_seq}"></li>
+									</c:forEach>
+									<div>
+										<span class="sideCalendarAdd"><i
+											class='bx bx-plus-medical'></i> <span class="myCalendarAdd">내
+												캘린더 추가</span>
+											<div class="myCalendarPopup">
+												<header>
+													<h3>
+														내 캘린더 추가<span class="myPopupClose">&times;</span>
+													</h3>
+												</header>
+												<div class="content">
+													<form id="calendarForm" action="/calendar/insertCalendar"
+														method="post">
+														<input type="hidden" name="emp_no"> <input
+															type="hidden" name="dept_code"> <input
+															type="hidden" name="calendar_code"> <input
+															type="text" name="calendar_name" id="calendar_name">
+													</form>
+												</div>
+												<footer>
+													<div class="btns">
+														<button id="sideMyAdd" class="okBtn">확인</button>
+														<button id="sideMyCancel" class="cancelBtn">취소</button>
+													</div>
+												</footer>
+											</div> </span>
+									</div>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<div class="addressListGroup">
+						<ul class="GroupList">
+							<li class="toggleItem">
+								<h3 class="toggleTit">부서 캘린더</h3>
+								<ul class="subList calendarList">
+									<li><input type="checkbox" id="deptMeeting"
+										name="deptMeeting"> <label for="deptMeeting">회의
+											일정(기본)</label></li>
+									<li><input type="checkbox" id="deptBirthday"
+										name="deptBirthday"> <label for="deptBirthday">부서원
+											생일(기본)</label></li>
+									<c:forEach items="${list}" var="dto">
+										<li><input type="checkbox"> <label>${dto.calendar_name}</label>
+											<span class="sideSelectDel" data-seq="${dto.calendar_seq}">&times;</span>
+											<input type="hidden" id="${dto.calendar_seq}"
+											value="${dto.calendar_seq}"></li>
+									</c:forEach>
+									<div>
+										<span class="sideCalendarAdd"><i
+											class='bx bx-plus-medical'></i> <span class="deptCalendarAdd">부서
+												캘린더 추가</span>
+											<div class="deptCalendarPopup">
+												<header>
+													<h3>
+														부서 캘린더 추가<span class="deptPopupClose">&times;</span>
+													</h3>
+												</header>
+												<div class="content">
+													<form id="deptCalendarForm"
+														action="/calendar/insertCalendar" method="post">
+														<input type="hidden" name="emp_no"> <input
+															type="hidden" name="dept_code"> <input
+															type="hidden" name="calendar_code"> <input
+															type="text" name="calendar_name" id="calendar_name">
+													</form>
+												</div>
+												<footer>
+													<div class="btns">
+														<button id="sideDeptAdd" class="okBtn">확인</button>
+														<button id="sideDeptCancel" class="cancelBtn">취소</button>
+													</div>
+												</footer>
+											</div> </span>
+									</div>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="sideContents calendarBox">
+					<div id="calendar" class="calendar"></div>
+				</div>
+			</div>
+		</div>
+		<!-- 날짜 박스 눌렀을 시 모달 -->
+		<div id="calendarModal" class="modal">
+			<div class="modalContent">
+				<h1>
+					일정등록<span class="modalClose">&times;</span>
+				</h1>
+				<div class="calendarAdd">
+					<form id="eventForm" action="/events/save_event" method="post">
+						<ul>
+							<li><span>일정명</span>
+								<div>
+									<input type="text" name="title">
+								</div></li>
+							<li><span>일정기간</span>
+								<div>
+									<input type="date" class="startDate dateInput" id="startDate"
+										name="startDate"> <input type="time"
+										class="startDate dateInput" id="startTime" name="startTime">
+									~ <input type="date" class="endDate dateInput" id="endDate"
+										name="endDate"> <input type="time"
+										class="endDate dateInput" id="endTime" name="endTime">
+								</div></li>
+							<li><span>내 캘린더</span>
+								<div>
+									<select name="calendar_name" id="choiCalendar">
+										<option>웡히 캘린더</option>
+										<option>바보 캘린더</option>
+									</select>
+								</div></li>
+							<li><span>장소</span>
+								<div>
+									<input type="text" class="eventLocation" name="location">
+								</div></li>
+							<li><span>내용</span>
+								<div>
+									<textarea id="calendarText" name="content"></textarea>
+								</div></li>
+							<li>
+								<div class="btns">
+									<button type="submit" id="addBtn" class="okBtn">완료</button>
+									<button type="button" class="cancelBtn">취소</button>
+								</div>
+							</li>
+						</ul>
+						<input type="hidden" name="start_at" id="start_at"> <input
+							type="hidden" name="end_at" id="end_at">
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- event 클릭 시 모달 -->
+		<div id="eventModal" class="modal">
+			<div class="modalContent">
+				<h1>
+					일정 내용<span class="modalClose" id="eventModalClose">&times;</span>
+				</h1>
+				<div class="eventCheck">
+					<form id="eventEditForm" action="events/editEvent" method="post">
+						<input type="hidden" name="events_seq" id="eventSeq">
+						<ul>
+							<li><span>일정명</span>
+								<div>
+									<input type="text" class="eventName" name="title" disabled>
+								</div></li>
+							<li><span>일정기간</span>
+								<div>
+									<input type="date" id="eventStartDate"
+										class="startDate dateInput" name="editStartDate" disabled>
+									<input type="time" id="eventStartTime"
+										class="startDate dateInput" name="editStartTime" disabled>
+									~ <input type="date" id="eventEndDate"
+										class="endDate dateInput" name="editEndDate" disabled>
+									<input type="time" id="eventEndTime" class="endDate dateInput"
+										name="editEndTime" disabled>
+								</div></li>
+							<li><span>내 캘린더</span>
+								<div>
+									<select id="choiEvent" name="calendar_name" disabled>
+										<option>웡히 캘린더</option>
+										<option>바보 캘린더</option>
+									</select>
+								</div></li>
+							<li><span>장소</span>
+								<div>
+									<input type="text" class="eventLocation" name="location"
+										disabled>
+								</div></li>
+							<li><span>내용</span>
+								<div>
+									<textarea id="eventText" name="content" disabled></textarea>
+								</div></li>
+							<li>
+								<div class="btns">
+									<button type="button" id="editBtn">수정</button>
+									<button type="submit" id="confirmBtn" class="okBtn">확인</button>
+									<button type="button" class="deleteBtn" id="eventDel">삭제</button>
+									<button type="button" class="cancelBtn editCancelBtn">취소</button>
+								</div>
+							</li>
+						</ul>
+						<input type="hidden" name="editStartAt" id="editStartAt">
+						<input type="hidden" name="editEndAt" id="editEndAt">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- sidebar 공통요소 script -->
-    <script>
+	<!-- sidebar 공통요소 script -->
+	<script>
         let btn = document.querySelector("#btn");
         let sideBar = document.querySelector(".sideBar");
 

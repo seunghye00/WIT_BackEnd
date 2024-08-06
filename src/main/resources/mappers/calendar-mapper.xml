@@ -2,21 +2,33 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-    
-    <mapper namespace="calendar">
-    	<select id="calendarList" resultType="com.wit.dto.CalendarDTO">
-    		select * from calendar
-    	</select>
-    	
-    	<insert id="insertCalendar" parameterType="com.wit.dto.CalendarDTO">
-    		insert into calendar values (calendar_seq.nextval,
-			#{emp_no},
-			#{dept_code},
-			#{calendar_name},
-			#{calendar_code})
-    	</insert>
-    	
-    	<delete id="deleteCalendar">
-    		delete from calendar where calendar_seq = #{calendar_seq}
-    	</delete>
-    </mapper>
+
+<mapper namespace="calendar">
+	<select id="calendarList" resultType="com.wit.dto.CalendarDTO">
+		select * from calendar
+	</select>
+
+	<insert id="insertCalendar"
+		parameterType="com.wit.dto.CalendarDTO">
+		insert into calendar values (calendar_seq.nextval,
+		#{emp_no},
+		#{dept_code},
+		#{calendar_name},
+		#{calendar_code})
+	</insert>
+
+	<delete id="deleteCalendar">
+		delete from calendar where calendar_seq =
+		#{calendar_seq}
+	</delete>
+
+	<!-- 직원 정보 조회 -->
+	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
+		SELECT e.name, r.role_title
+		as role_code
+		FROM Employee e
+		JOIN Role r ON e.role_code = r.role_code
+		WHERE e.emp_no = #{emp_no}
+	</select>
+
+</mapper>
