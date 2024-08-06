@@ -70,18 +70,16 @@
 		FROM dual
 		)
 		SELECT
-		COUNT(work_date) AS workingDays,
+		COUNT(CASE WHEN start_time != '00:00' OR end_time != '00:00' THEN work_date END)
+		AS workingDays,
 		SUM(
 		CASE
-		WHEN
-		TO_DATE(end_time, 'HH24:MI') &gt; TO_DATE('12:00', 'HH24:MI')
-		AND
-		TO_DATE(start_time, 'HH24:MI') &lt; TO_DATE('13:00', 'HH24:MI') THEN
+		WHEN TO_DATE(end_time, 'HH24:MI') &gt; TO_DATE('12:00', 'HH24:MI')
+		AND TO_DATE(start_time, 'HH24:MI') &lt; TO_DATE('13:00', 'HH24:MI') THEN
 		(TO_DATE(end_time, 'HH24:MI') - TO_DATE(start_time, 'HH24:MI')) * 24 -
 		1
 		ELSE
-		(TO_DATE(end_time, 'HH24:MI') - TO_DATE(start_time, 'HH24:MI')) *
-		24
+		(TO_DATE(end_time, 'HH24:MI') - TO_DATE(start_time, 'HH24:MI')) * 24
 		END
 		) AS totalWorkingHours
 		FROM
@@ -89,8 +87,8 @@
 		WHERE
 		emp_no = #{emp_no}
 		AND
-		work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT
-		end_date FROM date_range)
+		work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT end_date FROM
+		date_range)
 	</select>
 
 	<!-- 주간 근무현황 조회 -->
