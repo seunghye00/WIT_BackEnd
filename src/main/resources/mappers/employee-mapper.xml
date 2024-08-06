@@ -160,7 +160,7 @@
 		from employee e
 			join role r on e.role_code = r.role_code
 		where
-			dept_code = #{dept_code} and quit_yn = 'N'
+			dept_code = #{deptCode} and quit_yn = 'N'
 		order by 3 desc
 	</select>
 
@@ -169,6 +169,11 @@
 		select name, dept_title
 		from employee e
 		join dept d on e.dept_code = d.dept_code
-		where emp_no = #{emp_no}
+		where emp_no = #{empNo}
+	</select>
+	
+	<!-- 사원 이름 조회 -->
+	<select id="getName" resultType="String">
+		select name from employee where emp_no = #{empNo}
 	</select>
 </mapper>
