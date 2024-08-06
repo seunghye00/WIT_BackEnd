@@ -28,7 +28,12 @@ public class BoardDAO {
 	public BoardDTO detailBoard(int board_seq) {
 		return mybatis.selectOne("board.detailBoard", board_seq);
 	}
-	
+
+	// 조회수
+	public int viewcount(int board_seq) {
+		return mybatis.update("board.viewcount", board_seq);
+	}
+
 	// 닉네임 조회(자유게시판 JSTL)
 	public String selectNickname(String emp_no) {
 		return mybatis.selectOne("board.selectNickname", emp_no);
@@ -37,11 +42,6 @@ public class BoardDAO {
 	// 게시물 삭제
 	public void deleteBoard(int board_seq) {
 		mybatis.delete("board.delete", board_seq);
-	}
-
-	// 조회수
-	public int viewcount(int board_seq) {
-		return mybatis.update("board.viewcount", board_seq);
 	}
 
 	// 직원 정보 조회
