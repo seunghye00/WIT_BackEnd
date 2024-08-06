@@ -161,4 +161,16 @@ public class EmployeeService {
 		return dao.selectByCon(keyword, cpage * BoardConfig.recordCountPerPage - (BoardConfig.recordCountPerPage - 1),
 				cpage * BoardConfig.recordCountPerPage);
 	}
+	
+	// 메신저 주소록 조회
+	@Transactional
+	public List<Map<String, Object>> getAllMessengerEmp() {
+        return dao.getAllMessengerEmp();
+    }
+	
+	// 메신저 주소록 상세 조회
+	@Transactional
+	public EmployeeDTO getContactByEmpNo(String emp_no) {
+        return dao.getContactByEmpNo(emp_no);
+    }
 }

@@ -259,4 +259,25 @@
 		    where rown between #{startNum} and #{endNum}
 		]]>
 	</select>
+	
+	<!-- 메신저 주소록 목록 조회  -->
+	<select id="getAllMessengerEmp" resultType="map">
+		select emp_no, name, d.dept_title, r.role_title, phone, email
+		from employee em
+		left join
+	        dept d on em.dept_code = d.dept_code
+	    left join
+	        role r on em.role_code = r.role_code
+    </select>
+    
+    <!-- 메신저 주소록 상세 조회  -->
+	<select id="getContactByEmpNo" resultType="com.wit.dto.EmployeeDTO">
+		select emp_no, name, d.dept_title, r.role_title, phone, email
+		from employee em
+		left join
+	        dept d on em.dept_code = d.dept_code
+	    left join
+	        role r on em.role_code = r.role_code
+	    where emp_no = #{emp_no}
+    </select>
 </mapper>

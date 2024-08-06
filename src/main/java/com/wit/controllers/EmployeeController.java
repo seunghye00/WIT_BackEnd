@@ -183,6 +183,7 @@ public class EmployeeController {
 		return response;
 	}
 	
+	// 주소록 전체 데이터 조회
 	@RequestMapping("/addressList")
 	public String getEmployeeAddressList(String chosung, String cpage, String category, Model model) {
 		String emp_no = (String) session.getAttribute("loginID");
@@ -213,6 +214,7 @@ public class EmployeeController {
         return "AddressBook/addressBookGroup";
 	}
 	
+	// 주소록 ajax 요청 회신
 	@RequestMapping("/groupAddressTool")
 	@ResponseBody
 	public Map<String, Object> addressBookGroupAjax(String chosung, String cpage, String category,  Model model) {
@@ -246,18 +248,22 @@ public class EmployeeController {
         return response;
 	}
 	
+	// 주소록 카테고리 조회
 	@RequestMapping("getCategories")
     @ResponseBody
     public List<Map<String, Object>> getCategories() {
         return service.getCategories();
     }
 	
+	// 주소록 상세 데이터 조회
 	@RequestMapping("getContactDetails")
     @ResponseBody
     public Map<String, Object> getContactDetails(String emp_no) {
 		Map<String, Object> contact = service.getContactByEmp_no(emp_no);
         return contact;
     }
+	
+	// 주소록 검색
     @RequestMapping("search")
     @ResponseBody
     public Map<String, Object> search(String keyword, String cpage) {
@@ -274,6 +280,21 @@ public class EmployeeController {
         response.put("addressBookGroupList", list);
         return response;
     }
+    
+    // 채팅 메신저 주소록 출력
+    @ResponseBody
+    @RequestMapping("/getEmployeeList")
+    public List<Map<String, Object>> getAllMessengerEmp () {
+    	return service.getAllMessengerEmp();
+    }
+    
+    // 채팅 메신저 상세 디테일
+    @ResponseBody
+    @RequestMapping("/getEmployeeDetails")
+    public EmployeeDTO getEmployeeDetails(String emp_no) {
+        return service.getContactByEmpNo(emp_no);
+    }
+    
     
 	// 예외를 담당하는 메서드 생성
 	@ExceptionHandler(Exception.class)
