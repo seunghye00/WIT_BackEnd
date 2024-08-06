@@ -18,6 +18,16 @@ public class EmployeeService {
 	@Autowired
 	private EmployeeDAO dao;
 
+	// 모든 직급 정보 가져오기
+	public List<RoleDTO> AllRoles() {
+		return dao.AllRoles();
+	}
+
+	// 모든 부서 정보 가져오기
+	public List<DeptDTO> AllDepts() {
+		return dao.AllDepts();
+	}
+
 	// 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 생성)
 	public String getHighestEmployeeIDByDept(String dept) {
 		return dao.getHighestEmployeeIDByDept(dept);
@@ -35,11 +45,6 @@ public class EmployeeService {
 		return dao.login(empNo, encryptedPw);
 	}
 
-	// 회원탈퇴
-	public int delete(String empNo) {
-		return dao.delete(empNo);
-	}
-
 	// 추가 정보 업데이트 를 위한 직원 정보 조회
 	public boolean FirstLogin(String empNo) {
 		EmployeeDTO employee = dao.findByEmpNo(empNo);
@@ -50,6 +55,7 @@ public class EmployeeService {
 				|| isEmptyOrWhitespace(employee.getDetail_address()) || isEmptyOrWhitespace(employee.getSsn()));
 	}
 
+	// 추가 정보 업데이트 를 위한 헬퍼메서드
 	// 필드가 빈 문자열 또는 공백인지 확인하는 헬퍼 메서드
 	private boolean isEmptyOrWhitespace(String str) {
 		return str == null || str.trim().isEmpty();
@@ -59,6 +65,34 @@ public class EmployeeService {
 	public int updateInfo(EmployeeDTO dto) {
 		dto.setPw(PWUtill.encryptPassword(dto.getPw()));
 		return dao.updateInfo(dto);
+	}
+
+	// ID찾기
+	public String findID(String name, String ssn) {
+		EmployeeDTO employee = dao.findID(name, ssn);
+		return (employee != null) ? employee.getEmp_no() : null;
+	}
+
+	// PW찾기(수정) 직원 정보 확인
+	public boolean verifyEmployee(String empNo, String name, String ssn) {
+		EmployeeDTO employee = dao.findEmployee(empNo, name, ssn);
+		return employee != null;
+	}
+
+	// PW찾기 (수정)
+	public boolean modifyPassword(String empNo, String newPassword) {
+		String encryptedPassword = PWUtill.encryptPassword(newPassword); // 비밀번호 암호화
+		return dao.modifyPassword(empNo, encryptedPassword) > 0;
+	}
+
+	// 직원 정보 조회(마이페이지)
+	public EmployeeDTO findByEmpNo(String empNo) {
+		return dao.findByEmpNo(empNo);
+	}
+
+	// 닉네임 중복 체크(마이페이지)
+	public boolean checkNickname(String nickname) {
+		return dao.checkNickname(nickname) == 0;
 	}
 
 	// 마이페이지 정보 업데이트
@@ -74,42 +108,9 @@ public class EmployeeService {
 		return 1;
 	}
 
-	// ID찾기
-	public String findID(String name, String ssn) {
-		EmployeeDTO employee = dao.findID(name, ssn);
-		return (employee != null) ? employee.getEmp_no() : null;
-	}
-
-	// 모든 직급 정보 가져오기
-	public List<RoleDTO> AllRoles() {
-		return dao.AllRoles();
-	}
-
-	// 모든 부서 정보 가져오기
-	public List<DeptDTO> AllDepts() {
-		return dao.AllDepts();
-	}
-
-	// 닉네임 중복 체크
-	public boolean checkNickname(String nickname) {
-		return dao.checkNickname(nickname) == 0;
-	}
-
-	// 직원 정보 조회
-	public EmployeeDTO findByEmpNo(String empNo) {
-		return dao.findByEmpNo(empNo);
-	}
-
-	// PW찾기(수정) 직원 정보 확인
-	public boolean verifyEmployee(String empNo, String name, String ssn) {
-		EmployeeDTO employee = dao.findEmployee(empNo, name, ssn);
-		return employee != null;
-	}
-
-	// PW찾기 (수정)
-	public boolean modifyPassword(String empNo, String newPassword) {
-		String encryptedPassword = PWUtill.encryptPassword(newPassword); // 비밀번호 암호화
-		return dao.modifyPassword(empNo, encryptedPassword) > 0;
+	// 회원탈퇴
+	public int delete(String empNo) {
+		return dao.delete(empNo);
 	}
 
 	// 부서별 사원 목록 조회

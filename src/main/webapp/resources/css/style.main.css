@@ -523,6 +523,33 @@ body {
     box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
 }
 
+/* 토글 */
+.toggleItem .toggleTit {
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+}
+
+.toggleItem .toggleTit::after {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 23px;
+    background-image: url(../WIT_Front_End/images/icon/toggle.png);
+    background-size: 10px 8px;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.5s ease;
+    transform: rotate(0deg);
+}
+
+.toggleItem .toggleTit.active::after {
+    transform: rotate(180deg);
+}
+
+
 /* 페이지네이션 */
 .pagination {
     display: flex;

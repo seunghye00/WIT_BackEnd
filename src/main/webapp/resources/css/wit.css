@@ -1457,7 +1457,6 @@
 
 /* 민서 css start */
 /* 로그인 및 회원가입 */
-/* 로그인 및 회원가입 */
 * {
     box-sizing: border-box;
 }
@@ -1645,10 +1644,6 @@
     /* margin-top: 1px; */
 }
 
-
-
-
-
 /* 추가정보 입력 */
 #insertForm {
     display: flex;
@@ -1756,12 +1751,12 @@
 
 .valid-check.error {
     color: red;
-    left: 92%;
+    left: 95%;
 }
 
 .valid-check.success {
     color: green;
-    left: 92%;
+    left: 95%;
 }
 
 .membership img {
@@ -1784,8 +1779,8 @@
 .form-container #pwCheck,
 .form-container #checkpwCheck {
     vertical-align: middle;
-    margin-left: -23px;
-    margin-top: 10px;
+    margin-left: -20px;
+    margin-top: 14px;
 }
 
 .form-container {
@@ -1958,6 +1953,7 @@
     border-radius: 10px;
     box-sizing: border-box;
     font-size: 15px;
+    margin-bottom: 5px;
 }
 
 .find_pw_popup button {
@@ -2008,8 +2004,29 @@
     margin: 10px;
 }
 
+.change .valid-check {
+    display: none;
+    font-size: 20px;
+    position: absolute;
+    top: 20px;
+    right: 50px;
+}
 
+.change .valid-check.show {
+    display: inline;
+}
 
+.change .valid-check.error {
+    color: red;
+    left: 95%;
+    top: 10px;
+}
+
+.change .valid-check.success {
+    color: green;
+    left: 95%;
+    top: 10px;
+}
 
 /* 메인 근태 스타일 */
 #start_button {
@@ -2073,7 +2090,6 @@
 /* .Attendance {
     gap: 10px;
 } */
-
 .Attendance_sections,
 .Attendance_vacation {
     display: flex;
@@ -2225,9 +2241,9 @@ button.grey:active {
 
 /* 비활성화된 버튼 스타일 */
 button.disabled {
-	background-color: #558BCF !important;
+    background-color: #558BCF !important;
     color: #fff !important;
-    pointer-events: none; 
+    pointer-events: none;
 }
 
 /* 전자 결제 메인 화면 */
@@ -2287,8 +2303,8 @@ button.disabled {
 }
 
 .eApproval .docuList .listBox .rows.emptyDocuList:hover {
-	background: inherit;
-	cursor: default;	
+    background: inherit;
+    cursor: default;
 }
 
 .eApproval .docuList .listBox .rows p {
@@ -2363,6 +2379,8 @@ button.disabled {
     display: flex;
     height: 100%;
     flex-direction: column;
+
+
 }
 
 .eApprWrite .choiBox {
@@ -2382,7 +2400,7 @@ button.disabled {
 }
 
 .eApprWrite .document .choiBox .refeModal {
-	display: none;
+    display: none;
     box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
     border: 1px solid #555;
     width: 134px;
@@ -2665,6 +2683,7 @@ td {
     cursor: pointer;
 }
 
+
 /* 전자 결재 모달창 ( 새 결재 진행 ) - 문서 양식 선택 */
 .eApprModal {
     display: none;
@@ -2719,8 +2738,8 @@ span:active {
     margin-bottom: 10px;
 }
 
-.eApprModal .choiCont ul li label{
-   	padding-left: 5px;
+.eApprModal .choiCont ul li label {
+    padding-left: 5px;
 }
 
 .eApprModal .modalBtnBox {
@@ -2730,6 +2749,8 @@ span:active {
     align-items: center;
     gap: 10px;
 }
+
+
 
 /* 전자 결재 모달창 ( 새 결재 진행 ) - 결재선 선택 */
 .eApprModal.apprChoiModal {

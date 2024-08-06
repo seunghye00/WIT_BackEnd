@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="file">
+
+    <!-- 파일 등록 -->
+    <insert id="upload" parameterType="com.wit.dto.BoardFilesDTO">
+        INSERT INTO board_files (board_files_seq, board_seq, oriname, sysname)
+        VALUES (board_files_seq.NEXTVAL, #{board_seq}, #{oriname}, #{sysname})
+    </insert>
+
+    <!-- 게시물에 첨부된 파일 조회 -->
+    <select id="detailFile" parameterType="int" resultType="com.wit.dto.BoardFilesDTO">
+        SELECT board_files_seq, board_seq, oriname, sysname
+        FROM board_files
+        WHERE board_seq = #{board_seq}
+    </select>
+
+    <!-- 파일 삭제 -->
+    <delete id="deleteFile" parameterType="int">
+        DELETE FROM board_files WHERE board_seq = #{board_seq}
+    </delete>
+
+    <!-- 파일 삭제를 위한 파일 조회 -->
+    <select id="selectFile" parameterType="int" resultType="String">
+        SELECT sysname FROM board_files WHERE board_seq = #{board_seq}
+    </select>
+
+</mapper>

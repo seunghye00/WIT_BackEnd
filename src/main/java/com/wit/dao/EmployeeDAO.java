@@ -19,6 +19,16 @@ public class EmployeeDAO {
 	@Autowired
 	private SqlSession mybatis;
 
+	// 모든 직급 정보 가져오기
+	public List<RoleDTO> AllRoles() {
+		return mybatis.selectList("employee.AllRoles");
+	}
+
+	// 모든 부서 정보 가져오기
+	public List<DeptDTO> AllDepts() {
+		return mybatis.selectList("employee.AllDepts");
+	}
+	
 	// 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 생성)
 	public String getHighestEmployeeIDByDept(String dept) {
 		return mybatis.selectOne("employee.getHighestEmployeeIDByDept", dept);
@@ -26,7 +36,7 @@ public class EmployeeDAO {
 
 	// 회원가입
 	public int register(EmployeeDTO dto) {
-		return mybatis.insert("employee.insert", dto);
+		return mybatis.insert("employee.register", dto);
 	}
 
 	// 로그인
@@ -36,30 +46,15 @@ public class EmployeeDAO {
 		params.put("pw", pw);
 		return mybatis.selectOne("employee.login", params);
 	}
-
-	// 회원탈퇴
-	public int delete(String emp_no) {
-		return mybatis.delete("employee.delete", emp_no);
-	}
-
+	
 	// 추가 정보 업데이트 를 위한 직원 정보 조회
 	public EmployeeDTO findByEmpNo(String empNo) {
 		return mybatis.selectOne("employee.findByEmpNo", empNo);
 	}
-
+	
 	// 추가 정보 업데이트
 	public int updateInfo(EmployeeDTO dto) {
 		return mybatis.update("employee.updateInfo", dto);
-	}
-
-	// 마이페이지 정보 업데이트 - 비밀번호
-	public int updatePassword(EmployeeDTO dto) {
-		return mybatis.update("employee.updatePassword", dto);
-	}
-
-	// 마이페이지 정보 업데이트 - 닉네임
-	public int updateNickname(EmployeeDTO dto) {
-		return mybatis.update("employee.updateNickname", dto);
 	}
 
 	// ID찾기
@@ -70,22 +65,7 @@ public class EmployeeDAO {
 		return mybatis.selectOne("employee.findID", params);
 	}
 
-	// 모든 직급 정보 가져오기
-	public List<RoleDTO> AllRoles() {
-		return mybatis.selectList("employee.AllRoles");
-	}
-
-	// 모든 부서 정보 가져오기
-	public List<DeptDTO> AllDepts() {
-		return mybatis.selectList("employee.AllDepts");
-	}
-
-	// 닉네임 중복 체크
-	public int checkNickname(String nickname) {
-		return mybatis.selectOne("employee.checkNickname", nickname);
-	}
-
-	// 직원 정보 확인
+	// PW찾기를 위한 직원 정보 확인
 	public EmployeeDTO findEmployee(String empNo, String name, String ssn) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("emp_no", empNo);
@@ -100,6 +80,26 @@ public class EmployeeDAO {
 		params.put("emp_no", empNo);
 		params.put("newPassword", newPassword);
 		return mybatis.update("employee.modifyPassword", params);
+	}
+	
+	// 닉네임 중복 체크(마이페이지)
+	public int checkNickname(String nickname) {
+		return mybatis.selectOne("employee.checkNickname", nickname);
+	}
+
+	// 마이페이지 정보 업데이트 - 비밀번호
+	public int updatePassword(EmployeeDTO dto) {
+		return mybatis.update("employee.updatePassword", dto);
+	}
+
+	// 마이페이지 정보 업데이트 - 닉네임
+	public int updateNickname(EmployeeDTO dto) {
+		return mybatis.update("employee.updateNickname", dto);
+	}
+
+	// 회원탈퇴
+	public int delete(String emp_no) {
+		return mybatis.delete("employee.delete", emp_no);
 	}
 
 	// 부서별 사원 목록 조회

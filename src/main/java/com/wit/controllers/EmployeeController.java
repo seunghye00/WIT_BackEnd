@@ -37,10 +37,75 @@ public class EmployeeController {
 		return "register";
 	}
 
+	// 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 생성)
+	@ResponseBody
+	@RequestMapping("/highestEmployeeID")
+	public String getHighestEmployeeID(String dept) throws Exception {
+		return service.getHighestEmployeeIDByDept(dept);
+	}
+
+	// 회원가입
+	@RequestMapping("/register")
+	public String register(EmployeeDTO dto) throws Exception {
+		int result = service.register(dto);
+		if (result == 1) {
+			return "redirect:/";
+		} else {
+			return "register";
+		}
+	}
+
+	// 로그인
+	@ResponseBody
+	@RequestMapping("/login")
+	public Map<String, Object> login(String emp_no, String pw, HttpSession session) throws Exception {
+		EmployeeDTO employee = service.login(emp_no, pw);
+		Map<String, Object> response = new HashMap<>();
+		if (employee != null) {
+			session.setAttribute("loginID", emp_no);
+			// 우측상단 이름 및 직급 조회를 위한 코드!
+			session.setAttribute("loginName", employee.getName());
+			session.setAttribute("loginRole", employee.getRole_code());
+			// 첫 로그인시 추가 정보 입력을 위한 코드!
+			boolean isFirstLogin = service.FirstLogin(emp_no);
+			// FirstLogin 값을 세션에 저장
+			session.setAttribute("FirstLogin", isFirstLogin);
+			response.put("success", true);
+		} else {
+			response.put("success", false);
+		}
+		return response;
+	}
+
+	// 추가 정보 업데이트
+	@RequestMapping("/update_info")
+	public String updateInfo(EmployeeDTO dto, HttpSession session) throws Exception {
+		String empNo = (String) session.getAttribute("loginID");
+		dto.setEmp_no(empNo);
+		service.updateInfo(dto);
+		session.setAttribute("FirstLogin", false);
+		return "redirect:/";
+	}
+
 	// ID 찾기 폼으로 이동
 	@RequestMapping("/find_ID")
 	public String findID() {
 		return "findID";
+	}
+
+	// ID찾기
+	@ResponseBody
+	@RequestMapping("/findID")
+	public Map<String, Object> findID(String name, String ssn) throws Exception {
+		String empNo = service.findID(name, ssn);
+		Map<String, Object> response = new HashMap<>();
+		if (empNo != null) {
+			response.put("success", true);
+			response.put("empNo", empNo);
+		} else {
+			response.put("success", false);
+		}
+		return response;
 	}
 
 	// PW 찾기 폼으로 이동
@@ -80,6 +145,16 @@ public class EmployeeController {
 		return "mypage";
 	}
 
+	// 닉네임 중복 체크(마이페이지)
+	@ResponseBody
+	@RequestMapping("/check_nickname")
+	public Map<String, Object> checkNickname(String nickname) {
+		boolean value = service.checkNickname(nickname);
+		Map<String, Object> response = new HashMap<>();
+		response.put("value", value);
+		return response;
+	}
+
 	// 마이페이지 정보 업데이트
 	@RequestMapping("/update_mypage")
 	public String updateMyPage(EmployeeDTO dto, HttpSession session) throws Exception {
@@ -87,43 +162,6 @@ public class EmployeeController {
 		dto.setEmp_no(empNo);
 		service.updateMyPage(dto);
 		return "mypage";
-	}
-
-	// 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 생성)
-	@ResponseBody
-	@RequestMapping("/highestEmployeeID")
-	public String getHighestEmployeeID(String dept) throws Exception {
-		return service.getHighestEmployeeIDByDept(dept);
-	}
-
-	// 회원가입
-	@RequestMapping("/register")
-	public String register(EmployeeDTO dto) throws Exception {
-		int result = service.register(dto);
-		if (result == 1) {
-			return "redirect:/";
-		} else {
-			return "register";
-		}
-	}
-
-	// 로그인
-	@ResponseBody
-	@RequestMapping("/login")
-	public Map<String, Object> login(String emp_no, String pw, HttpSession session) throws Exception {
-		EmployeeDTO employee = service.login(emp_no, pw);
-		Map<String, Object> response = new HashMap<>();
-		if (employee != null) {
-			session.setAttribute("loginID", emp_no);
-			session.setAttribute("loginName", employee.getName());
-			boolean isFirstLogin = service.FirstLogin(emp_no);
-			// FirstLogin 값을 세션에 저장
-			session.setAttribute("FirstLogin", isFirstLogin);
-			response.put("success", true);
-		} else {
-			response.put("success", false);
-		}
-		return response;
 	}
 
 	// 로그아웃
@@ -142,41 +180,6 @@ public class EmployeeController {
 			session.invalidate();
 		}
 		return "redirect:/";
-	}
-
-	// 추가 정보 업데이트
-	@RequestMapping("/update_info")
-	public String updateInfo(EmployeeDTO dto, HttpSession session) throws Exception {
-		String empNo = (String) session.getAttribute("loginID");
-		dto.setEmp_no(empNo);
-		service.updateInfo(dto);
-		session.setAttribute("FirstLogin", false);
-		return "redirect:/";
-	}
-
-	// ID찾기
-	@ResponseBody
-	@RequestMapping("/findID")
-	public Map<String, Object> findID(String name, String ssn) throws Exception {
-		String empNo = service.findID(name, ssn);
-		Map<String, Object> response = new HashMap<>();
-		if (empNo != null) {
-			response.put("success", true);
-			response.put("empNo", empNo);
-		} else {
-			response.put("success", false);
-		}
-		return response;
-	}
-
-	// 닉네임 중복 체크
-	@ResponseBody
-	@RequestMapping("/check_nickname")
-	public Map<String, Object> checkNickname(String nickname) {
-		boolean value = service.checkNickname(nickname);
-		Map<String, Object> response = new HashMap<>();
-		response.put("value", value);
-		return response;
 	}
 
 	// ajax로 부서별 사원 목록를 요청했을 때 서버로 보내기 위한 메서드
