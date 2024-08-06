@@ -209,11 +209,6 @@
                             $("#popup").show();
                         }
 
-                        $("#insertForm").on("submit", function () {
-                            $(".overlay").hide();
-                            $("#popup").hide();
-                        });
-
                         // 팝업 외부 클릭 방지
                         $(".overlay").on("click", function (e) {
                             e.stopPropagation();
