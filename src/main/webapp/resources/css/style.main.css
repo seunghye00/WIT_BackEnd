@@ -242,6 +242,105 @@ body {
     display: none;
 }
 
+/* sideAbout css */
+/* 사이드 영역 CSS */
+.sideAbout {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 25px;
+    color: #333;
+}
+
+/* 사이드 타이틀 */
+.sideAbout .sideTit {
+    font-size: 26px;
+    padding-bottom: 30px;
+    color: #333;
+}
+
+/* 사이드 버튼 */
+.sideAbout .sideBtnBox {
+    padding-bottom: 30px;
+}
+
+.sideAbout .sideBtn {
+    width: 100%;
+    padding: 15px 30px;
+    background-color: #fff;
+    border: 3px solid #558BCF;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #558BCF;
+}
+
+/* 버튼 효과 */
+.sideAbout .sideBtn:hover,
+.sideAbout .sideBtn:focus,
+.sideAbout .sideBtn:active {
+    background-color: #558BCF;
+    color: #fff;
+    box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
+}
+
+/* 개인 사이드 메뉴 토글 효과 */
+.sideAbout .addressListPrivate {
+    padding-bottom: 30px;
+}
+
+/* 공통 스타일 */
+.toggleItem .toggleTit {
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+}
+
+.toggleItem .toggleTit::after {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 23px;
+    background-image: url(../WIT_Front_End/images/icon/toggle.png);
+    background-size: 10px 8px;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.5s ease;
+    transform: rotate(0deg);
+}
+
+.toggleItem .toggleTit.active::after {
+    transform: rotate(180deg);
+}
+
+.subList {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    padding-left: 20px;
+}
+
+.subList.active {
+    max-height: 500px;
+    /* 적당히 큰 값으로 설정 */
+    opacity: 1;
+}
+
+.subList li:not(:last-child) {
+    padding-bottom: 8px;
+}
+
+.subList li a.active {
+    color: #558BCF;
+    font-weight: 600;
+}
+
 .main-content {
     transition: all 0.5s ease 0s;
     width: 100%;
@@ -411,7 +510,7 @@ body {
     border-radius: 10px;
     font-size: 18px;
     font-weight: 600;
-    color: #333;
+    color: #558BCF;
 }
 
 /* 버튼 효과 */
@@ -423,6 +522,33 @@ body {
     color: #fff;
     box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
 }
+
+/* 토글 */
+.toggleItem .toggleTit {
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+}
+
+.toggleItem .toggleTit::after {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 23px;
+    background-image: url(../WIT_Front_End/images/icon/toggle.png);
+    background-size: 10px 8px;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.5s ease;
+    transform: rotate(0deg);
+}
+
+.toggleItem .toggleTit.active::after {
+    transform: rotate(180deg);
+}
+
 
 /* 페이지네이션 */
 .pagination {

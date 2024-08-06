@@ -70,9 +70,7 @@ $(document).ready(function () {
                 },
                 error: function (error) {
                     console.error('Error fetching highest employee ID:', error)
-                    alert(
-                        '사원번호를 생성하는 데 문제가 발생했습니다. 관리자에게 문의하세요.'
-                    )
+                    alert('사원번호를 생성하는 데 문제가 발생했습니다.')
                 },
             })
         } else {
@@ -226,7 +224,11 @@ $(document).ready(function () {
         }).open()
     })
 
-    $('#insertForm').on('submit', function () {
+    // 추가 정보입력
+    $('#insertForm').on('submit', function (e) {
+        e.preventDefault() // 기본 제출 동작 방지
+
+        // 닉네임 유효성 검사
         if (
             $('#nickname').val() == '' ||
             !/^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,7}$/.test($('#nickname').val())
@@ -234,6 +236,14 @@ $(document).ready(function () {
             alert('닉네임을 올바르게 입력하세요.')
             return false
         }
+
+        // 닉네임 중복 체크 여부 검사
+        if (!nicknameChecked) {
+            alert('닉네임 중복 체크를 해주세요.')
+            return false
+        }
+
+        // 비밀번호 유효성 검사
         if (
             $('#pw').val() == '' ||
             !/^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{10,}$/.test(
@@ -243,10 +253,14 @@ $(document).ready(function () {
             alert('비밀번호를 올바르게 입력하세요.')
             return false
         }
+
+        // 비밀번호 일치 검사
         if ($('#pw').val() !== $('#checkpw').val()) {
             alert('비밀번호가 일치하지 않습니다.')
             return false
         }
+
+        // 주민등록번호 유효성 검사
         if (
             $('#ssn').val() == '' ||
             !/^(?:[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01]))-[1-4][0-9]{6}$/.test(
@@ -256,6 +270,8 @@ $(document).ready(function () {
             alert('주민등록번호를 올바르게 입력하세요.')
             return false
         }
+
+        // 전화번호 유효성 검사
         if (
             $('#phone').val() == '' ||
             !/^010-\d{3,4}-\d{4}$/.test($('#phone').val())
@@ -263,6 +279,8 @@ $(document).ready(function () {
             alert('전화번호 형식이 잘못되었습니다.')
             return false
         }
+
+        // 이메일 유효성 검사
         if (
             $('#email').val() == '' ||
             !/^[^\s@]+@[^\s@]+\.(com|net)$/.test($('#email').val())
@@ -270,6 +288,25 @@ $(document).ready(function () {
             alert('이메일 형식이 잘못되었습니다.')
             return false
         }
+
+        // 모든 유효성 검사를 통과한 경우 서버에 데이터 전송
+        $.ajax({
+            url: '/employee/update_info',
+            type: 'POST',
+            data: $(this).serialize(),
+            // 폼 데이터를 시리얼라이즈하여 전송
+            success: function (response) {
+                // 성공적인 응답 처리
+                $('.overlay').hide()
+                $('#popup').hide()
+                alert('정보가 성공적으로 업데이트되었습니다.')
+            },
+            error: function (xhr, status, error) {
+                alert('정보 업데이트에 실패했습니다.')
+            },
+        })
+        // 폼이 유효한 경우에만 true 반환
+        return true
     })
 
     // ID(사번)찾기
@@ -297,47 +334,10 @@ $(document).ready(function () {
         })
     })
 
-    // 출근버튼
-    $('#start_button').click(function () {
-        var now = new Date()
-        var hours = now.getHours()
-        if (hours >= 18) {
-            alert('18시 이후에는 출근할 수 없습니다.')
-            return
-        }
-        if (confirm('출근 하시겠습니까?')) {
-            $.ajax({
-                url: '/attendance/start',
-                type: 'POST',
-                success: function (response) {
-                    alert(response)
-                },
-                error: function (xhr, status, error) {
-                    alert('출근 처리에 실패했습니다.')
-                },
-            })
-        }
-    })
-
-    // 퇴근버튼
-    $('#end_button').click(function () {
-        if (confirm('퇴근 하시겠습니까?')) {
-            $.ajax({
-                url: '/attendance/end',
-                type: 'POST',
-                success: function (response) {
-                    alert(response)
-                },
-                error: function (xhr, status, error) {
-                    alert('퇴근 처리에 실패했습니다.')
-                },
-            })
-        }
-    })
-
     // 닉네임 필드 변경 시 닉네임 중복 체크 필요
     $('#nickname').on('input', function () {
-        nicknameChecked = false // 닉네임이 변경될 때마다 중복 체크 상태를 초기화
+        // 닉네임이 변경될 때마다 중복 체크 상태를 초기화
+        nicknameChecked = false
     })
 
     // 닉네임 중복 체크 버튼 클릭 이벤트
@@ -362,7 +362,8 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.value) {
                     alert('사용 가능합니다.')
-                    nicknameChecked = true // 중복 체크 완료 상태로 설정
+                    // 중복 체크 완료 상태로 설정
+                    nicknameChecked = true
                 } else {
                     alert('사용이 불가합니다.')
                     $('#nickname').val('')
@@ -509,7 +510,7 @@ $(document).ready(function () {
 
         if (password === '') {
             resultLabel.text('')
-            pwCheck.removeClass('show success error').html('') // 표시 없음
+            pwCheck.removeClass('show success error').html('')
         } else if (regex.test(password)) {
             resultLabel.text('사용 가능').css('color', 'green')
             pwCheck
@@ -547,6 +548,61 @@ $(document).ready(function () {
                 .removeClass('success')
                 .addClass('show error')
                 .html('&#x2716;')
+        }
+    })
+
+    // 출퇴근 시간을 메인에 표시
+    $.ajax({
+        url: '/attendance/times',
+        type: 'GET',
+        success: function (response) {
+            $('#start_time_display').text(response.startTime)
+            $('#end_time_display').text(response.endTime)
+        },
+        error: function (xhr, status, error) {
+            console.error('시간 불러오기에 실패했습니다.')
+        },
+    })
+
+    // 출근버튼
+    $('#start_button').click(function () {
+        var now = new Date()
+        var hours = now.getHours()
+        if (hours >= 18) {
+            alert('18시 이후에는 출근할 수 없습니다.')
+            return
+        }
+        if (confirm('출근 하시겠습니까?')) {
+            $.ajax({
+                url: '/attendance/start',
+                type: 'POST',
+                success: function (response) {
+                    $('#start_time_display').text(response.startTime)
+                    // 서버에서 받은 메시지를 알림으로 표시
+                    alert(response.message)
+                },
+                error: function (xhr, status, error) {
+                    alert('출근 에 실패했습니다.')
+                },
+            })
+        }
+    })
+
+    // 퇴근버튼
+    $('#end_button').click(function () {
+        if (confirm('퇴근 하시겠습니까?')) {
+            $.ajax({
+                url: '/attendance/end',
+                type: 'POST',
+                success: function (response) {
+                    $('#end_time_display').text(response.endTime)
+                    // 서버에서 받은 메시지를 알림으로 표시
+                    alert(response.message)
+                },
+                error: function (xhr, status, error) {
+                    alert('퇴근에 실패했습니다.')
+                },
+            })
         }
     })
 
