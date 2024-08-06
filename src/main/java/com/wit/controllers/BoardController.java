@@ -41,7 +41,7 @@ public class BoardController {
 		return "Board/board";
 	}
 
-	// 글작성
+	// 글 작성으로 이동
 	@RequestMapping("write")
 	public String write(Model model) throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
@@ -51,6 +51,19 @@ public class BoardController {
 		model.addAttribute("employee", employee);
 
 		return "Board/writeBoard";
+	}
+
+	// 게시물 등록
+	@RequestMapping("writeProc")
+	public String writeProc(BoardDTO dto, MultipartFile[] files) throws Exception {
+		String empNo = (String) session.getAttribute("loginID");
+		dto.setEmp_no(empNo);
+		// 게시물 등록
+		int parentSeq = bserv.write(dto);
+		// 파일 등록
+		String realPath = session.getServletContext().getRealPath("/uploads");
+		fserv.upload(parentSeq, realPath, files);
+		return "redirect:/board/list";
 	}
 
 	// 게시물 상세 조회
@@ -72,19 +85,6 @@ public class BoardController {
 		model.addAttribute("employee", employee);
 
 		return "Board/detailBoard";
-	}
-
-	// 게시물 등록
-	@RequestMapping("writeProc")
-	public String writeProc(BoardDTO dto, MultipartFile[] files) throws Exception {
-		String empNo = (String) session.getAttribute("loginID");
-		dto.setEmp_no(empNo);
-		// 게시물 등록
-		int parentSeq = bserv.write(dto);
-		// 파일 등록
-		String realPath = session.getServletContext().getRealPath("/uploads");
-		fserv.upload(parentSeq, realPath, files);
-		return "redirect:/board/list";
 	}
 
 	// 게시물 삭제
