@@ -8,7 +8,7 @@ public class DocuDTO {
 	private String title;
 	private Timestamp write_date;
 	private String status;
-	private char emer_yn;
+	private String emer_yn;
 	private String docu_code;
 	public int getDocument_seq() {
 		return document_seq;
@@ -40,10 +40,10 @@ public class DocuDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public char getEmer_yn() {
+	public String getEmer_yn() {
 		return emer_yn;
 	}
-	public void setEmer_yn(char emer_yn) {
+	public void setEmer_yn(String emer_yn) {
 		this.emer_yn = emer_yn;
 	}
 	public String getDocu_code() {
@@ -53,7 +53,7 @@ public class DocuDTO {
 		this.docu_code = docu_code;
 	}
 	public DocuDTO(int document_seq, String emp_no, String title, Timestamp write_date, String status,
-			char emer_yn, String docu_code) {
+			String emer_yn, String docu_code) {
 		super();
 		this.document_seq = document_seq;
 		this.emp_no = emp_no;

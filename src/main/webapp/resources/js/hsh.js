@@ -217,7 +217,7 @@ $('#startApprBtn').on('click', () => {
     		}
     	
     		// 폼을 동적으로 생성
-        	var $form = $('<form>', {
+        	const $form = $('<form>', {
             	method: 'POST',
             	action: '/eApproval/writeProc'
         	});
@@ -296,7 +296,7 @@ function getEmployeeList(dept) {
     			type: 'checkbox',
                 name: 'employeeName',
                 id: i.emp_no,
-                value: i.name + " " + i.role_title,
+                value: i.emp_no + " " + i.name + " " + i.role_title,
     		});
     		input.hide();
     		let label = $('<label>',{
@@ -346,13 +346,13 @@ $('.cancelWrite').on('click', () => {
 	}
 });
 
-// 결재 문서 작성 페이지에서 임시 저장 버튼 클릭 시 임시 저장 후 보관함으로 이동
-$('.saveWrite').on('click', () => {
-	
-	$('#emerCheck:checked').val('Y');
-	console.log($('#impleDate').val());
-	if(confirm('임시 저장 시 파일 내역은 저장되지 않습니다.')){
-			
+// 업무 기안 문서 작성 페이지에서 임시 저장 버튼 클릭 시
+$('.propSave').on('click', () => {
+
+	if(confirm('임시 저장 시 파일 내역은 저장되지 않습니다.')){	
+		// 폼 태그의 action 값 변경 후 submit
+		$('#docuWriteForm').attr('action', '/eApproval/docuProp/save');	
+        $('#docuWriteForm').submit();	
 	}
 });
 

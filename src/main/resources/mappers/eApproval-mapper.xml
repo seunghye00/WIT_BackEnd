@@ -21,4 +21,27 @@
 	<select id="getDocuList" resultType="com.wit.dto.DocuListDTO">
 		select * from document_list
 	</select>
+	
+	<insert id="insertDocu">
+		<selectKey resultType="int" order="AFTER" keyProperty="seq">
+			select document_seq.currval from dual
+		</selectKey>
+		insert into documents values (document_seq.nextval, #{emp_no}, null, sysdate, '작성중', 'N', #{docuCode})
+	</insert>
+	
+	<insert id="createApprLine">
+		insert into approvals_line values (a_line_seq.nextval, #{docuSeq}, #{emp_no}, null, '임시 라인', #{index}, null)
+	</insert>
+	
+	<insert id="createRefeLine">
+		insert into reference_line values (r_line_seq.nextval, #{docuSeq}, #{emp_no}, 'N', null)
+	</insert>
+	
+	<update id="updateBySave">
+		update documents set title = #{title}, emer_yn = #{emer_yn} where document_seq = #{docuSeq}
+	</update>
+	
+	<insert id="insertProp">
+		insert into work_proposals values (#{document_seq}, #{eff_date}, #{dept_title}, #{contents})
+	</insert>
 </mapper>

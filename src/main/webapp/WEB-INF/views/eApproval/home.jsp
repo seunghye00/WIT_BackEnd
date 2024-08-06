@@ -267,7 +267,7 @@
 							</div>
 							<c:choose>
 								<c:when test="${empty doneDocuList}">
-									<div class="rows">
+									<div class="rows emptyDocuList">
 										<p>진행중인 문서가 없습니다.</p>
 									</div>
 								</c:when>
