@@ -43,7 +43,7 @@ public class AttendanceController {
 			System.out.println("결근 처리 완료: " + empNo + ", 날짜: " + previousDate);
 
 			// 이게 이제 출퇴근 버튼 눌렀을떄 메인 화면에 버튼 클릭 한 시간 나오게 하는거!
-			return LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+			return LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -65,7 +65,7 @@ public class AttendanceController {
 			System.out.println("결근 처리 완료: " + empNo + ", 날짜: " + previousDate);
 
 			// 이게 이제 출퇴근 버튼 눌렀을떄 메인 화면에 버튼 클릭 한 시간 나오게 하는거!
-			return LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+			return LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"));
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -135,11 +135,11 @@ public class AttendanceController {
 		AttendanceDTO record = service.getTodayAttendance(empNo);
 
 		if (record != null) {
-			times.put("startTime", record.getStart_time() != null ? record.getStart_time() : "00:00:00");
-			times.put("endTime", record.getEnd_time() != null ? record.getEnd_time() : "00:00:00");
+			times.put("startTime", record.getStart_time() != null ? record.getStart_time() : "00:00");
+			times.put("endTime", record.getEnd_time() != null ? record.getEnd_time() : "00:00");
 		} else {
-			times.put("startTime", "00:00:00");
-			times.put("endTime", "00:00:00");
+			times.put("startTime", "00:00");
+			times.put("endTime", "00:00");
 		}
 
 		return times;

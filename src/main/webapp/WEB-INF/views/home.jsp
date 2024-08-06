@@ -74,11 +74,11 @@
                                             <div class="attendance-btn">
                                                 <div>
                                                     <button type="button" id="start_button">출근</button>
-                                                    <span class="check-time" id="start_time_display">00:00:00</span>
+                                                    <span class="check-time" id="start_time_display">00:00</span>
                                                 </div>
                                                 <div>
                                                     <button type="button" id="end_button">퇴근</button>
-                                                    <span class="check-time" id="end_time_display">00:00:00</span>
+                                                    <span class="check-time" id="end_time_display">00:00</span>
                                                 </div>
                                             </div>
                                         </div>
