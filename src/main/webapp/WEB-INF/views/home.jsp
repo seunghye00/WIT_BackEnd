@@ -12,7 +12,7 @@
                 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
                 <link rel="stylesheet" href="/resources/css/style.main.css">
                 <link rel="stylesheet" href="/resources/css/mky.css">
-                <link rel="stylesheet" href="/resources/css/employee.css">
+                <link rel="stylesheet" href="/resources/css/wit.css">
                 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
                 <script src="/resources/js/employee.js"></script>
             </head>
@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <ul>
-                                    <li><a href="#"> <i class='bx bxs-home-alt-2'></i> <span
+                                    <li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span
                                                 class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
                                     <li><a href="/addressbook/addressbook"> <i class='bx bx-paperclip'></i> <span
                                                 class="navItem">주소록</span></a> <span class="toolTip">주소록</span></li>
@@ -74,11 +74,11 @@
                                             <div class="attendance-btn">
                                                 <div>
                                                     <button type="button" id="start_button">출근</button>
-                                                    <div class="check-time">00:00:00</div>
+                                                    <span class="check-time" id="start_time_display">00:00</span>
                                                 </div>
                                                 <div>
                                                     <button type="button" id="end_button">퇴근</button>
-                                                    <div class="check-time">00:00:00</div>
+                                                    <span class="check-time" id="end_time_display">00:00</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -209,20 +209,15 @@
                             $("#popup").show();
                         }
 
-                        $("#insertForm").on("submit", function () {
-                            // 팝업 제출 후 오버레이와 팝업 숨기기
-                            $(".overlay").hide();
-                            $("#popup").hide();
-                        });
-
                         // 팝업 외부 클릭 방지
                         $(".overlay").on("click", function (e) {
                             e.stopPropagation();
                             alert("추가 정보를 입력 후 제출하세요.");
                         });
 
+                        // 팝업 내부 클릭 시 이벤트 전파 방지
                         $("#popup").on("click", function (e) {
-                            e.stopPropagation(); // 팝업 내부 클릭 시 이벤트 전파 방지
+                            e.stopPropagation();
                         });
 
                         // 실시간 시간 업데이트

@@ -10,7 +10,7 @@
         VALUES (board_files_seq.NEXTVAL, #{board_seq}, #{oriname}, #{sysname})
     </insert>
 
-    <!-- 게시물에 첨부된 파일 목록 조회 -->
+    <!-- 게시물에 첨부된 파일 조회 -->
     <select id="detailFile" parameterType="int" resultType="com.wit.dto.BoardFilesDTO">
         SELECT board_files_seq, board_seq, oriname, sysname
         FROM board_files
@@ -22,7 +22,7 @@
         DELETE FROM board_files WHERE board_seq = #{board_seq}
     </delete>
 
-    <!-- 파일 이름 목록 조회 -->
+    <!-- 파일 삭제를 위한 파일 조회 -->
     <select id="selectFile" parameterType="int" resultType="String">
         SELECT sysname FROM board_files WHERE board_seq = #{board_seq}
     </select>

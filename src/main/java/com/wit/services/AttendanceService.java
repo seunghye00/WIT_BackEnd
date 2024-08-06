@@ -2,9 +2,12 @@ package com.wit.services;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,49 +25,65 @@ public class AttendanceService {
 	// 시간을 HH:mm 형식으로 포맷하기 위한 객체
 	private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-	public void startAtd(String emp_no) throws Exception {
+	// 출근 기록 처리
+	public Map<String, String> startAtd(String emp_no) {
+		Map<String, String> response = new HashMap<>();
+
+		// 전날 결근 처리
+		LocalDate previousDay = LocalDate.now().minusDays(1);
+		java.sql.Date previousDate = java.sql.Date.valueOf(previousDay);
+		markAbsence(emp_no, previousDate);
+
 		// 현재 날짜 및 시간 가져오기
 		LocalDateTime now = LocalDateTime.now();
-		// 현재 날짜를 java.sql.date 방식으로 변환하기
 		java.sql.Date workDate = java.sql.Date.valueOf(now.toLocalDate());
 
-		// 해당 날짜에 이미 출근 기록이 있는지 확인
-		AttendanceDTO existingRecord = dao.select(emp_no, workDate);
-		if (existingRecord != null) {
-			throw new Exception("이미 출근 기록이 있습니다.");
+		// 오늘 날짜에 이미 출근 기록이 있는지 확인
+		AttendanceDTO existingRecord = dao.selectAtd(emp_no, workDate);
+		if (existingRecord != null && existingRecord.getStart_time() != null) {
+			response.put("message", "이미 출근 기록이 있습니다.");
+			response.put("startTime", existingRecord.getStart_time());
+			return response;
 		}
 
-		// 현재 시간을 HH:mm 형식으로 포맷하기
+		// 현재 시간을 HH:mm 형식으로 포맷
 		String startTime = now.toLocalTime().format(timeFormatter);
-		// 9시 이전 출근했는지 여부 체크
 		String status = now.toLocalTime().isBefore(LocalTime.of(9, 0)) ? "정상출근" : "지각";
 
-		// 출근 기록 DTO 생성
+		// 출근 기록 DTO 생성 및 저장
 		AttendanceDTO dto = new AttendanceDTO(0, workDate, startTime, " ", " ", status, " ", emp_no);
-		// 출근 기록 저장
 		dao.startAtd(dto);
+
+		response.put("message", "출근 완료!!");
+		response.put("startTime", startTime);
+
+		return response;
 	}
 
-	public void endAtd(String emp_no) throws Exception {
+	// 퇴근 기록 처리
+	public Map<String, String> endAtd(String emp_no) {
+		Map<String, String> response = new HashMap<>();
+
 		// 현재 날짜 및 시간 가져오기
 		LocalDateTime now = LocalDateTime.now();
-		// 현재 날짜를 java.sql.date 방식으로 변환하기
 		java.sql.Date workDate = java.sql.Date.valueOf(now.toLocalDate());
 
-		// 해당 날짜에 출근 기록이 있는지 확인
-		AttendanceDTO existingRecord = dao.select(emp_no, workDate);
-		if (existingRecord == null) {
-			throw new Exception("출근 버튼을 누르지 않았습니다. 퇴근 버튼을 클릭할 수 없습니다.");
+		// 출근 기록 확인
+		AttendanceDTO existingRecord = dao.selectAtd(emp_no, workDate);
+		if (existingRecord == null || existingRecord.getStart_time() == null) {
+			response.put("message", "출근 기록이 없습니다. 퇴근할 수 없습니다.");
+			return response;
 		}
 
-		// 해당 날짜에 이미 퇴근 기록이 있는지 확인
+		// 이미 퇴근 기록이 있는지 확인
 		if (existingRecord.getEnd_time() != null && !existingRecord.getEnd_time().trim().isEmpty()) {
-			throw new Exception("이미 퇴근 기록이 있습니다.");
+			response.put("message", "이미 퇴근 기록이 있습니다.");
+			response.put("endTime", existingRecord.getEnd_time());
+			return response;
 		}
 
-		// 현재 시간을 HH:mm 형식으로 포맷하기
+		// 현재 시간을 HH:mm 형식으로 포맷
 		String endTime = now.toLocalTime().format(timeFormatter);
-		// 18시 이후에 퇴근 했는지 여부 체크
 		String status = now.toLocalTime().isAfter(LocalTime.of(18, 0)) ? "정상퇴근" : "조퇴";
 
 		// 퇴근 시간 및 상태 설정
@@ -80,29 +99,29 @@ public class AttendanceService {
 		long hoursWorked = duration.toHours();
 		long minutesWorked = duration.toMinutes() % 60;
 
-		// 점심시간 1시간 빼기
+		// 점심시간 1시간 제외
 		if (start.isBefore(LocalTime.NOON) && end.isAfter(LocalTime.NOON.plusHours(1))) {
 			hoursWorked -= 1;
 		}
-		// 근무시간 설정
 		existingRecord.setWork_hours(hoursWorked + "H " + minutesWorked + "M");
 
 		// 퇴근 기록 저장
 		dao.endAtd(existingRecord);
+
+		response.put("message", "퇴근 완료!!");
+		response.put("endTime", endTime);
+
+		return response;
 	}
 
 	// 월간 근태현황 조회
-	public Map<String, Integer> getMonthlyStatus(String empNo) {
-		Map<String, Integer> monthlyStatus = dao.getMonthlyStatus(empNo);
-		System.out.println("서비스: " + monthlyStatus);
-		return monthlyStatus;
+	public Map<String, Integer> monthlyStatus(String empNo) {
+		return dao.monthlyStatus(empNo);
 	}
 
 	// 월간 근무시간 조회
-	public Map<String, Object> getMonthlyWorkHours(String empNo) {
-		Map<String, Object> result = dao.getMonthlyWorkHours(empNo);
-
-		// 총 근무시간을 시간과 분으로 변환
+	public Map<String, Object> monthlyWorkHours(String empNo) {
+		Map<String, Object> result = dao.monthlyWorkHours(empNo);
 		BigDecimal totalHours = (BigDecimal) result.get("TOTALWORKINGHOURS");
 		int hours = totalHours.intValue();
 		int minutes = totalHours.subtract(new BigDecimal(hours)).multiply(new BigDecimal(60)).intValue();
@@ -111,24 +130,40 @@ public class AttendanceService {
 	}
 
 	// 주간 근무현황 조회
-	public List<Map<String, Object>> getWeeklyStatus(String emp_no) {
-		return dao.getWeeklyStatus(emp_no);
+	public List<Map<String, Object>> weeklyStatus(String emp_no) {
+		return dao.weeklyStatus(emp_no);
 	}
 
 	// 월간 근무현황 조회
-	public List<Map<String, Object>> getMonthlyWorkStatus(String emp_no, String month) {
-		return dao.getMonthlyWorkStatus(emp_no, month);
+	public List<Map<String, Object>> monthlyWorkStatus(String emp_no, String month) {
+		return dao.monthlyWorkStatus(emp_no, month);
 	}
 
-	// 결근
+	// 결근 처리
 	public void markAbsence(String emp_no, java.sql.Date work_date) {
-		System.out.println("결근 체크 시작: " + emp_no + ", 날짜: " + work_date);
+		
+		// 이부분 다음주 월요일에 필히 확인 할것
+		// 주말인지 확인
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(work_date);
+		int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+		// 일요일(1)이나 토요일(7)이면 결근 처리하지 않음
+		if (dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY) {
+			return;
+		}
+		
 		dao.markAbsence(emp_no, work_date);
-		System.out.println("결근 체크 완료: " + emp_no + ", 날짜: " + work_date);
 	}
 
-	// 직원 정보 조회 메소드 추가
-    public EmployeeDTO getEmployeeInfo(String emp_no) {
-        return dao.getEmployeeInfo(emp_no);
-    }
+	// 직원 정보 조회
+	public EmployeeDTO employeeInfo(String emp_no) {
+		return dao.employeeInfo(emp_no);
+	}
+
+	// 오늘 출근 기록 조회
+	public AttendanceDTO getTodayAttendance(String emp_no) {
+		java.sql.Date today = java.sql.Date.valueOf(LocalDate.now());
+		return dao.selectAtd(emp_no, today);
+	}
 }
