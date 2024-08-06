@@ -4,6 +4,8 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="eApproval">
+	
+	<!-- 해당 사원이 작성한 문서 중 문서 상태에 따라 원하는 정보만 골라서 5개의 행을 받아오는 쿼리문 -->
 	<select id="selectByStatus" resultType="com.wit.dto.RecentDocuListDTO">
 		select 
 			document_seq, write_date, emer_yn, title, status, name
@@ -17,5 +19,37 @@
 		join document_list dl ON d.docu_code = dl.docu_code
 		where ROWNUM &lt;= 5
 	</select>
-
+	
+	<!-- 문서 양식 목록을 조회하는 쿼리문 -->
+	<select id="getDocuList" resultType="com.wit.dto.DocuListDTO">
+		select * from document_list
+	</select>
+	
+	<!-- 문서의 공통 정보를 저장하는 테이블에 임시 데이터를 삽입 후 SEQ 값을 받아오는 쿼리문 -->
+	<insert id="insertDocu">
+		<selectKey resultType="int" order="AFTER" keyProperty="seq">
+			select document_seq.currval from dual
+		</selectKey>
+		insert into documents values (document_seq.nextval, #{emp_no}, null, sysdate, '작성중', 'N', #{docuCode})
+	</insert>
+	
+	<!-- 결재 라인에 대한 정보를 입력하는 쿼리문 -->
+	<insert id="createApprLine">
+		insert into approvals_line values (a_line_seq.nextval, #{docuSeq}, #{emp_no}, null, '임시 라인', #{index}, null)
+	</insert>
+	
+	<!-- 참조 라인에 대한 정보를 입력하는 쿼리문 -->
+	<insert id="createRefeLine">
+		insert into reference_line values (r_line_seq.nextval, #{docuSeq}, #{emp_no}, 'N', null)
+	</insert>
+	
+	<!-- 임시 저장 시 문서 정보를 업데이트 하는 쿼리문 -->
+	<update id="updateBySave">
+		update documents set title = #{title}, emer_yn = #{emer_yn}, write_date = sysdate, status = '임시 저장' where document_seq = #{docuSeq}
+	</update>
+	
+	<!-- 업무 기안 문서 작성 시 정보를 입력하는 쿼리문 -->
+	<insert id="insertProp">
+		insert into work_proposals values (#{document_seq}, #{eff_date}, #{dept_title}, #{contents})
+	</insert>
 </mapper>
