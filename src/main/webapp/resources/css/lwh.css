@@ -1,0 +1,522 @@
+/* 사이드 영역 CSS */
+.sideAbout {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 25px;
+    color: #333;
+}
+
+/* 사이드 타이틀 */
+.sideAbout .sideTit {
+    font-size: 26px;
+    padding-bottom: 30px;
+    color: #333;
+}
+
+/* 사이드 버튼 */
+.sideAbout .sideBtnBox {
+    padding-bottom: 30px;
+}
+
+.sideAbout .sideBtn {
+    width: 100%;
+    padding: 15px 30px;
+    background-color: #fff;
+    border: 3px solid #558BCF;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 버튼 효과 */
+.sideAbout .sideBtn:hover,
+.sideAbout .sideBtn:focus,
+.sideAbout .sideBtn:active {
+    background-color: #558BCF;
+    color: #fff;
+    box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
+}
+
+/* 개인 사이드 메뉴 토글 효과 */
+.sideAbout .addressListPrivate {
+    padding-bottom: 30px;
+}
+
+/* 공통 스타일 */
+.toggleItem .toggleTit {
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+}
+
+.toggleItem .toggleTit::after {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 23px;
+    background-image: url(../images/icon/toggle.png);
+    background-size: 10px 8px;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.5s ease;
+    transform: rotate(0deg);
+}
+
+.toggleItem .toggleTit.active::after {
+    transform: rotate(180deg);
+}
+
+.subList {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    padding-left: 20px;
+}
+
+.subList.active {
+    max-height: 500px;
+    /* 적당히 큰 값으로 설정 */
+    opacity: 1;
+}
+
+.subList li:not(:last-child) {
+    padding-bottom: 8px;
+}
+
+.subList li a.active {
+    color: #558BCF;
+    font-weight: 600;
+}
+
+/* 내 캘린더 부서 캘린더 추가 공통 */
+.subList.calendarList {
+    overflow: visible;
+}
+
+.subList.calendarList li {
+    position: relative;
+}
+
+
+.sideCalendarAdd {
+    cursor: pointer;
+    display: inline-block;
+    line-height: 12px;
+    border-radius: 2px;
+    color: #777;
+    position: relative;
+}
+
+.myCalendarPopup {
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 150px;
+    border: 1px solid #444;
+    border-radius: 10px;
+    padding: 20px 15px 10px 15px;
+    background-color: #fff;
+    z-index: 77;
+}
+
+.myCalendarPopup .myPopupClose {
+    color: gray;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    top: -7px;
+}
+
+.myCalendarPopup .content {
+    padding-top: 15px;
+}
+
+.myCalendarPopup .content input {
+    padding: 5px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.myCalendarPopup .btns {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+
+#sideMyCancel {
+    padding: 10px 20px;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
+    background-color: #dc3545;
+    color: #fff;
+}
+
+#sideMyCancel:hover {
+    cursor: pointer;
+    background-color: #c51221;
+}
+
+.subList.calendarList {
+    overflow: visible;
+}
+
+.sideCalendarAdd {
+    cursor: pointer;
+    display: inline-block;
+    line-height: 12px;
+    border-radius: 2px;
+    color: #777;
+    position: relative;
+}
+
+.sideSelectDel {
+    color: gray;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    right: 7px;
+    top: -3px;
+    cursor: pointer;
+}
+
+.deptCalendarPopup {
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 150px;
+    border: 1px solid #444;
+    border-radius: 10px;
+    padding: 20px 15px 10px 15px;
+    background-color: #fff;
+    z-index: 77;
+}
+
+.deptCalendarPopup .deptPopupClose {
+    color: gray;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    top: -7px;
+}
+
+.deptCalendarPopup .content {
+    padding-top: 15px;
+}
+
+.deptCalendarPopup .content input {
+    padding: 5px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.deptCalendarPopup .btns {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+#sideDeptCancel {
+    padding: 10px 20px;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
+    background-color: #dc3545;
+    color: #fff;
+}
+
+#sideDeptCancel:hover {
+    cursor: pointer;
+    background-color: #c51221;
+}
+
+/* 날짜 박스 눌렀을 시 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modalContent {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 30px 35px;
+    border: 1px solid #fefefe;
+    width: 35%;
+    height: 84%;
+    display: flex;
+    border-radius: 25px;
+    flex-direction: column;
+    position: relative;
+    top: 2vh;
+    gap: 10px;
+}
+
+.modalClose {
+    color: gray;
+    float: right;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.modalClose:hover,
+.modalClose:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal .calendarAdd li {
+    padding: 7px 0;
+}
+
+.modal .calendarAdd input:not(.dateInput) {
+    padding: 10px 15px;
+    margin-top: 7px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.modal .calendarAdd .dateInput {
+    margin-top: 7px;
+    padding: 15px 10px;
+    width: 23%;
+    height: 35px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.modal .calendarAdd select {
+    margin-top: 7px;
+    padding: 5px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+}
+
+#calendarText {
+    margin-top: 7px;
+    width: 100%;
+    height: 150px;
+    resize: none;
+    border-radius: 8px;
+    padding: 15px;
+    overflow-y: auto;
+    font-size: 16px;
+    border: 1px solid #ccc;
+}
+
+.modal .calendarAdd .btns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* 이벤트 클릭 시 */
+.modal .eventCheck li {
+    padding: 7px 0;
+}
+
+.modal .eventCheck input:not(.dateInput) {
+    padding: 10px 15px;
+    margin-top: 7px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.modal .eventCheck .dateInput {
+    margin-top: 7px;
+    padding: 15px 10px;
+    width: 23%;
+    height: 35px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.modal .eventCheck select {
+    margin-top: 7px;
+    padding: 5px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+}
+
+#eventText {
+    margin-top: 7px;
+    width: 100%;
+    height: 150px;
+    resize: none;
+    border-radius: 8px;
+    padding: 15px;
+    overflow-y: auto;
+    font-size: 16px;
+    border: 1px solid #ccc;
+}
+
+.modal .eventCheck .btns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.cancelBtn {
+    padding: 10px 20px;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.cancelBtn.editCancelBtn {
+    display: none;
+}
+
+.cancelBtn:hover {
+    cursor: pointer;
+    background-color: #c51221;
+}
+
+#editBtn {
+    display: block;
+    padding: 10px 20px;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
+    background-color: #558BCF;
+    color: #fff;
+}
+
+#editBtn:hover {
+    cursor: pointer;
+    background-color: #1268d4;
+}
+
+.deleteBtn {
+    padding: 10px 20px;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.deleteBtn:hover {
+    cursor: pointer;
+    background-color: #c51221;
+}
+
+.okBtn {
+    padding: 10px 20px;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
+    background-color: #558BCF;
+    color: #fff;
+}
+
+.okBtn:hover {
+    cursor: pointer;
+    background-color: #1268d4;
+}
+
+#confirmBtn {
+    display: none;
+}
+
+#confirmBtn:hover {
+    cursor: pointer;
+    background-color: #1268d4;
+}
+
+/* 캘린더 */
+.calendarBox {
+    width: 100%;
+    height: 780px;
+}
+
+.calendar {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+/* 일요일 날짜 빨간색 */
+.fc-day-sun a {
+    color: rgb(252, 107, 107);
+    text-decoration: none;
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat a {
+    color: #558BCF;
+    text-decoration: none;
+}
+
+.fc .fc-button-primary {
+    background-color: #558BCF;
+    border: unset;
+}
+
+.fc .fc-button-primary:hover {
+    background-color: #365c89;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: #365c89;
+}
+
+.fc .fc-button:focus,
+.fc-button-primary:focus,
+.fc-button-primary:not(:disabled).fc-button-active:focus,
+.fc-button-primary:not(:disabled):active:focus {
+    box-shadow: unset !important;
+}
+
+.fc-theme-standard .fc-popover {
+    border-radius: 20px;
+}
+
+.fc-theme-standard .fc-popover-header {
+    border-radius: 20px;
+    padding: 7px;
+    background-color: #558BCF;
+    color: #fff;
+}
+
+.fc-popover-close.fc-icon.fc-icon-x {
+    color: white;
+    opacity: 1;
+}
+
+.fc .fc-button-primary.fc-today-button {
+    background-color: #c058f0;
+}
+
+.fc .fc-button-primary.fc-today-button:hover {
+    background-color: #9733c5;
+}

@@ -43,7 +43,7 @@
 								class="navItem">주소록</span></a> <span class="toolTip">주소록</span></li>
 						<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i>
 								<span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
-						<li><a href="#"> <i class='bx bx-calendar-alt'></i> <span
+						<li><a href="/calendar/calendar"> <i class='bx bx-calendar-alt'></i> <span
 								class="navItem">캘린더</span></a> <span class="toolTip">캘린더</span></li>
 						<li><a href="#"> <i class='bx bxs-message-dots'></i> <span
 								class="navItem">메신저</span></a> <span class="toolTip">메신저</span></li>
