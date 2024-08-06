@@ -37,58 +37,6 @@ public class EmployeeController {
 		return "register";
 	}
 
-	// ID 찾기 폼으로 이동
-	@RequestMapping("/find_ID")
-	public String findID() {
-		return "findID";
-	}
-
-	// PW 찾기 폼으로 이동
-	@RequestMapping("/find_PW")
-	public String findPW() {
-		return "findPW";
-	}
-
-	// PW찾기(수정) 을 위한 직원 정보 확인
-	@ResponseBody
-	@RequestMapping("/verifyEmployee")
-	public Map<String, Object> verifyEmployee(String emp_no, String name, String ssn) throws Exception {
-		boolean employeeExists = service.verifyEmployee(emp_no, name, ssn);
-		Map<String, Object> response = new HashMap<>();
-		response.put("success", employeeExists);
-		return response;
-	}
-
-	// PW찾기 (수정)
-	@ResponseBody
-	@RequestMapping("/modifyPassword")
-	public Map<String, Object> modifyPassword(String emp_no, String newPassword) throws Exception {
-		boolean isUpdated = service.modifyPassword(emp_no, newPassword);
-		Map<String, Object> response = new HashMap<>();
-		response.put("success", isUpdated);
-		return response;
-	}
-
-	// 마이페이지로 이동
-	@RequestMapping("/mypage")
-	public String mypage(Model model) {
-		String empNo = (String) session.getAttribute("loginID");
-		EmployeeDTO employee = service.findByEmpNo(empNo);
-		session.setAttribute("loginName", employee.getName());
-		session.setAttribute("loginRole", employee.getRole_code());
-		model.addAttribute("employee", employee);
-		return "mypage";
-	}
-
-	// 마이페이지 정보 업데이트
-	@RequestMapping("/update_mypage")
-	public String updateMyPage(EmployeeDTO dto, HttpSession session) throws Exception {
-		String empNo = (String) session.getAttribute("loginID");
-		dto.setEmp_no(empNo);
-		service.updateMyPage(dto);
-		return "mypage";
-	}
-
 	// 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 생성)
 	@ResponseBody
 	@RequestMapping("/highestEmployeeID")
@@ -129,24 +77,6 @@ public class EmployeeController {
 		return response;
 	}
 
-	// 로그아웃
-	@RequestMapping("/logout")
-	public String logout() throws Exception {
-		session.invalidate();
-		return "redirect:/";
-	}
-
-	// 회원탈퇴
-	@RequestMapping("/delete")
-	public String delete() throws Exception {
-		String empNo = (String) session.getAttribute("loginID");
-		if (empNo != null) {
-			service.delete(empNo);
-			session.invalidate();
-		}
-		return "redirect:/";
-	}
-
 	// 추가 정보 업데이트
 	@RequestMapping("/update_info")
 	public String updateInfo(EmployeeDTO dto, HttpSession session) throws Exception {
@@ -155,6 +85,12 @@ public class EmployeeController {
 		service.updateInfo(dto);
 		session.setAttribute("FirstLogin", false);
 		return "redirect:/";
+	}
+
+	// ID 찾기 폼으로 이동
+	@RequestMapping("/find_ID")
+	public String findID() {
+		return "findID";
 	}
 
 	// ID찾기
@@ -172,7 +108,44 @@ public class EmployeeController {
 		return response;
 	}
 
-	// 닉네임 중복 체크
+	// PW 찾기 폼으로 이동
+	@RequestMapping("/find_PW")
+	public String findPW() {
+		return "findPW";
+	}
+
+	// PW찾기(수정) 을 위한 직원 정보 확인
+	@ResponseBody
+	@RequestMapping("/verifyEmployee")
+	public Map<String, Object> verifyEmployee(String emp_no, String name, String ssn) throws Exception {
+		boolean employeeExists = service.verifyEmployee(emp_no, name, ssn);
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", employeeExists);
+		return response;
+	}
+
+	// PW찾기 (수정)
+	@ResponseBody
+	@RequestMapping("/modifyPassword")
+	public Map<String, Object> modifyPassword(String emp_no, String newPassword) throws Exception {
+		boolean isUpdated = service.modifyPassword(emp_no, newPassword);
+		Map<String, Object> response = new HashMap<>();
+		response.put("success", isUpdated);
+		return response;
+	}
+
+	// 마이페이지로 이동
+	@RequestMapping("/mypage")
+	public String mypage(Model model) {
+		String empNo = (String) session.getAttribute("loginID");
+		EmployeeDTO employee = service.findByEmpNo(empNo);
+		session.setAttribute("loginName", employee.getName());
+		session.setAttribute("loginRole", employee.getRole_code());
+		model.addAttribute("employee", employee);
+		return "mypage";
+	}
+
+	// 닉네임 중복 체크(마이페이지)
 	@ResponseBody
 	@RequestMapping("/check_nickname")
 	public Map<String, Object> checkNickname(String nickname) {
@@ -180,6 +153,33 @@ public class EmployeeController {
 		Map<String, Object> response = new HashMap<>();
 		response.put("value", value);
 		return response;
+	}
+
+	// 마이페이지 정보 업데이트
+	@RequestMapping("/update_mypage")
+	public String updateMyPage(EmployeeDTO dto, HttpSession session) throws Exception {
+		String empNo = (String) session.getAttribute("loginID");
+		dto.setEmp_no(empNo);
+		service.updateMyPage(dto);
+		return "mypage";
+	}
+
+	// 로그아웃
+	@RequestMapping("/logout")
+	public String logout() throws Exception {
+		session.invalidate();
+		return "redirect:/";
+	}
+
+	// 회원탈퇴
+	@RequestMapping("/delete")
+	public String delete() throws Exception {
+		String empNo = (String) session.getAttribute("loginID");
+		if (empNo != null) {
+			service.delete(empNo);
+			session.invalidate();
+		}
+		return "redirect:/";
 	}
 
 	// 예외를 담당하는 메서드 생성

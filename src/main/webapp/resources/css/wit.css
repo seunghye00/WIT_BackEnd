@@ -1457,7 +1457,6 @@
 
 /* 민서 css start */
 /* 로그인 및 회원가입 */
-/* 로그인 및 회원가입 */
 * {
 	box-sizing: border-box;
 }
@@ -1712,12 +1711,12 @@
 
 .valid-check.error {
 	color: red;
-	left: 92%;
+	left: 95%;
 }
 
 .valid-check.success {
 	color: green;
-	left: 92%;
+	left: 95%;
 }
 
 .membership img {
@@ -1738,8 +1737,8 @@
 
 .form-container #pwCheck, .form-container #checkpwCheck {
 	vertical-align: middle;
-	margin-left: -23px;
-	margin-top: 10px;
+	margin-left: -20px;
+	margin-top: 14px;
 }
 
 .form-container {
@@ -1911,6 +1910,7 @@
     border-radius: 10px;
     box-sizing: border-box;
     font-size: 15px;
+    margin-bottom: 5px;
 }
 
 .find_pw_popup button {
@@ -1961,8 +1961,29 @@
 	margin: 10px;
 }
 
+.change .valid-check {
+	display: none;
+	font-size: 20px;
+	position: absolute;
+	top: 20px;
+	right: 50px;
+}
 
+.change .valid-check.show {
+	display: inline;
+}
 
+.change .valid-check.error {
+	color: red;
+	left: 95%;
+	top: 10px;
+}
+
+.change .valid-check.success {
+	color: green;
+	left: 95%;
+    top: 10px;
+}
 
 /* 메인 근태 스타일 */
 #start_button {
