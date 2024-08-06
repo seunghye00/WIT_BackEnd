@@ -78,9 +78,9 @@ public class AttendanceController {
 		String empNo = (String) session.getAttribute("loginID");
 
 		// 월간 근태현황과 근무시간을 조회하여 모델에 추가합니다.
-		Map<String, Integer> monthlyStatus = service.MonthlyStatus(empNo);
-		Map<String, Object> monthlyWorkHours = service.MonthlyWorkHours(empNo);
-		List<Map<String, Object>> weeklyStatus = service.WeeklyStatus(empNo);
+		Map<String, Integer> monthlyStatus = service.monthlyStatus(empNo);
+		Map<String, Object> monthlyWorkHours = service.monthlyWorkHours(empNo);
+		List<Map<String, Object>> weeklyStatus = service.weeklyStatus(empNo);
 
 		// 직원 정보 가져오기
 		EmployeeDTO employee = service.employeeInfo(empNo);
@@ -101,7 +101,7 @@ public class AttendanceController {
 		// 현재 월을 가져옵니다. 예: "2024-08"
 		String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
 
-		List<Map<String, Object>> monthlyWorkStatus = service.MonthlyWorkStatus(empNo, month);
+		List<Map<String, Object>> monthlyWorkStatus = service.monthlyWorkStatus(empNo, month);
 
 		// 직원 정보 가져오기
 		EmployeeDTO employee = service.employeeInfo(empNo);

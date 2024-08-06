@@ -540,10 +540,10 @@ $(document).ready(function () {
                 success: function (response) {
                     // 서버에서 받은 응답을 화면에 표시
                     $('#start_time_display').text(response);
-                    alert('출근 처리 완료: ' + response);
+                    alert('출근 완료!!');
                 },
                 error: function (xhr, status, error) {
-                    alert('출근 처리에 실패했습니다.');
+                    alert('출근 에 실패했습니다.');
                 },
             });
         }
@@ -558,10 +558,10 @@ $(document).ready(function () {
                 success: function (response) {
                     // 서버에서 받은 응답을 화면에 표시
                     $('#end_time_display').text(response);
-                    alert('퇴근 처리 완료: ' + response);
+                    alert('퇴근 완료!!');
                 },
                 error: function (xhr, status, error) {
-                    alert('퇴근 처리에 실패했습니다.');
+                    alert('퇴근 에 실패했습니다.');
                 },
             });
         }

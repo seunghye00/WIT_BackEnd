@@ -93,15 +93,14 @@ public class AttendanceService {
 	}
 
 	// 월간 근태현황 조회
-	public Map<String, Integer> MonthlyStatus(String empNo) {
-		Map<String, Integer> monthlyStatus = dao.MonthlyStatus(empNo);
-		System.out.println("서비스: " + monthlyStatus);
+	public Map<String, Integer> monthlyStatus(String empNo) {
+		Map<String, Integer> monthlyStatus = dao.monthlyStatus(empNo);
 		return monthlyStatus;
 	}
 
 	// 월간 근무시간 조회
-	public Map<String, Object> MonthlyWorkHours(String empNo) {
-		Map<String, Object> result = dao.MonthlyWorkHours(empNo);
+	public Map<String, Object> monthlyWorkHours(String empNo) {
+		Map<String, Object> result = dao.monthlyWorkHours(empNo);
 
 		// 총 근무시간을 시간과 분으로 변환
 		BigDecimal totalHours = (BigDecimal) result.get("TOTALWORKINGHOURS");
@@ -112,20 +111,18 @@ public class AttendanceService {
 	}
 
 	// 주간 근무현황 조회
-	public List<Map<String, Object>> WeeklyStatus(String emp_no) {
-		return dao.WeeklyStatus(emp_no);
+	public List<Map<String, Object>> weeklyStatus(String emp_no) {
+		return dao.weeklyStatus(emp_no);
 	}
 
 	// 월간 근무현황 조회
-	public List<Map<String, Object>> MonthlyWorkStatus(String emp_no, String month) {
-		return dao.MonthlyWorkStatus(emp_no, month);
+	public List<Map<String, Object>> monthlyWorkStatus(String emp_no, String month) {
+		return dao.monthlyWorkStatus(emp_no, month);
 	}
 
 	// 결근
 	public void markAbsence(String emp_no, java.sql.Date work_date) {
-		System.out.println("결근 체크 시작: " + emp_no + ", 날짜: " + work_date);
 		dao.markAbsence(emp_no, work_date);
-		System.out.println("결근 체크 완료: " + emp_no + ", 날짜: " + work_date);
 	}
 
 	// 직원 정보 조회 메소드 추가

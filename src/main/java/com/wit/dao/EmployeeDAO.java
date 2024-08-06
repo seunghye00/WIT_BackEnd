@@ -25,7 +25,7 @@ public class EmployeeDAO {
 
 	// 회원가입
 	public int register(EmployeeDTO dto) {
-		return mybatis.insert("employee.insert", dto);
+		return mybatis.insert("employee.register", dto);
 	}
 
 	// 로그인
