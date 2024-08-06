@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.wit.dto.EmployeeDTO;
+import com.wit.dto.EmployeeInfoDTO;
 import com.wit.dto.RoleDTO;
 import com.wit.dto.DeptDTO;
 
@@ -100,5 +101,14 @@ public class EmployeeDAO {
 	public int delete(String emp_no) {
 		return mybatis.delete("employee.delete", emp_no);
 	}
-
+	
+	// 부서별 사원 목록 조회
+	public List<EmployeeDTO> getListByDept(String deptCode) {
+		return mybatis.selectList("employee.selectByDept", deptCode);
+	}
+	
+	// 해당 사번을 지닌 직원의 이름과 부서명 조회
+	public EmployeeInfoDTO getNameNDept(String emp_no) {
+		return mybatis.selectOne("employee.selectByEmpNo", emp_no);
+	}
 }
