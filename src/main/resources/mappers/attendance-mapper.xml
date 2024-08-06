@@ -60,6 +60,8 @@
 	</select>
 
 	<!-- 월간 근무시간 조회 -->
+	<!-- &gt = > -->
+	<!-- &lt = < -->
 	<select id="monthlyWorkHours" resultType="java.util.HashMap">
 		WITH date_range AS (
 		SELECT
