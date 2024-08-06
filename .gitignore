@@ -1,14 +1,8 @@
-# Created by https://www.toptal.com/developers/gitignore/api/eclipse,java
-# Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,java
-
-mybatis-config.xml
-log4j.xml
-
-lecture
-target
-pom.properties
 .classpath
-MANIFEST.MF
+.project
+
+# Created by https://www.toptal.com/developers/gitignore/api/java,git,windows,eclipse
+# Edit at https://www.toptal.com/developers/gitignore?templates=java,git,windows,eclipse
 
 ### Eclipse ###
 .metadata
@@ -22,9 +16,7 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-web.xml
-root-context.xml
-servlet-context.xml
+.web.xml
 
 # External tool builders
 .externalToolBuilders/
@@ -79,11 +71,20 @@ servlet-context.xml
 # Spring Boot Tooling
 .sts4-cache/
 
-# Eclipse Core
-.project
+### Git ###
+# Created by git for backups. To disable backups in Git:
+# $ git config --global mergetool.keepBackup false
+*.orig
 
-# IDT-specific (Eclipse Java Development Tools)
-.classpath
+# Created by git when using merge tools for conflicts
+*.BACKUP.*
+*.BASE.*
+*.LOCAL.*
+*.REMOTE.*
+*_BACKUP_*.txt
+*_BASE_*.txt
+*_LOCAL_*.txt
+*_REMOTE_*.txt
 
 ### Java ###
 # Compiled class file
@@ -109,5 +110,33 @@ servlet-context.xml
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+replay_pid*
 
-# End of https://www.toptal.com/developers/gitignore/api/eclipse,java
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# End of https://www.toptal.com/developers/gitignore/api/java,git,windows,eclipse
+/build/
