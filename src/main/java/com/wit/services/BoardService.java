@@ -51,9 +51,9 @@ public class BoardService {
 	public String selectNickname(String emp_no) throws Exception {
 		return bdao.selectNickname(emp_no);
 	}
-	
+
 	// 직원 정보 조회 메소드 추가
-    public EmployeeDTO getEmployeeInfo(String emp_no) {
-        return bdao.getEmployeeInfo(emp_no);
-    }
+	public EmployeeDTO employeeInfo(String emp_no) {
+		return bdao.employeeInfo(emp_no);
+	}
 }

@@ -297,44 +297,6 @@ $(document).ready(function () {
         })
     })
 
-    // 출근버튼
-    $('#start_button').click(function () {
-        var now = new Date()
-        var hours = now.getHours()
-        if (hours >= 18) {
-            alert('18시 이후에는 출근할 수 없습니다.')
-            return
-        }
-        if (confirm('출근 하시겠습니까?')) {
-            $.ajax({
-                url: '/attendance/start',
-                type: 'POST',
-                success: function (response) {
-                    alert(response)
-                },
-                error: function (xhr, status, error) {
-                    alert('출근 처리에 실패했습니다.')
-                },
-            })
-        }
-    })
-
-    // 퇴근버튼
-    $('#end_button').click(function () {
-        if (confirm('퇴근 하시겠습니까?')) {
-            $.ajax({
-                url: '/attendance/end',
-                type: 'POST',
-                success: function (response) {
-                    alert(response)
-                },
-                error: function (xhr, status, error) {
-                    alert('퇴근 처리에 실패했습니다.')
-                },
-            })
-        }
-    })
-
     // 닉네임 필드 변경 시 닉네임 중복 체크 필요
     $('#nickname').on('input', function () {
         nicknameChecked = false // 닉네임이 변경될 때마다 중복 체크 상태를 초기화
@@ -549,6 +511,61 @@ $(document).ready(function () {
                 .html('&#x2716;')
         }
     })
+    
+    // 서버에서 받은 출근 및 퇴근 시간을 페이지에 표시
+    $.ajax({
+        url: '/attendance/times',
+        type: 'GET',
+        success: function (response) {
+            $('#start_time_display').text(response.startTime);
+            $('#end_time_display').text(response.endTime);
+        },
+        error: function (xhr, status, error) {
+            console.error('시간 불러오기에 실패했습니다.');
+        }
+    });
+    
+    // 출근버튼
+    $('#start_button').click(function () {
+        var now = new Date();
+        var hours = now.getHours();
+        if (hours >= 18) {
+            alert('18시 이후에는 출근할 수 없습니다.');
+            return;
+        }
+        if (confirm('출근 하시겠습니까?')) {
+            $.ajax({
+                url: '/attendance/start',
+                type: 'POST',
+                success: function (response) {
+                    // 서버에서 받은 응답을 화면에 표시
+                    $('#start_time_display').text(response);
+                    alert('출근 처리 완료: ' + response);
+                },
+                error: function (xhr, status, error) {
+                    alert('출근 처리에 실패했습니다.');
+                },
+            });
+        }
+    });
+
+     // 퇴근버튼
+    $('#end_button').click(function () {
+        if (confirm('퇴근 하시겠습니까?')) {
+            $.ajax({
+                url: '/attendance/end',
+                type: 'POST',
+                success: function (response) {
+                    // 서버에서 받은 응답을 화면에 표시
+                    $('#end_time_display').text(response);
+                    alert('퇴근 처리 완료: ' + response);
+                },
+                error: function (xhr, status, error) {
+                    alert('퇴근 처리에 실패했습니다.');
+                },
+            });
+        }
+    });
 
     // 초기 상태로 x 표시를 숨깁니다.
     const pwCheck = document.getElementById('pwCheck')

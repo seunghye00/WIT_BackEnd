@@ -7,11 +7,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wit.dto.AttendanceDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.services.AttendanceService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +42,8 @@ public class AttendanceController {
 			service.markAbsence(empNo, previousDate);
 			System.out.println("결근 처리 완료: " + empNo + ", 날짜: " + previousDate);
 
-			return "출근 처리 완료";
+			// 이게 이제 출퇴근 버튼 눌렀을떄 메인 화면에 버튼 클릭 한 시간 나오게 하는거!
+			return LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -60,7 +64,8 @@ public class AttendanceController {
 
 			System.out.println("결근 처리 완료: " + empNo + ", 날짜: " + previousDate);
 
-			return "퇴근 처리 완료";
+			// 이게 이제 출퇴근 버튼 눌렀을떄 메인 화면에 버튼 클릭 한 시간 나오게 하는거!
+			return LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -73,18 +78,17 @@ public class AttendanceController {
 		String empNo = (String) session.getAttribute("loginID");
 
 		// 월간 근태현황과 근무시간을 조회하여 모델에 추가합니다.
-		Map<String, Integer> monthlyStatus = service.getMonthlyStatus(empNo);
-		Map<String, Object> monthlyWorkHours = service.getMonthlyWorkHours(empNo);
-		List<Map<String, Object>> weeklyStatus = service.getWeeklyStatus(empNo);
+		Map<String, Integer> monthlyStatus = service.MonthlyStatus(empNo);
+		Map<String, Object> monthlyWorkHours = service.MonthlyWorkHours(empNo);
+		List<Map<String, Object>> weeklyStatus = service.WeeklyStatus(empNo);
 
 		// 직원 정보 가져오기
-		EmployeeDTO employeeInfo = service.getEmployeeInfo(empNo);
-		System.out.println("Employee Info: " + employeeInfo); // 로그 추가
+		EmployeeDTO employee = service.employeeInfo(empNo);
 
 		model.addAttribute("monthlyStatus", monthlyStatus);
 		model.addAttribute("monthlyWorkHours", monthlyWorkHours);
 		model.addAttribute("weeklyStatus", weeklyStatus);
-		model.addAttribute("employeeInfo", employeeInfo); // 직원 정보 모델에 추가
+		model.addAttribute("employee", employee);
 
 		return "Attendance/attendance";
 	}
@@ -97,13 +101,13 @@ public class AttendanceController {
 		// 현재 월을 가져옵니다. 예: "2024-08"
 		String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
 
-		List<Map<String, Object>> monthlyWorkStatus = service.getMonthlyWorkStatus(empNo, month);
-		
+		List<Map<String, Object>> monthlyWorkStatus = service.MonthlyWorkStatus(empNo, month);
+
 		// 직원 정보 가져오기
-		EmployeeDTO employeeInfo = service.getEmployeeInfo(empNo);
-		
+		EmployeeDTO employee = service.employeeInfo(empNo);
+
 		model.addAttribute("monthlyWorkStatus", monthlyWorkStatus);
-		model.addAttribute("employeeInfo", employeeInfo); // 직원 정보 모델에 추가
+		model.addAttribute("employee", employee);
 		return "Attendance/attendanceMonth";
 	}
 
@@ -111,12 +115,33 @@ public class AttendanceController {
 	@RequestMapping("/attendance_vacation")
 	public String attendance_vacation(Model model) {
 		String empNo = (String) session.getAttribute("loginID");
-		
+
 		// 직원 정보 가져오기
-		EmployeeDTO employeeInfo = service.getEmployeeInfo(empNo);
-		
-		model.addAttribute("employeeInfo", employeeInfo); // 직원 정보 모델에 추가
-		
+		EmployeeDTO employee = service.employeeInfo(empNo);
+
+		model.addAttribute("employee", employee);
+
 		return "Attendance/attendanceVacation";
+	}
+
+	// 출근 및 퇴근 시간 조회(메인 페이지)
+	@RequestMapping(value = "/times", produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public Map<String, String> getAttendanceTimes() {
+		String empNo = (String) session.getAttribute("loginID");
+		Map<String, String> times = new HashMap<>();
+
+		// 현재 날짜의 출근 기록 조회
+		AttendanceDTO record = service.getTodayAttendance(empNo);
+
+		if (record != null) {
+			times.put("startTime", record.getStart_time() != null ? record.getStart_time() : "00:00:00");
+			times.put("endTime", record.getEnd_time() != null ? record.getEnd_time() : "00:00:00");
+		} else {
+			times.put("startTime", "00:00:00");
+			times.put("endTime", "00:00:00");
+		}
+
+		return times;
 	}
 }

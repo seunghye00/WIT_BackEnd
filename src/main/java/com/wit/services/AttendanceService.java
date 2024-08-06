@@ -2,6 +2,7 @@ package com.wit.services;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -29,7 +30,7 @@ public class AttendanceService {
 		java.sql.Date workDate = java.sql.Date.valueOf(now.toLocalDate());
 
 		// 해당 날짜에 이미 출근 기록이 있는지 확인
-		AttendanceDTO existingRecord = dao.select(emp_no, workDate);
+		AttendanceDTO existingRecord = dao.selectAtd(emp_no, workDate);
 		if (existingRecord != null) {
 			throw new Exception("이미 출근 기록이 있습니다.");
 		}
@@ -52,7 +53,7 @@ public class AttendanceService {
 		java.sql.Date workDate = java.sql.Date.valueOf(now.toLocalDate());
 
 		// 해당 날짜에 출근 기록이 있는지 확인
-		AttendanceDTO existingRecord = dao.select(emp_no, workDate);
+		AttendanceDTO existingRecord = dao.selectAtd(emp_no, workDate);
 		if (existingRecord == null) {
 			throw new Exception("출근 버튼을 누르지 않았습니다. 퇴근 버튼을 클릭할 수 없습니다.");
 		}
@@ -92,15 +93,15 @@ public class AttendanceService {
 	}
 
 	// 월간 근태현황 조회
-	public Map<String, Integer> getMonthlyStatus(String empNo) {
-		Map<String, Integer> monthlyStatus = dao.getMonthlyStatus(empNo);
+	public Map<String, Integer> MonthlyStatus(String empNo) {
+		Map<String, Integer> monthlyStatus = dao.MonthlyStatus(empNo);
 		System.out.println("서비스: " + monthlyStatus);
 		return monthlyStatus;
 	}
 
 	// 월간 근무시간 조회
-	public Map<String, Object> getMonthlyWorkHours(String empNo) {
-		Map<String, Object> result = dao.getMonthlyWorkHours(empNo);
+	public Map<String, Object> MonthlyWorkHours(String empNo) {
+		Map<String, Object> result = dao.MonthlyWorkHours(empNo);
 
 		// 총 근무시간을 시간과 분으로 변환
 		BigDecimal totalHours = (BigDecimal) result.get("TOTALWORKINGHOURS");
@@ -111,13 +112,13 @@ public class AttendanceService {
 	}
 
 	// 주간 근무현황 조회
-	public List<Map<String, Object>> getWeeklyStatus(String emp_no) {
-		return dao.getWeeklyStatus(emp_no);
+	public List<Map<String, Object>> WeeklyStatus(String emp_no) {
+		return dao.WeeklyStatus(emp_no);
 	}
 
 	// 월간 근무현황 조회
-	public List<Map<String, Object>> getMonthlyWorkStatus(String emp_no, String month) {
-		return dao.getMonthlyWorkStatus(emp_no, month);
+	public List<Map<String, Object>> MonthlyWorkStatus(String emp_no, String month) {
+		return dao.MonthlyWorkStatus(emp_no, month);
 	}
 
 	// 결근
@@ -128,7 +129,13 @@ public class AttendanceService {
 	}
 
 	// 직원 정보 조회 메소드 추가
-    public EmployeeDTO getEmployeeInfo(String emp_no) {
-        return dao.getEmployeeInfo(emp_no);
-    }
+	public EmployeeDTO employeeInfo(String emp_no) {
+		return dao.employeeInfo(emp_no);
+	}
+
+	// 출근 및 퇴근 시간 조회(메인 페이지)
+	public AttendanceDTO getTodayAttendance(String emp_no) {
+		java.sql.Date today = java.sql.Date.valueOf(LocalDate.now());
+		return dao.selectAtd(emp_no, today);
+	}
 }

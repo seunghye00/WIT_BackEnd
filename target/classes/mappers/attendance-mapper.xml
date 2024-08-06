@@ -16,10 +16,10 @@
 	</insert>
 
 	<!-- 특정 직원의 특정 날짜 출근 기록을 조회 -->
-	<select id="select" resultType="com.wit.dto.AttendanceDTO">
-		SELECT * FROM Attendance WHERE
-		emp_no = #{emp_no} AND work_date =
-		#{work_date}
+	<!-- 출근 및 퇴근 시간 조회(메인 페이지) -->
+	<select id="selectAtd" resultType="com.wit.dto.AttendanceDTO">
+		SELECT * FROM Attendance WHERE emp_no = #{emp_no, jdbcType=VARCHAR} AND
+		work_date = #{work_date}
 	</select>
 
 	<!-- 퇴근 기록을 업데이트 -->
@@ -33,7 +33,7 @@
 	</update>
 
 	<!-- 월간 근태현황 조회 -->
-	<select id="getMonthlyStatus" resultType="java.util.HashMap">
+	<select id="MonthlyStatus" resultType="java.util.HashMap">
 		WITH date_range AS (
 		SELECT
 		TRUNC(SYSDATE, 'MM') AS start_date,
@@ -59,7 +59,7 @@
 	</select>
 
 	<!-- 월간 근무시간 조회 -->
-	<select id="getMonthlyWorkHours" resultType="java.util.HashMap">
+	<select id="MonthlyWorkHours" resultType="java.util.HashMap">
 		WITH date_range AS (
 		SELECT
 		TRUNC(SYSDATE, 'MM') AS start_date,
@@ -91,7 +91,7 @@
 	</select>
 
 	<!-- 주간 근무현황 조회 -->
-	<select id="getWeeklyStatus" resultType="java.util.HashMap">
+	<select id="WeeklyStatus" resultType="java.util.HashMap">
 		WITH date_range AS (
 		SELECT
 		TRUNC(SYSDATE, 'IW') AS start_date,
@@ -116,7 +116,7 @@
 	</select>
 
 	<!-- 월간 근무현황 조회 -->
-	<select id="getMonthlyWorkStatus" resultType="java.util.HashMap">
+	<select id="MonthlyWorkStatus" resultType="java.util.HashMap">
 		SELECT
 		work_date,
 		start_time,
@@ -149,9 +149,9 @@
 	</update>
 
 	<!-- 직원 정보 조회 -->
-	<select id="getEmployeeInfo"
-		resultType="com.wit.dto.EmployeeDTO">
-		SELECT e.name, r.role_title as role_code
+	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
+		SELECT e.name, r.role_title
+		as role_code
 		FROM Employee e
 		JOIN Role r ON e.role_code = r.role_code
 		WHERE e.emp_no = #{emp_no}

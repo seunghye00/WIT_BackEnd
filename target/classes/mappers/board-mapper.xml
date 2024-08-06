@@ -67,9 +67,9 @@
 	</select>
 
 	<!-- 직원 정보 조회 -->
-	<select id="getEmployeeInfo"
-		resultType="com.wit.dto.EmployeeDTO">
-		SELECT e.name, r.role_title as role_code
+	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
+		SELECT e.name, r.role_title
+		as role_code
 		FROM Employee e
 		JOIN Role r ON e.role_code = r.role_code
 		WHERE e.emp_no = #{emp_no}

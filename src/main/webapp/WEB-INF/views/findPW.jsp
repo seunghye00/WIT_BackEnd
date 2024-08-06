@@ -5,7 +5,7 @@
 <html>
 <head>
 <title>PW 찾기</title>
-<link rel="stylesheet" href="/resources/css/employee.css">
+<link rel="stylesheet" href="/resources/css/wit.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="/resources/js/employee.js"></script>
 </head>

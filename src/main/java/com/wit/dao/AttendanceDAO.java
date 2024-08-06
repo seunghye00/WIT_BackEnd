@@ -23,11 +23,12 @@ public class AttendanceDAO {
 	}
 
 	// 특정 직원의 특정 날짜 출근 정보를 조회
-	public AttendanceDTO select(@Param("emp_no") String emp_no, @Param("work_date") Date work_date) {
+	// 출근 및 퇴근 시간 조회(메인 페이지)
+	public AttendanceDTO selectAtd(@Param("emp_no") String emp_no, @Param("work_date") Date work_date) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("emp_no", emp_no);
 		params.put("work_date", work_date);
-		return mybatis.selectOne("attendance.select", params);
+		return mybatis.selectOne("attendance.selectAtd", params);
 	}
 
 	// 퇴근하기
@@ -36,29 +37,29 @@ public class AttendanceDAO {
 	}
 
 	// 월간 근태현황 조회
-	public Map<String, Integer> getMonthlyStatus(String emp_no) {
-		Map<String, Integer> result = mybatis.selectOne("attendance.getMonthlyStatus", emp_no);
+	public Map<String, Integer> MonthlyStatus(String emp_no) {
+		Map<String, Integer> result = mybatis.selectOne("attendance.MonthlyStatus", emp_no);
 		System.out.println("DAO: " + result);
 		return result;
 	}
 
 	// 월간 근무시간 조회
-	public Map<String, Object> getMonthlyWorkHours(String emp_no) {
-		Map<String, Object> result = mybatis.selectOne("attendance.getMonthlyWorkHours", emp_no);
+	public Map<String, Object> MonthlyWorkHours(String emp_no) {
+		Map<String, Object> result = mybatis.selectOne("attendance.MonthlyWorkHours", emp_no);
 		return result;
 	}
 
 	// 주간 근무현황 조회
-	public List<Map<String, Object>> getWeeklyStatus(String emp_no) {
-		return mybatis.selectList("attendance.getWeeklyStatus", emp_no);
+	public List<Map<String, Object>> WeeklyStatus(String emp_no) {
+		return mybatis.selectList("attendance.WeeklyStatus", emp_no);
 	}
 
 	// 월간 근무현황 조회
-	public List<Map<String, Object>> getMonthlyWorkStatus(String emp_no, String month) {
+	public List<Map<String, Object>> MonthlyWorkStatus(String emp_no, String month) {
 		Map<String, String> params = new HashMap<>();
 		params.put("emp_no", emp_no);
 		params.put("month", month);
-		return mybatis.selectList("attendance.getMonthlyWorkStatus", params);
+		return mybatis.selectList("attendance.MonthlyWorkStatus", params);
 	}
 
 	// 결근
@@ -70,7 +71,7 @@ public class AttendanceDAO {
 	}
 
 	// 직원 정보 조회 메소드 추가
-    public EmployeeDTO getEmployeeInfo(String emp_no) {
-        return mybatis.selectOne("attendance.getEmployeeInfo", emp_no);
+    public EmployeeDTO employeeInfo(String emp_no) {
+        return mybatis.selectOne("attendance.employeeInfo", emp_no);
     }
 }
