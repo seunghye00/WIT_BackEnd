@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.wit.dto.AddressBookDTO;
 import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
+import com.wit.dto.EmployeeInfoDTO;
 import com.wit.dto.RoleDTO;
 
 @Repository
@@ -126,8 +127,8 @@ public class EmployeeDAO {
 	}
 	
 	// 메신저 주소록 조히
-    public List<Map<String, Object>> getAllMessengerEmp() {
-        return mybatis.selectList("employee.getAllMessengerEmp");
+    public List<Map<String, Object>> getAllMessengerEmp(String emp_no) {
+        return mybatis.selectList("employee.getAllMessengerEmp", emp_no);
     }
     
 	// 메신저 주소록 상세 조히
@@ -153,5 +154,14 @@ public class EmployeeDAO {
 	public int delete(String emp_no) {
 		return mybatis.delete("employee.delete", emp_no);
 	}
-
+	
+	// 부서별 사원 목록 조회
+	public List<EmployeeDTO> getListByDept(String deptCode) {
+		return mybatis.selectList("employee.selectByDept", deptCode);
+	}
+	
+	// 해당 사번을 지닌 직원의 이름과 부서명 조회
+	public EmployeeInfoDTO getNameNDept(String emp_no) {
+		return mybatis.selectOne("employee.selectByEmpNo", emp_no);
+	}
 }

@@ -258,7 +258,8 @@ public class EmployeeController {
     @ResponseBody
     @RequestMapping("/getEmployeeList")
     public List<Map<String, Object>> getAllMessengerEmp () {
-    	return service.getAllMessengerEmp();
+    	String emp_no = (String) session.getAttribute("loginID");
+    	return service.getAllMessengerEmp(emp_no);
     }
     
     // 채팅 메신저 상세 디테일
@@ -294,6 +295,13 @@ public class EmployeeController {
 			session.invalidate();
 		}
 		return "redirect:/";
+	}
+	
+	// ajax로 부서별 사원 목록를 요청했을 때 서버로 보내기 위한 메서드
+	@ResponseBody
+	@RequestMapping(value = "/getListByDept", produces = "application/json;charset=utf8")
+	public List<EmployeeDTO> getListByDept(String deptCode) throws Exception {
+		return service.getListByDept(deptCode);
 	}
 
 	// 예외를 담당하는 메서드 생성

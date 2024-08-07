@@ -4,8 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
+import java.util.Date;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,7 +25,7 @@ public class AttendanceDAO {
 
 	// 특정 직원의 특정 날짜 출근 정보를 조회
 	// 출근 및 퇴근 시간 조회(메인 페이지)
-	public AttendanceDTO selectAtd(@Param("emp_no") String emp_no, @Param("work_date") Date work_date) {
+	public AttendanceDTO selectAtd(String emp_no, Date work_date) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("emp_no", emp_no);
 		params.put("work_date", work_date);
@@ -72,7 +71,7 @@ public class AttendanceDAO {
 	}
 
 	// 직원 정보 조회 메소드 추가
-    public EmployeeDTO employeeInfo(String emp_no) {
-        return mybatis.selectOne("attendance.employeeInfo", emp_no);
-    }
+	public EmployeeDTO employeeInfo(String emp_no) {
+		return mybatis.selectOne("attendance.employeeInfo", emp_no);
+	}
 }
