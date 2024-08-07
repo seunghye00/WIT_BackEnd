@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="addressbook">
+	<select id="selectByChosungAndCategory" parameterType="map" resultType="map">
+	     <![CDATA[
+            select * from (
+            select 
+                ab.*, 
+                c.category_name,
+                row_number() over (order by ab.name asc) as rown
+            from 
+                address_book ab
+            left join
+                categories c on ab.category_id = c.category_id
+            where 
+                ab.emp_no = #{emp_no}
+            ]]>
+            <if test="chosung != null and chosung != ''">
+                <![CDATA[
+                	 and (
+                        #{chosung} = '전체'
+                        or (#{chosung} = 'ㄱ' and ab.name >= '가' and ab.name < '나')
+	                    or (#{chosung} = 'ㄴ' and ab.name >= '나' and ab.name < '다')
+	                    or (#{chosung} = 'ㄷ' and ab.name >= '다' and ab.name < '라')
+	                    or (#{chosung} = 'ㄹ' and ab.name >= '라' and ab.name < '마')
+	                    or (#{chosung} = 'ㅁ' and ab.name >= '마' and ab.name < '바')
+	                    or (#{chosung} = 'ㅂ' and ab.name >= '바' and ab.name < '사')
+	                    or (#{chosung} = 'ㅅ' and ab.name >= '사' and ab.name < '아')
+	                    or (#{chosung} = 'ㅇ' and ab.name >= '아' and ab.name < '자')
+	                    or (#{chosung} = 'ㅈ' and ab.name >= '자' and ab.name < '차')
+	                    or (#{chosung} = 'ㅊ' and ab.name >= '차' and ab.name < '카')
+	                    or (#{chosung} = 'ㅋ' and ab.name >= '카' and ab.name < '타')
+	                    or (#{chosung} = 'ㅌ' and ab.name >= '타' and ab.name < '파')
+	                    or (#{chosung} = 'ㅍ' and ab.name >= '파' and ab.name < '하')
+	                    or (#{chosung} = 'ㅎ' and ab.name >= '하' and ab.name < '힣')
+	                    or (#{chosung} = 'a-z' and regexp_like(ab.name, '^[A-Za-z]'))
+	                    or (#{chosung} = '0-9' and regexp_like(ab.name, '^[0-9]'))
+                    )
+				]]>
+            </if>
+            <if test="category != null and category != ''">
+                <![CDATA[
+               		and c.category_name = #{category}
+                ]]>
+            </if>
+        <![CDATA[order by ab.name
+        ) 
+       	where rown between #{startNum} and #{endNum}
+	    ]]>
+	</select>
+	
+	<select id="toolCountPageByCategory" parameterType="map" resultType="int">
+	    <![CDATA[
+            select count(*) from address_book ab
+            left join
+                categories c on ab.category_id = c.category_id
+            where 
+                ab.emp_no = #{emp_no}
+            ]]>
+            <if test="chosung != null and chosung != ''">
+                <![CDATA[
+                and (
+	                  #{chosung} = '전체'
+	                  or (#{chosung} = 'ㄱ' and ab.name >= '가' and ab.name < '나')
+	                  or (#{chosung} = 'ㄴ' and ab.name >= '나' and ab.name < '다')
+	                  or (#{chosung} = 'ㄷ' and ab.name >= '다' and ab.name < '라')
+	                  or (#{chosung} = 'ㄹ' and ab.name >= '라' and ab.name < '마')
+	                  or (#{chosung} = 'ㅁ' and ab.name >= '마' and ab.name < '바')
+	                  or (#{chosung} = 'ㅂ' and ab.name >= '바' and ab.name < '사')
+	                  or (#{chosung} = 'ㅅ' and ab.name >= '사' and ab.name < '아')
+	                  or (#{chosung} = 'ㅇ' and ab.name >= '아' and ab.name < '자')
+	                  or (#{chosung} = 'ㅈ' and ab.name >= '자' and ab.name < '차')
+	                  or (#{chosung} = 'ㅊ' and ab.name >= '차' and ab.name < '카')
+	                  or (#{chosung} = 'ㅋ' and ab.name >= '카' and ab.name < '타')
+	                  or (#{chosung} = 'ㅌ' and ab.name >= '타' and ab.name < '파')
+	                  or (#{chosung} = 'ㅍ' and ab.name >= '파' and ab.name < '하')
+	                  or (#{chosung} = 'ㅎ' and ab.name >= '하' and ab.name < '힣')
+	                  or (#{chosung} = 'a-z' and regexp_like(ab.name, '^[A-Za-z]'))
+	                  or (#{chosung} = '0-9' and regexp_like(ab.name, '^[0-9]'))
+                )
+                ]]>
+            </if>
+            <if test="category != null and category != ''">
+                <![CDATA[and c.category_name = #{category}]]>
+            </if>
+	</select>
+    
+    <!-- 주소록 검색 페이지네이션 총 카운트 -->
+    <select id="totalCountPageSearch" resultType="int">
+        select count(*) from address_book where name like '%'||#{keyword}||'%'
+    </select>
+    
+    <!-- 주소록 검색 -->
+    <select id="selectByCon" resultType="map">
+    	<![CDATA[
+		    select * from (
+		        select 
+		            ab.*, 
+		            c.category_name,
+		            row_number() over (order by ab.name asc) as rown
+		        from 
+		            address_book ab
+		        left join
+		            categories c on ab.category_id = c.category_id
+		        where 
+		            ab.name like '%' || #{keyword} || '%'
+		    )
+		    where rown between #{startNum} and #{endNum}
+		]]>
+	</select>
+	
+	<!-- 주소록 등록 -->
+	<insert id="insertContact" parameterType="com.wit.dto.AddressBookDTO">
+		insert into address_book values(addr_book_seq.nextval, #{emp_no}, #{name}, #{email}, #{phone}, #{address}, #{category_id}, #{photo}, #{company}, #{position})
+    </insert>
+    
+	<!-- 주소록 수정 -->
+	<update id="updateContact" parameterType="com.wit.dto.AddressBookDTO">
+	    update address_book
+	    set 
+	        name = #{name},
+	        email = #{email},
+	        phone = #{phone},
+	        address = #{address},
+	        category_id = #{category_id},
+	        photo = #{photo},
+	        company = #{company},
+	        position = #{position}
+	    where addr_book_seq = #{addr_book_seq}
+	</update>
+	
+	<!-- 주소록 삭제 -->
+	<delete id="deleteContact" parameterType="int">
+	    delete from address_book where addr_book_seq = #{addr_book_seq}
+	</delete>
+	
+	<!-- 주소록 데이터 가져오기 -->
+	<select id="getContactBySeq" parameterType="int" resultType="com.wit.dto.AddressBookDTO">
+	    select * from address_book where addr_book_seq = #{addr_book_seq}
+	</select>
+	
+	<select id="getCategoryNameById" parameterType="int" resultType="String">
+	    select category_name from categories where category_id = #{category_id}
+	</select>	
+	
+    <!-- 카테고리 목록 가져오기 -->
+    <select id="getCategories" resultType="map">
+        select * from categories where emp_no = #{emp_no}
+    </select>
+
+    <!-- 카테고리 추가 -->
+    <insert id="addCategory">
+        insert into categories values (categories_seq.nextval, #{emp_no}, #{category})
+    </insert>
+
+    <!-- 카테고리 수정 -->
+    <update id="editCategory">
+    	update categories set category_name = #{newCategory} where emp_no = #{emp_no} and category_name = #{oldCategory}
+    </update>
+
+    <!-- 카테고리 삭제 -->
+    <delete id="deleteCategory">
+    	delete from categories where emp_no = #{emp_no} and category_name = #{category}
+    </delete>
+    
+</mapper>
