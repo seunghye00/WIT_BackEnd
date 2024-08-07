@@ -78,6 +78,7 @@
     flex: 1;
     display: flex;
     border-bottom: 1px solid #c1c1c1;
+    max-height: 61px;
 }
 
 .boardList .notiList .notiConts:hover {
