@@ -2353,6 +2353,11 @@ button.disabled {
     border-bottom: 1px solid #c1c1c1;
 }
 
+.eApproval .docuList .listBox .rows.emptyDocuList {
+	max-height: unset;
+	height: 228px;
+}
+
 .eApproval .docuList .listBox .rows.emptyDocuList:hover {
     background: inherit;
     cursor: default;
@@ -2373,6 +2378,7 @@ button.disabled {
     border-radius: 15px;
     background-color: #555;
     color: #fff;
+    max-height: 44px;
 }
 
 .eApproval .docuList .listBox .rows .cols {

@@ -19,85 +19,7 @@
 <body>
     <!-- 공통영역 -->
     <div class="container">
-        <div class="sideBar">
-            <div class="top">
-                <i class="bx bx-menu" id="btn"></i>
-            </div>
-            <div class="user">
-                <img src="/img/WIT_logo1.png" alt="me" class="userImg">
-                <div class="nickName">
-                    <p class="bold">Wit Works</p>
-                    <p></p>
-                </div>
-            </div>
-
-            <ul>
-                <li>
-                    <a href="#">
-                        <i class='bx bxs-home-alt-2'></i>
-                        <span class="navItem">홈</span>
-                    </a>
-                    <span class="toolTip">홈</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bx-paperclip'></i>
-                        <span class="navItem">주소록</span>
-                    </a>
-                    <span class="toolTip">주소록</span>
-                </li>
-                <li>
-                    <a href="board2.html">
-                        <i class="bx bxs-grid-alt"></i>
-                        <span class="navItem">게시판</span>
-                    </a>
-                    <span class="toolTip">게시판</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bx-calendar-alt'></i>
-                        <span class="navItem">캘린더</span>
-                    </a>
-                    <span class="toolTip">캘린더</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bxs-message-dots'></i>
-                        <span class="navItem">메신저</span>
-                    </a>
-                    <span class="toolTip">메신저</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bx-clipboard'></i>
-                        <span class="navItem">전자결재</span>
-                    </a>
-                    <span class="toolTip">전자결재</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bxs-briefcase-alt-2'></i>
-                        <span class="navItem">근태관리</span>
-                    </a>
-                    <span class="toolTip">근태관리</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bxs-check-square'></i>
-                        <span class="navItem">예약</span>
-                    </a>
-                    <span class="toolTip">예약</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bx-sitemap'></i>
-                        <span class="navItem">조직도</span>
-                    </a>
-                    <span class="toolTip">조직도</span>
-                </li>
-
-            </ul>
-        </div>
+        <%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>	
         <!-- 공통역역 끝 -->
 
         <div class="main-content">
@@ -111,78 +33,14 @@
             <div class="contents">
                 <div class="sideAbout">
                     <div class="sideTxt">
-                        <a href="home.html">
+                        <a href="/eApproval/home">
                             <h2 class="sideTit">전자 결재</h2>
                         </a>
                     </div>
                     <div class="sideBtnBox">
                         <button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
-                        <div class="eApprModal docuChoiModal">
-                            <div class="eApprModalTitle">
-								문서 양식 선택 <span class="closeModal">X</span>
-							</div>
-							<div class="choiCont">
-								<ul id="docuNameList"></ul>
-							</div>
-							<div class="modalBtnBox">
-								<button class="next">다음</button>
-								<button class="cancel red">취소</button>
-							</div>
-                        </div>
-                        <div class="eApprModal apprChoiModal">
-                            <div class="eApprModalTitle">
-                                결재선 선택
-                                <span class="closeModal">X</span>
-                            </div>
-                            <div class="choiCont">
-                                <div class="deptList">
-									<ul id="deptList"></ul>
-								</div>
-                                <div class="employeeList">
-									<ul id="employeeList"></ul>
-								</div>
-                                <div class="arrBtns">
-									<button id="addAppr">
-										<img src="/img/toggle.png" alt="">
-									</button>
-									<button id="delAppr">
-										<img src="/img/toggle.png" alt="">
-									</button>
-									<div style="padding: 30px 0;"></div>
-									<button id="addRefe">
-										<img src="/img/toggle.png" alt="">
-									</button>
-									<button id="delRefe">
-										<img src="/img/toggle.png" alt="">
-									</button>
-								</div>
-                                <div class="resultAppr">
-                                    <div class="apprList list">
-										<p>결재 순서</p>
-										<ul>
-											<li id="firAppr">
-												<div>첫번째 결재자</div>
-											</li>
-											<li id="secAppr">
-												<div>두번째 결재자</div>
-											</li>
-											<li id="thirAppr">
-												<div>세번째 결재자</div>
-											</li>
-										</ul>
-									</div>
-									<div class="refeList list">
-										<p>참조 목록</p>
-										<ul id="refeList"></ul>
-									</div>
-                                </div>
-                            </div>
-                            <div class="modalBtnBox">
-                                <button class="done">완료</button>
-                                <button class="prev red">이전</button>
-                            </div>
-                        </div>
-                    </div>
+                        <%@ include file="/WEB-INF/views/eApproval/newWriteModal.jsp" %>
+					</div>
                     <div class="addressListPrivate">
 						<ul class="privateList">
 							<li class="toggleItem">
