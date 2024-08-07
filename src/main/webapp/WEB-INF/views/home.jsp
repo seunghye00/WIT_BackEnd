@@ -21,114 +21,114 @@
 </head>
 
 <body class="membership_body">
-   <c:choose>
-      <c:when test="${loginID != null}">
-         <div class="container">
-            <!-- 공통영역 -->
-            <div class="sideBar">
-               <div class="top">
-                  <i class="bx bx-menu" id="btn"></i>
-               </div>
-               <div class="user">
-                  <img src="/resources/img/WIT_logo1.png" alt="로고" class="userImg">
-                  <div class="nickName">
-                     <p class="bold">Wit Works</p>
-                     <p></p>
-                  </div>
-               </div>
-               <ul>
-                  <li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span
-                        class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
-                  <li><a href="/addressbook/addressbook"> <i class='bx bx-paperclip'></i> <span
-                        class="navItem">주소록</span></a> <span class="toolTip">주소록</span></li>
-                  <li><a href="/board/list"> <i class="bx bxs-grid-alt"></i>
-                        <span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
-                  <li><a href="/calendar/calendar"> <i class='bx bx-calendar-alt'></i> <span
-                        class="navItem">캘린더</span></a> <span class="toolTip">캘린더</span></li>
-                  <li><a href="/messenger/messenger"> <i class='bx bxs-message-dots'></i> <span
-                        class="navItem">메신저</span></a> <span class="toolTip">메신저</span></li>
-                  <li><a href="#"> <i class='bx bx-clipboard'></i> <span
-                        class="navItem">전자결재</span></a> <span class="toolTip">전자결재</span></li>
-                  <li><a href="/attendance/attendance"> <i
-                        class='bx bxs-briefcase-alt-2'></i> <span class="navItem">근태관리</span></a>
-                     <span class="toolTip">근태관리</span></li>
-                  <li><a href="#"> <i class='bx bxs-check-square'></i> <span
-                        class="navItem">예약</span></a> <span class="toolTip">예약</span></li>
-                  <li><a href="#"> <i class='bx bx-sitemap'></i> <span
-                        class="navItem">조직도</span></a> <span class="toolTip">조직도</span></li>
-               </ul>
-            </div>
-            <!-- 공통영역 끝 -->
-            <div class="main-content">
-               <div class="header">
-                  <!--마이페이지로 이동-->
-                  <span class="myName"> <img src="/resources/img/푸바오.png"
-                     alt="프로필 사진" class="userImg"><a href="/employee/mypage">${loginName}
-                        ${loginRole}</a></span> <span class="alert"><a href=""><i
-                        class='bx bx-bell'></i></a></span> <span class="logOut"><a
-                     href="/employee/logout"><i class='bx bx-log-in'></i></a></span>
-               </div>
-               <div class="contents">
-                  <div class="left">
-                     <div class="leftTop">user</div>
-                     <div class="leftBottom">
-                        <div id="date"></div>
-                        <h3 id="clock"></h3>
-                        <div class="attendance-btn">
-                           <div>
-                              <button type="button" id="start_button">출근</button>
-                              <span class="check-time" id="start_time_display">00:00</span>
-                           </div>
-                           <div>
-                              <button type="button" id="end_button">퇴근</button>
-                              <span class="check-time" id="end_time_display">00:00</span>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="center">
-                     <div class="mainTitle">인기글</div>
-                     <div class="boardList">
-                        <div class="notiList">
-                           <div class="rows notiHeader">
-                              <div class="cols fboardTitle">
-                                 <span>글 제목</span>
-                              </div>
-                              <div class="cols">
-                                 <span>작성자</span>
-                              </div>
-                              <div class="cols">
-                                 <span>날짜</span>
-                              </div>
-                              <div class="cols">
-                                 <i class="fa-regular fa-eye"></i>
-                              </div>
-                           </div>
-                           <div class="rows notiConts">
-                              <div class="cols fboardTitle">
-                                 <span>글 제목 영역입니다.</span>
-                              </div>
-                              <div class="cols">
-                                 <span>작성자</span>
-                              </div>
-                              <div class="cols">
-                                 <span>2024-07-28</span>
-                              </div>
-                              <div class="cols">
-                                 <span>300</span>
-                              </div>
-                           </div>
-                           <!-- 나머지 게시글 목록 -->
-                        </div>
-                     </div>
-                  </div>
-                  <div class="right">
-                     <div class="rightTop">전자결재영역</div>
-                     <div class="rightBottom">캘린더영역</div>
-                  </div>
-               </div>
-            </div>
-         </div>
+	<c:choose>
+		<c:when test="${loginID != null}">
+			<div class="container">
+				<!-- 공통영역 -->
+				<div class="sideBar">
+					<div class="top">
+						<i class="bx bx-menu" id="btn"></i>
+					</div>
+					<div class="user">
+						<img src="/resources/img/WIT_logo1.png" alt="로고" class="userImg">
+						<div class="nickName">
+							<p class="bold">Wit Works</p>
+							<p></p>
+						</div>
+					</div>
+					<ul>
+						<li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span
+								class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
+						<li><a href="/addressbook/addressbook"> <i class='bx bx-paperclip'></i> <span
+								class="navItem">주소록</span></a> <span class="toolTip">주소록</span></li>
+						<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i>
+								<span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
+						<li><a href="/calendar/calendar"> <i class='bx bx-calendar-alt'></i> <span
+								class="navItem">캘린더</span></a> <span class="toolTip">캘린더</span></li>
+						<li><a href="/messenger/messenger"> <i class='bx bxs-message-dots'></i> <span
+								class="navItem">메신저</span></a> <span class="toolTip">메신저</span></li>
+						<li><a href="#"> <i class='bx bx-clipboard'></i> <span
+								class="navItem">전자결재</span></a> <span class="toolTip">전자결재</span></li>
+						<li><a href="/attendance/attendance"> <i
+								class='bx bxs-briefcase-alt-2'></i> <span class="navItem">근태관리</span></a>
+							<span class="toolTip">근태관리</span></li>
+						<li><a href="#"> <i class='bx bxs-check-square'></i> <span
+								class="navItem">예약</span></a> <span class="toolTip">예약</span></li>
+						<li><a href="#"> <i class='bx bx-sitemap'></i> <span
+								class="navItem">조직도</span></a> <span class="toolTip">조직도</span></li>
+					</ul>
+				</div>
+				<!-- 공통영역 끝 -->
+				<div class="main-content">
+					<div class="header">
+						<!--마이페이지로 이동-->
+						<span class="myName"> <img src="/resources/img/푸바오.png"
+							alt="프로필 사진" class="userImg"><a href="/employee/mypage">${loginName}
+								${loginRole}</a></span> <span class="alert"><a href=""><i
+								class='bx bx-bell'></i></a></span> <span class="logOut"><a
+							href="/employee/logout"><i class='bx bx-log-in'></i></a></span>
+					</div>
+					<div class="contents">
+						<div class="left">
+							<div class="leftTop">user</div>
+							<div class="leftBottom">
+								<div id="date"></div>
+								<h3 id="clock"></h3>
+								<div class="attendance-btn">
+									<div>
+										<button type="button" id="start_button">출근</button>
+										<span class="check-time" id="start_time_display">00:00</span>
+									</div>
+									<div>
+										<button type="button" id="end_button">퇴근</button>
+										<span class="check-time" id="end_time_display">00:00</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="center">
+							<div class="mainTitle">인기글</div>
+							<div class="boardList">
+								<div class="notiList">
+									<div class="rows notiHeader">
+										<div class="cols fboardTitle">
+											<span>글 제목</span>
+										</div>
+										<div class="cols">
+											<span>작성자</span>
+										</div>
+										<div class="cols">
+											<span>날짜</span>
+										</div>
+										<div class="cols">
+											<i class="fa-regular fa-eye"></i>
+										</div>
+									</div>
+									<div class="rows notiConts">
+										<div class="cols fboardTitle">
+											<span>글 제목 영역입니다.</span>
+										</div>
+										<div class="cols">
+											<span>작성자</span>
+										</div>
+										<div class="cols">
+											<span>2024-07-28</span>
+										</div>
+										<div class="cols">
+											<span>300</span>
+										</div>
+									</div>
+									<!-- 나머지 게시글 목록 -->
+								</div>
+							</div>
+						</div>
+						<div class="right">
+							<div class="rightTop">전자결재영역</div>
+							<div class="rightBottom">캘린더영역</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
          <div class="overlay"></div>
          <div id="popup" class="popup">
