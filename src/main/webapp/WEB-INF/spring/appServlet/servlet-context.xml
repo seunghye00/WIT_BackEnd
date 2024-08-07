@@ -21,6 +21,9 @@
 	<resources mapping="/css/**" location="/resources/css/" />
 	<resources mapping="/js/**" location="/resources/js/" />
 
+	<!-- New resource handler for uploads directory -->
+	<resources mapping="/uploads/**" location="file:C:\Users\타리\Desktop\UploadServerFile\" />
+
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
 	<beans:bean

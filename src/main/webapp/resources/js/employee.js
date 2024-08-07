@@ -79,17 +79,10 @@ $(document).ready(function () {
         }
     })
 
-    // 회원탈퇴 버튼
-    $('#del_btn').on('click', function (event) {
-        event.preventDefault()
-        if (confirm('정말 탈퇴 하시겠습니까?')) {
-            window.location.href = '/employee/delete'
-        }
-    })
-
     // 사용자 첫 로그인시 팝업 업데이트 정규표현식
     $('#pw').on('keyup', function () {
         let password = $(this).val().trim()
+        // 소문자,숫자,특수문자 를 사용하여 최소 10자리
         let regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{10,}$/
         let resultLabel = $('#resultpw')
         let pwCheck = $('#pwCheck')
@@ -141,6 +134,9 @@ $(document).ready(function () {
         }
     })
 
+	//주민등록번호
+	// 앞자리와 뒷자리 사이에 - 필수!
+	// 뒷자리 첫번호는 무조건 1~4 여야한다
     $('#ssn').on('keyup', function () {
         let ssn = $(this).val()
         let regex =
@@ -166,6 +162,9 @@ $(document).ready(function () {
         }
     })
 
+	// 핸드폰
+	// 010 으로 시작해야한다
+	// - 필수!
     $('#phone').on('keyup', function () {
         let phone = $(this).val()
         let regex = /^010-\d{3,4}-\d{4}$/
@@ -190,9 +189,11 @@ $(document).ready(function () {
         }
     })
 
+	// 이메일
+	// 무조건 마무리는 .com, .net, .co.kr 로 끝나야한다
     $('#email').on('keyup', function () {
         let email = $(this).val()
-        let regex = /^[^\s@]+@[^\s@]+\.(com|net)$/
+        let regex = /^[^\s@]+@[^\s@]+\.(com|net|co\.kr)$/; 
         let resultLabel = $('#resultEmail')
         let emailCheck = $('#emailCheck')
 
@@ -295,6 +296,7 @@ $(document).ready(function () {
             type: 'POST',
             data: $(this).serialize(),
             // 폼 데이터를 시리얼라이즈하여 전송
+            //시리얼라이즈(serializing)는 데이터를 전송하거나 저장하기 위해 구조화된 형식으로 변환하는 과정
             success: function (response) {
                 // 성공적인 응답 처리
                 $('.overlay').hide()
@@ -343,7 +345,7 @@ $(document).ready(function () {
     // 닉네임 중복 체크 버튼 클릭 이벤트
     $('#checkNickname').click(function () {
         var nickname = $('#nickname').val().trim()
-        let regex = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,7}$/ // 정규표현식 추가
+        let regex = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,7}$/ 
 
         if (nickname === '') {
             alert('닉네임을 입력해주세요.')
@@ -551,7 +553,7 @@ $(document).ready(function () {
         }
     })
 
-    // 출퇴근 시간을 메인에 표시
+    // 출퇴근 시간을 메인페이지 에 표시
     $.ajax({
         url: '/attendance/times',
         type: 'GET',
@@ -578,7 +580,7 @@ $(document).ready(function () {
                 type: 'POST',
                 success: function (response) {
                     $('#start_time_display').text(response.startTime)
-                    // 서버에서 받은 메시지를 알림으로 표시
+                    // 서버에서 받은 메시지 를 표시
                     alert(response.message)
                 },
                 error: function (xhr, status, error) {
@@ -596,7 +598,7 @@ $(document).ready(function () {
                 type: 'POST',
                 success: function (response) {
                     $('#end_time_display').text(response.endTime)
-                    // 서버에서 받은 메시지를 알림으로 표시
+                    // 서버에서 받은 메시지 를 표시
                     alert(response.message)
                 },
                 error: function (xhr, status, error) {
@@ -605,7 +607,17 @@ $(document).ready(function () {
             })
         }
     })
-
+    
+    
+    // 회원탈퇴 버튼
+    $('#del_btn').on('click', function (event) {
+        event.preventDefault()
+        if (confirm('정말 탈퇴 하시겠습니까?')) {
+            window.location.href = '/employee/delete'
+        }
+    })
+    
+	// 여기 코드는 회원가입때 쓰는 코드인데 나중에 회원가입 제거하면서 같이 제거 합니당!
     // 초기 상태로 x 표시를 숨깁니다.
     const pwCheck = document.getElementById('pwCheck')
     const checkpwCheck = document.getElementById('checkpwCheck')
