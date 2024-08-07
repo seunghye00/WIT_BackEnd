@@ -47,12 +47,11 @@ public class AttendanceController {
     public String attendance(Model model) {
         String empNo = (String) session.getAttribute("loginID");
 
-        // 월간 근태 현황 및 근무 시간 조회
+        // 월간 근태 현황 및 월간 근무 시간 조회 + 주간 근무현황
         Map<String, Integer> monthlyStatus = service.monthlyStatus(empNo);
         Map<String, Object> monthlyWorkHours = service.monthlyWorkHours(empNo);
         List<Map<String, Object>> weeklyStatus = service.weeklyStatus(empNo);
 
-        // 직원 정보 가져오기
         EmployeeDTO employee = service.employeeInfo(empNo);
 
         model.addAttribute("monthlyStatus", monthlyStatus);
@@ -74,7 +73,6 @@ public class AttendanceController {
         // 월간 근무 현황 조회
         List<Map<String, Object>> monthlyWorkStatus = service.monthlyWorkStatus(empNo, month);
 
-        // 직원 정보 가져오기
         EmployeeDTO employee = service.employeeInfo(empNo);
 
         model.addAttribute("monthlyWorkStatus", monthlyWorkStatus);
@@ -87,7 +85,6 @@ public class AttendanceController {
     public String attendance_vacation(Model model) {
         String empNo = (String) session.getAttribute("loginID");
 
-        // 직원 정보 가져오기
         EmployeeDTO employee = service.employeeInfo(empNo);
 
         model.addAttribute("employee", employee);
