@@ -48,6 +48,7 @@ public class ChatRoomController {
     @ResponseBody
     public List<Map<String, Object>> getMyChatRooms() {
     	String loginUserId = (String) session.getAttribute("loginID");
+    	
         return serv.getChatRoomsByUserId(loginUserId);
     }
     
