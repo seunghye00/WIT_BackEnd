@@ -152,9 +152,9 @@ public class AttendanceService {
 
         // 분이 0인 경우 분을 생략하여 결과에 추가
         if (minutes == 0) {
-            result.put("totalWorkingHours", hours + "시간");
+            result.put("totalWorkingHours", hours + "H");
         } else {
-            result.put("totalWorkingHours", hours + "시간 " + minutes + "분");
+            result.put("totalWorkingHours", hours + "H " + minutes + "M");
         }
 
         return result;

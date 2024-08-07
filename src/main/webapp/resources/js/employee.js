@@ -79,14 +79,6 @@ $(document).ready(function () {
         }
     })
 
-    // 회원탈퇴 버튼
-    $('#del_btn').on('click', function (event) {
-        event.preventDefault()
-        if (confirm('정말 탈퇴 하시겠습니까?')) {
-            window.location.href = '/employee/delete'
-        }
-    })
-
     // 사용자 첫 로그인시 팝업 업데이트 정규표현식
     $('#pw').on('keyup', function () {
         let password = $(this).val().trim()
@@ -343,7 +335,7 @@ $(document).ready(function () {
     // 닉네임 중복 체크 버튼 클릭 이벤트
     $('#checkNickname').click(function () {
         var nickname = $('#nickname').val().trim()
-        let regex = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,7}$/ // 정규표현식 추가
+        let regex = /^[a-zA-Z0-9ㄱ-ㅎ가-힣]{2,7}$/ 
 
         if (nickname === '') {
             alert('닉네임을 입력해주세요.')
@@ -551,7 +543,7 @@ $(document).ready(function () {
         }
     })
 
-    // 출퇴근 시간을 메인에 표시
+    // 출퇴근 시간을 메인페이지 에 표시
     $.ajax({
         url: '/attendance/times',
         type: 'GET',
@@ -605,7 +597,17 @@ $(document).ready(function () {
             })
         }
     })
-
+    
+    
+    // 회원탈퇴 버튼
+    $('#del_btn').on('click', function (event) {
+        event.preventDefault()
+        if (confirm('정말 탈퇴 하시겠습니까?')) {
+            window.location.href = '/employee/delete'
+        }
+    })
+    
+	// 여기 코드는 회원가입때 쓰는 코드인데 나중에 회원가입 제거하면서 같이 제거 합니당!
     // 초기 상태로 x 표시를 숨깁니다.
     const pwCheck = document.getElementById('pwCheck')
     const checkpwCheck = document.getElementById('checkpwCheck')
