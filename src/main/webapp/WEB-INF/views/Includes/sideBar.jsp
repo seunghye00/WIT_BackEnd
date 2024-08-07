@@ -5,13 +5,12 @@
                 <i class="bx bx-menu" id="btn"></i>
             </div>
             <div class="user">
-                <img src="메인게임.webp" alt="me" class="userImg">
+                <img src="/img/WIT_logo1.png" alt="me" class="userImg">
                 <div class="nickName">
                     <p class="bold">Wit Works</p>
                     <p></p>
                 </div>
             </div>
-
             <ul>
                 <li>
                     <a href="#">
@@ -49,7 +48,7 @@
                     <span class="toolTip">메신저</span>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/eApproval/home">
                         <i class='bx bx-clipboard'></i>
                         <span class="navItem">전자결재</span>
                     </a>
@@ -77,6 +76,5 @@
                     </a>
                     <span class="toolTip">조직도</span>
                 </li>
-
             </ul>
         </div>
