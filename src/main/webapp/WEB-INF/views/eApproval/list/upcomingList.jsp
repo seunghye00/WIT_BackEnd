@@ -15,8 +15,8 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
-<script defer src="/js/hsh.js"></script>
 <script defer src="/js/wit.js"></script>
+<script defer src="/js/hsh.js"></script>
 </head>
 
 <body>
@@ -71,7 +71,7 @@
 			<div class="header">
 				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
 				<!--마이페이지로 이동-->
-				<span class="myName"> <img src="/img/푸바오.png"><a
+				<span class="myName"> <img src="/img/WIT_logo1.png"><a
 					href=" #">백민주 사원</a></span> <span class="logOut"><a href="#">LogOut</a></span>
 			</div>
 			<div class="contents">
@@ -83,7 +83,6 @@
 					</div>
 					<div class="sideBtnBox">
 						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
-						<div id="docuModalBack" class="modalBack">
 						<div class="eApprModal docuChoiModal">
 							<div class="eApprModalTitle">
 								문서 양식 선택 <span class="closeModal">X</span>
@@ -95,7 +94,6 @@
 								<button class="next">다음</button>
 								<button class="cancel red">취소</button>
 							</div>
-						</div>
 						</div>
 						<div class="eApprModal apprChoiModal">
 							<div class="eApprModalTitle">
@@ -156,7 +154,8 @@
 								<h3 class="toggleTit">결재하기</h3>
 								<ul class="subList">
 									<li><a href="/eApproval/apprList?type=todo">결재 대기 문서</a></li>
-									<li><a href="/eApproval/apprList?type=upcoming">결재 예정 문서</a></li>
+									<li><a href="/eApproval/apprList?type=upcoming" class="active">결재
+											예정 문서</a></li>
 								</ul>
 							</li>
 						</ul>
@@ -177,18 +176,23 @@
 					</div>
 				</div>
 				<div class="sideContents eApproval">
-					<div class="mainTitle">전자 결재 홈</div>
-
-					<div class="docuList">
-						<div class="subTitle">
-							기안 진행 문서 <input type="checkbox" id="progInfo" hidden> <label
-								class="titleIcon" for="progInfo"> <i
-								class='bx bx-info-circle'></i>
-							</label>
-							<div class="infoBox">현재 진행중인 기안문서 5개를, 최근 등록 순서대로 표시합니다.</div>
+					<div class="mainTitle">결재 예정 문서함</div>
+					<div class="docuList docuBox">
+						<div class="toolBar">
+							<ul>
+								<li><a href="javascript:;" class="active">전체</a></li>
+								<li><a href="javascript:;">업무 기안</a></li>
+								<li><a href="javascript:;">휴가 신청서</a></li>
+								<li><a href="javascript:;">지각 사유서</a></li>
+							</ul>
+							<div class="searchBox">
+								<input type="text" placeholder="검색">
+								<button class="searchBtn">
+									<i class="bx bx-search"></i>
+								</button>
+							</div>
 						</div>
-
-						<div class="listBox progList">
+						<div class="listBox upcomingList">
 							<div class="rows listHeader">
 								<div class="cols">
 									<span>기안일</span>
@@ -203,21 +207,25 @@
 									<span>제목</span>
 								</div>
 								<div class="cols">
-									<span>결재 상태</span>
+									<span>기안자</span>
+								</div>
+								<div class="cols">
+									<span>최종 결재자</span>
 								</div>
 							</div>
 							<c:choose>
-								<c:when test="${empty currentDocuList}">
+								<c:when test="${empty docuList}">
 									<div class="rows emptyDocuList">
 										<p>진행중인 문서가 없습니다.</p>
 									</div>
 								</c:when>
 								<c:otherwise>
-									<c:forEach items="${currentDocuList}" var="i">
+									<c:forEach items="${docuList}" var="i">
 										<div class="rows">
 											<div class="cols">
 												<span> <fmt:formatDate value="${i.write_date}"
-														pattern="yyyy-MM-dd" /></span>
+														pattern="yyyy-MM-dd" />
+												</span>
 											</div>
 											<div class="cols">
 												<span>${i.name}</span>
@@ -232,73 +240,23 @@
 												<span>${i.title}</span>
 											</div>
 											<div class="cols">
-												<span>${i.status}</span>
+												<span>${i.writer}</span>
+											</div>
+											<div class="cols">
+												<span>${i.last_appr_name}</span>
 											</div>
 										</div>
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>
-
 						</div>
-					</div>
-					<div class="docuList">
-						<div class="subTitle">
-							완료 문서 <input type="checkbox" id="doneInfo" hidden> <label
-								class="titleIcon" for="doneInfo"> <i
-								class='bx bx-info-circle'></i>
-							</label>
-							<div class="infoBox">최근에 결재 완료된 순서대로, 최대 5개의 목록을 표시합니다.</div>
-						</div>
-						<div class="listBox doneList">
-							<div class="rows listHeader">
-								<div class="cols">
-									<span>기안일</span>
-								</div>
-								<div class="cols">
-									<span>문서 양식</span>
-								</div>
-								<div class="cols">
-									<span>긴급</span>
-								</div>
-								<div class="cols">
-									<span>제목</span>
-								</div>
-								<div class="cols">
-									<span>결재 상태</span>
-								</div>
-							</div>
-							<c:choose>
-								<c:when test="${empty doneDocuList}">
-									<div class="rows emptyDocuList">
-										<p>진행중인 문서가 없습니다.</p>
-									</div>
-								</c:when>
-								<c:otherwise>
-									<c:forEach items="${doneDocuList}" var="i">
-										<div class="rows">
-											<div class="cols">
-												<span> <fmt:formatDate value="${i.write_date}"
-														pattern="yyyy-MM-dd" /></span>
-											</div>
-											<div class="cols">
-												<span>${i.name}</span>
-											</div>
-											<div class="cols">
-												<span> <c:if test="${i.emer_yn eq 'Y'}">
-														<img src="/img/icon/siren.png" class="emer">
-													</c:if>
-												</span>
-											</div>
-											<div class="cols">
-												<span>${i.title}</span>
-											</div>
-											<div class="cols">
-												<span>${i.status}</span>
-											</div>
-										</div>
-									</c:forEach>
-								</c:otherwise>
-							</c:choose>
+						<div class="pagination">
+							<a href="javascript:;" class="prev"><i
+								class='bx bx-chevron-left'></i></a> <a href="javascript:;"
+								class="active">1</a> <a href="javascript:;">2</a> <a
+								href="javascript:;">3</a> <a href="javascript:;">4</a> <a
+								href="javascript:;">5</a> <a href="javascript:;"
+								class="next active"><i class='bx bx-chevron-right'></i></a>
 						</div>
 					</div>
 				</div>

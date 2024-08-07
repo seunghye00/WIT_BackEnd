@@ -2301,7 +2301,7 @@ button.disabled {
     height: 28px;
 }
 
-.eApproval .docuList .listBox .rows:not(.listHeader) .cols:last-child span {
+.eApproval .docuList .listBox:not(.todoList, .upcomingList) .rows:not(.listHeader) .cols:last-child span {
     width: 30%;
     border-radius: 5px;
     color: #fff;
@@ -2694,8 +2694,6 @@ span:active {
     gap: 10px;
 }
 
-
-
 /* 전자 결재 모달창 ( 새 결재 진행 ) - 결재선 선택 */
 .eApprModal.apprChoiModal {
     display: none;
@@ -2945,6 +2943,11 @@ button:nth-child(5) img {
 
 .eApproval .docuList.docuBox .listBox .rows .cols:nth-child(4) {
     width: 34%;
+}
+
+.eApproval .docuList.docuBox .listBox.todoList .rows .cols:nth-child(4),
+.eApproval .docuList.docuBox .listBox.upcomingList .rows .cols:nth-child(4) {
+    width: 40%;
 }
 
 .eApproval .docuList.docuBox .listBox .rows .cols:nth-child(7) {
