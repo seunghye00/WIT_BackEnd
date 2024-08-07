@@ -9,7 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link rel="stylesheet" href="/resources/css/style.main.css">
-<link rel="stylesheet" href="/resources/css/mky.css">
+<link rel="stylesheet" href="/resources/css/wit.css">
 <script defer src="/resources/js/mky.js"></script>
 </head>
 <body>
@@ -115,52 +115,8 @@
                         <button class="toggleBtn" onclick="toggleView('address')" style="display: none;">주소록</button>
                     </div>
                     <ul class="chatList" id="chatList" style="display: none;">
-                        <li>
-                            <a href="javascript:;">
-                                <div class="chatTitle">
-                                    <span>문경원</span>
-                                    <span class="notificationCount">3</span>
-                                </div>
-                                <button class="exitBtn"><i class='bx bx-exit'></i></button>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:;">
-                                <div class="chatTitle">
-                                    <span>한승혜</span>
-                                    <span class="notificationCount">2</span>
-                                </div>
-                                <button class="exitBtn"><i class='bx bx-exit'></i></button>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:;">
-                                <div class="chatTitle">
-                                    <span>이원희</span>
-                                    <span class="notificationCount">4</span>
-                                </div>
-                                <button class="exitBtn"><i class='bx bx-exit'></i></button>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:;">
-                                <div class="chatTitle">
-                                    <span>손민서</span>
-                                    <span class="notificationCount">3</span>
-                                </div>
-                                <button class="exitBtn"><i class='bx bx-exit'></i></button>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:;">
-                                <div class="chatTitle">
-                                    <span>백민주</span>
-                                    <span class="notificationCount">3</span>
-                                </div>
-                                <button class="exitBtn"><i class='bx bx-exit'></i></button>
-                            </a>
-                        </li>
-                    </ul>
+					    <!-- AJAX로 동적 채팅방 목록이 추가될 예정 -->
+					</ul>
                     <ul class="addressList" id="addressList">
                         <li>
                             <button class="toggleBtn createChatBtn" onclick="toggleCheckboxes()"><i
@@ -244,6 +200,17 @@
                 </div>
             </div>
     </div>
+    <!-- 채팅방 팝업 -->
+	<div id="chatRoomPopup" class="chatRoomPopup" style="display: none;">
+	    <div class="popupContent">
+	        <h2 class="chatRoomTitle"></h2>
+	        <div class="chatRoomDetails"></div>
+	        <div class="chatRoomPopupBtn">
+		        <button class="exitBtn"><i class='bx bx-exit'></i></button>
+		        <button class="closeBtn" onclick="closeChatRoomPopup()">닫기</button>
+	        </div>
+	    </div>
+	</div>
 	<!-- sidebar 공통요소 script -->
 	<script>
 	    let btn = document.querySelector("#btn")
@@ -258,6 +225,7 @@
 	
 	    $(document).ready(function() {
 	        loadEmployeeList();
+	        loadChatList();
    		});
 	    
 		// 주소록 항목의 체크박스와 확인 버튼을 토글
@@ -473,12 +441,12 @@
 	    messageInput.appendChild(img)
 	}
 	
+	// 채팅방 주소록 조회
 	function loadEmployeeList() {
         $.ajax({
             url: '/employee/getEmployeeList',
             method: 'GET',
             success: function(response) {
-                console.log(response);
                 var addressList = $('#addressList');
                 addressList.find('li:not(:first)').remove(); // 기존 항목 제거
                 response.forEach(function(employee) {
@@ -508,17 +476,73 @@
         });
     }
 	
+	// 채팅방 조회
+	function loadChatList() {
+        $.ajax({
+            url: '/chatroom/myChatRooms',
+            method: 'GET',
+            success: function(response) {
+                console.log(response);
+                var chatList = $('#chatList');
+                chatList.empty(); // 기존 목록 초기화
+
+                response.forEach(function(chatRoom) {
+                    var $listItem = $('<li>');
+                    var $link = $('<a>', {
+                        href: 'javascript:;',
+                        'data-chat-room-seq': chatRoom.CHAT_ROOM_SEQ,
+                        click: function() {
+                            showChatRoomPopup(chatRoom.CHAT_ROOM_SEQ);
+                        }
+                    });
+
+                    var $chatTitle = $('<div>', { class: 'chatTitle' });
+                    var $spanName = $('<span>').text(chatRoom.CHAT_ROOM_NAME);
+                    var $spanNotification = $('<span>', { class: 'notificationCount' }).text(chatRoom.IS_READ);
+
+                    $chatTitle.append($spanName).append($spanNotification);
+                    $link.append($chatTitle);
+                    $listItem.append($link);
+                    chatList.append($listItem);
+                });
+            },
+            error: function(error) {
+                console.error("Error loading employee list:", error);
+            }
+        });
+    }
+	// 채팅방 팝업 함수
+	function showChatRoomPopup(chatRoomSeq) {
+	    $.ajax({
+	        url: '/chatroom/details',
+	        method: 'GET',
+	        data: { chat_room_seq: chatRoomSeq },
+	        success: function(chatRoomDetails) {
+	            // 채팅방 정보를 팝업에 표시
+	            $('#chatRoomPopup .chatRoomTitle').text(chatRoomDetails.chat_room_name);
+	            $('#chatRoomPopup .chatRoomDetails').html(chatRoomDetails.details_html);
+	            $('#chatRoomPopup').css('display', 'flex');
+	        },
+	        error: function(error) {
+	            console.error("Error loading chat room details:", error);
+	        }
+	    });
+	}
+	// 채팅방 팝업 닫는 함수
+	function closeChatRoomPopup() {
+	    $('#chatRoomPopup').css('display', 'none');
+	}
 	// 1:1 채팅 ajax
-	function startPrivateChat(emp_no, emp_name) {
+	function startPrivateChat(emp_no1, chat_room_name) {
 	    $.ajax({
 	        url: '/chatroom/create',
 	        method: 'POST',
 	        data: {
-	            emp_no: emp_no,
-	            emp_name: emp_name
+	            emp_no1: emp_no1,
+	            chat_room_name: chat_room_name
 	        },
 	        success: function(response) {
-	            if (response.success) {
+	            if (response === 'success') {
 	                alert('1:1 채팅방이 생성되었습니다.');
 	                // 여기서 채팅방으로 리다이렉트하거나 UI 업데이트를 할 수 있습니다.
 	            } else {
@@ -530,12 +554,13 @@
 	        }
 	    });
 	}
-	
+
 	// 1:1 채팅 버튼 클릭 이벤트
 	$('.chatButton').on('click', function() {
-	    var emp_no = $('#profilePopup').data('emp_no');
-	    var emp_name = $('#profilePopup .profileTit span').text();
-	    startPrivateChat(emp_no, emp_name);
+	    var emp_no1 = $('#profilePopup').data('emp_no');
+	    var chat_room_name = $('#profilePopup .profileTit span').text();
+	    console.log(emp_no1, chat_room_name)
+	    startPrivateChat(emp_no1, chat_room_name);
 	});
 	
 	// 단체 채팅 ajax
@@ -556,7 +581,7 @@
 	                empNos: selectedEmpNos
 	            },
 	            success: function(response) {
-	                if (response.success) {
+	                if (response === 'success') {
 	                    alert('단체 채팅방이 생성되었습니다.');
 	                    // 여기서 채팅방으로 리다이렉트하거나 UI 업데이트를 할 수 있습니다.
 	                } else {

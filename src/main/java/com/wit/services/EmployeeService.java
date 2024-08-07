@@ -165,8 +165,8 @@ public class EmployeeService {
 	
 	// 메신저 주소록 조회
 	@Transactional
-	public List<Map<String, Object>> getAllMessengerEmp() {
-        return dao.getAllMessengerEmp();
+	public List<Map<String, Object>> getAllMessengerEmp(String emp_no) {
+        return dao.getAllMessengerEmp(emp_no);
     }
 	
 	// 메신저 주소록 상세 조회

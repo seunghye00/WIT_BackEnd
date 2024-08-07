@@ -7,16 +7,18 @@ public class ChatRoomDTO {
 	private String emp_no;
 	private String chat_room_name;
 	private String chat_room_code;
+	private String created_by;
 	private Timestamp create_date;
 	private int is_read;
 
 	public ChatRoomDTO(int chat_room_seq, String emp_no, String chat_room_name, String chat_room_code,
-			Timestamp create_date, int is_read) {
+			String created_by, Timestamp create_date, int is_read) {
 		super();
 		this.chat_room_seq = chat_room_seq;
 		this.emp_no = emp_no;
 		this.chat_room_name = chat_room_name;
 		this.chat_room_code = chat_room_code;
+		this.created_by = created_by;
 		this.create_date = create_date;
 		this.is_read = is_read;
 	}
@@ -57,6 +59,14 @@ public class ChatRoomDTO {
 		this.chat_room_code = chat_room_code;
 	}
 
+	public String getCreated_by() {
+		return created_by;
+	}
+
+	public void setCreated_by(String created_by) {
+		this.created_by = created_by;
+	}
+
 	public Timestamp getCreate_date() {
 		return create_date;
 	}
@@ -72,5 +82,4 @@ public class ChatRoomDTO {
 	public void setIs_read(int is_read) {
 		this.is_read = is_read;
 	}
-
 }

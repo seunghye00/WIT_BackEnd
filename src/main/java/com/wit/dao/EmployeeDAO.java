@@ -126,8 +126,8 @@ public class EmployeeDAO {
 	}
 	
 	// 메신저 주소록 조히
-    public List<Map<String, Object>> getAllMessengerEmp() {
-        return mybatis.selectList("employee.getAllMessengerEmp");
+    public List<Map<String, Object>> getAllMessengerEmp(String emp_no) {
+        return mybatis.selectList("employee.getAllMessengerEmp", emp_no);
     }
     
 	// 메신저 주소록 상세 조히

@@ -272,6 +272,8 @@
 	        dept d on em.dept_code = d.dept_code
 	    left join
 	        role r on em.role_code = r.role_code
+	    where 
+            emp_no != #{emp_no}
     </select>
     
     <!-- 메신저 주소록 상세 조회  -->

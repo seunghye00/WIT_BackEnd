@@ -9,7 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link rel="stylesheet" href="/resources/css/style.main.css">
-<link rel="stylesheet" href="/resources/css/mky.css">
+<link rel="stylesheet" href="/resources/css/wit.css">
 <script defer src="/resources/js/mky.js"></script>
 </head>
 <body>
@@ -321,8 +321,31 @@
         loadCategories();
         $('.toolBar a').off('click').on('click', handleToolBarClick);
         $('#searchForm').off('submit').on('submit', handleSearchFormSubmit);
-        const allChecked = Array.from(allCheckboxes).every(checkbox => checkbox.checked);
-        checkAllBox.checked = allChecked;
+        // `allCheckboxes` 변수 정의
+        let allCheckboxes = document.querySelectorAll('.individual');
+        let checkAllBox = document.getElementById('checkAll');
+        
+        // `toggleIndividualCheck` 함수에서 `allCheckboxes` 사용
+        function toggleIndividualCheck() {
+            const allChecked = Array.from(allCheckboxes).every(checkbox => checkbox.checked);
+            checkAllBox.checked = allChecked;
+        }
+
+        // 개별 체크박스 클릭 시 전체 선택 체크박스 상태 업데이트
+        allCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', toggleIndividualCheck);
+        });
+
+        // `toggleCheckAll` 함수에서 `allCheckboxes` 사용
+        function toggleCheckAll(checkAllBox) {
+            allCheckboxes.forEach(checkbox => {
+                checkbox.checked = checkAllBox.checked;
+            });
+        }
+
+        checkAllBox.addEventListener('click', function() {
+            toggleCheckAll(checkAllBox);
+        });
 
     });
 

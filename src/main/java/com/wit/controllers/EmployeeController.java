@@ -258,7 +258,8 @@ public class EmployeeController {
     @ResponseBody
     @RequestMapping("/getEmployeeList")
     public List<Map<String, Object>> getAllMessengerEmp () {
-    	return service.getAllMessengerEmp();
+    	String emp_no = (String) session.getAttribute("loginID");
+    	return service.getAllMessengerEmp(emp_no);
     }
     
     // 채팅 메신저 상세 디테일

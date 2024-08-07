@@ -770,10 +770,31 @@
     margin-left: 5px;
 }
 
+.subList li:not(:last-child) {
+    padding-bottom: 8px;
+}
+
+.subList li {
+	display:flex;
+    justify-content: space-between;
+}
+
+.subList li a.active {
+    color: #558BCF;
+    font-weight: 600;
+}
+
+.subList li button {
+  	background-color: unset;
+    border: none;
+    color: #333;
+}
+
 /* 주소록 메인 콘텐츠 */
 .sideContents.addressCont {
     gap: 15px;
 }
+
 
 .sideContents.addressCont .mainTitle {
     flex: unset;
@@ -831,7 +852,7 @@
     right: 0;
 }
 
-.toolBar .deleteBtn {
+.addressCont .deleteBtn {
     display: block;
     color: #333;
     border: none;
@@ -844,8 +865,7 @@
     justify-content: center;
     background-color: unset;
 }
-
-.toolBar .deleteBtn:hover {
+.addressCont .deleteBtn:hover {
     background-color: unset;
 }
 
@@ -945,6 +965,34 @@
     gap: 20px;
 }
 
+.modal-category {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 30px;
+    border: 3px solid #558BCF;
+    width: 25%;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position:relative;
+}
+.modal-category .close {
+	color: #aaa;
+    position: absolute;
+    font-size: 28px;
+    font-weight: bold;
+    right: 20px;
+}
+#addCategoryForm, #editCategoryForm {
+	display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+
+#addCategoryForm input, #editCategoryForm input {
+	width: calc(100% - 120px);
+}
 .popTit {
     font-size: 24px;
     font-weight: bold;
@@ -995,13 +1043,18 @@
     margin-right: 10px;
     font-size: 18px;
 }
+.formGroup span {
+    font-size: 18px;
+}
 
 .formGroup input[type="text"],
-.formGroup input[type="file"] {
+.formGroup input[type="file"],
+.formGroup select{
     width: 50%;
     padding: 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
+    font-size: 16px;
 }
 
 .formGroup .photoWrapper {
@@ -1154,7 +1207,8 @@
 .chatList .chatTitle {
     display: flex;
     align-items: center;
-    gap: 5px;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .chatList .notiBox {}
@@ -1165,7 +1219,9 @@
     font-size: 10px;
     font-weight: 600;
     background-color: #f93453;
-    padding: 3px 5.5px;
+    padding: 4px 0;
+    width: 20px;
+    text-align: center;
 }
 
 .exitBtn {
@@ -1367,8 +1423,8 @@
     z-index: 1000;
     border-radius: 8px;
     flex-direction: column;
-    align-items: end;
     gap: 10px;
+    width: 500px;
 }
 
 .profileTit {
@@ -1402,6 +1458,7 @@
     background: #eee;
     padding: 20px;
     border-radius: 8px;
+    width: calc(100% - 100px);
 }
 
 .profilePopup .profileDetails .profileRow {
@@ -1421,6 +1478,7 @@
 .profilePopup .profilebtnBox {
     display: flex;
     gap: 10px;
+    justify-content: flex-end;
 }
 
 .profilePopup .chatButton {
@@ -1451,6 +1509,53 @@
 
 .profilePopup .closeButton:hover {
     background-color: #c51221;
+}
+
+.addressCont #results {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.noData {
+    text-align: center;
+    font-size: 1.2em;
+    color: gray;
+    margin-top: 20px;
+}
+
+.chatRoomPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chatRoomPopup .popupContent {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 350px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatRoomPopup .closeBtn {
+    background: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    position: static;
+    width: 72px;
 }
 
 /* 경원 css end */
@@ -3130,11 +3235,11 @@ td {
 }
 
 .deleteBtn {
-    padding: 10px 20px;
-    border: 1px solid #c1c1c1;
-    border-radius: 8px;
-    background-color: #dc3545;
-    color: #fff;
+    /* padding: 10px 20px; */
+    /* border: 1px solid #c1c1c1; */
+    /* border-radius: 8px; */
+    /* background-color: #dc3545; */
+    color: #888;
 }
 
 .deleteBtn:hover {
