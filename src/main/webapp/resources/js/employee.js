@@ -1,4 +1,5 @@
 $(document).ready(function () {
+	// 로그인
     $('#loginForm').on('submit', function (e) {
         e.preventDefault()
 
