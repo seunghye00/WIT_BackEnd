@@ -161,7 +161,12 @@ public class EmployeeDAO {
 	}
 	
 	// 해당 사번을 지닌 직원의 이름과 부서명 조회
-	public EmployeeInfoDTO getNameNDept(String emp_no) {
-		return mybatis.selectOne("employee.selectByEmpNo", emp_no);
+	public EmployeeInfoDTO getNameNDept(String empNo) {
+		return mybatis.selectOne("employee.selectByEmpNo", empNo);
+	}
+
+	// 해당 사번을 지닌 직원의 이름 조회
+	public String getName(String empNo) {
+		return mybatis.selectOne("employee.getName", empNo);
 	}
 }

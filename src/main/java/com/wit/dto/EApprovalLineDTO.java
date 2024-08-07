@@ -6,7 +6,6 @@ import java.util.List;
 public class EApprovalLineDTO {
     private List<String> apprList;
 
-    // Getters and setters
     public List<String> getApprList() {
         return apprList;
     }
@@ -14,4 +13,13 @@ public class EApprovalLineDTO {
     public void setApprList(List<String> apprList) {
         this.apprList = apprList;
     }
+
+	public EApprovalLineDTO(List<String> apprList) {
+		super();
+		this.apprList = apprList;
+	}
+
+	public EApprovalLineDTO() {
+		super();
+	}
 }

@@ -2,9 +2,7 @@ package com.wit.controllers;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wit.dto.DocuDTO;
+import com.wit.dto.DocuInfoListDTO;
 import com.wit.dto.DocuListDTO;
 import com.wit.dto.workPropDTO;
 import com.wit.services.EApprovalService;
@@ -40,16 +39,89 @@ public class EAppprovalController {
 	@RequestMapping("home")
 	public String home(Model model) throws Exception {
 
-		String emp_no = (String) session.getAttribute("loginID");
+		String empNo = (String) session.getAttribute("loginID");
 		// 임시 데이터
-		emp_no = "2024-0001";
+		empNo = "2024-0001";
 
 		// 결재 진행 중인 문서 목록 최신순으로 5개만 받아와서 JSP로 전달
-		model.addAttribute("currentDocuList", serv.selectByStatus("진행중", emp_no));
+		model.addAttribute("currentDocuList", serv.selectByStatus("진행중", empNo));
 		// 결재 완료된 문서 목록 최신순으로 5개만 받아와서 JSP로 전달
-		model.addAttribute("doneDocuList", serv.selectByStatus("완료", emp_no));
+		model.addAttribute("doneDocuList", serv.selectByStatus("완료", empNo));
 		// 전자 결재 메인 화면으로 이동
 		return "eApproval/home";
+	}
+
+	// 브라우저에서 선택한 type에 따라 결재하기 페이지로 이동 시 해당 페이지에서 초기에 노출할 데이터를 담아서 전달하는 메서드
+	@RequestMapping("apprList")
+	public String apprList(String type, Model model) throws Exception {
+
+		String empNo = (String) session.getAttribute("loginID");
+		// 임시 데이터
+		empNo = "2024-0001";
+
+		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장
+		List<DocuInfoListDTO> list = null;
+		switch (type) {
+		case "todo":
+			list = serv.selectListByType(empNo, "결재 대기");
+			break;
+		case "upcoming":
+			list = serv.selectListByType(empNo, "결재 예정");
+			break;
+		default:
+			// 추후 에러 페이지로 변경
+			return "redirect:/eApproval/home"; 	
+		}
+
+		// 작성자와 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 model 객체로 전달
+		for (DocuInfoListDTO dto : list) {
+			dto.setWriter(eServ.getName(dto.getEmp_no()));
+			dto.setLast_appr_name(eServ.getName(dto.getLast_appr()));
+		}
+		model.addAttribute("docuList", list);
+
+		// 해당 문서함 화면으로 이동
+		return "eApproval/list/" + type + "List";
+	}
+
+	// 브라우저에서 선택한 type에 따라 개인 문서함 페이지로 이동 시 해당 페이지에서 초기에 노출할 데이터를 담아서 전달하는 메서드
+	@RequestMapping("privateList")
+	public String privateList(String type, Model model) throws Exception {
+
+		String empNo = (String) session.getAttribute("loginID");
+		// 임시 데이터
+		empNo = "2024-0001";
+
+		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장 후 model 객체로 전달
+		List<DocuInfoListDTO> list = null;
+		switch (type) {
+		case "write":
+			list = serv.selectWriteList(empNo);
+			// 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+			for (DocuInfoListDTO dto : list) {
+				dto.setLast_appr_name(eServ.getName(dto.getLast_appr()));
+			}
+			model.addAttribute("docuList", list);
+			break;
+		case "save":
+			model.addAttribute("docuList", serv.selecSavetList(empNo));
+			break;
+		case "approved":
+			model.addAttribute("docuList", serv.selectApprovedList(empNo));
+			break;
+		case "return":
+			model.addAttribute("docuList", serv.selectReturnList(empNo));
+			break;
+		case "view":
+			model.addAttribute("docuList", serv.selectViewList(empNo));
+			break;
+		default:
+			// 추후 에러 페이지로 변경
+			return "redirect:/eApproval/home"; 
+		}
+
+		// 해당 문서함 화면으로 이동
+		return "eApproval/list/" + type + "List";
 	}
 
 	// ajax로 문서 양식 리스트를 요청했을 때 서버로 보내기 위한 메서드
@@ -65,12 +137,12 @@ public class EAppprovalController {
 	public String writeProc(String docuCode, @RequestParam("apprList") String[] apprList,
 			@RequestParam(value = "refeList", required = false) String[] refeList, Model model) throws Exception {
 
-		String emp_no = (String) session.getAttribute("loginID");
+		String empNo = (String) session.getAttribute("loginID");
 		// 임시 데이터
-		emp_no = "2024-0007";
+		empNo = "2024-0007";
 
 		// 작성할 문서에 대한 임시 데이터 입력 후 해당 문서의 SEQ를 받아와서 변수에 저장
-		int docuSeq = serv.insert(emp_no, docuCode);
+		int docuSeq = serv.insert(empNo, docuCode);
 
 		// 현재 날짜를 객체로 생성 후 문자열로 변환
 		LocalDate today = LocalDate.now();
@@ -79,7 +151,7 @@ public class EAppprovalController {
 
 		// 클라이언트에서 사용할 데이터를 model 객체에 담아서 전달
 		model.addAttribute("today", formattedDate);
-		model.addAttribute("empInfo", eServ.getNameNDept(emp_no));
+		model.addAttribute("empInfo", eServ.getNameNDept(empNo));
 		model.addAttribute("docuSeq", docuSeq);
 		model.addAttribute("docuCode", docuCode);
 		model.addAttribute("apprList", apprList);
@@ -92,14 +164,13 @@ public class EAppprovalController {
 		// 선택한 문서에 따라 해당 전자 결재 작성 화면으로 이동
 		switch (docuCode) {
 		case "M1":
-			return "eApproval/write_prop";
+			return "eApproval/writeProp";
 		case "M2":
-			System.out.println("휴가 신청");
-			return "eApproval/write_leave";
+			return "eApproval/writeLeave";
 		case "M3":
-			System.out.println("지각 사유");
-			return "eApproval/write_lateness";
+			return "eApproval/writeLateness";
 		default:
+			// 추후 에러 페이지로 변경
 			return "redirect:/eApproval/home";
 		}
 	}
@@ -111,7 +182,7 @@ public class EAppprovalController {
 
 		serv.updateBySave(docuDTO.getDocument_seq(), docuDTO.getTitle(), docuDTO.getEmer_yn());
 		serv.insertPropDocu(workPropDTO);
-		
+
 		for (int i = 0; i < 3; i++) {
 			serv.createApprLine(docuDTO.getDocument_seq(), apprList[i], (i + 1));
 		}
