@@ -12,6 +12,7 @@ import com.wit.commons.BoardConfig;
 import com.wit.dao.EmployeeDAO;
 import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
+import com.wit.dto.EmployeeInfoDTO;
 import com.wit.dto.RoleDTO;
 import com.wit.utill.PWUtill;
 
@@ -174,4 +175,13 @@ public class EmployeeService {
 	public Map<String, Object> getContactByEmpNo(String emp_no) {
         return dao.getContactByEmpNo(emp_no);
     }
+	// 부서별 사원 목록 조회
+	public List<EmployeeDTO> getListByDept(String deptCode) {
+		return dao.getListByDept(deptCode);
+	}
+
+	// 해당 사번을 가진 사원의 이름과 부서명 조회
+	public EmployeeInfoDTO getNameNDept(String emp_no) {
+		return dao.getNameNDept(emp_no);
+	}
 }

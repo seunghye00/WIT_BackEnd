@@ -20,6 +20,7 @@
 				<i class="bx bx-menu" id="btn"></i>
 			</div>
 			<div class="user">
+				<img src="/resources/img/WIT_logo1.png" alt="로고" class="userImg">
 				<div class="nickName">
 					<p class="bold">Wit Works</p>
 				</div>
@@ -51,7 +52,8 @@
 		<div class="main-content">
 			<div class="header">
 				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
-				<span class="myName"><a href="/employee/mypage">${employee.name}
+				<span class="myName"><img src="/resources/img/푸바오.png"
+					alt="프로필 사진" class="userImg"> <a href="/employee/mypage">${employee.name}
 						${employee.role_code}</a></span> <span class="logOut"><a
 					href="/employee/logout">LogOut</a></span>
 			</div>
