@@ -171,7 +171,7 @@ public class EmployeeService {
 	
 	// 메신저 주소록 상세 조회
 	@Transactional
-	public EmployeeDTO getContactByEmpNo(String emp_no) {
+	public Map<String, Object> getContactByEmpNo(String emp_no) {
         return dao.getContactByEmpNo(emp_no);
     }
 }

@@ -264,7 +264,7 @@ public class EmployeeController {
     // 채팅 메신저 상세 디테일
     @ResponseBody
     @RequestMapping("/getEmployeeDetails")
-    public EmployeeDTO getEmployeeDetails(String emp_no) {
+    public Map<String, Object> getEmployeeDetails(String emp_no) {
         return service.getContactByEmpNo(emp_no);
     }
     

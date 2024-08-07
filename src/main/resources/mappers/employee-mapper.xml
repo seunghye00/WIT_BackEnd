@@ -114,14 +114,6 @@
 		= #{newPassword} WHERE emp_no = #{emp_no}
 	</update>
 
-	<!-- PW찾기(수정) 을 위한 직원 정보 확인 -->
-	<select id="findEmployee" parameterType="map"
-		resultType="com.wit.dto.EmployeeDTO">
-		SELECT * FROM employee WHERE emp_no = #{emp_no} AND name =
-		#{name} AND ssn =
-		#{ssn}
-	</select>
-
 	<!-- 마이페이지 정보 업데이트 - 비밀번호 -->
 	<update id="updatePassword"
 		parameterType="com.wit.dto.EmployeeDTO">
@@ -283,7 +275,7 @@
     </select>
     
     <!-- 메신저 주소록 상세 조회  -->
-	<select id="getContactByEmpNo" resultType="com.wit.dto.EmployeeDTO">
+	<select id="getContactByEmpNo" resultType="map">
 		select emp_no, name, d.dept_title, r.role_title, phone, email
 		from employee em
 		left join

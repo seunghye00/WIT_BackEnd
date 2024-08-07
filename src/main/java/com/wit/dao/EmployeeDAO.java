@@ -131,7 +131,7 @@ public class EmployeeDAO {
     }
     
 	// 메신저 주소록 상세 조히
-    public EmployeeDTO getContactByEmpNo(String emp_no) {
+    public Map<String, Object> getContactByEmpNo(String emp_no) {
         return mybatis.selectOne("employee.getContactByEmpNo", emp_no);
     }
 	// 닉네임 중복 체크(마이페이지)
