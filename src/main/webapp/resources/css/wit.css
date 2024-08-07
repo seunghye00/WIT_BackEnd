@@ -2152,15 +2152,15 @@ button {
     color: #fff;
 }
 
-button.cancel {
+button.red {
     background-color: #dc3545;
 }
 
-button.modi {
+button.grey {
     background-color: #888;
 }
 
-button.save {
+button.green {
     background-color: #168216;
 }
 
@@ -2170,19 +2170,26 @@ button:active {
     background-color: #1268d4;
 }
 
-button.cancel:hover,
-button.cancel:active {
+button.red:hover,
+button.red:active {
     background-color: #c51221;
 }
 
-button.save:hover,
-button.save:active {
+button.green:hover,
+button.green:active {
     background-color: #096309;
 }
 
-button.modi:hover,
-button.modi:active {
+button.grey:hover,
+button.grey:active {
     background-color: #555;
+}
+
+/* 비활성화된 버튼 스타일 */
+button.disabled {
+    background-color: #558BCF !important;
+    color: #fff !important;
+    pointer-events: none;
 }
 
 /* 전자 결제 메인 화면 */
@@ -2239,6 +2246,18 @@ button.modi:active {
     flex: 1;
     display: flex;
     border-bottom: 1px solid #c1c1c1;
+}
+
+.eApproval .docuList .listBox .rows.emptyDocuList:hover {
+    background: inherit;
+    cursor: default;
+}
+
+.eApproval .docuList .listBox .rows p {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .eApproval .docuList .listBox .rows:last-child {
@@ -2302,8 +2321,10 @@ button.modi:active {
 }
 
 /* 전자 결재 작성 */
-.sideContents.eApprWrite {
-    gap: 15px;
+.sideContents.eApprWrite form {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
 }
 
 .eApprWrite .choiBox {
@@ -2320,6 +2341,21 @@ button.modi:active {
 
 .eApprWrite .document .choiBox {
     height: 8%;
+}
+
+.eApprWrite .document .choiBox .refeModal {
+    display: none;
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid #555;
+    width: 134px;
+    min-height: 63px;
+    position: relative;
+    top: 5px;
+    right: -304px;
+    border-radius: 10px;
+    background: #fff;
+    padding: 20px 10px;
+    text-align: center;
 }
 
 .eApprWrite .document .docuCont {
@@ -2556,11 +2592,11 @@ td {
     border: 1px solid #e7e7e7;
     overflow-x: auto;
     width: 91%;
-    height: 80%;
-    padding: 0px 5px;
+    height: 50px;
+    padding: 0px 10px;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 25px;
     border-radius: 8px;
 }
 
@@ -2584,41 +2620,70 @@ td {
 
 .eApprWrite .document .docuCont .docuFiles .uploadFiles .delFileBtn {
     color: #c1c1c1;
+    padding-left: 5px;
 }
 
 .eApprWrite .document .docuCont .docuFiles .uploadFiles .delFileBtn:hover {
     cursor: pointer;
 }
 
-/* 전자 결재 모달창 ( 새 결재 진행 ) */
+
+/* 전자 결재 모달창 ( 새 결재 진행 ) - 문서 양식 선택 */
 .eApprModal {
     display: none;
-    /* display: flex; */
+    flex-direction: column;
     border: 1px solid black;
     box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
     background-color: #fff;
     border-radius: 10px;
     font-size: 18px;
     position: absolute;
-    top: 20vh;
-    left: 30vw;
-    width: 800px;
-    height: 500px;
-    padding: 30px 25px;
+    top: 14vh;
+    left: 21vw;
+    width: 360px;
+    height: 255px;
+    padding: 25px;
     flex-wrap: wrap;
     z-index: 2;
+    gap: 16px;
 }
 
-.eApprModal>div:not(.modalBtnBox) {
-    height: 85%;
+.eApprModal .eApprModalTitle {
+    font-size: 22px;
+    font-weight: 700;
+    flex: 1;
 }
 
-.eApprModal>div:first-child {
-    width: 35%;
+.eApprModal .eApprModalTitle span {
+    color: #999;
+    float: right;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-.eApprModal>div:nth-child(2) {
-    width: 65%;
+.eApprModal .eApprModalTitle span:hover,
+span:active {
+    cursor: pointer;
+    color: #777;
+}
+
+.eApprModal .choiCont {
+    flex: 8;
+}
+
+.eApprModal .choiCont ul {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.eApprModal .choiCont ul li {
+    margin-bottom: 10px;
+}
+
+.eApprModal .choiCont ul li label {
+    padding-left: 5px;
 }
 
 .eApprModal .modalBtnBox {
@@ -2629,37 +2694,196 @@ td {
     gap: 10px;
 }
 
-.eApprModal .modalBtnBox button {
-    margin-right: 5px;
+
+
+/* 전자 결재 모달창 ( 새 결재 진행 ) - 결재선 선택 */
+.eApprModal.apprChoiModal {
+    display: none;
+    width: 745px;
+    height: 560px;
 }
 
-.eApprModal .eApprModalTitle {
-    font-size: 22px;
-    height: 15%;
+.eApprModal.apprChoiModal .choiCont {
+    display: flex;
 }
 
-.eApprModal .choiCont {
-    height: 88%;
+.eApprModal.apprChoiModal .choiCont .deptList {
+    flex: 1.5;
+    padding-top: 10px;
 }
 
-.eApprModal .choiCont ul {
-    height: 100%;
+.eApprModal.apprChoiModal .choiCont .deptList li label {
+    display: block;
+    width: 80%;
+    border-radius: 8px;
+    padding: 10px 5px;
+}
+
+.eApprModal.apprChoiModal .choiCont .deptList li label:hover {
+    cursor: pointer;
+    background-color: #e9e9e9;
+}
+
+.eApprModal.apprChoiModal .choiCont .deptList li input:checked~label {
+    background-color: #d2d2d2;
+}
+
+.eApprModal.apprChoiModal .choiCont .employeeList {
+    flex: 3;
+    border: 1px solid #999;
+    border-radius: 10px;
+    padding: 10px 5px;
+}
+
+.eApprModal.apprChoiModal .choiCont .employeeList ul {
+    overflow-y: auto;
+    height: 380px;
+    width: 227px;
+}
+
+.eApprModal.apprChoiModal .choiCont .employeeList ul::-webkit-scrollbar {
+    width: 10px;
+}
+
+.eApprModal.apprChoiModal .choiCont .employeeList ul::-webkit-scrollbar-thumb {
+    background: #777;
+    border-radius: 10px;
+}
+
+.eApprModal.apprChoiModal .choiCont .employeeList ul::-webkit-scrollbar-track {
+    background: #e6e6e6;
+}
+
+.eApprModal.apprChoiModal .choiCont .employeeList ul li {
+    margin: 0;
+}
+
+.eApprModal.apprChoiModal .choiCont .employeeList ul li label {
+    display: block;
+    padding: 5px;
+    width: 98%;
+    border-radius: 8px;
+}
+
+.eApprModal.apprChoiModal .choiCont .employeeList ul li label:hover {
+    cursor: pointer;
+    background-color: #e9e9e9;
+}
+
+.eApprModal.apprChoiModal .choiCont .employeeList ul li input:checked~label {
+    background-color: #e9e9e9;
+}
+
+.eApprModal.apprChoiModal .choiCont .arrBtns {
+    flex: 1.5;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
 }
 
-.eApprModal .choiCont.docuChoi ul li {
-    margin-bottom: 10px;
-}
-
-.eApprModal .choiCont.apprChoi ul li {
-    flex: 1;
-}
-
-/* JS 적용 ( 모달창 띄우기 ) 후 수정할 코드 */
-.plusBtn.sideBtn:hover~.eApprModal {
+.eApprModal.apprChoiModal .choiCont .arrBtns button {
+    background-color: #fff;
+    width: 30px;
     display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eApprModal.apprChoiModal .choiCont .arrBtns button:hover,
+button:active {
+    background-color: #c0c0c0;
+}
+
+.eApprModal.apprChoiModal .choiCont .arrBtns button:first-child img,
+button:nth-child(4) img {
+    rotate: -90deg;
+    width: 17px;
+}
+
+.eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(2) img,
+button:nth-child(5) img {
+    rotate: 90deg;
+    width: 17px;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .list {
+    border: 1px solid #999;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .apprList {
+    flex: 6;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .refeList {
+    flex: 4;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .list p {
+    font-size: 20px;
+    margin-bottom: 11px;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul {
+    overflow-y: auto;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .apprList.list ul {
+    height: 166px;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .apprList.list ul div {
+    padding-bottom: 1px;
+    font-size: 16px;
+    color: #888;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .refeList.list ul {
+    height: 100px;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul li {
+    margin: 0;
+    height: 51px;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar {
+    width: 10px;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar-thumb {
+    background: #777;
+    border-radius: 10px;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar-track {
+    background: #e6e6e6;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul li label {
+    display: block;
+    padding: 5px;
+    width: 98%;
+    border-radius: 8px;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul li label:hover {
+    cursor: pointer;
+    background-color: #e9e9e9;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul li input:checked~label {
+    background-color: #e9e9e9;
 }
 
 /* 전자 결재 문서함 */
@@ -2680,6 +2904,7 @@ td {
 .eApproval .docuBox .toolBar ul {
     flex: 8;
     display: flex;
+    border-bottom: unset;
 }
 
 .eApproval .docuBox .toolBar ul a {
@@ -2708,39 +2933,6 @@ td {
 /* 검색창 */
 .eApproval .docuBox .toolBar .searchBox {
     flex: 2;
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    padding: 5px 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.eApproval .docuBox .toolBar .searchBox input {
-    border: none;
-    outline: none;
-    flex-grow: 1;
-    padding: 5px 10px;
-    border-radius: 25px;
-    font-size: 16px;
-}
-
-.eApproval .docuBox .toolBar .searchBox button.searchBtn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: #333;
-    border-radius: 50%;
-    transition: background 0.3s;
-}
-
-.eApproval .docuBox .toolBar .searchBox button.searchBtn:hover {
-    background: #f0f0f0;
 }
 
 .eApproval .docuList.docuBox .listBox {
@@ -2769,9 +2961,9 @@ td {
 }
 
 /* 전자 결재 반려 모달창 */
-.cancelModal {
+.cancelModal,
+.apprModal {
     display: none;
-    /* display: flex; */
     border: 1px solid black;
     box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
     background-color: #fff;
@@ -2789,17 +2981,20 @@ td {
     gap: 15px;
 }
 
-.cancelModal .cancelModalTitle {
+.cancelModal .cancelModalTitle,
+.apprModal .apprModalTitle {
     flex: 1;
     font-size: 24px;
 }
 
-.cancelModal .cancelComm {
+.cancelModal .cancelComm,
+.apprModal .apprComm {
     flex: 4;
     width: 100%;
 }
 
-.cancelModal .cancelComm textarea {
+.cancelModal .cancelComm textarea,
+.apprModal .apprComm textarea {
     width: 100%;
     height: 100%;
     resize: none;
@@ -2807,17 +3002,12 @@ td {
     border-radius: 8px;
 }
 
-.cancelModal .modalBtnBox {
+.cancelModal .modalBtnBox,
+.apprModal .modalBtnBox {
     flex: 1;
     display: flex;
     align-items: end;
     gap: 10px;
-}
-
-
-/* JS 적용 ( 모달창 띄우기 ) 후 수정할 코드 */
-.cancel:hover~.cancelModal {
-    display: flex;
 }
 
 /* 승혜 css end */
