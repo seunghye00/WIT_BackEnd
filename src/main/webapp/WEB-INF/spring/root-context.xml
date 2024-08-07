@@ -37,5 +37,4 @@
 		base-package="com.wit.dao" />	
 	<context:component-scan
 		base-package="com.wit.services" />	
-	<context:component-scan base-package="com.kedu.configurators" />
 </beans>

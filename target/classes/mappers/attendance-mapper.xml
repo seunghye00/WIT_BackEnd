@@ -15,13 +15,6 @@
 		#{emp_no})
 	</insert>
 
-	<!-- 특정 직원의 특정 날짜 출근 기록을 조회 -->
-	<select id="select" resultType="com.wit.dto.AttendanceDTO">
-		SELECT * FROM Attendance WHERE
-		emp_no = #{emp_no} AND work_date =
-		#{work_date}
-	</select>
-
 	<!-- 퇴근 기록을 업데이트 -->
 	<update id="endAtd">
 		UPDATE Attendance
@@ -32,8 +25,16 @@
 		#{atd_seq}
 	</update>
 
+	<!-- 특정 직원의 특정 날짜 출근 기록을 조회 -->
+	<!-- 출근 및 퇴근 시간 조회(메인 페이지) -->
+	<select id="selectAtd" resultType="com.wit.dto.AttendanceDTO">
+		SELECT * FROM Attendance WHERE
+		emp_no = #{emp_no, jdbcType=VARCHAR} AND
+		work_date = #{work_date}
+	</select>
+
 	<!-- 월간 근태현황 조회 -->
-	<select id="getMonthlyStatus" resultType="java.util.HashMap">
+	<select id="monthlyStatus" resultType="java.util.HashMap">
 		WITH date_range AS (
 		SELECT
 		TRUNC(SYSDATE, 'MM') AS start_date,
@@ -59,7 +60,9 @@
 	</select>
 
 	<!-- 월간 근무시간 조회 -->
-	<select id="getMonthlyWorkHours" resultType="java.util.HashMap">
+	<!-- &gt = > -->
+	<!-- &lt = < -->
+	<select id="monthlyWorkHours" resultType="java.util.HashMap">
 		WITH date_range AS (
 		SELECT
 		TRUNC(SYSDATE, 'MM') AS start_date,
@@ -67,18 +70,16 @@
 		FROM dual
 		)
 		SELECT
-		COUNT(work_date) AS workingDays,
+		COUNT(CASE WHEN start_time != '00:00' OR end_time != '00:00' THEN work_date END)
+		AS workingDays,
 		SUM(
 		CASE
-		WHEN
-		TO_DATE(end_time, 'HH24:MI') &gt; TO_DATE('12:00', 'HH24:MI')
-		AND
-		TO_DATE(start_time, 'HH24:MI') &lt; TO_DATE('13:00', 'HH24:MI') THEN
+		WHEN TO_DATE(end_time, 'HH24:MI') &gt; TO_DATE('12:00', 'HH24:MI')
+		AND TO_DATE(start_time, 'HH24:MI') &lt; TO_DATE('13:00', 'HH24:MI') THEN
 		(TO_DATE(end_time, 'HH24:MI') - TO_DATE(start_time, 'HH24:MI')) * 24 -
 		1
 		ELSE
-		(TO_DATE(end_time, 'HH24:MI') - TO_DATE(start_time, 'HH24:MI')) *
-		24
+		(TO_DATE(end_time, 'HH24:MI') - TO_DATE(start_time, 'HH24:MI')) * 24
 		END
 		) AS totalWorkingHours
 		FROM
@@ -86,12 +87,12 @@
 		WHERE
 		emp_no = #{emp_no}
 		AND
-		work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT
-		end_date FROM date_range)
+		work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT end_date FROM
+		date_range)
 	</select>
 
 	<!-- 주간 근무현황 조회 -->
-	<select id="getWeeklyStatus" resultType="java.util.HashMap">
+	<select id="weeklyStatus" resultType="java.util.HashMap">
 		WITH date_range AS (
 		SELECT
 		TRUNC(SYSDATE, 'IW') AS start_date,
@@ -116,7 +117,7 @@
 	</select>
 
 	<!-- 월간 근무현황 조회 -->
-	<select id="getMonthlyWorkStatus" resultType="java.util.HashMap">
+	<select id="monthlyWorkStatus" resultType="java.util.HashMap">
 		SELECT
 		work_date,
 		start_time,
@@ -131,6 +132,7 @@
 	</select>
 
 	<!-- 결근 -->
+	<!-- 전날에 출근한 기록이 없을 경우, 전날을 결근으로 DB에 등록 -->
 	<update id="markAbsence">
 		INSERT INTO Attendance (atd_seq, work_date,
 		start_time, end_time,
@@ -149,9 +151,9 @@
 	</update>
 
 	<!-- 직원 정보 조회 -->
-	<select id="getEmployeeInfo"
-		resultType="com.wit.dto.EmployeeDTO">
-		SELECT e.name, r.role_title as role_code
+	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
+		SELECT e.name, r.role_title
+		as role_code
 		FROM Employee e
 		JOIN Role r ON e.role_code = r.role_code
 		WHERE e.emp_no = #{emp_no}

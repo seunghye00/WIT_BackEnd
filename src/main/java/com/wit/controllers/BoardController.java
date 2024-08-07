@@ -32,49 +32,25 @@ public class BoardController {
 	public String list(Model model) throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 		List<BoardDTO> boardList = bserv.list();
-		
-		// 직원 정보 가져오기
-		EmployeeDTO employeeInfo = bserv.getEmployeeInfo(empNo);
-		System.out.println("Employee Info: " + employeeInfo); // 로그 추가
-		
+
+		EmployeeDTO employee = bserv.employeeInfo(empNo);
+
 		model.addAttribute("list", boardList);
-		model.addAttribute("employeeInfo", employeeInfo); // 직원 정보 모델에 추가
-		
+		model.addAttribute("employee", employee);
+
 		return "Board/board";
 	}
 
-	// 글작성
+	// 글 작성으로 이동
 	@RequestMapping("write")
 	public String write(Model model) throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
-		EmployeeDTO employeeInfo = bserv.getEmployeeInfo(empNo);
-		model.addAttribute("employeeInfo", employeeInfo); // 직원 정보 모델에 추가
+
+		EmployeeDTO employee = bserv.employeeInfo(empNo);
+
+		model.addAttribute("employee", employee);
+
 		return "Board/writeBoard";
-	}
-
-	// 게시물 상세 조회
-	@RequestMapping("detail")
-	public String detail(int board_seq, HttpSession session, Model model) throws Exception {
-		// 게시물 상세 조회
-		BoardDTO board = bserv.detailBoard(board_seq);
-		List<BoardFilesDTO> files = fserv.detailFile(board_seq);
-
-		// 현재 로그인한 사용자 ID 가져오기
-		String empNo = (String) session.getAttribute("loginID");
-
-		// 로그인 ID로 닉네임 조회
-		String Nickname = bserv.selectNickname(empNo);
-		
-		EmployeeDTO employeeInfo = bserv.getEmployeeInfo(empNo);
-
-		// 모델에 데이터 추가
-		model.addAttribute("board", board);
-		model.addAttribute("files", files);
-		model.addAttribute("empNo", empNo);
-		model.addAttribute("Nickname", Nickname);
-		model.addAttribute("employeeInfo", employeeInfo); // 직원 정보 모델에 추가
-
-		return "Board/detailBoard";
 	}
 
 	// 게시물 등록
@@ -90,12 +66,33 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 
+	// 게시물 상세 조회
+	@RequestMapping("detail")
+	public String detail(int board_seq, HttpSession session, Model model) throws Exception {
+
+		BoardDTO board = bserv.detailBoard(board_seq);
+		List<BoardFilesDTO> files = fserv.detailFile(board_seq);
+
+		String empNo = (String) session.getAttribute("loginID");
+		String Nickname = bserv.selectNickname(empNo);
+
+		EmployeeDTO employee = bserv.employeeInfo(empNo);
+
+		model.addAttribute("board", board);
+		model.addAttribute("files", files);
+		model.addAttribute("empNo", empNo);
+		model.addAttribute("Nickname", Nickname);
+		model.addAttribute("employee", employee);
+
+		return "Board/detailBoard";
+	}
+
 	// 게시물 삭제
 	@RequestMapping("/delete")
 	public String delete(int board_seq) throws Exception {
 		// 게시물과 첨부 파일 삭제
 		bserv.delete(board_seq);
-		return "/list";
+		return "redirect:/board/list";
 	}
 
 	// 예외를 담당하는 메서드 생성

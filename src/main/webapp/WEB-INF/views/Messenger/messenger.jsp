@@ -220,19 +220,19 @@
                             <div class="profileDetails">
                                 <div class="profileRow">
                                     <div class="label">부서명</div>
-                                    <div class="value" id="profileCompany">개발팀</div>
+                                    <div class="value" id="profileDept">개발팀</div>
                                 </div>
                                 <div class="profileRow">
                                     <div class="label">직책</div>
-                                    <div class="value" id="profileDept">부장</div>
+                                    <div class="value" id="profileRole">부장</div>
                                 </div>
                                 <div class="profileRow">
                                     <div class="label">휴대전화</div>
-                                    <div class="value" id="profileDirectPhone">010-5482-9107</div>
+                                    <div class="value" id="profilePhone">010-5482-9107</div>
                                 </div>
                                 <div class="profileRow">
                                     <div class="label">이메일</div>
-                                    <div class="value" id="profilePhone">shaaa6256@naver.com</div>
+                                    <div class="value" id="profileEmail">shaaa6256@naver.com</div>
                                 </div>
                             </div>
                         </div>
@@ -314,12 +314,13 @@
             data: { emp_no: emp_no },
             success: function(employee) {
                 // 프로필 정보를 업데이트
+                console.log(employee);
                 $('#profilePopup .profileTit img').attr('src', 'images/프로필.jpg'); // 이미지 경로는 실제 데이터에 맞게 수정
-                $('#profilePopup .profileTit span').text(employee.name);
-                $('#profileCompany').text(employee.dept);
-                $('#profileDept').text(employee.position);
-                $('#profileDirectPhone').text(employee.phone);
-                $('#profilePhone').text(employee.email);
+                $('#profilePopup .profileTit span').text(employee.NAME);
+                $('#profileDept').text(employee.DEPT_TITLE);
+                $('#profileRole').text(employee.ROLE_TITLE);
+                $('#profilePhone').text(employee.PHONE);
+                $('#profileEmail').text(employee.EMAIL);
                 
             	// emp_no를 데이터 속성으로 저장
                 $('#profilePopup').data('emp_no', emp_no);
@@ -481,7 +482,7 @@
                 var addressList = $('#addressList');
                 addressList.find('li:not(:first)').remove(); // 기존 항목 제거
                 response.forEach(function(employee) {
-                    addressList.append('<li><a href="javascript:;" onclick="toggleCheckbox(event, this, \'' + employee.EMP_NO + '\')"><input type="checkbox" class="addressCheckbox" style="display: none;">' + employee.NAME + '</a></li>');
+                    addressList.append('<li><a href="javascript:;" data-emp-no="' + employee.EMP_NO + '" onclick="toggleCheckbox(event, this)"><input type="checkbox" class="addressCheckbox" value="' + employee.EMP_NO + '" style="display: none;">' + employee.NAME + '</a></li>');
                 });
                 // 주소록 클릭 시 프로필 팝업 표시
                 const addressItems = document.querySelectorAll('.addressList li a');

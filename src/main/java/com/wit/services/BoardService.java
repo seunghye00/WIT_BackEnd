@@ -37,8 +37,15 @@ public class BoardService {
 		return bdao.detailBoard(board_seq);
 	}
 
+	// 닉네임 조회(자유게시판 JSTL)
+	public String selectNickname(String emp_no) throws Exception {
+		return bdao.selectNickname(emp_no);
+	}
+
 	// 게시물 삭제
 	@Transactional
+	// 어노테이션이 왜 여기있는지는 알거라고 믿어 밍쥬
+	// 주석 안달게 일부로 ^^?
 	public void delete(int board_seq) throws Exception {
 		// 첨부 파일 삭제
 		bfdao.deleteFile(board_seq);
@@ -47,13 +54,8 @@ public class BoardService {
 		bdao.deleteBoard(board_seq);
 	}
 
-	// 닉네임 조회
-	public String selectNickname(String emp_no) throws Exception {
-		return bdao.selectNickname(emp_no);
-	}
-	
 	// 직원 정보 조회 메소드 추가
-    public EmployeeDTO getEmployeeInfo(String emp_no) {
-        return bdao.getEmployeeInfo(emp_no);
-    }
+	public EmployeeDTO employeeInfo(String emp_no) {
+		return bdao.employeeInfo(emp_no);
+	}
 }

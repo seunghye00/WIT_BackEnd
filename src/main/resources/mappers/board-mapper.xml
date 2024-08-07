@@ -5,6 +5,10 @@
 
 <mapper namespace="board">
 	<!-- 게시물 등록 -->
+	<!-- 파라미터타입은 CUD 에서 사용하고 -->
+	<!-- 리졸트타입은 R에서만 사용한다! -->
+	<!-- 그냥 리졸트만 조회에서만 쓸수있다네 밍쥬야 -->
+	<!-- 파라미터타입은 근데 조회에서도 쓸수는 있어 -->
 	<insert id="write" parameterType="com.wit.dto.BoardDTO">
 		INSERT INTO board (board_seq, emp_no, title, contents, write_date,
 		views)
@@ -43,12 +47,6 @@
 		WHERE b.board_seq = #{board_seq}
 	</select>
 
-	<!-- 게시물 삭제 -->
-	<delete id="delete" parameterType="int">
-		DELETE FROM board WHERE
-		board_seq = #{boardSeq}
-	</delete>
-
 	<!-- 조회수 -->
 	<update id="viewcount">
 		UPDATE board SET views = views + 1 WHERE board_seq =
@@ -66,10 +64,18 @@
 		#{emp_no,jdbcType=VARCHAR}
 	</select>
 
+	<!-- 게시물 삭제 -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM board WHERE
+		board_seq = #{boardSeq}
+	</delete>
+
 	<!-- 직원 정보 조회 -->
-	<select id="getEmployeeInfo"
-		resultType="com.wit.dto.EmployeeDTO">
-		SELECT e.name, r.role_title as role_code
+	<!-- 조인을해서 깔끔하게 백밍쥬 사장 이렇게 하기위해서 추가했어 -->
+	<!-- 이건 공통코드로 쓰일거야 헤더 우측 프로필 옆에 뽑아야하니깐! -->
+	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
+		SELECT e.name, r.role_title
+		as role_code
 		FROM Employee e
 		JOIN Role r ON e.role_code = r.role_code
 		WHERE e.emp_no = #{emp_no}
