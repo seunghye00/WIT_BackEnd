@@ -18,13 +18,14 @@ public class EmployeeDTO {
 	private Timestamp join_date;
 	private Timestamp quit_date;
 	private char quit_yn;
+	private String photo;
 
 	public EmployeeDTO() {
 	}
 
 	public EmployeeDTO(String emp_no, String pw, String name, String nickname, String ssn, String phone, String email,
 			String zip_code, String address, String detail_address, String dept_code, String role_code,
-			Timestamp join_date, Timestamp quit_date, char quit_yn) {
+			Timestamp join_date, Timestamp quit_date, char quit_yn, String photo) {
 		super();
 		this.emp_no = emp_no;
 		this.pw = pw;
@@ -41,6 +42,7 @@ public class EmployeeDTO {
 		this.join_date = join_date;
 		this.quit_date = quit_date;
 		this.quit_yn = quit_yn;
+		this.photo = photo;
 	}
 
 	public String getEmp_no() {
@@ -161,6 +163,14 @@ public class EmployeeDTO {
 
 	public void setQuit_yn(char quit_yn) {
 		this.quit_yn = quit_yn;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
 }
