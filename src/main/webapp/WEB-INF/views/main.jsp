@@ -11,6 +11,7 @@
 <title>메인 페이지</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="/resources/css/style.main.css">
 <link rel="stylesheet" href="/resources/css/mky.css">
 <link rel="stylesheet" href="/resources/css/wit.css">
