@@ -184,4 +184,10 @@ public class EmployeeService {
 	public EmployeeInfoDTO getNameNDept(String emp_no) {
 		return dao.getNameNDept(emp_no);
 	}
+	
+	// 메신저 emp_no 이름으로 변경
+	@Transactional
+	public String getEmployeeName(String emp_no) {
+	    return dao.getEmployeeName(emp_no);
+	}
 }

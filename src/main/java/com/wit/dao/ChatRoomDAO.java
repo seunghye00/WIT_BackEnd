@@ -1,5 +1,6 @@
 package com.wit.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,30 @@ public class ChatRoomDAO {
     }
     
     // 채팅방 상세 조회
-    public List<Map<String, Object>> getDetailChatRooms(int chat_room_seq) {
-    	return mybatis.selectList("chatRoom.getDetailChatRooms", chat_room_seq);
+    public List<Map<String, Object>> getDetailChatRooms(Map<String, Object> params) {
+    	return mybatis.selectList("chatRoom.getDetailChatRooms", params);
+    }
+    
+    // 채팅방 타이틀 수정
+    public void updateChatRoomTitle(Map<String, Object> params) {
+        mybatis.update("chatRoom.updateChatRoomTitle", params);
+    }
+    
+    // 채팅방 코드 가져오기
+    public String getChatRoomCode(Map<String, Object> params) {
+        return mybatis.selectOne("chatRoom.getChatRoomCode", params);
+    }
+
+    // 채팅방 삭제
+    public void deleteChatRoom(int chat_room_seq) {
+        mybatis.delete("chatRoom.deleteChatRoom", chat_room_seq);
+    }
+
+    // 채팅방 멤버 삭제
+    public void deleteChatRoomMember(int chat_room_seq, String emp_no) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chat_room_seq", chat_room_seq);
+        params.put("emp_no", emp_no);
+        mybatis.delete("chatRoom.deleteChatRoomMember", params);
     }
 }

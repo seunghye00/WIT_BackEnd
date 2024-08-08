@@ -6,14 +6,16 @@ public class ChatDTO {
 	private int chat_seq;
 	private int chat_room_seq;
 	private String name;
+	private String sender;
 	private String message;
 	private Timestamp send_time;
 
-	public ChatDTO(int chat_seq, int chat_room_seq, String name, String message, Timestamp send_time) {
+	public ChatDTO(int chat_seq, int chat_room_seq, String name, String sender, String message, Timestamp send_time) {
 		super();
 		this.chat_seq = chat_seq;
 		this.chat_room_seq = chat_room_seq;
 		this.name = name;
+		this.sender = sender;
 		this.message = message;
 		this.send_time = send_time;
 	}
@@ -46,6 +48,14 @@ public class ChatDTO {
 		this.name = name;
 	}
 
+	public String getSender() {
+		return sender;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -61,5 +71,4 @@ public class ChatDTO {
 	public void setSend_time(Timestamp send_time) {
 		this.send_time = send_time;
 	}
-
 }
