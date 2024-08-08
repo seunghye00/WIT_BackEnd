@@ -11,7 +11,8 @@
 <title>메인 페이지</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="/resources/css/style.main.css">
 <link rel="stylesheet" href="/resources/css/mky.css">
 <link rel="stylesheet" href="/resources/css/wit.css">
@@ -34,8 +35,8 @@
 				</div>
 			</div>
 			<ul>
-				<li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span
-						class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
+				<li><a href="/employee/main"> <i class='bx bxs-home-alt-2'></i>
+						<span class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
 				<li><a href="/addressbook/addressbook"> <i
 						class='bx bx-paperclip'></i> <span class="navItem">주소록</span></a> <span
 					class="toolTip">주소록</span></li>
