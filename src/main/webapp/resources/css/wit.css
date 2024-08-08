@@ -78,6 +78,7 @@
     flex: 1;
     display: flex;
     border-bottom: 1px solid #c1c1c1;
+    max-height: 61px;
 }
 
 .boardList .notiList .notiConts:hover {
@@ -770,10 +771,31 @@
     margin-left: 5px;
 }
 
+.subList li:not(:last-child) {
+    padding-bottom: 8px;
+}
+
+.subList li {
+	display:flex;
+    justify-content: space-between;
+}
+
+.subList li a.active {
+    color: #558BCF;
+    font-weight: 600;
+}
+
+.subList li button {
+  	background-color: unset;
+    border: none;
+    color: #333;
+}
+
 /* 주소록 메인 콘텐츠 */
 .sideContents.addressCont {
     gap: 15px;
 }
+
 
 .sideContents.addressCont .mainTitle {
     flex: unset;
@@ -831,7 +853,7 @@
     right: 0;
 }
 
-.toolBar .deleteBtn {
+.addressCont .deleteBtn {
     display: block;
     color: #333;
     border: none;
@@ -844,8 +866,7 @@
     justify-content: center;
     background-color: unset;
 }
-
-.toolBar .deleteBtn:hover {
+.addressCont .deleteBtn:hover {
     background-color: unset;
 }
 
@@ -945,6 +966,34 @@
     gap: 20px;
 }
 
+.modal-category {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 30px;
+    border: 3px solid #558BCF;
+    width: 25%;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position:relative;
+}
+.modal-category .close {
+	color: #aaa;
+    position: absolute;
+    font-size: 28px;
+    font-weight: bold;
+    right: 20px;
+}
+#addCategoryForm, #editCategoryForm {
+	display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+
+#addCategoryForm input, #editCategoryForm input {
+	width: calc(100% - 120px);
+}
 .popTit {
     font-size: 24px;
     font-weight: bold;
@@ -995,13 +1044,18 @@
     margin-right: 10px;
     font-size: 18px;
 }
+.formGroup span {
+    font-size: 18px;
+}
 
 .formGroup input[type="text"],
-.formGroup input[type="file"] {
+.formGroup input[type="file"],
+.formGroup select{
     width: 50%;
     padding: 15px;
     border: 1px solid #ccc;
     border-radius: 8px;
+    font-size: 16px;
 }
 
 .formGroup .photoWrapper {
@@ -1154,7 +1208,8 @@
 .chatList .chatTitle {
     display: flex;
     align-items: center;
-    gap: 5px;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .chatList .notiBox {}
@@ -1165,7 +1220,9 @@
     font-size: 10px;
     font-weight: 600;
     background-color: #f93453;
-    padding: 3px 5.5px;
+    padding: 4px 0;
+    width: 20px;
+    text-align: center;
 }
 
 .exitBtn {
@@ -1367,8 +1424,8 @@
     z-index: 1000;
     border-radius: 8px;
     flex-direction: column;
-    align-items: end;
     gap: 10px;
+    width: 500px;
 }
 
 .profileTit {
@@ -1402,6 +1459,7 @@
     background: #eee;
     padding: 20px;
     border-radius: 8px;
+    width: calc(100% - 100px);
 }
 
 .profilePopup .profileDetails .profileRow {
@@ -1421,6 +1479,7 @@
 .profilePopup .profilebtnBox {
     display: flex;
     gap: 10px;
+    justify-content: flex-end;
 }
 
 .profilePopup .chatButton {
@@ -1451,6 +1510,53 @@
 
 .profilePopup .closeButton:hover {
     background-color: #c51221;
+}
+
+.addressCont #results {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.noData {
+    text-align: center;
+    font-size: 1.2em;
+    color: gray;
+    margin-top: 20px;
+}
+
+.chatRoomPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chatRoomPopup .popupContent {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 350px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatRoomPopup .closeBtn {
+    background: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    position: static;
+    width: 72px;
 }
 
 /* 경원 css end */
@@ -2273,7 +2379,10 @@ button.disabled {
     border-radius: 15px;
     background-color: #555;
     color: #fff;
-    max-height: 44px;
+}
+
+.eApproval .docuList .listBox .rows.listHeader:hover {
+	cursor: default;
 }
 
 .eApproval .docuList .listBox .rows .cols {
@@ -2327,12 +2436,6 @@ button.disabled {
 }
 
 /* 전자 결재 작성 */
-.sideContents.eApprWrite form {
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-}
-
 .eApprWrite .choiBox {
     flex: 1;
 }
@@ -2362,6 +2465,10 @@ button.disabled {
     background: #fff;
     padding: 20px 10px;
     text-align: center;
+}
+
+.eApprWrite .document .choiBox .refeModal li {
+    padding: 7px 0;
 }
 
 .eApprWrite .document .docuCont {
@@ -2442,16 +2549,21 @@ td {
     height: 100%;
 }
 
-/* .docuWrite.docuProp => 업무 기안 문서 작성 양식 */
-.eApprWrite .document .docuCont .docuWrite.docuProp table thead {
-    height: 20%;
+.eApprWrite .document .docuCont .docuWrite form {
+    height: 100%;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuProp table thead td input {
+.eApprWrite .document .docuCont .docuWrite table thead td input[type="text"] {
     width: 100%;
+    height: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
+}
+
+/* .docuWrite.docuProp => 업무 기안 문서 작성 양식 */
+.eApprWrite .document .docuCont .docuWrite.docuProp table thead {
+    height: 20%;
 }
 
 .eApprWrite .document .docuCont .docuWrite.docuProp table thead td input[type="date"] {
@@ -2497,7 +2609,11 @@ td {
 
 /* .docuWrite.docuLeave => 휴가 신청서 문서 작성 양식 */
 .eApprWrite .document .docuCont .docuWrite.docuLeave table thead {
-    height: 42%;
+    height: 50%;
+}
+
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead th {
+	width: 10%;
 }
 
 .eApprWrite .document .docuCont .docuWrite.docuLeave table thead td {
@@ -2510,6 +2626,12 @@ td {
     border-radius: 8px;
     font-size: 16px;
     border: 1px solid #ccc;
+}
+
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead td input.readOnly {
+	width: 20%;
+	border-radius: 8px;
+	height: 80%;
 }
 
 .eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:first-child td input[type="date"] {
@@ -2534,12 +2656,8 @@ td {
     padding: 0 15px;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:nth-child(3) td input {
-    width: 10%;
-    padding: 7px;
-    border-radius: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:nth-child(3) td {
+    padding-left: unset;
 }
 
 /* .docuWrite.docuLateness => 지각 사유서 문서 작성 양식 */
@@ -2548,7 +2666,7 @@ td {
     padding: 13px 0;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLateness table thead td input[type="date"] {
+.eApprWrite .document .docuCont .docuWrite.docuLateness table thead input[type="date"] {
     margin-left: 10px;
     width: 18%;
     padding: 7px;
@@ -2558,7 +2676,7 @@ td {
 }
 
 .eApprWrite .document .docuCont .docuWrite.docuLateness table thead td:last-child {
-    width: 10%;
+   width: 10%;
 }
 
 .eApprWrite .document .docuCont .docuWrite.docuLateness table thead th:nth-child(3) {
@@ -2647,7 +2765,7 @@ td {
     top: 14vh;
     left: 21vw;
     width: 360px;
-    height: 255px;
+    min-height: 255px;
     padding: 25px;
     flex-wrap: wrap;
     z-index: 2;
@@ -2859,6 +2977,10 @@ button:nth-child(5) img {
 .eApprModal.apprChoiModal .choiCont .resultAppr .list ul li {
     margin: 0;
     height: 51px;
+}
+
+.eApprModal.apprChoiModal .choiCont .resultAppr .list.refeList ul li {
+    height: 31px;
 }
 
 .eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar {
@@ -3329,11 +3451,11 @@ button:nth-child(5) img {
 }
 
 .deleteBtn {
-    padding: 10px 20px;
-    border: 1px solid #c1c1c1;
-    border-radius: 8px;
-    background-color: #dc3545;
-    color: #fff;
+    /* padding: 10px 20px; */
+    /* border: 1px solid #c1c1c1; */
+    /* border-radius: 8px; */
+    /* background-color: #dc3545; */
+    color: #888;
 }
 
 .deleteBtn:hover {

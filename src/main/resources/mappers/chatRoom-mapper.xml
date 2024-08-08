@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- chatRoom-mapper.xml -->
+<mapper namespace="chatRoom">
+
+    <!-- 개인 채팅방 존재 여부 확인 -->
+    <select id="isPrivateChatRoomExists" resultType="int">
+        select count(*)
+        from chat_room cr
+        join chat_room_member crm1 on cr.chat_room_seq = crm1.chat_room_seq
+        join chat_room_member crm2 on cr.chat_room_seq = crm2.chat_room_seq
+        where crm1.emp_no = #{emp_no1}
+          and crm2.emp_no = #{emp_no2}
+          and cr.chat_room_code = 'P'
+    </select>
+
+    <!-- 채팅방 생성 -->
+    <insert id="createChatRoom">
+        INSERT INTO chat_room (chat_room_seq, chat_room_name, chat_room_code, created_by, create_date, is_read)
+        VALUES (chat_room_seq.nextval, #{chat_room_name}, #{chat_room_code}, #{emp_no2}, sysdate, 0)
+    </insert>
+
+    <!-- 그룹채팅방 생성 -->
+    <insert id="createGroupChat">
+        INSERT INTO chat_room (chat_room_seq, chat_room_name, chat_room_code, created_by, create_date, is_read)
+        VALUES (chat_room_seq.nextval, #{chat_room_name}, 'G', #{creater}, sysdate, 0)
+    </insert>
+
+    <!-- 채팅방 멤버 추가 -->
+    <insert id="insertChatRoomMember">
+        INSERT INTO chat_room_member (chat_room_seq, emp_no)
+        VALUES (#{chat_room_seq}, #{emp_no})
+    </insert>
+
+    <!-- 최근 생성된 채팅방 시퀀스 조회 -->
+    <select id="getLastChatRoomSeq" resultType="int">
+        select chat_room_seq.currval from dual
+    </select>
+    
+ 	<!-- 사용자가 속한 채팅방 조회 -->
+    <select id="getChatRoomsByUserId" resultType="map">
+       	select cr.*
+		from chat_room cr
+		join chat_room_member crm on cr.chat_room_seq = crm.chat_room_seq
+		where crm.emp_no = #{loginUserId}
+		or cr.created_by = #{loginUserId}
+    </select>
+    
+ 	<!-- 채팅방 상세 조회 -->
+    <select id="getDetailChatRooms" resultType="map">
+       	select 
+		    e.name,
+		    cr.chat_room_name
+		from 
+		    employee e
+		join 
+		    chat_room_member crm 
+		    on e.emp_no = crm.emp_no
+		join 
+		    chat_room cr 
+		    on cr.chat_room_seq = crm.chat_room_seq 
+		where 
+		    cr.chat_room_seq = #{chat_room_seq}
+    </select>
+</mapper>

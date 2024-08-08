@@ -36,7 +36,7 @@
 						<ul class="privateList">
 							<li class="toggleItem">
 								<h3 class="toggle">
-									<a href="board.html">공지사항</a>
+									<a href="/notice/notice">공지사항</a>
 								</h3>
 
 							</li>
@@ -46,7 +46,7 @@
 						<ul class="GroupList">
 							<li class="toggleItem">
 								<h3 class="toggle">
-									<a href="free_board.html">자유 게시판</a>
+									<a href="/board/list">자유 게시판</a>
 								</h3>
 
 							</li>

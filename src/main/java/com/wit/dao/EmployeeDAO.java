@@ -8,10 +8,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.wit.dto.AddressBookDTO;
+import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.EmployeeInfoDTO;
 import com.wit.dto.RoleDTO;
-import com.wit.dto.DeptDTO;
 
 @Repository
 public class EmployeeDAO {
@@ -28,7 +29,7 @@ public class EmployeeDAO {
 	public List<DeptDTO> AllDepts() {
 		return mybatis.selectList("employee.AllDepts");
 	}
-	
+
 	// 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 생성)
 	public String getHighestEmployeeIDByDept(String dept) {
 		return mybatis.selectOne("employee.getHighestEmployeeIDByDept", dept);
@@ -46,12 +47,17 @@ public class EmployeeDAO {
 		params.put("pw", pw);
 		return mybatis.selectOne("employee.login", params);
 	}
-	
+
+	// 직원 정보 조회 메소드 추가
+	public EmployeeDTO employeeInfo(String emp_no) {
+		return mybatis.selectOne("attendance.employeeInfo", emp_no);
+	}
+
 	// 추가 정보 업데이트 를 위한 직원 정보 조회
 	public EmployeeDTO findByEmpNo(String empNo) {
 		return mybatis.selectOne("employee.findByEmpNo", empNo);
 	}
-	
+
 	// 추가 정보 업데이트
 	public int updateInfo(EmployeeDTO dto) {
 		return mybatis.update("employee.updateInfo", dto);
@@ -81,7 +87,60 @@ public class EmployeeDAO {
 		params.put("newPassword", newPassword);
 		return mybatis.update("employee.modifyPassword", params);
 	}
-	
+
+	// 직원 주소록 리스트 조회
+	public List<Map<String, Object>> getEmployeeAddressList(Map<String, Object> params) {
+		return mybatis.selectList("employee.getEmployeeAddressList", params);
+	}
+
+	// 직원 주소록 검색
+	public List<EmployeeDTO> searchEmployeeAddressList(String keyword, int cpage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("keyword", keyword);
+		params.put("cpage", cpage);
+		return mybatis.selectList("employee.searchEmployeeAddressList", params);
+	}
+
+	// 주소록 데이터 총 조회
+	public int totalCountPage() {
+		return mybatis.selectOne("employee.totalCountPage");
+	}
+
+	// 카테고리 목록 가져오기
+	public List<Map<String, Object>> getCategories() {
+		return mybatis.selectList("employee.getCategories");
+	}
+
+	// 주소록 데이터 가져오기
+	public Map<String, Object> getContactByEmp_no(String emp_no) {
+		return mybatis.selectOne("employee.getContactByEmp_no", emp_no);
+	}
+
+	// 주소록 검색
+	public List<Map<String, Object>> selectByCon(String keyword, int startNum, int endNum) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("keyword", keyword);
+		params.put("startNum", startNum);
+		params.put("endNum", endNum);
+		List<Map<String, Object>> list = mybatis.selectList("employee.selectByCon", params);
+		return list;
+	}
+
+	// 주소록 툴바 페이지네이션 총 카운트
+	public int totalCountPageSearch(String keyword) {
+		return mybatis.selectOne("employee.totalCountPageSearch", keyword);
+	}
+
+	// 메신저 주소록 조히
+	public List<Map<String, Object>> getAllMessengerEmp(String emp_no) {
+		return mybatis.selectList("employee.getAllMessengerEmp", emp_no);
+	}
+
+	// 메신저 주소록 상세 조히
+	public Map<String, Object> getContactByEmpNo(String emp_no) {
+		return mybatis.selectOne("employee.getContactByEmpNo", emp_no);
+	}
+
 	// 닉네임 중복 체크(마이페이지)
 	public int checkNickname(String nickname) {
 		return mybatis.selectOne("employee.checkNickname", nickname);
@@ -101,12 +160,12 @@ public class EmployeeDAO {
 	public int delete(String emp_no) {
 		return mybatis.delete("employee.delete", emp_no);
 	}
-	
+
 	// 부서별 사원 목록 조회
 	public List<EmployeeDTO> getListByDept(String deptCode) {
 		return mybatis.selectList("employee.selectByDept", deptCode);
 	}
-	
+
 	// 해당 사번을 지닌 직원의 이름과 부서명 조회
 	public EmployeeInfoDTO getNameNDept(String empNo) {
 		return mybatis.selectOne("employee.selectByEmpNo", empNo);
@@ -116,4 +175,5 @@ public class EmployeeDAO {
 	public String getName(String empNo) {
 		return mybatis.selectOne("employee.getName", empNo);
 	}
+
 }
