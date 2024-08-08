@@ -33,7 +33,7 @@
 			</div>
 
 			<ul>
-				<li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span
+				<li><a href="/employee/main"> <i class='bx bxs-home-alt-2'></i> <span
 						class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
 				<li><a href="#"> <i class='bx bx-paperclip'></i> <span
 						class="navItem">주소록</span></a> <span class="toolTip">주소록</span></li>
