@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+<title>전자 결재</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <script
@@ -20,11 +20,8 @@
 </head>
 
 <body>
-	<!-- 공통영역 -->
 	<div class="container">
 		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>	
-		<!-- 공통역역 끝 -->
-
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
 			<div class="contents">
@@ -36,9 +33,9 @@
 					</div>
 					<div class="sideBtnBox">
 						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
-						<%@ include file="/WEB-INF/views/eApproval/newWriteModal.jsp" %>
+						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp" %>
 					</div>
-					<%@ include file="/WEB-INF/views/eApproval/sideToggle.jsp" %>
+					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp" %>
 				</div>
 				<div class="sideContents eApproval">
 					<div class="mainTitle">전자 결재 홈</div>
@@ -80,16 +77,16 @@
 									<c:forEach items="${currentDocuList}" var="i">
 										<div class="rows">
 											<div class="cols">
-												<span> <fmt:formatDate value="${i.write_date}"
-														pattern="yyyy-MM-dd" /></span>
+												<span><fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" /></span>
 											</div>
 											<div class="cols">
 												<span>${i.name}</span>
 											</div>
 											<div class="cols">
-												<span> <c:if test="${i.emer_yn eq 'Y'}">
-														<img src="/img/icon/siren.png" class="emer">
-													</c:if>
+												<span> 
+												<c:if test="${i.emer_yn eq 'Y'}">
+													<img src="/img/icon/siren.png" class="emer">
+												</c:if>
 												</span>
 											</div>
 											<div class="cols">

@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>업무 기안 문서 작성</title>
+<title>업무 기안 문서</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
@@ -18,10 +18,8 @@
 <script defer src="/js/wit.js"></script>
 </head>
 <body>
-	<!-- 공통영역 -->
 	<div class="container">
 		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
-		<!-- 공통역역 끝 -->
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
 			<div class="contents">
@@ -34,7 +32,7 @@
 					<div class="sideBtnBox">
 						<button class="plusBtn sideBtn disabled">새 결재 진행</button>
 					</div>
-					<%@ include file="/WEB-INF/views/eApproval/sideToggle.jsp"%>
+					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApprWrite">
 					<div class="mainTitle">문서 작성 ( 업무 기안 )</div>

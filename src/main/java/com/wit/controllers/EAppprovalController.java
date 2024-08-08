@@ -67,11 +67,14 @@ public class EAppprovalController {
 
 	// 브라우저에서 선택한 type에 따라 결재하기 페이지로 이동 시 해당 페이지에서 초기에 노출할 데이터를 담아서 전달하는 메서드
 	@RequestMapping("apprList")
-	public String apprList(String type, Model model) throws Exception {
+	public String apprList(String type, String docuCode, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-
+		
+		System.out.println(type);
+		System.out.println(docuCode);
+		
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장
 		List<DocuInfoListDTO> list = null;
 		switch (type) {
@@ -83,7 +86,7 @@ public class EAppprovalController {
 			break;
 		default:
 			// 추후 에러 페이지로 변경
-			return "redirect:/eApproval/home";
+			// return "redirect:/";
 		}
 
 		// 작성자와 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 model 객체로 전달
@@ -91,7 +94,9 @@ public class EAppprovalController {
 			dto.setWriter(eServ.getName(dto.getEmp_no()));
 			dto.setLast_appr_name(eServ.getName(dto.getLast_appr()));
 		}
+		model.addAttribute("docuCode", docuCode);
 		model.addAttribute("docuList", list);
+		model.addAttribute("type", type);
 
 		// 해당 문서함 화면으로 이동
 		return "eApproval/list/" + type + "List";
@@ -99,13 +104,15 @@ public class EAppprovalController {
 
 	// 브라우저에서 선택한 type에 따라 개인 문서함 페이지로 이동 시 해당 페이지에서 초기에 노출할 데이터를 담아서 전달하는 메서드
 	@RequestMapping("privateList")
-	public String privateList(String type, Model model) throws Exception {
+	public String privateList(String type, String docuCode, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
 		
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장 후 model 객체로 전달
 		List<DocuInfoListDTO> list = null;
+		model.addAttribute("type", type);
+		
 		switch (type) {
 		case "write":
 			list = serv.selectWriteList(empNo);
@@ -131,7 +138,8 @@ public class EAppprovalController {
 			// 추후 에러 페이지로 변경
 			return "redirect:/eApproval/home";
 		}
-
+		model.addAttribute("docuCode", docuCode);
+		
 		// 해당 문서함 화면으로 이동
 		return "eApproval/list/" + type + "List";
 	}
@@ -168,11 +176,11 @@ public class EAppprovalController {
 		// 선택한 문서에 따라 해당 전자 결재 작성 화면으로 이동
 		switch (docuCode) {
 		case "M1":
-			return "eApproval/writeProp";
+			return "eApproval/write/writeProp";
 		case "M2":
-			return "eApproval/writeLeave";
+			return "eApproval/write/writeLeave";
 		case "M3":
-			return "eApproval/writeLateness";
+			return "eApproval/write/writeLateness";
 		default:
 			// 추후 에러 페이지로 변경
 			return "redirect:/eApproval/home";
@@ -194,7 +202,7 @@ public class EAppprovalController {
 		String currentUrl = request.getRequestURI();
 
 		// 요청된 URL에 따라 분기 처리
-		if ("/write/Prop".equals(currentUrl)) {
+		if ("/eApproval/write/Prop".equals(currentUrl)) {
 
 			// 문서 상태 설정
 			dto.setStatus("진행중");
@@ -207,7 +215,7 @@ public class EAppprovalController {
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
 
-		} else if ("/write/tempProp".equals(currentUrl)) {
+		} else if ("/eApproval/write/tempProp".equals(currentUrl)) {
 
 			// 문서 상태 설정
 			dto.setStatus("임시 저장");
@@ -248,9 +256,9 @@ public class EAppprovalController {
 
 		// 현재 요청된 URL을 확인
 		String currentUrl = request.getRequestURI();
-
+		System.out.println(currentUrl);
 		// 요청된 URL에 따라 분기 처리
-		if ("/write/Lateness".equals(currentUrl)) {
+		if ("/eApproval/write/Lateness".equals(currentUrl)) {
 
 			// 문서 상태 설정
 			dto.setStatus("진행중");
@@ -263,7 +271,7 @@ public class EAppprovalController {
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
 
-		} else if ("/write/tempLateness".equals(currentUrl)) {
+		} else if ("/eApproval/write/tempLateness".equals(currentUrl)) {
 
 			// 문서 상태 설정
 			dto.setStatus("임시 저장");
@@ -306,7 +314,7 @@ public class EAppprovalController {
 		String currentUrl = request.getRequestURI();
 
 		// 요청된 URL에 따라 분기 처리
-		if ("/write/Leave".equals(currentUrl)) {
+		if ("/eApproval/write/Leave".equals(currentUrl)) {
 
 			// 문서 상태 설정
 			dto.setStatus("진행중");
@@ -319,7 +327,7 @@ public class EAppprovalController {
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
 
-		} else if ("/write/tempLeave".equals(currentUrl)) {
+		} else if ("/eApproval/write/tempLeave".equals(currentUrl)) {
 
 			// 문서 상태 설정
 			dto.setStatus("임시 저장");
@@ -386,6 +394,6 @@ public class EAppprovalController {
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception e) {
 		e.printStackTrace();
-		return "error";
+		return "redirect:/";
 	}
 }

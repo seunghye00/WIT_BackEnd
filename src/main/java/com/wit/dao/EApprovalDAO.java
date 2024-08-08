@@ -44,7 +44,7 @@ public class EApprovalDAO {
 
 	// 문서에 대한 결재 라인을 입력하기 위한 메서드
 	public void setApprLine(ApprLineDTO dto) {
-		mybatis.insert("eApproval.insertApprLine", dto);
+		mybatis.insert("eApproval.setApprLine", dto);
 	}
 
 	// 문서에 대한 참조 라인을 입력하기 위한 메서드
