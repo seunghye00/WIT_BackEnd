@@ -346,13 +346,96 @@ $('.cancelWrite').on('click', () => {
 	}
 });
 
-// 업무 기안 문서 작성 페이지에서 임시 저장 버튼 클릭 시
-$('.propSave').on('click', () => {
+// 업무 기안 문서 작성 페이지에서 결재 요청 버튼 클릭 시
+$('.propWrite').on('click', () => {
+	// 문서에 대한 필수 입력 값을 입력 완료했는 지 확인
+	if($('#effDate').val() == ""){	
+		alert('시행일자를 입력해주세요');
+		$('#effDate').focus();
+		return;
+	}
+	if($('#collaboDept').val() == ""){	
+		alert('협조 부서를 입력해주세요');
+		$('#collaboDept').focus();
+		return;
+	}
+	if($('#writeDocuTitle').val() == ""){	
+		alert('문서 제목을 입력해주세요');
+		$('#writeDocuTitle').focus();
+		return;
+	}
+	if($('#writeDocuConts').val() == ""){	
+		alert('문서 내용을 입력해주세요');
+		$('#writeDocuConts').focus();
+		return;
+	}
+	sendFormData('write/Prop');
+});
 
+// 지각 사유서 문서 작성 페이지에서 결재 요청 버튼 클릭 시
+$('.latenessWrite').on('click', () => {
+	// 문서에 대한 필수 입력 값을 입력 완료했는 지 확인
+	if($('#lateDay').val() == ""){	
+		alert('지각 일자를 입력해주세요');
+		$('#lateDay').focus();
+		return;
+	}
+	if($('#writeDocuTitle').val() == ""){	
+		alert('문서 제목을 입력해주세요');
+		$('#writeDocuTitle').focus();
+		return;
+	}
+	if($('#reason').val() == ""){	
+		alert('지각 사유를 입력해주세요');
+		$('#reason').focus();
+		return;
+	}
+	sendFormData('write/Lateness');
+});
+
+// 휴가 신청서 문서 작성 페이지에서 결재 요청 버튼 클릭 시
+$('.leaveWrite').on('click', () => {
+	// 문서에 대한 필수 입력 값을 입력 완료했는 지 확인
+	if($('#leaveType').val() == "") {
+		alert('휴가 종류를 선택해주세요');
+		$('#leaveType').focus();
+		return;
+	}
+	if($('#startLeaveDay').val() == ""){	
+		alert('시작 일자를 선택해주세요');
+		$('#startLeaveDay').focus();
+		return;
+	}
+	if($('#endLeaveDay').val() == ""){	
+		alert('종료 일자를 선택해주세요');
+		$('#endLeaveDay').focus();
+		return;
+	}
+	if($('#writeDocuTitle').val() == ""){	
+		alert('문서 제목을 입력해주세요');
+		$('#writeDocuTitle').focus();
+		return;
+	}
+	if($('#reason').val() == ""){	
+		alert('휴가 사유를 입력해주세요');
+		$('#reason').focus();
+		return;
+	}
+	sendFormData('write/Leave');
+});
+
+// 문서 작성 페이지에서 임시 저장 버튼 클릭 시
+$('.docuSaveBtn').on('click', function() {
+	// 선택한 파일 내역은 저장되지 않도록 제어
 	if(confirm('임시 저장 시 파일 내역은 저장되지 않습니다.')){	
-		// 폼 태그의 action 값 변경 후 submit
-		$('#docuWriteForm').attr('action', '/eApproval/docuProp/save');	
-        $('#docuWriteForm').submit();	
+		// 해당 버튼이 가진 클래스 이름을 검사해서 문서를 구분 후 해당 url을 담은 메서드 호출
+		if($(this).hasClass('docuPropSave')){
+			sendFormData('write/tempProp');
+		} else if($(this).hasClass('docuLeaveSave')) {
+			sendFormData('write/tempLeave');
+		} else if($(this).hasClass('docuLatenessSave')) {
+			sendFormData('write/tempLateness');
+		}		
 	}
 });
 
@@ -360,6 +443,13 @@ $('.propSave').on('click', () => {
 $('.refeBtn').on('click', () => {
     $('.refeModal').toggle();
 });
+
+function handleOnInput(e, maxLength) {
+	if ($(e).val().length > maxLength) {
+    	alert($(e).data('label') + "의 글자 수는 " + maxLength + "자까지만 입력 가능 합니다.");
+        $(e).val($(e).val().substr(0, maxLength - 1));
+    }
+}
 	
 // 이미 추가된 파일 이름을 저장하는 배열
 let addedFiles = [];
@@ -401,3 +491,38 @@ $('#file').on('change', function() {
          }
     });
 });
+
+// AJAX로 서버에 해당 문서의 데이터를 보내고 문서 번호를 받아오는 메서드
+function sendFormData(choiUrl) {
+	
+	console.log(choiUrl);
+	
+	// 결재 라인 & 참조 라인 정보를 form 태그 내부에 추가
+	$(".apprTable input").appendTo("#docuContForm");
+	$(".refeModal input").appendTo("#docuContForm");
+	
+ 	// 폼 데이터를 직렬화 후 변수에 저장
+	let formData = $("#docuContForm").serialize();
+
+     // AJAX로 서버에 전송
+     $.ajax({
+     	type: 'POST',
+        url: '/eApproval/' + choiUrl,
+        data: formData
+     }).done(resp => {
+     	
+     	if(choiUrl.includes('temp')){
+     		location.href = '/eApproval/privateList?type=save'; 
+     	}
+     
+     	if(addedFiles.length > 0){
+     		const docuSeq = $('<input>', {
+     	 		type: 'hidden',
+     	 		value: resp,
+     	 		name: 'docuSeq'
+     	 	});
+     	 	$('#fileInputForm').append(docuSeq);
+     	 	$('#fileInputForm').submit();
+     	}
+     });	
+}

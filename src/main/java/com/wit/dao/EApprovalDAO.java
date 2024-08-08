@@ -7,11 +7,13 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import com.wit.dto.DocuListDTO;
+import com.wit.dto.LatenessDTO;
+import com.wit.dto.LeaveRequestDTO;
+import com.wit.dto.DocuDTO;
 import com.wit.dto.DocuInfoListDTO;
-import com.wit.dto.workPropDTO;
+import com.wit.dto.WorkPropDTO;
 
 @Repository
 public class EApprovalDAO {
@@ -33,13 +35,10 @@ public class EApprovalDAO {
 		return mybatis.selectList("eApproval.getDocuList");
 	}
 
-	// 문서에 대한 임시 데이터를 입력하고 SEQ 값을 받아오기 위한 메서드
-	public int insert(String empNo, String docuCode) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("docuCode", docuCode);
-		params.put("empNo", empNo);
-		mybatis.insert("eApproval.insertDocu", params);
-		return (int) params.get("seq");
+	// 문서에 대한 데이터를 입력하고 SEQ 값을 받아오기 위한 메서드
+	public int insertDocu(DocuDTO dto) {
+		mybatis.insert("eApproval.insertDocu", dto);
+		return dto.getDocument_seq();
 	}
 
 	// 문서에 대한 결재 라인을 입력하기 위한 메서드
@@ -58,7 +57,22 @@ public class EApprovalDAO {
 		params.put("empNo", empNo);
 		mybatis.insert("eApproval.createRefeLine", params);
 	}
+	
+	// 업무 기안 문서의 정보를 입력하기 위한 메서드
+	public void insertPropDocu(WorkPropDTO dto) {
+		mybatis.insert("eApproval.insertProp", dto);
+	}
 
+	// 지각 사유서 문서의 정보를 입력하기 위한 메서드
+	public void insertLateDocu(LatenessDTO dto) {
+		mybatis.insert("eApproval.insertLateness", dto);
+	}
+
+	// 휴가 신청서 문서의 정보를 입력하기 위한 메서드
+	public void insertLeaveDocu(LeaveRequestDTO dto) {
+		mybatis.insert("eApproval.insertLeave", dto);
+	}
+/*
 	// 임시 저장 시 해당 문서의 정보를 업데이트하기 위한 메서드
 	public void updateBySave(int docuSeq, String title, String emerYN) {
 		Map<String, Object> params = new HashMap<>();
@@ -70,12 +84,8 @@ public class EApprovalDAO {
 		params.put("emerYN", emerYN);
 		mybatis.update("eApproval.updateBySave", params);
 	}
-
-	// 업무 기안 문서 임시 저장 시 해당 문서의 정보를 입력하기 위한 메서드
-	public void insertPropDocu(workPropDTO workPropDTO) {
-		mybatis.insert("eApproval.insertProp", workPropDTO);
-	}
-
+*/
+	
 	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록을 조회하기 위한 메서드
 	public List<DocuInfoListDTO> selectListByType(String empNo, String status) {
 		Map<String, String> params = new HashMap<>();
