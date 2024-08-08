@@ -164,4 +164,9 @@ public class EmployeeDAO {
 	public EmployeeInfoDTO getNameNDept(String emp_no) {
 		return mybatis.selectOne("employee.selectByEmpNo", emp_no);
 	}
+	
+	// 메신저 emp_no 이름으로 변경
+	public String getEmployeeName(String emp_no) {
+	    return mybatis.selectOne("employee.getEmployeeName", emp_no);
+	}
 }

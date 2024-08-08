@@ -304,4 +304,9 @@
 	        role r on em.role_code = r.role_code
 	    where emp_no = #{emp_no}
     </select>
+    
+    <!--  메신저 emp_no 이름으로 변경 -->
+	<select id="getEmployeeName" parameterType="String" resultType="String">
+	    SELECT name FROM employee WHERE emp_no = #{emp_no}
+	</select>
 </mapper>
