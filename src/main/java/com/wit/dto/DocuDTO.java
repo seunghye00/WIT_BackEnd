@@ -2,6 +2,7 @@ package com.wit.dto;
 
 import java.sql.Timestamp;
 
+//전자 결재 문서 양식의 공통으로 입력되는 데이터만 보관하는 DTO 
 public class DocuDTO {
 	private int document_seq;
 	private String emp_no;
@@ -10,6 +11,7 @@ public class DocuDTO {
 	private String status;
 	private String emer_yn;
 	private String docu_code;
+	private String done_date;
 	public int getDocument_seq() {
 		return document_seq;
 	}
@@ -52,8 +54,14 @@ public class DocuDTO {
 	public void setDocu_code(String docu_code) {
 		this.docu_code = docu_code;
 	}
-	public DocuDTO(int document_seq, String emp_no, String title, Timestamp write_date, String status,
-			String emer_yn, String docu_code) {
+	public String getDone_date() {
+		return done_date;
+	}
+	public void setDone_date(String done_date) {
+		this.done_date = done_date;
+	}
+	public DocuDTO(int document_seq, String emp_no, String title, Timestamp write_date, String status, String emer_yn,
+			String docu_code, String done_date) {
 		super();
 		this.document_seq = document_seq;
 		this.emp_no = emp_no;
@@ -62,6 +70,7 @@ public class DocuDTO {
 		this.status = status;
 		this.emer_yn = emer_yn;
 		this.docu_code = docu_code;
+		this.done_date = done_date;
 	}
 	public DocuDTO() {
 		super();

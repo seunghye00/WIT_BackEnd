@@ -40,7 +40,7 @@
 			</div>
 
 			<ul>
-				<li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span
+				<li><a href="/employee/main"> <i class='bx bxs-home-alt-2'></i> <span
 						class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
 				<li><a href="#"> <i class='bx bx-paperclip'></i> <span
 						class="navItem">주소록</span></a> <span class="toolTip">주소록</span></li>
@@ -84,7 +84,7 @@
 						<ul class="privateList">
 							<li class="toggleItem">
 								<h3 class="toggle">
-									<a href="board.html">공지사항</a>
+									<a href="/notice/notice">공지사항</a>
 								</h3>
 							</li>
 						</ul>
@@ -93,7 +93,7 @@
 						<ul class="GroupList">
 							<li class="toggleItem">
 								<h3 class="toggle">
-									<a href="free_board.html">자유 게시판</a>
+									<a href="/board/list">자유 게시판</a>
 								</h3>
 							</li>
 						</ul>
