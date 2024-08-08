@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wit.dao.EApprovalDAO;
+import com.wit.dto.ApprLineDTO;
+import com.wit.dto.DocuDTO;
+import com.wit.dto.DocuInfoListDTO;
 import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
 import com.wit.dto.LeaveRequestDTO;
-import com.wit.dto.DocuDTO;
-import com.wit.dto.DocuInfoListDTO;
 import com.wit.dto.WorkPropDTO;
 
 @Service
@@ -35,8 +36,8 @@ public class EApprovalService {
 	}
 
 	// 결재 라인에 대한 정보를 저장하기 위한 메서드
-	public void createApprLine(int docuSeq, String empNo, int i) {
-		dao.createApprLine(docuSeq, empNo, i);
+	public void setApprLine(ApprLineDTO dto) {
+		dao.setApprLine(dto);
 	}
 
 	// 참조 라인에 대한 정보를 저장하기 위한 메서드

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
 import com.wit.dto.LeaveRequestDTO;
+import com.wit.dto.ApprLineDTO;
 import com.wit.dto.DocuDTO;
 import com.wit.dto.DocuInfoListDTO;
 import com.wit.dto.WorkPropDTO;
@@ -42,12 +43,8 @@ public class EApprovalDAO {
 	}
 
 	// 문서에 대한 결재 라인을 입력하기 위한 메서드
-	public void createApprLine(int docuSeq, String empNo, int i) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("docuSeq", docuSeq);
-		params.put("empNo", empNo);
-		params.put("i", i);
-		mybatis.insert("eApproval.createApprLine", params);
+	public void setApprLine(ApprLineDTO dto) {
+		mybatis.insert("eApproval.insertApprLine", dto);
 	}
 
 	// 문서에 대한 참조 라인을 입력하기 위한 메서드

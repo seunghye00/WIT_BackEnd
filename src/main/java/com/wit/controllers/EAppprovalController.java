@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.wit.dto.ApprLineDTO;
 import com.wit.dto.DocuDTO;
 import com.wit.dto.DocuFilesDTO;
 import com.wit.dto.DocuInfoListDTO;
@@ -53,9 +54,8 @@ public class EAppprovalController {
 	@RequestMapping("home")
 	public String home(Model model) throws Exception {
 
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-		// 임시 데이터
-		empNo = "2024-0001";
 
 		// 결재 진행 중인 문서 목록 최신순으로 5개만 받아와서 JSP로 전달
 		model.addAttribute("currentDocuList", serv.selectByStatus("진행중", empNo));
@@ -69,9 +69,8 @@ public class EAppprovalController {
 	@RequestMapping("apprList")
 	public String apprList(String type, Model model) throws Exception {
 
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-		// 임시 데이터
-		empNo = "2024-0001";
 
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장
 		List<DocuInfoListDTO> list = null;
@@ -102,10 +101,9 @@ public class EAppprovalController {
 	@RequestMapping("privateList")
 	public String privateList(String type, Model model) throws Exception {
 
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-		// 임시 데이터
-		empNo = "2024-0001";
-
+		
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장 후 model 객체로 전달
 		List<DocuInfoListDTO> list = null;
 		switch (type) {
@@ -151,9 +149,8 @@ public class EAppprovalController {
 	public String writeProc(String docuCode, @RequestParam("apprList") String[] apprList,
 			@RequestParam(value = "refeList", required = false) String[] refeList, Model model) throws Exception {
 
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-		// 임시 데이터
-		empNo = "2024-0007";
 
 		// 현재 날짜를 객체로 생성 후 문자열로 변환
 		LocalDate today = LocalDate.now();
@@ -189,7 +186,7 @@ public class EAppprovalController {
 			@RequestParam(value = "refeList", required = false) String[] refeList, DocuDTO dto, WorkPropDTO subDTO,
 			HttpServletRequest request) throws Exception {
 
-		// 작성자 정보 저장
+		// 세션에서 접속자 정보를 꺼내 저장
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
 
@@ -198,29 +195,44 @@ public class EAppprovalController {
 
 		// 요청된 URL에 따라 분기 처리
 		if ("/write/Prop".equals(currentUrl)) {
+
+			// 문서 상태 설정
 			dto.setStatus("진행중");
+			// 문서 정보 입력 후 문서 번호를 저장
+			int docuSeq = serv.insertDocu(dto);
+			dto.setDocument_seq(docuSeq);
+
+			// 결재 라인에 대한 정보를 순서에 따라서 전달
+			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[0], "결재 대기", 1));
+			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
+			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
+
 		} else if ("/write/tempProp".equals(currentUrl)) {
+
+			// 문서 상태 설정
 			dto.setStatus("임시 저장");
+			// 문서 정보 입력 후 문서 번호를 변수에 저장
+			int docuSeq = serv.insertDocu(dto);
+			dto.setDocument_seq(docuSeq);
+
+			// 결재 라인에 대한 정보를 순서대로 전달
+			for (int i = 0; i < 3; i++) {
+				serv.setApprLine(new ApprLineDTO(docuSeq, apprList[i], "임시 라인", (i + 1)));
+			}
 		}
 
-		// 문서 정보 입력 후 문서 번호를 변수에 저장
-		int docuSeq = serv.insertDocu(dto);
-
-		// 문서 세부 정보 입력
-		subDTO.setDocument_seq(docuSeq);
+		// 문서의 세부 정보 입력
+		subDTO.setDocument_seq(dto.getDocument_seq());
 		serv.insertPropDocu(subDTO);
 
-		// 결재 라인에 대한 정보를 순서대로 전달
-		for (int i = 0; i < 3; i++) {
-			serv.createApprLine(docuSeq, apprList[i], (i + 1));
-		}
 		// 참조 라인이 존재한다면 정보를 전달
 		if (refeList != null) {
 			for (String refe : refeList) {
-				serv.createRefeLine(docuSeq, refe);
+				serv.createRefeLine(dto.getDocument_seq(), refe);
 			}
 		}
-		return docuSeq;
+		// 문서 번호를 반환
+		return dto.getDocument_seq();
 	}
 
 	// 지각 사유서 문서를 작성 완료했을 경우 문서 정보 & 결재 라인 & 참조 라인을 저장하기 위한 메서드
@@ -230,7 +242,7 @@ public class EAppprovalController {
 			@RequestParam(value = "refeList", required = false) String[] refeList, DocuDTO dto, LatenessDTO subDTO,
 			HttpServletRequest request) throws Exception {
 
-		// 작성자 정보 저장
+		// 세션에서 접속자 정보를 꺼내 저장
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
 
@@ -239,39 +251,54 @@ public class EAppprovalController {
 
 		// 요청된 URL에 따라 분기 처리
 		if ("/write/Lateness".equals(currentUrl)) {
+
+			// 문서 상태 설정
 			dto.setStatus("진행중");
+			// 문서 정보 입력 후 문서 번호를 저장
+			int docuSeq = serv.insertDocu(dto);
+			dto.setDocument_seq(docuSeq);
+
+			// 결재 라인에 대한 정보를 순서에 따라서 전달
+			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[0], "결재 대기", 1));
+			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
+			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
+
 		} else if ("/write/tempLateness".equals(currentUrl)) {
+
+			// 문서 상태 설정
 			dto.setStatus("임시 저장");
+			// 문서 정보 입력 후 문서 번호를 변수에 저장
+			int docuSeq = serv.insertDocu(dto);
+			dto.setDocument_seq(docuSeq);
+
+			// 결재 라인에 대한 정보를 순서대로 전달
+			for (int i = 0; i < 3; i++) {
+				serv.setApprLine(new ApprLineDTO(docuSeq, apprList[i], "임시 라인", (i + 1)));
+			}
 		}
 
-		// 문서 정보 입력 후 문서 번호를 변수에 저장
-		int docuSeq = serv.insertDocu(dto);
-
-		// 문서 세부 정보 입력
-		subDTO.setDocument_seq(docuSeq);
+		// 문서의 세부 정보 입력
+		subDTO.setDocument_seq(dto.getDocument_seq());
 		serv.insertLateDocu(subDTO);
 
-		// 결재 라인에 대한 정보를 순서대로 전달
-		for (int i = 0; i < 3; i++) {
-			serv.createApprLine(docuSeq, apprList[i], (i + 1));
-		}
 		// 참조 라인이 존재한다면 정보를 전달
 		if (refeList != null) {
 			for (String refe : refeList) {
-				serv.createRefeLine(docuSeq, refe);
+				serv.createRefeLine(dto.getDocument_seq(), refe);
 			}
 		}
-		return docuSeq;
+		// 문서 번호를 반환
+		return dto.getDocument_seq();
 	}
 
-	// 휴가 신청서 문서를 작성 완료했을 경우 문서 정보 & 결재 라인 & 참조 라인을 저장하기 위한 메서드
+	// 휴가 신청서 문서를 작성 완료 or 임시 저장했을 경우 정보를 저장하기 위한 메서드
 	@ResponseBody
 	@RequestMapping(value = { "/write/Leave", "/write/tempLeave" }, produces = "application/json;charset=utf8")
 	public int writeLeave(@RequestParam("apprList") String[] apprList,
 			@RequestParam(value = "refeList", required = false) String[] refeList, DocuDTO dto, LeaveRequestDTO subDTO,
 			HttpServletRequest request) throws Exception {
 
-		// 작성자 정보 저장
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
 
@@ -280,36 +307,52 @@ public class EAppprovalController {
 
 		// 요청된 URL에 따라 분기 처리
 		if ("/write/Leave".equals(currentUrl)) {
+
+			// 문서 상태 설정
 			dto.setStatus("진행중");
+			// 문서 정보 입력 후 문서 번호를 저장
+			int docuSeq = serv.insertDocu(dto);
+			dto.setDocument_seq(docuSeq);
+
+			// 결재 라인에 대한 정보를 순서에 따라서 전달
+			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[0], "결재 대기", 1));
+			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
+			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
+
 		} else if ("/write/tempLeave".equals(currentUrl)) {
+
+			// 문서 상태 설정
 			dto.setStatus("임시 저장");
+			// 문서 정보 입력 후 문서 번호를 변수에 저장
+			int docuSeq = serv.insertDocu(dto);
+			dto.setDocument_seq(docuSeq);
+
+			// 결재 라인에 대한 정보를 순서대로 전달
+			for (int i = 0; i < 3; i++) {
+				serv.setApprLine(new ApprLineDTO(docuSeq, apprList[i], "임시 라인", (i + 1)));
+			}
 		}
 
-		// 문서 정보 입력 후 문서 번호를 변수에 저장
-		int docuSeq = serv.insertDocu(dto);
-
-		// 문서 세부 정보 입력
-		subDTO.setDocument_seq(docuSeq);
+		// 문서의 세부 정보 입력
+		subDTO.setDocument_seq(dto.getDocument_seq());
 		serv.insertLeaveDocu(subDTO);
 
-		// 결재 라인에 대한 정보를 순서대로 전달
-		for (int i = 0; i < 3; i++) {
-			serv.createApprLine(docuSeq, apprList[i], (i + 1));
-		}
 		// 참조 라인이 존재한다면 정보를 전달
 		if (refeList != null) {
 			for (String refe : refeList) {
-				serv.createRefeLine(docuSeq, refe);
+				serv.createRefeLine(dto.getDocument_seq(), refe);
 			}
 		}
-		return docuSeq;
+		return dto.getDocument_seq();
 	}
 
+	// 결재 문서 작성 완료 시 파일을 업로드 하기 위한 메서드
 	@RequestMapping("uploadFiles")
 	public String upload(int docuSeq, MultipartFile[] file) throws Exception {
 
+		// 파일을 저장할 서버 경로 설정 및 파일 업로드
 		String realPath = session.getServletContext().getRealPath("eApproval/upload");
-		System.out.println(realPath);
+		// System.out.println(realPath);
 		fServ.uploadDocuFile(docuSeq, realPath, file);
 
 		return "redirect:/eApproval/home";
@@ -317,10 +360,7 @@ public class EAppprovalController {
 
 	@RequestMapping("downloadFiles")
 	public void download(String oriname, String sysname, HttpServletResponse response) throws Exception {
-
-		// 굳이 컨트롤러(경로)를 통해 다운로드를 하는 이유는
-		// 누군가의 기록을 남기거나 권한을 통제하는 코드 작성이 가능하기 때문이다.
-
+		
 		String realPath = session.getServletContext().getRealPath("upload");
 		File target = new File(realPath + "/" + sysname);
 
@@ -342,39 +382,6 @@ public class EAppprovalController {
 	public List<DocuFilesDTO> list(int docuSeq) throws Exception {
 		return fServ.getList(docuSeq);
 	}
-
-	// 업무 기안 문서 작성 시 데이터를 받아와서 저장 후 기안 문서함 페이지로 이동하는 메서드
-	/*
-	 * @RequestMapping(value = "write/docuProp", method = RequestMethod.POST) public
-	 * String writeProc(@RequestParam("apprList") String[] apprList,
-	 * 
-	 * @RequestParam(value = "refeList", required = false) String[] refeList,
-	 * 
-	 * @RequestParam(value = "files", required = false) MultipartFile[] files,
-	 * DocuDTO dto, WorkPropDTO wpDTO) throws Exception {
-	 * 
-	 * String empNo = (String) session.getAttribute("loginID"); // 임시 데이터 empNo =
-	 * "2024-0001"; dto.setEmp_no(empNo);
-	 * 
-	 * // 작성한 문서에 대한 데이터를 업데이트 serv.insertByWrite(dto); serv.insertPropDocu(wpDTO);
-	 * return "redirect:/eApproval/home"; }
-	 * 
-	 * // 업무 기안 문서 임시 저장 시 해당 데이터를 업데이트하기 위한 메서드
-	 * 
-	 * @RequestMapping(value = "save/docuProp", method = RequestMethod.POST) public
-	 * String saveDocuProp(DocuDTO docuDTO, WorkPropDTO
-	 * workPropDTO, @RequestParam("apprList") String[] apprList,
-	 * 
-	 * @RequestParam(value = "refeList", required = false) String[] refeList) throws
-	 * Exception {
-	 * 
-	 * serv.insertBySave(docuDTO); serv.insertPropDocu(workPropDTO);
-	 * 
-	 * for (int i = 0; i < 3; i++) { serv.createApprLine(docuDTO.getDocument_seq(),
-	 * apprList[i], (i + 1)); } if (refeList != null) { for (String refe : refeList)
-	 * { serv.createRefeLine(docuDTO.getDocument_seq(), refe); } } return
-	 * "redirect:/eApproval/home"; }
-	 */
 
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception e) {

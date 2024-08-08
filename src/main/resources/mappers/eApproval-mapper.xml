@@ -47,9 +47,8 @@
 	</insert>
 
 	<!-- 결재 라인에 대한 정보를 입력하는 쿼리문 -->
-	<insert id="createApprLine">
-		insert into approvals_line values
-		(a_line_seq.nextval, #{docuSeq}, #{empNo}, null, '임시 라인', #{i}, null)
+	<insert id="setApprLine">
+		insert into approvals_line values (a_line_seq.nextval, #{document_seq}, #{emp_no}, null, #{status}, #{approval_order}, null)
 	</insert>
 
 	<!-- 참조 라인에 대한 정보를 입력하는 쿼리문 -->

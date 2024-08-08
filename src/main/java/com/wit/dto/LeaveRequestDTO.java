@@ -2,6 +2,7 @@ package com.wit.dto;
 
 import java.sql.Date;
 
+// 휴가 신청서 문서의 세부 내용에 대한 데이터를 보관하기 위한 DTO
 public class LeaveRequestDTO {
 	private int document_seq;
 	private String leave_type;
