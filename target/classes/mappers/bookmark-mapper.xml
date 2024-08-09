@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!-- 북마크 존재 여부 확인 -->
+    <mapper namespace="bookMark">
+    	<select id="isBookmarked" resultType="integer">
+    		select count(*)
+    		from book_mark
+    		where board_seq = #{board_seq}
+    		and emp_no = #{emp_no}
+    	</select>
+    	
+    	<!-- 북마크 추가 -->
+    	<insert id="addBookmark">
+    		insert into book_mark (book_mark_seq, board_seq, emp_no)
+    		values(book_mark_seq.nextval, #{board_seq}, #{emp_no})
+    	</insert>
+    	
+    	<!-- 북마크 제거 -->
+    	<delete id="removeBookmark">
+    		delete from book_mark
+    		where board_seq = #{board_seq}
+    		and emp_no = #{emp_no}
+    	</delete>
+    </mapper>
