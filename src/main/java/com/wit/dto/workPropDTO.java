@@ -3,7 +3,7 @@ package com.wit.dto;
 import java.sql.Date;
 
 // 업무 기안 문서의 세부 내용에 대한 데이터를 보관하기 위한 DTO
-public class workPropDTO {
+public class WorkPropDTO {
 	private int document_seq;
 	private Date eff_date;
 	private String dept_title;
@@ -32,14 +32,14 @@ public class workPropDTO {
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
-	public workPropDTO(int document_seq, Date eff_date, String dept_title, String contents) {
+	public WorkPropDTO(int document_seq, Date eff_date, String dept_title, String contents) {
 		super();
 		this.document_seq = document_seq;
 		this.eff_date = eff_date;
 		this.dept_title = dept_title;
 		this.contents = contents;
 	}
-	public workPropDTO() {
+	public WorkPropDTO() {
 		super();
 	}
 }

@@ -25,7 +25,7 @@
 		<li><a href="/messenger/messenger"> <i
 				class='bx bxs-message-dots'></i> <span class="navItem">메신저</span></a> <span
 			class="toolTip">메신저</span></li>
-		<li><a href="#"> <i class='bx bx-clipboard'></i> <span
+		<li><a href="/eApproval/home"> <i class='bx bx-clipboard'></i> <span
 				class="navItem">전자결재</span></a> <span class="toolTip">전자결재</span></li>
 		<li><a href="/attendance/attendance"> <i
 				class='bx bxs-briefcase-alt-2'></i> <span class="navItem">근태관리</span></a>

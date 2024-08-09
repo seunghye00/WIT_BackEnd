@@ -2685,7 +2685,10 @@ button.disabled {
     border-radius: 15px;
     background-color: #555;
     color: #fff;
-    max-height: 44px;
+}
+
+.eApproval .docuList .listBox .rows.listHeader:hover {
+	cursor: default;
 }
 
 .eApproval .docuList .listBox .rows .cols {
@@ -2739,12 +2742,6 @@ button.disabled {
 }
 
 /* 전자 결재 작성 */
-.sideContents.eApprWrite form {
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-}
-
 .eApprWrite .choiBox {
     flex: 1;
 }
@@ -2774,6 +2771,10 @@ button.disabled {
     background: #fff;
     padding: 20px 10px;
     text-align: center;
+}
+
+.eApprWrite .document .choiBox .refeModal li {
+    padding: 7px 0;
 }
 
 .eApprWrite .document .docuCont {
@@ -2854,16 +2855,21 @@ td {
     height: 100%;
 }
 
-/* .docuWrite.docuProp => 업무 기안 문서 작성 양식 */
-.eApprWrite .document .docuCont .docuWrite.docuProp table thead {
-    height: 20%;
+.eApprWrite .document .docuCont .docuWrite form {
+    height: 100%;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuProp table thead td input {
+.eApprWrite .document .docuCont .docuWrite table thead td input[type="text"] {
     width: 100%;
+    height: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
+}
+
+/* .docuWrite.docuProp => 업무 기안 문서 작성 양식 */
+.eApprWrite .document .docuCont .docuWrite.docuProp table thead {
+    height: 20%;
 }
 
 .eApprWrite .document .docuCont .docuWrite.docuProp table thead td input[type="date"] {
@@ -2909,7 +2915,11 @@ td {
 
 /* .docuWrite.docuLeave => 휴가 신청서 문서 작성 양식 */
 .eApprWrite .document .docuCont .docuWrite.docuLeave table thead {
-    height: 42%;
+    height: 50%;
+}
+
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead th {
+	width: 10%;
 }
 
 .eApprWrite .document .docuCont .docuWrite.docuLeave table thead td {
@@ -2922,6 +2932,12 @@ td {
     border-radius: 8px;
     font-size: 16px;
     border: 1px solid #ccc;
+}
+
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead td input.readOnly {
+	width: 20%;
+	border-radius: 8px;
+	height: 80%;
 }
 
 .eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:first-child td input[type="date"] {
@@ -2946,12 +2962,8 @@ td {
     padding: 0 15px;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:nth-child(3) td input {
-    width: 10%;
-    padding: 7px;
-    border-radius: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:nth-child(3) td {
+    padding-left: unset;
 }
 
 /* .docuWrite.docuLateness => 지각 사유서 문서 작성 양식 */
@@ -2960,7 +2972,7 @@ td {
     padding: 13px 0;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLateness table thead td input[type="date"] {
+.eApprWrite .document .docuCont .docuWrite.docuLateness table thead input[type="date"] {
     margin-left: 10px;
     width: 18%;
     padding: 7px;
@@ -2970,7 +2982,7 @@ td {
 }
 
 .eApprWrite .document .docuCont .docuWrite.docuLateness table thead td:last-child {
-    width: 10%;
+   width: 10%;
 }
 
 .eApprWrite .document .docuCont .docuWrite.docuLateness table thead th:nth-child(3) {
@@ -3059,7 +3071,7 @@ td {
     top: 14vh;
     left: 21vw;
     width: 360px;
-    height: 255px;
+    min-height: 255px;
     padding: 25px;
     flex-wrap: wrap;
     z-index: 2;
@@ -3273,6 +3285,10 @@ button:nth-child(5) img {
     height: 51px;
 }
 
+.eApprModal.apprChoiModal .choiCont .resultAppr .list.refeList ul li {
+    height: 31px;
+}
+
 .eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar {
     width: 10px;
 }
@@ -3364,11 +3380,21 @@ button:nth-child(5) img {
 }
 
 .eApproval .docuList.docuBox .listBox.todoList .rows .cols:nth-child(4),
+.eApproval .docuList.docuBox .listBox.upcomingList .rows .cols:nth-child(4),
 .eApproval .docuList.docuBox .listBox.upcomingList .rows .cols:nth-child(4) {
     width: 40%;
 }
 
-.eApproval .docuList.docuBox .listBox .rows .cols:nth-child(7) {
+.eApproval .docuList.docuBox .listBox.saveList .rows .cols:nth-child(4) {
+    width: 64%;
+}
+
+.eApproval .docuList.docuBox .listBox.approvedList .rows .cols:nth-child(4),
+.eApproval .docuList.docuBox .listBox.viewList .rows .cols:nth-child(4) {
+    width: 45%;
+}
+
+.eApproval .docuList.docuBox .listBox.writeList .rows .cols:nth-child(7) {
     width: 8%;
     justify-content: flex-start;
 }
