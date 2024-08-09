@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.wit.commons.BoardConfig;
+import com.wit.commons.AttendanceConfig;
 import com.wit.dto.AttendanceDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.services.AttendanceService;
@@ -76,11 +76,14 @@ public class AttendanceController {
 		int recordTotalCount = service.getMonthlyRecordCount(empNo, month);
 
 		// 페이징 처리 로직
-		int recordCountPerPage = BoardConfig.recordCountPerPage;
-		int naviCountPerPage = BoardConfig.naviCountPerPage;
+		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
+		System.out.println("레코드 카운트 펄페이지 : " + recordCountPerPage);
+		int naviCountPerPage = AttendanceConfig.naviCountPerPage;
+		System.out.println("네비 카운트 펄페이지 : " + naviCountPerPage);
 
 		// 실제 레코드 수 기반 페이지 총 수 계산
 		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
+		System.out.println("페이지 토탈 카운트 : " + pageTotalCount);
 
 		// cpage가 pageTotalCount를 초과하지 않도록 설정
 		if (cpage > pageTotalCount) {
