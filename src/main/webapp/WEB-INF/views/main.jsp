@@ -26,9 +26,11 @@
 		<!-- 공통영역 끝 -->
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
+      
 			<div class="contents">
 				<div class="left">
-					<div class="leftTop">user</div>
+					<div class="leftTop">${employee.dept_code}
+						${employee.role_code} ${employee.name}</div>
 					<div class="leftBottom">
 						<div id="date"></div>
 						<h3 id="clock"></h3>
