@@ -261,7 +261,7 @@
 
 /* detail_board.html css start */
 .boardDetail {
-    max-height: 650px;
+    max-height: 600px;
     flex: 8;
     padding: 0 30px;
     display: flex;
@@ -349,7 +349,7 @@
 
 /* board & fboard buttons css start */
 .boardDetail .detail .detailBott {
-    padding: 0 20px 0 20px;
+    /* padding: 0 20px 0 20px; */
     height: 50px;
     display: flex;
     align-items: center;
@@ -613,6 +613,7 @@
     height: calc(100% - 60px);
     overflow: hidden;
     flex-direction: column;
+    max-width: 300px;
 }
 
 .replyWrapper .replyTxt {
@@ -633,6 +634,11 @@
 .replyWrapper .replyCount span {
     font-weight: bold;
 
+}
+
+.replyWrapper .replyPrint {
+    word-wrap: break-word;
+    word-break: keep-all;
 }
 
 .replyWrapper .replyLists {
@@ -1439,17 +1445,18 @@
     float: right;
     text-align: right;
     border-top-right-radius: 0;
-    display:flex;
-    flex-direction:column;
-    gap:5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .message .sender,
-.message .text_box{
-    font-size:18px;
+.message .text_box {
+    font-size: 18px;
 }
-.message .timeBox{
-    font-size:12px;
+
+.message .timeBox {
+    font-size: 12px;
 }
 
 .message.sent a {
@@ -1727,13 +1734,13 @@
 
 .chatRoomTitle {
     display: flex;
-    gap:10px;
+    gap: 10px;
     position: relative;
     align-items: center;
 }
 
-.chatRoomTitle #chatTitModi{
-    background-color:unset;
+.chatRoomTitle #chatTitModi {
+    background-color: unset;
 }
 
 .chatRoomTitle h2 {
@@ -1742,16 +1749,17 @@
     word-break: keep-all;
 }
 
-.chatRoomTitle button{
-    background:unset;
-    border:none;
+.chatRoomTitle button {
+    background: unset;
+    border: none;
     padding: 0;
     position: absolute;
     right: -30px;
 }
-.chatRoomTitle button:hover{
-    background:unset;
-    border:none;
+
+.chatRoomTitle button:hover {
+    background: unset;
+    border: none;
     padding: 0;
 }
 
@@ -1760,9 +1768,9 @@
     line-height: 36px
 }
 
-.chatRoomDetails ul{
-    display:flex;
-    gap:10px;
+.chatRoomDetails ul {
+    display: flex;
+    gap: 10px;
 }
 
 .chatRoomPopupBtn {
@@ -1790,7 +1798,7 @@
 
 .chatRoomPopupBtn .exitBtn i {
     font-size: 18px;
-    margin:0;
+    margin: 0;
 }
 
 .chatRoomPopupBtn .closeBtn {
@@ -2422,9 +2430,9 @@
     gap: 5px;
 }
 
-#date{
-	margin-top: -10px;
-	font-size: 18px;
+#date {
+    margin-top: -10px;
+    font-size: 18px;
 }
 
 #clock {
@@ -2661,8 +2669,8 @@ button.disabled {
 }
 
 .eApproval .docuList .listBox .rows.emptyDocuList {
-	max-height: unset;
-	height: 228px;
+    max-height: unset;
+    height: 228px;
 }
 
 .eApproval .docuList .listBox .rows.emptyDocuList:hover {

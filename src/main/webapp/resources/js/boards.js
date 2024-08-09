@@ -12,15 +12,12 @@ $(document).ready(function () {
                 },
             },
         })
-  
 
     // sidebar 공통요소 script
     let btn = document.querySelector('#btn')
-
     let sideBar = document.querySelector('.sideBar')
 
     btn.addEventListener('click', function () {
-        console.log('버튼 클릭됨')
         sideBar.classList.toggle('active')
     })
 
@@ -66,45 +63,27 @@ $(document).ready(function () {
             }
         })
     })
+
+// 신고하기 모달 열기 및 닫기
+$('#reportBtn').on('click',function(){
+	console.log("아무거나");
+	$("#modal").css('display','block')
 })
 
-// modal script
-const modal = document.querySelector('#modal')
-const reportBtn = document.querySelector('#reportBtn')
-const close = document.querySelector('.rClose')
-
-// 모달창 열기
-function openModal() {
-    modal.style.display = 'block';
-}
-
-// 모달창 닫기
-function closeModal() {
-    modal.style.display = 'none';
-}
-
-// jQuery 사용해서 신고하기 모달창 열기 및 닫기
-$(document).ready(function(){
-	// 모달 열기
-	$('#reportBtn').on('click',function(){
-		$('#modal').css('display','block');
-	});
-	
-	// 모달 닫기
-	$('.rClose').on('click',function(){
-		$('#modal').css('display','none');
-	});
-});
+$('.rClose').on('click',function(){
+	$('#modal').css('display','none')
+	})
+})
 
 // 댓글 글자 수 제한 script
 function reply() {
-    const textarea = document.querySelector('.writeRly')
-    const maxLength = 300
+    const textarea = $('.writeRly')
+    const maxLength = 900
 
-    textarea.addEventListener('input', function () {
-        if (textarea.value.length > maxLength) {
-            textarea.value = textarea.value.slice(0, maxLength)
-            alert('300자 초과함')
+    textarea.on('input', function () {
+        if ($(this).val().length > maxLength) {
+            $(this).val($(this).val().slice(0,maxLength))
+            alert('900자 초과함')
         }
     })
 }
