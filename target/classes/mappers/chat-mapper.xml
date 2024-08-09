@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- chatRoom-mapper.xml -->
+<mapper namespace="chat">
+	<!-- 채팅 조회 -->
+	<select id="chatListByRoom" resultType="com.wit.dto.ChatDTO">
+		select * from chat c
+		join employee emp
+		on c.name = emp.emp_no
+		where c.chat_room_seq = #{chat_room_seq} order by c.chat_seq asc
+	</select>
+	
+	<!-- 채팅 입력 -->
+	<insert id="insertChat">
+		insert into chat values(chat_seq.NEXTVAL, #{chat_room_seq}, #{name}, #{sender}, #{message}, SYSDATE)
+	</insert>
+</mapper>
