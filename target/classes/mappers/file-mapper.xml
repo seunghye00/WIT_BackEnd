@@ -7,7 +7,7 @@
     <!-- 파일 등록 -->
     <insert id="upload" parameterType="com.wit.dto.BoardFilesDTO">
         INSERT INTO board_files (board_files_seq, board_seq, oriname, sysname)
-        VALUES (board_files_seq.NEXTVAL, #{board_seq}, #{oriname}, #{sysname})
+        VALUES (board_files_seq.NEXTVAL, ${board_seq}, #{oriname}, #{sysname})
     </insert>
 
     <!-- 게시물에 첨부된 파일 조회 -->
