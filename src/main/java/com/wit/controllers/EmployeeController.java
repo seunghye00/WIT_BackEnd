@@ -84,12 +84,11 @@ public class EmployeeController {
 	public String main(Model model, HttpSession session) {
 		String empNo = (String) session.getAttribute("loginID");
 		System.out.println(empNo);
+		
 		if (empNo != null) {
 			EmployeeDTO employee = service.employeeInfo(empNo);
-
 			model.addAttribute("employee", employee);
 		} else {
-			// 로그인 정보가 없으면 로그인 페이지로 리다이렉트
 			return "redirect:/";
 		}
 		return "main";
