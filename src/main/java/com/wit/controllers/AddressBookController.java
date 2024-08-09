@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -247,4 +248,11 @@ public class AddressBookController {
         String emp_no = (String) session.getAttribute("loginID");
         return serv.deleteCategory(emp_no, category);
     }
+    
+	// 예외를 담당하는 메서드 생성
+	@ExceptionHandler(Exception.class)
+	public String execptionHandler(Exception e) {
+		e.printStackTrace();
+		return "error";
+	}
 }

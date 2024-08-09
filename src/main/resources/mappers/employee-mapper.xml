@@ -162,7 +162,8 @@
 		from employee e
 		join role r on e.role_code = r.role_code
 		where
-		dept_code = #{deptCode} and quit_yn = 'N'
+		dept_code
+		= #{deptCode} and quit_yn = 'N'
 		order by 3 desc
 	</select>
 
@@ -181,6 +182,7 @@
 		select name from employee where
 		emp_no = #{empNo}
 	</select>
+
 	<!-- PW찾기(수정) 을 위한 직원 정보 확인 -->
 	<select id="findEmployee" parameterType="map"
 		resultType="com.wit.dto.EmployeeDTO">
@@ -248,14 +250,16 @@
 		SELECT e.emp_no, e.name, e.phone, e.email, d.dept_title
 		FROM employee e
 		JOIN dept d ON e.dept_code = d.dept_code
-		WHERE e.name LIKE #{keyword}%
+		WHERE e.name
+		LIKE #{keyword}%
 		ORDER BY e.emp_no
 		LIMIT #{cpage}, 10
 	</select>
 
 	<!-- 주소록 페이지네이션 총 카운트 -->
 	<select id="totalCountPage" resultType="int">
-		select count(*) from employee
+		select count(*) from
+		employee
 	</select>
 
 	<!-- 카테고리 목록 가져오기 -->
@@ -272,16 +276,19 @@
 		r.role_title
 		from
 		employee em
-		left join
+		left
+		join
 		dept d on em.dept_code = d.dept_code
 		left join
-		role r on em.role_code = r.role_code
+		role r on
+		em.role_code = r.role_code
 		where em.emp_no = #{emp_no}
 	</select>
 
 	<!-- 주소록 검색 페이지네이션 총 카운트 -->
 	<select id="totalCountPageSearch" resultType="int">
-		select count(*) from employee where name like '%'||#{keyword}||'%'
+		select count(*)
+		from employee where name like '%'||#{keyword}||'%'
 	</select>
 
 	<!-- 주소록 검색 -->
@@ -309,9 +316,11 @@
 		d.dept_title, r.role_title, phone, email
 		from employee em
 		left join
-		dept d on em.dept_code = d.dept_code
+		dept
+		d on em.dept_code = d.dept_code
 		left join
-		role r on em.role_code = r.role_code
+		role r on em.role_code =
+		r.role_code
 		where
 		emp_no != #{emp_no}
 	</select>
@@ -322,9 +331,15 @@
 		d.dept_title, r.role_title, phone, email
 		from employee em
 		left join
-		dept d on em.dept_code = d.dept_code
 		left join
-		role r on em.role_code = r.role_code
-		where emp_no = #{emp_no}
+	        dept d on em.dept_code = d.dept_code
+	    left join
+	        role r on em.role_code = r.role_code
+	    where emp_no = #{emp_no}
+    </select>
+    
+    <!--  메신저 emp_no 이름으로 변경 -->
+	<select id="getEmployeeName" parameterType="String" resultType="String">
+	    SELECT name FROM employee WHERE emp_no = #{emp_no}
 	</select>
 </mapper>
