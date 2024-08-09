@@ -8,16 +8,16 @@
 	<!-- 해당 사원이 작성한 문서 중 문서 상태에 따라 원하는 정보만 골라서 5개의 행을 받아오는 쿼리문 -->
 	<select id="selectByStatus" resultType="com.wit.dto.DocuInfoListDTO">
 		select
-			document_seq, write_date, emer_yn, title, status, name
+		document_seq, write_date, emer_yn, title, status, name
 		from (
-			select
-				document_seq, write_date, emer_yn, title, status, docu_code
-			from documents
-			where status = #{status} and emp_no = #{empNo}
-			order by write_date desc
+		select
+		document_seq, write_date, emer_yn, title, status, docu_code
+		from documents
+		where status = #{status} and emp_no = #{empNo}
+		order by write_date desc
 		) d
-		join 
-			document_list dl ON d.docu_code = dl.docu_code
+		join
+		document_list dl ON d.docu_code = dl.docu_code
 		where ROWNUM &lt;= 5
 	</select>
 
@@ -26,111 +26,178 @@
 		select * from document_list
 	</select>
 
-	<!-- 문서의 공통 정보를 저장하는 테이블에 임시 데이터를 삽입 후 SEQ 값을 받아오는 쿼리문 -->
+	<!-- 문서의 공통 정보를 저장하는 테이블에 데이터를 삽입 후 SEQ 값을 받아오는 쿼리문 -->
 	<insert id="insertDocu">
-		<selectKey resultType="int" order="AFTER" keyProperty="seq">
+		<selectKey resultType="int" order="AFTER"
+			keyProperty="document_seq">
 			select document_seq.currval from dual
 		</selectKey>
-		insert into documents values (document_seq.nextval, #{empNo}, null, sysdate, null,'작성중', 'N', #{docuCode})
+		<choose>
+			<when test="emer_yn != null">
+				insert into documents values (document_seq.nextval,
+				#{emp_no}, #{title}, sysdate, null, #{status}, #{emer_yn},
+				#{docu_code})
+			</when>
+			<otherwise>
+				insert into documents values (document_seq.nextval,
+				#{emp_no}, #{title}, sysdate, null, #{status}, 'N', #{docu_code})
+			</otherwise>
+		</choose>
 	</insert>
 
 	<!-- 결재 라인에 대한 정보를 입력하는 쿼리문 -->
-	<insert id="createApprLine">
-		insert into approvals_line values (a_line_seq.nextval, #{docuSeq}, #{empNo}, null, '임시 라인', #{i}, null)
+	<insert id="setApprLine">
+		insert into approvals_line values (a_line_seq.nextval, #{document_seq}, #{emp_no}, null, #{status}, #{approval_order}, null)
 	</insert>
 
 	<!-- 참조 라인에 대한 정보를 입력하는 쿼리문 -->
 	<insert id="createRefeLine">
-		insert into reference_line values (r_line_seq.nextval, #{docuSeq}, #{empNo}, 'N', null)
+		insert into reference_line values
+		(r_line_seq.nextval, #{docuSeq}, #{empNo}, 'N', null)
 	</insert>
 
 	<!-- 임시 저장 시 문서 정보를 업데이트 하는 쿼리문 -->
 	<update id="updateBySave">
-		update documents set title = #{title}, emer_yn = #{emerYN}, write_date = sysdate, status = '임시 저장' where document_seq = #{docuSeq}
+		update documents set title = #{title}, emer_yn =
+		#{emerYN}, write_date = sysdate, status = '임시 저장' where document_seq =
+		#{docuSeq}
 	</update>
 
 	<!-- 업무 기안 문서 작성 시 정보를 입력하는 쿼리문 -->
 	<insert id="insertProp">
-		insert into work_proposals values (#{document_seq}, #{eff_date}, #{dept_title}, #{contents})
+		insert into work_proposals values (#{document_seq},
+		#{eff_date}, #{dept_title}, #{contents})
+	</insert>
+
+	<!-- 지각 사유서 문서 작성 시 정보를 입력하는 쿼리문 -->
+	<insert id="insertLateness">
+		insert into lateness_reports values (#{document_seq},
+		#{late_date}, #{reason})
+	</insert>
+
+	<!-- 휴가 신청서 문서 작성 시 정보를 입력하는 쿼리문 -->
+	<insert id="insertLeave">
+		<choose>
+			<when test="emer_yn != null">
+				insert into leave_requests values (#{document_seq},
+				#{leave_type}, #{start_date}, #{end_date}, #{half_day_yn},
+				#{reason})
+			</when>
+			<otherwise>
+				insert into leave_requests values (#{document_seq},
+				#{leave_type}, #{start_date}, #{end_date}, 'N', #{reason})
+			</otherwise>
+		</choose>
 	</insert>
 
 	<!-- 해당 사원의 결재 대기 or 결재 예정 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectListByType" resultType="com.wit.dto.DocuInfoListDTO">
+	<select id="selectListByType"
+		resultType="com.wit.dto.DocuInfoListDTO">
 		select
-			d.document_seq document_seq, write_date, name, emer_yn, title, d.emp_no emp_no, a.emp_no last_appr
+		d.document_seq document_seq, write_date, name, emer_yn, title, d.emp_no emp_no,
+		a.emp_no last_appr
 		from
-			documents d
+		documents d
 		join
-			document_list dl on d.docu_code = dl.docu_code
+		document_list dl on d.docu_code = dl.docu_code
 		join
-			approvals_line a on d.document_seq = a.document_seq
+		approvals_line a on d.document_seq = a.document_seq
 		where
-			approval_order = 3 and
-			d.document_seq in (select document_seq from approvals_line where emp_no = #{empNo} and status = #{status})
+		<if test="docuCode != null">
+			d.docu_code = #{docuCode} and
+		</if>
+		d.status = '진행중' and
+		approval_order = 3 and
+		d.document_seq in (select document_seq from approvals_line where emp_no = #{empNo}
+		and status = #{status})
 	</select>
 
 	<!-- 해당 사원의 기안 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectWriteList" resultType="com.wit.dto.DocuInfoListDTO">
+	<select id="selectWriteList"
+		resultType="com.wit.dto.DocuInfoListDTO">
 		select
-			d.document_seq document_seq, write_date, name, emer_yn, title, d.status status, a.emp_no last_appr, done_date
+		d.document_seq document_seq, write_date, name, emer_yn, title, d.status status,
+		a.emp_no last_appr, done_date
 		from
-			documents d
-		join 
-			document_list dl on d.docu_code = dl.docu_code
+		documents d
 		join
-			approvals_line a on d.document_seq = a.document_seq
+		document_list dl on d.docu_code = dl.docu_code
+		join
+		approvals_line a on d.document_seq = a.document_seq
 		where
-			a.approval_order = 3 and d.status in ('진행중', '완료', '반려') and d.emp_no = #{empNo}
+		a.approval_order = 3 and d.status in ('진행중', '완료', '반려') and d.emp_no = #{empNo}
+		<if test="docuCode != null">
+			and d.docu_code = #{docuCode}
+		</if>
 	</select>
-	
+
 	<!-- 해당 사원의 임시 저장 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectSaveList" resultType="com.wit.dto.DocuInfoListDTO">
-		select 
-			document_seq, write_date name, emer_yn, title 
-		from 
-			documents d 
-		join document_list dl on d.docu_code = dl.docu_code 
-		where 
-			status = '임시 저장' and emp_no = #{empNo}
+	<select id="selectSaveList"
+		resultType="com.wit.dto.DocuInfoListDTO">
+		select
+		document_seq, write_date name, emer_yn, title
+		from
+		documents d
+		join document_list dl on d.docu_code = dl.docu_code
+		where
+		status = '임시 저장' and emp_no = #{empNo}
+		<if test="docuCode != null">
+			and d.docu_code = #{docuCode}
+		</if>
 	</select>
-	
+
 	<!-- 해당 사원이 결재한 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectApprovedList" resultType="com.wit.dto.DocuInfoListDTO">
-		select 
-    		d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title, d.status status, done_date
-		from 
-    		documents d 
-		join 
-			document_list dl on d.docu_code = dl.docu_code 
-		join 
-			approvals_line a on d.document_seq = a.document_seq
-		where a.emp_no = #{empNo}
+	<select id="selectApprovedList"
+		resultType="com.wit.dto.DocuInfoListDTO">
+		select
+		d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
+		d.status status, done_date
+		from
+		documents d
+		join
+		document_list dl on d.docu_code = dl.docu_code
+		join
+		approvals_line a on d.document_seq = a.document_seq
+		where a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '완료'
+		<if test="docuCode != null">
+			and d.docu_code = #{docuCode}
+		</if>
 	</select>
-	
+
 	<!-- 해당 사원이 반려한 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectReturnList" resultType="com.wit.dto.DocuInfoListDTO">
-		select 
-    		d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title, done_date
-		from 
-    		documents d 
-		join 
-			document_list dl on d.docu_code = dl.docu_code 
-		join 
-			approvals_line a on d.document_seq = a.document_seq
-		where 
-			a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '반려'
+	<select id="selectReturnList"
+		resultType="com.wit.dto.DocuInfoListDTO">
+		select
+		d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
+		done_date
+		from
+		documents d
+		join
+		document_list dl on d.docu_code = dl.docu_code
+		join
+		approvals_line a on d.document_seq = a.document_seq
+		where
+		a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '반려'
+		<if test="docuCode != null">
+			and d.docu_code = #{docuCode}
+		</if>
 	</select>
-	
+
 	<!-- 해당 사원이 참조자인 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectViewList" resultType="com.wit.dto.DocuInfoListDTO">
-		select 
-    		d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title, d.status status, done_date
-		from 
-    		documents d 
-		join 
-			document_list dl on d.docu_code = dl.docu_code 
-		join 
-			reference_line r on d.document_seq = r.document_seq
+	<select id="selectViewList"
+		resultType="com.wit.dto.DocuInfoListDTO">
+		select
+		d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
+		d.status status, done_date
+		from
+		documents d
+		join
+		document_list dl on d.docu_code = dl.docu_code
+		join
+		reference_line r on d.document_seq = r.document_seq
 		where r.emp_no = #{empNo}
+		<if test="docuCode != null">
+			and d.docu_code = #{docuCode}
+		</if>
 	</select>
 </mapper>

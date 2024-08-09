@@ -8,7 +8,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.wit.dto.AddressBookDTO;
 import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.EmployeeInfoDTO;
@@ -50,7 +49,7 @@ public class EmployeeDAO {
 
 	// 직원 정보 조회 메소드 추가
 	public EmployeeDTO employeeInfo(String emp_no) {
-		return mybatis.selectOne("attendance.employeeInfo", emp_no);
+		return mybatis.selectOne("employee.employeeInfo", emp_no);
 	}
 
 	// 추가 정보 업데이트 를 위한 직원 정보 조회

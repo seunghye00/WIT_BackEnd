@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="docuFile">
+
+	<insert id="upload">
+		insert into document_files values (document_files_seq.nextval, #{document_seq}, #{oriname}, #{sysname})
+	</insert>
+	
+	<select id="selectByDocuSeq" resultType="com.wit.dto.DocuFilesDTO">
+		select * from document_files where document_seq = #{docuSeq}
+	</select>
+</mapper>

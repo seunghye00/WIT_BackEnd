@@ -2,8 +2,9 @@ package com.wit.dto;
 
 import java.util.List;
 
-// 전자 결재 라인에 대한 데이터를 보관하기 위한 DTO
-public class EApprovalLineDTO {
+// 전자 결재 라인 목록에서 사번만 모아서 보관하기 위한 DTO
+public class ApprListDTO {
+	
     private List<String> apprList;
 
     public List<String> getApprList() {
@@ -14,12 +15,12 @@ public class EApprovalLineDTO {
         this.apprList = apprList;
     }
 
-	public EApprovalLineDTO(List<String> apprList) {
+	public ApprListDTO(List<String> apprList) {
 		super();
 		this.apprList = apprList;
 	}
 
-	public EApprovalLineDTO() {
+	public ApprListDTO() {
 		super();
 	}
 }
