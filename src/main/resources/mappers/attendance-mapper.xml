@@ -70,16 +70,20 @@
 		FROM dual
 		)
 		SELECT
-		COUNT(CASE WHEN start_time != '00:00' OR end_time != '00:00' THEN work_date END)
+		COUNT(CASE WHEN start_time != '00:00' OR end_time !=
+		'00:00' THEN work_date END)
 		AS workingDays,
 		SUM(
 		CASE
-		WHEN TO_DATE(end_time, 'HH24:MI') &gt; TO_DATE('12:00', 'HH24:MI')
-		AND TO_DATE(start_time, 'HH24:MI') &lt; TO_DATE('13:00', 'HH24:MI') THEN
+		WHEN
+		TO_DATE(end_time, 'HH24:MI') &gt; TO_DATE('12:00', 'HH24:MI')
+		AND
+		TO_DATE(start_time, 'HH24:MI') &lt; TO_DATE('13:00', 'HH24:MI') THEN
 		(TO_DATE(end_time, 'HH24:MI') - TO_DATE(start_time, 'HH24:MI')) * 24 -
 		1
 		ELSE
-		(TO_DATE(end_time, 'HH24:MI') - TO_DATE(start_time, 'HH24:MI')) * 24
+		(TO_DATE(end_time, 'HH24:MI') - TO_DATE(start_time, 'HH24:MI')) *
+		24
 		END
 		) AS totalWorkingHours
 		FROM
@@ -87,7 +91,8 @@
 		WHERE
 		emp_no = #{emp_no}
 		AND
-		work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT end_date FROM
+		work_date BETWEEN (SELECT start_date FROM date_range) AND (SELECT
+		end_date FROM
 		date_range)
 	</select>
 
@@ -116,19 +121,23 @@
 		BY work_date
 	</select>
 
-	<!-- 월간 근무현황 조회 -->
-	<select id="monthlyWorkStatus" resultType="java.util.HashMap">
-		SELECT
-		work_date,
-		start_time,
-		end_time,
-		work_hours
-		FROM
-		Attendance
-		WHERE
-		emp_no = #{emp_no}
-		AND TO_CHAR(work_date, 'YYYY-MM') = #{month}
-		ORDER BY work_date
+	<!-- 월간 레코드 수 조회 -->
+	<select id="getMonthlyRecordCount" resultType="int">
+		SELECT COUNT(*)
+		FROM Attendance
+		WHERE emp_no = #{empNo} AND TO_CHAR(work_date, 'YYYY-MM') = #{month}
+	</select>
+
+	<!-- 월간 근무현황 조회 (페이징 적용) -->
+	<select id="getMonthlyWorkStatus" resultType="java.util.HashMap">
+		SELECT work_date, start_time, end_time, work_hours
+		FROM (
+		SELECT ROW_NUMBER() OVER (ORDER BY work_date ASC) AS rn, work_date,
+		start_time, end_time, work_hours
+		FROM Attendance
+		WHERE emp_no = #{empNo} AND TO_CHAR(work_date, 'YYYY-MM') = #{month}
+		)
+		WHERE rn BETWEEN #{start} AND #{end}
 	</select>
 
 	<!-- 결근 -->
