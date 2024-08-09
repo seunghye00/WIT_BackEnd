@@ -319,7 +319,14 @@ public class EmployeeController {
 	public List<EmployeeDTO> getListByDept(String deptCode) throws Exception {
 		return service.getListByDept(deptCode);
 	}
-
+	
+	//  메신저 emp_no 이름으로 변경
+	@ResponseBody
+	@RequestMapping("/getEmployeeName")
+	public String getEmployeeName(String emp_no) throws Exception {
+		return service.getEmployeeName(emp_no);
+	}
+	
 	// 예외를 담당하는 메서드 생성
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception e) {
