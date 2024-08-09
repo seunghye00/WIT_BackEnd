@@ -40,7 +40,7 @@
 						<ul class="privateList">
 							<li class="toggleItem">
 								<h3 class="toggle">
-									<a href="board.html">공지사항</a>
+									<a href="/notice/notice">공지사항</a>
 								</h3>
 
 							</li>
