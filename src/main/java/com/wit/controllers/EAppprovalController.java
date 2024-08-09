@@ -72,17 +72,14 @@ public class EAppprovalController {
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
 		
-		System.out.println(type);
-		System.out.println(docuCode);
-		
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장
 		List<DocuInfoListDTO> list = null;
 		switch (type) {
 		case "todo":
-			list = serv.selectListByType(empNo, "결재 대기");
+			list = serv.selectListByType(empNo, "결재 대기", docuCode);
 			break;
 		case "upcoming":
-			list = serv.selectListByType(empNo, "결재 예정");
+			list = serv.selectListByType(empNo, "결재 예정", docuCode);
 			break;
 		default:
 			// 추후 에러 페이지로 변경
@@ -115,7 +112,7 @@ public class EAppprovalController {
 		
 		switch (type) {
 		case "write":
-			list = serv.selectWriteList(empNo);
+			list = serv.selectWriteList(empNo,docuCode);
 			// 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
 			for (DocuInfoListDTO dto : list) {
 				dto.setLast_appr_name(eServ.getName(dto.getLast_appr()));
@@ -123,16 +120,16 @@ public class EAppprovalController {
 			model.addAttribute("docuList", list);
 			break;
 		case "save":
-			model.addAttribute("docuList", serv.selecSavetList(empNo));
+			model.addAttribute("docuList", serv.selecSavetList(empNo,docuCode));
 			break;
 		case "approved":
-			model.addAttribute("docuList", serv.selectApprovedList(empNo));
+			model.addAttribute("docuList", serv.selectApprovedList(empNo, docuCode));
 			break;
 		case "return":
-			model.addAttribute("docuList", serv.selectReturnList(empNo));
+			model.addAttribute("docuList", serv.selectReturnList(empNo, docuCode));
 			break;
 		case "view":
-			model.addAttribute("docuList", serv.selectViewList(empNo));
+			model.addAttribute("docuList", serv.selectViewList(empNo, docuCode));
 			break;
 		default:
 			// 추후 에러 페이지로 변경
