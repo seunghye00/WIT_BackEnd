@@ -45,13 +45,6 @@ body {
     transition: all 0.5s ease;
 }
 
-.profileImg {
-    width: 70px;
-    border-radius: 100%;
-    border: 3px solid #fff;
-    transition: all 0.5s ease;
-}
-
 .sideBar {
     width: 100px;
     background-color: rgb(85, 139, 207);
