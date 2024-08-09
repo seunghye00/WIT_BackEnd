@@ -1190,6 +1190,10 @@
     border-bottom: 1px solid #c1c1c1;
 }
 
+.chatList li.active {
+    background-color: #f0f0f0;
+}
+
 .chatList li:hover,
 .addressList li:not(:first-child):hover {
     background-color: #f0f0f0;
@@ -1276,12 +1280,28 @@
     clear: both;
 }
 
+.message.status {
+    max-width: unset;
+    text-align: center;
+}
+
 .message.sent {
     background-color: #558BCF;
     color: white;
     float: right;
     text-align: right;
     border-top-right-radius: 0;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.message .sender,
+.message .text_box{
+    font-size:18px;
+}
+.message .timeBox{
+    font-size:12px;
 }
 
 .message.sent a {
@@ -1368,6 +1388,12 @@
     cursor: pointer;
     position: absolute;
     right: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.closeBtn:hover {
+    background-color: unset;
 }
 
 .filePopup {
@@ -1399,7 +1425,7 @@
     background-color: #558BCF;
     color: white;
     border: none;
-    padding: 10px 15px;
+    /* padding: 10px 15px; */
     border-radius: 5px;
     cursor: pointer;
 }
@@ -1413,8 +1439,8 @@
     display: none;
     /* Initially hidden */
     position: absolute;
-    top: 50px;
-    left: -2%;
+    top: 300px;
+    left: 21.4%;
     width: auto;
     background-color: white;
     border: 3px solid #558BCF;
@@ -1537,7 +1563,7 @@
 }
 
 .chatRoomPopup .popupContent {
-    background: white;
+    background: #666;
     padding: 20px;
     border-radius: 5px;
     max-width: 350px;
@@ -1547,16 +1573,88 @@
     gap: 30px;
     align-items: center;
     justify-content: center;
+    color: #fff;
+    position: relative;
 }
 
-.chatRoomPopup .closeBtn {
+.chatRoomTitle {
+    display: flex;
+    gap:10px;
+    position: relative;
+    align-items: center;
+}
+
+.chatRoomTitle #chatTitModi{
+    background-color:unset;
+}
+
+.chatRoomTitle h2 {
+    max-width: 250px;
+    word-wrap: break-word;
+    word-break: keep-all;
+}
+
+.chatRoomTitle button{
+    background:unset;
+    border:none;
+    padding: 0;
+    position: absolute;
+    right: -30px;
+}
+.chatRoomTitle button:hover{
+    background:unset;
+    border:none;
+    padding: 0;
+}
+
+.chatRoomTitle button i {
+    font-size: 24px;
+    line-height: 36px
+}
+
+.chatRoomDetails ul{
+    display:flex;
+    gap:10px;
+}
+
+.chatRoomPopupBtn {
+    display: flex;
+    gap: 10px;
+}
+
+.chatRoomPopupBtn .exitBtn {
     background: #f44336;
     color: white;
     padding: 10px 20px;
     border: none;
     cursor: pointer;
-    position: static;
-    width: 72px;
+    font-size: 18px;
+}
+
+.popupContent button {
+    background-color: #558BCF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.chatRoomPopupBtn .exitBtn i {
+    font-size: 18px;
+    margin:0;
+}
+
+.chatRoomPopupBtn .closeBtn {
+    background: unset;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    font-weight: bold;
+    top: 11px;
+    right: 0;
 }
 
 /* 경원 css end */

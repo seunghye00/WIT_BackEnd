@@ -131,22 +131,14 @@
                         <div class="title">채팅방 제목</div>
                     </div>
                     <div class="chatBody" id="chatBody">
-                        <div class="message sent">오늘도 고생했어</div>
-                        <div class="message received">진짜 고생 많았다</div>
-                        <div class="message sent">내일도 화이팅이야</div>
-                        <div class="message received">내일은 좀 더 편안한 하루가 되길</div>
+                        <!-- 웹소켓 실시간 통신 및 Ajax 데이터를 불러와 여기에 추가할 예정 -->
                     </div>
                     <div class="emojiContainer" id="emojiContainer">
-                        <img src="../images/message/emt1.png" alt="emt1" onclick="addEmojiToMessageInput(this)">
-                        <img src="../images/message/emt2.png" alt="emt2" onclick="addEmojiToMessageInput(this)">
-                        <img src="../images/message/emt3.png" alt="emt3" onclick="addEmojiToMessageInput(this)">
-                        <img src="../images/message/emt4.png" alt="emt4" onclick="addEmojiToMessageInput(this)">
-                        <img src="../images/message/emt5.png" alt="emt5" onclick="addEmojiToMessageInput(this)">
-                        <img src="../images/message/emt1.png" alt="emt1" onclick="addEmojiToMessageInput(this)">
-                        <img src="../images/message/emt2.png" alt="emt2" onclick="addEmojiToMessageInput(this)">
-                        <img src="../images/message/emt3.png" alt="emt3" onclick="addEmojiToMessageInput(this)">
-                        <img src="../images/message/emt4.png" alt="emt4" onclick="addEmojiToMessageInput(this)">
-                        <img src="../images/message/emt5.png" alt="emt5" onclick="addEmojiToMessageInput(this)">
+                        <img src="../resources/img/emoticon/emt1.png" alt="emt1" onclick="addEmojiToMessageInput(this)">
+                        <img src="../resources/img/emoticon/emt2.png" alt="emt2" onclick="addEmojiToMessageInput(this)">
+                        <img src="../resources/img/emoticon/emt3.png" alt="emt3" onclick="addEmojiToMessageInput(this)">
+                        <img src="../resources/img/emoticon/emt4.png" alt="emt4" onclick="addEmojiToMessageInput(this)">
+                        <img src="../resources/img/emoticon/emt5.png" alt="emt5" onclick="addEmojiToMessageInput(this)">
                         <button class="closeBtn" onclick="toggleEmojiContainer()">x</button>
                     </div>
                     <div class="chatFooter">
@@ -154,60 +146,70 @@
                         <i class='bx bx-file icon' onclick="triggerFileInput()"></i>
                         <input type="file" class="fileInput" id="fileInput" onchange="handleFileInput(event)">
                         <div id="messageInput" contenteditable="true" class="messageInput"
-                            onkeydown="handleKeyDown(event)" placeholder="메시지 입력">
+                            onkeydown="handleKeyDown(event)">
                         </div>
                         <button onclick="sendMessage()">전송</button>
-                    </div>
-                    <div class="filePopup" id="filePopup">
-                        <div class="popupContent">
-                            <p>파일을 전송할까요?</p>
-                            <div class="popupBox">
-                                <button onclick="confirmFileSend()">네</button>
-                                <button onclick="cancelFileSend()">아니오</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="profilePopup" class="profilePopup">
-                        <div class="profileInfo">
-                            <div class="profileTit">
-                                <img src="images/프로필.jpg" alt="프로필 이미지">
-                                <span>문경원</span>
-                            </div>
-                            <div class="profileDetails">
-                                <div class="profileRow">
-                                    <div class="label">부서명</div>
-                                    <div class="value" id="profileDept">개발팀</div>
-                                </div>
-                                <div class="profileRow">
-                                    <div class="label">직책</div>
-                                    <div class="value" id="profileRole">부장</div>
-                                </div>
-                                <div class="profileRow">
-                                    <div class="label">휴대전화</div>
-                                    <div class="value" id="profilePhone">010-5482-9107</div>
-                                </div>
-                                <div class="profileRow">
-                                    <div class="label">이메일</div>
-                                    <div class="value" id="profileEmail">shaaa6256@naver.com</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="profilebtnBox">
-                            <a class="closeButton" onclick="closeProfilePopup()">닫기</a>
-                            <a href="javascript:;" class="chatButton">1:1 채팅</a>
-                        </div>
                     </div>
                 </div>
             </div>
     </div>
+    <!-- 파일 전송 팝업  -->
+    <div class="filePopup" id="filePopup">
+        <div class="popupContent">
+            <p>파일을 전송할까요?</p>
+            <div class="popupBox">
+                <button onclick="confirmFileSend()">네</button>
+                <button onclick="cancelFileSend()">아니오</button>
+            </div>
+        </div>
+    </div>
+     <!-- 프로필 상세 팝업  -->
+    <div id="profilePopup" class="profilePopup">
+        <div class="profileInfo">
+            <div class="profileTit">
+                <img src="images/프로필.jpg" alt="프로필 이미지">
+                <span>문경원</span>
+            </div>
+            <div class="profileDetails">
+                <div class="profileRow">
+                    <div class="label">부서명</div>
+                    <div class="value" id="profileDept">개발팀</div>
+                </div>
+                <div class="profileRow">
+                    <div class="label">직책</div>
+                    <div class="value" id="profileRole">부장</div>
+                </div>
+                <div class="profileRow">
+                    <div class="label">휴대전화</div>
+                    <div class="value" id="profilePhone">010-5482-9107</div>
+                </div>
+                <div class="profileRow">
+                    <div class="label">이메일</div>
+                    <div class="value" id="profileEmail">shaaa6256@naver.com</div>
+                </div>
+            </div>
+        </div>
+        <div class="profilebtnBox">
+            <a class="closeButton" onclick="closeProfilePopup()">닫기</a>
+            <a href="javascript:;" class="chatButton">1:1 채팅</a>
+        </div>
+    </div>
     <!-- 채팅방 팝업 -->
 	<div id="chatRoomPopup" class="chatRoomPopup" style="display: none;">
 	    <div class="popupContent">
-	        <h2 class="chatRoomTitle"></h2>
-	        <div class="chatRoomDetails"></div>
+		    <div class="chatRoomTitle">
+		          <h2></h2>
+		          <button id="chatTitModi" type="button" onclick="editTitle()">✏️</button>
+		    </div>
+	        <div class="chatRoomDetails">
+	        	<ul>
+	        		<li><i class='bx bx-user'></i></li>
+	        	</ul>
+	        </div>
 	        <div class="chatRoomPopupBtn">
-		        <button class="exitBtn"><i class='bx bx-exit'></i></button>
-		        <button class="closeBtn" onclick="closeChatRoomPopup()">닫기</button>
+		        <button class="chatBtn" onclick="startChat()"><i class='bx bx-message-rounded' ></i> 채팅</button>
+		        <button class="exitBtn" onclick="exitChatRoom()"><i class="bx bx-exit"></i> 나가기</button>
+		        <button class="closeBtn" onclick="closeChatRoomPopup()">x</button>
 	        </div>
 	    </div>
 	</div>
@@ -215,18 +217,22 @@
 	<script>
 	    let btn = document.querySelector("#btn")
 	    let sideBar = document.querySelector(".sideBar")
-	
+		let webSocket; // WebSocket 객체
+	    let currentChatRoomSeq; // 현재 활성화된 채팅방 시퀀스
+	    let currentLoginID = null;
+	    let fileToSend = null;
+	    
 	    btn.onclick = function () {
 	        sideBar.classList.toggle("active")
 	    };
-	    document.addEventListener('DOMContentLoaded', function () {
-	        addPasteImageListener('messageInput');
-	    });
 	
 	    $(document).ready(function() {
 	        loadEmployeeList();
 	        loadChatList();
+	        addPasteImageListener('messageInput');
    		});
+	    
+	   
 	    
 		// 주소록 항목의 체크박스와 확인 버튼을 토글
 	    function toggleCheckboxes() {
@@ -319,127 +325,6 @@
 	    console.log('선택된 주소록:', selectedAddresses) // 선택된 주소록 출력
 	}
 	
-	// 메시지를 전송하는 함수
-	function sendMessage() {
-	    const messageInput = document.getElementById('messageInput')
-	    const messageHTML = messageInput.innerHTML.trim()
-	
-	    if (messageHTML !== '') {
-	        const chatBody = document.getElementById('chatBody')
-	
-	        // 새로운 메시지 요소 생성
-	        const messageElement = document.createElement('div')
-	        messageElement.classList.add('message', 'sent')
-	        messageElement.innerHTML = messageHTML
-	
-	        // 채팅 바디에 추가
-	        chatBody.appendChild(messageElement)
-	
-	        // 입력 필드 초기화
-	        messageInput.innerHTML = ''
-	
-	        // 채팅 바디 스크롤을 하단으로 이동
-	        chatBody.scrollTop = chatBody.scrollHeight
-	    }
-	}
-	
-	// 파일 입력 필드를 트리거하는 함수
-	function triggerFileInput() {
-	    document.getElementById('fileInput').click()
-	}
-	
-	// 파일 입력을 처리하는 함수
-	function handleFileInput(event) {
-	    const file = event.target.files[0]
-	    if (file) {
-	        fileToSend = file // 전송할 파일을 설정
-	        document.getElementById('filePopup').style.display = 'block' // 파일 전송 여부를 묻는 팝업 표시
-	    }
-	}
-	
-	// 파일 전송을 확인하는 함수
-	function confirmFileSend() {
-	    const fileReader = new FileReader()
-	    fileReader.onload = function (e) {
-	        const fileDataUrl = e.target.result
-	        const messageInput = document.getElementById('messageInput')
-	
-	        if (fileToSend.type.startsWith('image/')) {
-	            messageInput.innerHTML = `<img src="${fileDataUrl}" alt="${fileToSend.name}" style="max-width: 100%; max-height: 200px;">`
-	        } else {
-	            const fileLink = document.createElement('a')
-	            fileLink.href = fileDataUrl
-	            fileLink.download = fileToSend.name
-	            fileLink.textContent = fileToSend.name
-	            messageInput.innerHTML = ''
-	            messageInput.appendChild(fileLink)
-	        }
-	
-	        sendMessage()
-	        cancelFileSend()
-	    }
-	
-	    fileReader.readAsDataURL(fileToSend)
-	}
-	
-	// 파일 전송을 취소하는 함수
-	function cancelFileSend() {
-	    document.getElementById('filePopup').style.display = 'none'
-	    document.getElementById('fileInput').value = ''
-	    fileToSend = null
-	}
-	
-	// 클립보드에서 이미지를 붙여넣는 함수
-	function addPasteImageListener(elementId) {
-	    const messageInput = document.getElementById(elementId)
-	    if (messageInput) {
-	        messageInput.addEventListener('paste', function (event) {
-	            const items = (event.clipboardData || window.clipboardData).items
-	            for (let item of items) {
-	                if (item.type.indexOf('image') !== -1) {
-	                    const file = item.getAsFile()
-	                    const reader = new FileReader()
-	                    reader.onload = function (event) {
-	                        messageInput.innerHTML = `<img src="${event.target.result}" alt="Pasted Image" style="max-width: 100%; max-height: 200px;">`
-	                    }
-	                    reader.readAsDataURL(file)
-	                }
-	            }
-	        })
-	    }
-	}
-	
-	// 키 다운 이벤트 처리 (엔터 키로 메시지 전송)
-	function handleKeyDown(event) {
-	    if (event.key === 'Enter' && !event.shiftKey) {
-	        event.preventDefault()
-	        sendMessage()
-	    }
-	}
-	
-	// 이모티콘 컨테이너를 토글하는 함수
-	function toggleEmojiContainer() {
-	    const emojiContainer = document.getElementById('emojiContainer')
-	    const chatBody = document.getElementById('chatBody')
-	
-	    if (emojiContainer.style.display === 'flex') {
-	        emojiContainer.style.display = 'none'
-	        chatBody.style.paddingBottom = '20px'
-	    } else {
-	        emojiContainer.style.display = 'flex'
-	        chatBody.style.paddingBottom = `${emojiContainer.clientHeight + 20}px`
-	    }
-	}
-	
-	// 이모티콘을 메시지 입력 필드에 추가하는 함수
-	function addEmojiToMessageInput(imgElement) {
-	    const messageInput = document.getElementById('messageInput')
-	    const img = document.createElement('img')
-	    img.src = imgElement.src
-	    img.style.maxWidth = '100%'
-	    img.style.maxHeight = '100px'
-	    messageInput.appendChild(img)
-	}
 	
 	// 채팅방 주소록 조회
 	function loadEmployeeList() {
@@ -482,7 +367,6 @@
             url: '/chatroom/myChatRooms',
             method: 'GET',
             success: function(response) {
-                console.log(response);
                 var chatList = $('#chatList');
                 chatList.empty(); // 기존 목록 초기화
 
@@ -511,16 +395,27 @@
             }
         });
     }
+	
+	
 	// 채팅방 팝업 함수
 	function showChatRoomPopup(chatRoomSeq) {
 	    $.ajax({
 	        url: '/chatroom/details',
 	        method: 'GET',
 	        data: { chat_room_seq: chatRoomSeq },
-	        success: function(chatRoomDetails) {
-	            // 채팅방 정보를 팝업에 표시
-	            $('#chatRoomPopup .chatRoomTitle').text(chatRoomDetails.chat_room_name);
-	            $('#chatRoomPopup .chatRoomDetails').html(chatRoomDetails.details_html);
+	        success: function(response) {
+	        	// 기존 내용을 지운 후 새로운 내용을 추가
+	            var $chatRoomDetails = $('#chatRoomPopup .chatRoomDetails ul');
+	            $chatRoomDetails.empty();  // 기존 내용을 지웁니다.
+	        	 response.forEach(function(chatRoomDetails) {
+		            // 채팅방 정보를 팝업에 표시
+	 	           	var $listName = $('<li>').text(chatRoomDetails.NAME);
+                	$chatRoomDetails.append($listName);
+	        		$('#chatRoomPopup .chatRoomTitle h2').text(chatRoomDetails.CHAT_ROOM_NAME);
+	        	 })
+
+	        	$('#chatTitModi').data('chat_room_seq', chatRoomSeq);
+	        	$('.chatRoomPopupBtn .chatBtn').data('chat_room_seq', chatRoomSeq);
 	            $('#chatRoomPopup').css('display', 'flex');
 	        },
 	        error: function(error) {
@@ -528,10 +423,57 @@
 	        }
 	    });
 	}
+	
+	// 채팅방 제목 수정
+	function editTitle() {
+	    var new_title = prompt("새 채팅방 제목을 입력하세요:");
+	    console.log(new_title)
+	    if (new_title) {
+	        var chat_room_seq = $('#chatTitModi').data('chat_room_seq'); // 여기에서 chat_room_seq를 가져옵니다.
+	        $('#chatRoomPopup .chatRoomTitle h2').text(new_title);
+	        // 서버에 새로운 제목을 저장하는 AJAX 요청을 보냅니다.
+	        $.ajax({
+	            url: '/chatroom/updateTitle',
+	            method: 'POST',
+	            data: { chat_room_seq: chat_room_seq, new_title: new_title },
+	            success: function(response) {
+	                alert("채팅방 제목이 변경되었습니다.");
+	            },
+	            error: function(error) {
+	                console.error("Error updating chat room title:", error);
+	            }
+	        });
+	    }
+	}
+	
+	// 채팅방 나가기
+	function exitChatRoom() {
+	    var chat_room_seq = $('#chatTitModi').data('chat_room_seq');
+	    console.log(chat_room_seq);
+	    $.ajax({
+	        url: '/chatroom/exit',
+	        method: 'POST',
+	        data: { chat_room_seq : chat_room_seq},
+	        success: function(response) {
+	            if (response == "success") {
+	                alert("채팅방에서 나갔습니다.");
+	                closeChatRoomPopup();
+	                location.reload();
+	            } else {
+	                alert("채팅방 나가기에 실패했습니다.");
+	            }
+	        },
+	        error: function(error) {
+	            console.error("Error exiting chat room:", error);
+	        }
+	    });
+	}
+
 	// 채팅방 팝업 닫는 함수
 	function closeChatRoomPopup() {
 	    $('#chatRoomPopup').css('display', 'none');
 	}
+	
 	// 1:1 채팅 ajax
 	function startPrivateChat(emp_no1, chat_room_name) {
 	    $.ajax({
@@ -544,6 +486,9 @@
 	        success: function(response) {
 	            if (response === 'success') {
 	                alert('1:1 채팅방이 생성되었습니다.');
+	                closeProfilePopup();
+	                toggleView('chat');
+	                loadChatList();
 	                // 여기서 채팅방으로 리다이렉트하거나 UI 업데이트를 할 수 있습니다.
 	            } else {
 	                alert('채팅방 생성에 실패했습니다.');
@@ -559,7 +504,6 @@
 	$('.chatButton').on('click', function() {
 	    var emp_no1 = $('#profilePopup').data('emp_no');
 	    var chat_room_name = $('#profilePopup .profileTit span').text();
-	    console.log(emp_no1, chat_room_name)
 	    startPrivateChat(emp_no1, chat_room_name);
 	});
 	
@@ -583,6 +527,7 @@
 	            success: function(response) {
 	                if (response === 'success') {
 	                    alert('단체 채팅방이 생성되었습니다.');
+	                    location.reload();
 	                    // 여기서 채팅방으로 리다이렉트하거나 UI 업데이트를 할 수 있습니다.
 	                } else {
 	                    alert('채팅방 생성에 실패했습니다.');
@@ -599,8 +544,303 @@
 	$('.createChatConfirmBtn').on('click', function() {
 	    createGroupChat();
 	});
+	
+	// 채팅 
+	// 채팅 시작 함수
+	function startChat() {
+		var chat_room_seq = $('.chatRoomPopupBtn .chatBtn').data('chat_room_seq'); // 여기에서 chat_room_seq를 가져옵니다.
+	    var chatRoomName = document.querySelector('#chatRoomPopup .chatRoomTitle h2').innerText;
+	    //activateChatRoom(chatRoomSeq, chatRoomName);
+	    // 모든 li 요소에서 active 클래스 제거
+	    document.querySelectorAll('.chatList li').forEach(function (li) {
+	        li.classList.remove('active');
+	    });
+
+	    // 해당 chatRoomSeq를 가진 li 요소에 active 클래스 추가
+	    var activeLi = document.querySelector('.chatList li a[data-chat-room-seq="' + chat_room_seq + '"]');
+	    console.log(activeLi);
+	    if (activeLi) {
+	        activeLi.classList.add('active');
+	    }
+
+	    // 채팅방 제목 변경
+	    document.querySelector('.chatHeader .title').innerText = chatRoomName;
+	    closeChatRoomPopup(); // 팝업 닫기
+
+	    // 채팅방 메시지를 로드
+	    loadChatMessages(chat_room_seq);
+
+	    // WebSocket 연결 설정
+	    if (webSocket) {
+	        webSocket.close();
+	    }
+	    webSocket = new WebSocket('ws://192.168.1.107/chat/' + chat_room_seq);
+	    webSocket.onopen = function (event) {
+	        console.log("WebSocket is open now.");
+	    };
+	    webSocket.onmessage = function (event) {
+	        let data = JSON.parse(event.data);
+	        if (data.loginID) {
+	            // 서버에서 보낸 로그인 ID 저장
+	            console.log(data.loginID);
+	            currentLoginID = data.loginID;
+
+	            // 이전 채팅 내역 처리
+	            data.chatHistory.forEach(function (chat) {
+	                appendMessage(chat, chat.sender === currentLoginID ? 'sent' : 'received');
+	            });
+	        } else if (data.type === "chat") {
+	            // 채팅 메시지 처리
+	            appendMessage(data, data.sender === currentLoginID ? 'sent' : 'received');
+	        } else if (data.type === "status") {
+	            // 사용자 상태 메시지 처리 (입장 및 퇴장)
+	            displayStatusMessage(data);
+	        }
+	    };
+
+	    webSocket.onclose = function (event) {
+	        console.log("Disconnected from chat room:", chat_room_seq);
+	    };
+
+	    webSocket.onerror = function (event) {
+	        console.error("WebSocket error:", error);
+	    };
+
+	    // 현재 활성화된 채팅방 시퀀스 저장
+	    currentChatRoomSeq = chat_room_seq;
+	}
+
+	
+	// 예시: 채팅방 메시지를 로드하는 함수 (서버에서 메시지를 가져오는 로직 추가 필요)
+	function loadChatMessages(chat_room_seq) {
+	    // 기존 채팅 메시지 초기화
+	    $('#chatBody').empty();
+	    var activeLi = document.querySelector('.chatList li a[data-chat-room-seq="' + chat_room_seq + '"]');
+	    if (activeLi) {
+	        activeLi.parentElement.classList.add('active'); // parentElement를 사용하여 li 요소에 active 클래스 추가
+	    }
+	}
+
+	function appendMessage(data, type) {
+		let chatBody = $("#chatBody");
+        let mbox = $("<div>").addClass("text_box");
+        let id_Box = $("<div>").addClass("sender");
+        let time_Box = $("<div>").addClass("timeBox");
+        let message = $("<div>").addClass("message");
+        // 메시지 데이터를 HTML로 삽입
+        mbox.html(data.message);
+        time_Box.text(data.send_time);
+
+        if (type === "received") {
+            message.addClass("received");
+            id_Box.text(data.sender + ":"); // sender로 변경
+            message.append(id_Box);
+        } else {
+            message.addClass("sent");
+        }
+
+        message.append(mbox);
+        message.append(time_Box);
+        chatBody.append(message);
+        chatBody.scrollTop(chatBody[0].scrollHeight);
+    }
+
+    function displayStatusMessage(data) {
+        let statusMessage = $("<div>").addClass("message status");
+        let statusText = "";
+		
+        if (data.status === "joined") {
+            statusText = data.user + "님이 입장하셨습니다";
+        } else if (data.status === "left") {
+            statusText = data.user + "님이 퇴장하셨습니다";
+        }
+
+        statusMessage.text(statusText);
+        $("#chatBody").append(statusMessage);
+        $("#chatBody").scrollTop($("#chatBody")[0].scrollHeight);
+    }
+    
+ 	// 메시지를 전송하는 함수
+	function sendMessage() {
+	    const messageInput = document.getElementById('messageInput');
+	    const messageHTML = messageInput.innerHTML.trim();
+	    if (messageHTML !== '' && webSocket && currentChatRoomSeq) {
+	        const messageData = {
+	            message: messageHTML
+	        };
+	        console.log('Sending message:', messageData); // 디버깅 로그 추가
+	        webSocket.send(JSON.stringify(messageData));
+	        messageInput.innerHTML = '';
+	    }
+	}
+
+	
+	// 파일 업로드 함수
+	function uploadImage(file) {
+	    let formData = new FormData();
+	    formData.append("image", file);
+
+	    return fetch('/uploadImage', {
+	        method: 'POST',
+	        body: formData
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        if (data.success) {
+	            return data.url; // 업로드된 파일 URL 반환
+	        } else {
+	            throw new Error(data.message);
+	        }
+	    });
+	}
+	
+	// 파일 입력 필드를 트리거하는 함수
+	function triggerFileInput() {
+	    document.getElementById('fileInput').click()
+	}
+	
+	// 파일 입력을 처리하는 함수
+	function handleFileInput(event) {
+	    const file = event.target.files[0];
+	    if (file) {
+	        fileToSend = file; // 전송할 파일을 설정
+	        document.getElementById('filePopup').style.display = 'block'; // 파일 전송 여부를 묻는 팝업 표시
+	    } else {
+	        console.log("No file selected or file is empty."); // 디버깅 로그 추가
+	    }
+	}
+	// 파일 전송을 확인하는 함수
+	function confirmFileSend() {
+	    if (!fileToSend) {
+	        alert('No file selected.');
+	        return;
+	    }
+	    console.log('Upload fileToSend:', fileToSend);
+	    const formData = new FormData();
+	    formData.append('file', fileToSend);
+
+	    fetch('/uploadImage', {
+	        method: 'POST',
+	        body: formData
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        console.log('Upload response:', data); // 디버깅 로그 추가
+	        if (data.success) {
+	            const messageInput = document.getElementById('messageInput');
+	            messageInput.innerHTML = '';
+
+	            if (fileToSend.type.startsWith('image/')) {
+	                const img = document.createElement('img');
+	                img.src = data.url;
+	                img.alt = "Uploaded Image";
+	                img.style.maxWidth = "100%";
+	                img.style.maxHeight = "200px";
+	                messageInput.appendChild(img);
+	            } else {
+	                const fileLink = document.createElement('a');
+	                fileLink.href = data.url;
+	                fileLink.download = fileToSend.name;
+	                fileLink.textContent = fileToSend.name;
+	                messageInput.appendChild(fileLink);
+	            }
+
+	            sendMessage();
+	            cancelFileSend();
+	        } else {
+	            alert('Error uploading file: ' + data.message);
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Error uploading file:', error);
+	        alert('Error uploading file: ' + error.message);
+	    });
+	}
+	
+	// 파일 전송을 취소하는 함수
+	function cancelFileSend() {
+	    document.getElementById('filePopup').style.display = 'none'
+	    document.getElementById('fileInput').value = ''
+	    fileToSend = null
+	}
+	
+	// 클립보드에서 이미지를 붙여넣는 함수
+	function addPasteImageListener(elementId) {
+	    const messageInput = document.getElementById(elementId)
+	    if (messageInput) {
+	        messageInput.addEventListener('paste', function (event) {
+	            const items = (event.clipboardData || window.clipboardData).items
+	            for (let item of items) {
+	                if (item.type.indexOf('image') !== -1) {
+	                    const file = item.getAsFile()
+	                    const formData = new FormData()
+	                    formData.append('image', file)
+
+	                    fetch('/uploadImage', {
+	                        method: 'POST',
+	                        body: formData
+	                    })
+	                    .then(response => response.json())
+	                    .then(data => {
+	                        console.log('Upload response:', data); // 디버깅 로그 추가
+	                        if (data.success) {
+	                            const img = document.createElement('img');
+	                            img.src = data.url;
+	                            img.alt = "Pasted Image";
+	                            img.style.maxWidth = "100%";
+	                            img.style.maxHeight = "200px";
+	                            console.log('Generated img:', img); // 디버깅 로그 추가
+	                            messageInput.innerHTML = '';
+	                            messageInput.appendChild(img);
+	                        } else {
+	                            alert('Error uploading image: ' + data.message);
+	                        }
+	                    })
+	                    .catch(error => {
+	                        console.error('Error uploading image:', error);
+	                        alert('Error uploading image: ' + error.message);
+	                    })
+	                }
+	            }
+	        })
+	    }
+	}
+
+	
+
+	// 키 다운 이벤트 처리 (엔터 키로 메시지 전송)
+	function handleKeyDown(event) {
+	    if (event.key === 'Enter' && !event.shiftKey) {
+	        event.preventDefault()
+	        sendMessage()
+	    }
+	}
+	
+	// 이모티콘 컨테이너를 토글하는 함수
+	function toggleEmojiContainer() {
+	    const emojiContainer = document.getElementById('emojiContainer')
+	    const chatBody = document.getElementById('chatBody')
+	
+	    if (emojiContainer.style.display === 'flex') {
+	        emojiContainer.style.display = 'none'
+	        chatBody.style.paddingBottom = '20px'
+	    } else {
+	        emojiContainer.style.display = 'flex'
+	        chatBody.style.paddingBottom = `${emojiContainer.clientHeight + 20}px`
+	    }
+	}
+	
+	// 이모티콘을 메시지 입력 필드에 추가하는 함수
+	function addEmojiToMessageInput(imgElement) {
+	    const messageInput = document.getElementById('messageInput')
+	    const img = document.createElement('img')
+	    img.src = imgElement.src
+	    img.style.maxWidth = '100%'
+	    img.style.maxHeight = '100px'
+	    messageInput.appendChild(img)
+	}
+	
 	</script>
-	</body>
 </body>
 
 </html>
