@@ -23,5 +23,5 @@ toggleItems.each(function() {
 const links = $('.toolBar a');
 links.on('click', function() {
 	links.removeClass('active'); // 모든 링크에서 active 클래스 제거
-    (this).addClass('active'); // 클릭한 링크에 active 클래스 추가
+    $(this).addClass('active'); // 클릭한 링크에 active 클래스 추가
 });

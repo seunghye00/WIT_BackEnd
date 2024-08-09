@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wit.dao.EApprovalDAO;
+import com.wit.dto.ApprLineDTO;
+import com.wit.dto.DocuDTO;
+import com.wit.dto.DocuInfoListDTO;
 import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
 import com.wit.dto.LeaveRequestDTO;
-import com.wit.dto.DocuDTO;
-import com.wit.dto.DocuInfoListDTO;
 import com.wit.dto.WorkPropDTO;
 
 @Service
@@ -35,8 +36,8 @@ public class EApprovalService {
 	}
 
 	// 결재 라인에 대한 정보를 저장하기 위한 메서드
-	public void createApprLine(int docuSeq, String empNo, int i) {
-		dao.createApprLine(docuSeq, empNo, i);
+	public void setApprLine(ApprLineDTO dto) {
+		dao.setApprLine(dto);
 	}
 
 	// 참조 라인에 대한 정보를 저장하기 위한 메서드
@@ -63,34 +64,34 @@ public class EApprovalService {
 	public void updateDocu(int docuSeq, String title, String emerYN) {
 		dao.updateBySave(docuSeq, title, emerYN);
 	} */
-
-	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectListByType(String empNo, String status) {
-		return dao.selectListByType(empNo, status);
+	
+	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록을 문서 종류에 따라 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> selectListByType(String empNo, String status, String docuCode) {
+		return dao.selectListByType(empNo, status, docuCode);
 	}
 
 	// 해당 사원이 기안한 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectWriteList(String empNo) {
-		return dao.selectWriteList(empNo);
+	public List<DocuInfoListDTO> selectWriteList(String empNo, String docuCode) {
+		return dao.selectWriteList(empNo, docuCode);
 	}
 
 	// 해당 사원이 임시 저장한 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selecSavetList(String empNo) {
-		return dao.selectSaveList(empNo);
+	public List<DocuInfoListDTO> selecSavetList(String empNo, String docuCode) {
+		return dao.selectSaveList(empNo, docuCode);
 	}
 
 	// 해당 사원이 결재한 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectApprovedList(String empNo) {
-		return dao.selectApprovedList(empNo);
+	public List<DocuInfoListDTO> selectApprovedList(String empNo, String docuCode) {
+		return dao.selectApprovedList(empNo, docuCode);
 	}
 
 	// 해당 사원이 반려한 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectReturnList(String empNo) {
-		return dao.selectReturnList(empNo);
+	public List<DocuInfoListDTO> selectReturnList(String empNo, String docuCode) {
+		return dao.selectReturnList(empNo, docuCode);
 	}
 
 	// 해당 사원이 참조자인 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectViewList(String empNo) {
-		return dao.selectViewList(empNo);
+	public List<DocuInfoListDTO> selectViewList(String empNo, String docuCode) {
+		return dao.selectViewList(empNo, docuCode);
 	}
 }

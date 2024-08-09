@@ -495,8 +495,6 @@ $('#file').on('change', function() {
 // AJAX로 서버에 해당 문서의 데이터를 보내고 문서 번호를 받아오는 메서드
 function sendFormData(choiUrl) {
 	
-	console.log(choiUrl);
-	
 	// 결재 라인 & 참조 라인 정보를 form 태그 내부에 추가
 	$(".apprTable input").appendTo("#docuContForm");
 	$(".refeModal input").appendTo("#docuContForm");
@@ -510,11 +508,11 @@ function sendFormData(choiUrl) {
         url: '/eApproval/' + choiUrl,
         data: formData
      }).done(resp => {
-     	
+     	// 임시 저장 시 임시 저장함 페이지로 이동
      	if(choiUrl.includes('temp')){
      		location.href = '/eApproval/privateList?type=save'; 
      	}
-     
+     	// 결재 요청 시 등록된 파일이 존재할 때만 데이터 전송
      	if(addedFiles.length > 0){
      		const docuSeq = $('<input>', {
      	 		type: 'hidden',
@@ -523,6 +521,8 @@ function sendFormData(choiUrl) {
      	 	});
      	 	$('#fileInputForm').append(docuSeq);
      	 	$('#fileInputForm').submit();
+     	} else {
+     		location.href = "/eApproval/home";
      	}
      });	
 }

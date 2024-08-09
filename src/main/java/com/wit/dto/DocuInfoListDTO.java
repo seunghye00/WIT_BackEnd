@@ -158,4 +158,16 @@ public class DocuInfoListDTO {
 		this.name = name;
 		this.done_date = done_date;
 	}
+	// 문서 번호, 기안일, 문서 양식, 긴급, 제목, 기안자 사번, 반려일 ( 반려 문서함 )
+	public DocuInfoListDTO(int document_seq, String emp_no, Timestamp write_date, String emer_yn, String title,
+			String name, Timestamp done_date) {
+		super();
+		this.document_seq = document_seq;
+		this.emp_no = emp_no;
+		this.write_date = write_date;
+		this.emer_yn = emer_yn;
+		this.title = title;
+		this.name = name;
+		this.done_date = done_date;
+	}
 }

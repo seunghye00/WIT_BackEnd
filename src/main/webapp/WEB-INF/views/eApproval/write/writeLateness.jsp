@@ -19,10 +19,8 @@
 </head>
 
 <body>
-	<!-- 공통영역 -->
 	<div class="container">
 		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
-		<!-- 공통역역 끝 -->
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
 			<div class="contents">
@@ -35,7 +33,7 @@
 					<div class="sideBtnBox">
 						<button class="plusBtn sideBtn disabled">새 결재 진행</button>
 					</div>
-					<%@ include file="/WEB-INF/views/eApproval/sideToggle.jsp"%>
+					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApprWrite">
 					<div class="mainTitle">문서 작성 ( 지각 사유서 )</div>
@@ -132,7 +130,7 @@
 										<thead>
 											<tr>
 												<th>지각 일자</th>
-												<td><input type="date" max="${today}" id="lateDay"></td>
+												<td><input type="date" max="${today}" id="lateDay" name="late_date"></td>
 												<th>긴급</th>
 												<td>
 													<div>

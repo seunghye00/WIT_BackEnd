@@ -2,6 +2,7 @@ package com.wit.dto;
 
 import java.sql.Date;
 
+// 지각 사유서 문서의 세부 내용에 대한 데이터를 보관하기 위한 DTO
 public class LatenessDTO {
 	private int document_seq;
 	private Date late_date;

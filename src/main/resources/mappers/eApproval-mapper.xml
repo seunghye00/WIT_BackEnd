@@ -6,8 +6,7 @@
 <mapper namespace="eApproval">
 
 	<!-- 해당 사원이 작성한 문서 중 문서 상태에 따라 원하는 정보만 골라서 5개의 행을 받아오는 쿼리문 -->
-	<select id="selectByStatus"
-		resultType="com.wit.dto.DocuInfoListDTO">
+	<select id="selectByStatus" resultType="com.wit.dto.DocuInfoListDTO">
 		select
 		document_seq, write_date, emer_yn, title, status, name
 		from (
@@ -47,9 +46,8 @@
 	</insert>
 
 	<!-- 결재 라인에 대한 정보를 입력하는 쿼리문 -->
-	<insert id="createApprLine">
-		insert into approvals_line values
-		(a_line_seq.nextval, #{docuSeq}, #{empNo}, null, '임시 라인', #{i}, null)
+	<insert id="setApprLine">
+		insert into approvals_line values (a_line_seq.nextval, #{document_seq}, #{emp_no}, null, #{status}, #{approval_order}, null)
 	</insert>
 
 	<!-- 참조 라인에 대한 정보를 입력하는 쿼리문 -->
@@ -73,7 +71,7 @@
 
 	<!-- 지각 사유서 문서 작성 시 정보를 입력하는 쿼리문 -->
 	<insert id="insertLateness">
-		insert into lateness_repots values (#{document_seq},
+		insert into lateness_reports values (#{document_seq},
 		#{late_date}, #{reason})
 	</insert>
 
@@ -105,6 +103,10 @@
 		join
 		approvals_line a on d.document_seq = a.document_seq
 		where
+		<if test="docuCode != null">
+			d.docu_code = #{docuCode} and
+		</if>
+		d.status = '진행중' and
 		approval_order = 3 and
 		d.document_seq in (select document_seq from approvals_line where emp_no = #{empNo}
 		and status = #{status})
@@ -124,6 +126,9 @@
 		approvals_line a on d.document_seq = a.document_seq
 		where
 		a.approval_order = 3 and d.status in ('진행중', '완료', '반려') and d.emp_no = #{empNo}
+		<if test="docuCode != null">
+			and d.docu_code = #{docuCode}
+		</if>
 	</select>
 
 	<!-- 해당 사원의 임시 저장 문서 목록을 조회하는 쿼리문 -->
@@ -136,6 +141,9 @@
 		join document_list dl on d.docu_code = dl.docu_code
 		where
 		status = '임시 저장' and emp_no = #{empNo}
+		<if test="docuCode != null">
+			and d.docu_code = #{docuCode}
+		</if>
 	</select>
 
 	<!-- 해당 사원이 결재한 문서 목록을 조회하는 쿼리문 -->
@@ -150,7 +158,10 @@
 		document_list dl on d.docu_code = dl.docu_code
 		join
 		approvals_line a on d.document_seq = a.document_seq
-		where a.emp_no = #{empNo}
+		where a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '완료'
+		<if test="docuCode != null">
+			and d.docu_code = #{docuCode}
+		</if>
 	</select>
 
 	<!-- 해당 사원이 반려한 문서 목록을 조회하는 쿼리문 -->
@@ -167,6 +178,9 @@
 		approvals_line a on d.document_seq = a.document_seq
 		where
 		a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '반려'
+		<if test="docuCode != null">
+			and d.docu_code = #{docuCode}
+		</if>
 	</select>
 
 	<!-- 해당 사원이 참조자인 문서 목록을 조회하는 쿼리문 -->
@@ -182,5 +196,8 @@
 		join
 		reference_line r on d.document_seq = r.document_seq
 		where r.emp_no = #{empNo}
+		<if test="docuCode != null">
+			and d.docu_code = #{docuCode}
+		</if>
 	</select>
 </mapper>
