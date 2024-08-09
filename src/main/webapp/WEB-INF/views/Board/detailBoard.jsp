@@ -4,60 +4,44 @@
 			<!DOCTYPE html>
 			<html>
 
-			<ul>
-				<li><a href="/employee/main"> <i class='bx bxs-home-alt-2'></i> <span
-						class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
-				<li><a href="#"> <i class='bx bx-paperclip'></i> <span
-						class="navItem">주소록</span></a> <span class="toolTip">주소록</span></li>
-				<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i>
-						<span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
-				<li><a href="#"> <i class='bx bx-calendar-alt'></i> <span
-						class="navItem">캘린더</span></a> <span class="toolTip">캘린더</span></li>
-				<li><a href="#"> <i class='bx bxs-message-dots'></i> <span
-						class="navItem">메신저</span></a> <span class="toolTip">메신저</span></li>
-				<li><a href="#"> <i class='bx bx-clipboard'></i> <span
-						class="navItem">전자결재</span></a> <span class="toolTip">전자결재</span></li>
-				<li><a href="/attendance/attendance"> <i
-						class='bx bxs-briefcase-alt-2'></i> <span class="navItem">근태관리</span></a>
-					<span class="toolTip">근태관리</span></li>
-				<li><a href="#"> <i class='bx bxs-check-square'></i> <span
-						class="navItem">예약</span></a> <span class="toolTip">예약</span></li>
-				<li><a href="#"> <i class='bx bx-sitemap'></i> <span
-						class="navItem">조직도</span></a> <span class="toolTip">조직도</span></li>
-			</ul>
-		</div>
+			<head>
+				<meta charset="UTF-8">
+				<title>게시물 상세</title>
+				<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+					integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+					crossorigin="anonymous" referrerpolicy="no-referrer" />
+				<link rel="stylesheet" href="/resources/css/style.main.css">
+				<link rel="stylesheet" href="/resources/css/wit.css">
+				<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+				<script src="/resources/js/boards.js"></script>
+			</head>
 
-		<div class="main-content">
-			<div class="header">
-				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
-				<span class="myName"><img src="/resources/img/푸바오.png"
-					alt="프로필 사진" class="userImg"> <a href="/employee/mypage">${employee.name}
-						${employee.role_code}</a></span> <span class="logOut"><a
-					href="/employee/logout">LogOut</a></span>
-			</div>
-			<div class="contents">
-				<div class="sideAbout">
-					<div class="sideTxt">
-						<h2 class="sideTit">게시판</h2>
-					</div>
-					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn">글 작성</button>
-					</div>
-					<div class="addressListPrivate">
-						<ul class="privateList">
-							<li class="toggleItem">
-								<h3 class="toggle">
-									<a href="/notice/notice">공지사항</a>
-								</h3>
+			<body>
+				<div id="container">
+					<div class="sideBar">
+						<div class="top">
+							<i class="bx bx-menu" id="btn"></i>
+						</div>
+						<div class="user">
+							<img src="/resources/img/WIT_logo1.png" alt="로고" class="userImg">
+							<div class="nickName">
+								<p class="bold">Wit Works</p>
+							</div>
+						</div>
+
+						<ul>
+							<li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span class="navItem">홈</span></a> <span
+									class="toolTip">홈</span></li>
+							<li><a href="#"> <i class='bx bx-paperclip'></i> <span class="navItem">주소록</span></a> <span
+									class="toolTip">주소록</span></li>
+							<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i>
+									<span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
+							<li><a href="#"> <i class='bx bx-calendar-alt'></i> <span class="navItem">캘린더</span></a>
+								<span class="toolTip">캘린더</span>
 							</li>
-						</ul>
-					</div>
-					<div class="addressListGroup">
-						<ul class="GroupList">
-							<li class="toggleItem">
-								<h3 class="toggle">
-									<a href="/board/list">자유 게시판</a>
-								</h3>
+							<li><a href="#"> <i class='bx bxs-message-dots'></i> <span class="navItem">메신저</span></a>
+								<span class="toolTip">메신저</span>
 							</li>
 							<li><a href="#"> <i class='bx bx-clipboard'></i> <span class="navItem">전자결재</span></a> <span
 									class="toolTip">전자결재</span></li>
