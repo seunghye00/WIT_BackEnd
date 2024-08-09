@@ -31,22 +31,21 @@
 				<div class="left">
 					<div class="leftTop">
 						<img src="/img/푸바오.png" alt="프로필 사진" class="profileImg">
-						<div class="dept-role">
-						${employee.dept_code} ${employee.role_code} 
-						</div>
-						<div class="username">
-						${employee.name}
-						</div>
+						<div class="dept-role">${employee.dept_code}
+							${employee.role_code}</div>
+						<div class="username">${employee.name}</div>
 					</div>
 					<div class="leftBottom">
 						<div id="date"></div>
 						<h3 id="clock"></h3>
 						<div class="attendance-btn">
-							<div>
+							<div class="start">
+								<img src="/img/출퇴근.png" alt="출근" class="attendance_icon">
 								<button type="button" id="start_button">출근</button>
 								<span class="check-time" id="start_time_display">00:00</span>
 							</div>
-							<div>
+							<div class="end">
+								<img src="/img/출퇴근.png" alt="퇴근" class="attendance_icon">
 								<button type="button" id="end_button">퇴근</button>
 								<span class="check-time" id="end_time_display">00:00</span>
 							</div>

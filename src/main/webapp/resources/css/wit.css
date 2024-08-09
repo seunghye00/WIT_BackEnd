@@ -2344,7 +2344,7 @@
 
 .check-time {
 	color: #999;
-	font-size: 12px;
+	font-size: 15px;
 }
 
 .attendance-btn {
@@ -2363,7 +2363,7 @@
 
 #date {
 	margin-top: -10px;
-	font-size: 18px;
+	font-size: 20px;
 }
 
 #clock {
@@ -2471,10 +2471,14 @@
 
 /* 메인페이지 프로필*/
 .profileImg {
-	width: 50%;
+	width: 60%;
 	border-radius: 100%;
 	border: 3px solid #fff;
 	transition: all 0.5s ease;
+}
+
+.attendance_icon{
+	width: 60%;
 }
 
 .dept-role {
@@ -2484,6 +2488,15 @@
 .username {
 	font-weight: bold;
 }
+
+.start{
+	
+}
+
+.end{
+	
+}
+
 
 /* 민서 css end */
 
