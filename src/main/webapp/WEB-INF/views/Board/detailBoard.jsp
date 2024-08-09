@@ -7,14 +7,17 @@
 			<head>
 				<meta charset="UTF-8">
 				<title>게시물 상세</title>
+				<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 				<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 					integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
 					crossorigin="anonymous" referrerpolicy="no-referrer" />
+				<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css"
+					rel="stylesheet">
+				<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 				<link rel="stylesheet" href="/resources/css/style.main.css">
 				<link rel="stylesheet" href="/resources/css/wit.css">
-				<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-				<script src="/resources/js/boards.js"></script>
+				<script defer src="/resources/js/boards.js"></script>
 			</head>
 
 			<body>
@@ -124,7 +127,7 @@
 													</span> <span><i class="fa-regular fa-eye"></i>
 														${board.views}</span>
 												</div>
-												
+
 												<!-- 신고하기 버튼 -->
 												<div class="writeReport">
 													<button id="reportBtn">
@@ -165,13 +168,15 @@
 										<div id="fileList">
 											<c:forEach var="file" items="${files}">
 												<div class="fileItem">
+												<a href="/board/download?sysname=${file.sysname}&oriName=${file.oriname}"> 
 													${file.oriname}
 													<button id="fileDel" style="display: none;">x</button>
+												</a>
 												</div>
 											</c:forEach>
 										</div>
 									</div>
-									
+
 									<!-- reply 영역 -->
 									<div class="replyWrapper">
 										<span class="replyTxt"><i class='bx bx-message-alt-dots'></i>
@@ -243,7 +248,7 @@
 							</div>
 
 							<!--신고하기 모달창-->
-							<div id=" modal" class="dialog">
+							<div id="modal" class="dialog">
 								<div class="tb">
 									<div class="inner">
 										<div class=" top">
@@ -269,8 +274,8 @@
 										</div>
 										<div class="reportControls">
 											<a href="#" class="rClose">
-												<button type="button" class="btn btn-primary" id="reportClose"
-													onclick="closeModal()">닫기</button>
+												<button type="button" class="btn btn-primary"
+													id="reportClose">닫기</button>
 											</a> <a href="#">
 												<button type="button" class="btn btn-danger" id="report">신고하기</button>
 											</a>
@@ -286,92 +291,147 @@
 
 
 				<script>
+					// 삭제 이미지 클릭시 form 제출
+					function submitDeleteForm(replySeq) {
+						location.href = "/reply/delete?boardSeq=${board.board_seq}&replySeq=" + replySeq;
+					}
+
+					// 북마크 기능
+					// 북마크 눌렀을 때 북마크한 아이콘 새로고침 해도유지됨
+					if (${ bookmark }) { $('#starIcon').attr('class', 'bx bxs-star') }
+
+					// 삭제 기능
 					function deleteBoard(boardSeq) {
 						if (confirm("정말로 삭제하시겠습니까?")) {
 							// 사용자에게 삭제 확인을 받았을 때만 삭제 요청
 							location.href = "/board/delete?board_seq=" + boardSeq;
 						}
 					}
-
 					console.log("Login ID: ${Nickname}");
 					console.log("Board emp_no: ${board.emp_no}");
 
-					// 수정 버튼 클릭 시
-					$("#fboardUpd").on("click", function () {
-						$("#fboardCom").show();
-						$("#fboardCan").show();
-						$("#fboardUpd").hide();
-
-						$("#fileDel").show();
-						$(".docuFiles").show();
-
-						$(".topTitle").attr("contenteditable", true);
-						$(".detailCen").attr("contenteditable", true);
-					})
-
-					// 완료 버튼 클릭 시 
-					$("#fboardCom").on("click", function () {
-						$("#fboardUpdate").submit();
-					})
-					// 완료 버튼 클릭 후 수정한 값 저장
-					$("#fboardUpdate").on("submit", function () {
-						$("#hiddenT").val($(".topTitle").html().trim());
-						$("#hiddenC").val($(".detailCen").html());
-					})
-
-					// 취소 버튼 클릭 시
-					$("#fboardCan").on("click", function () {
-						location.href = "/board/detail?board_seq=${board.board_seq}";
-					})
-
-					// 댓글 script
-					// 댓글 수정 버튼 클릭 시
-					$(".updateReply").on("click", function (e) {
-						console.log(e.target);
-						let update = $(e.target)
-						// 댓글 수정 완료 버튼
-						update.parent().find(".updateRly").show();
-						// 댓글 수정 취소 버튼
-						update.parent().find(".canRly").show();
-						update.parent().find(".delRly").hide();
-						update.hide();
-
-						update.parent().parent().find(".replyPrint").attr("contenteditable", true);
-
-
-					})
-
-					// 댓글 수정 취소 버튼 클릭 시
-					$(".canRly").on("click", function (e) {
-						let cancel = $(e.target);
-						cancel.parent().find('.updateReply').show();
-						cancel.parent().find('.updateRly').hide();
-						cancel.parent().find(".delRly").show();
-						cancel.hide();
-					})
-
-					// 댓글 수정 완료 버튼 클릭 시
-					$(".updateRly").on("click", function (e) {
-						let complete = $(e.target);
-						let writeDate = complete.parents('.replyList').find(".replyTxt").find(".replyDate")
-						$.ajax({
-							url: "/reply/update",
-							type: "post",
-							data: {
-								contents: complete.parent().parent().find('.replyPrint').html(),
-								reply_seq: complete.data("seq")
+					$(document).ready(function () {
+						// 썸머노트 활성화
+						$('.detailCen').summernote({
+							height: 400, // 기본 높이 설정
+							minHeight: null, // 최소 높이 설정
+							maxHeight: null, // 최대 높이 설정
+							focus: true, // 페이지 로드 시 포커스
+							callbacks: {
+								onInit: function () {
+									// summernote 초기화 후 note-statusbar 요소 제거
+									$('.note-statusbar').remove()
+								}
 							}
-						}).done(function (response) {
+						});
 
-							writeDate.html(response);
-							complete.parent().find('.updateReply').show();
-							complete.parent().find(".delRly").show();
-							complete.parent().find(".canRly").hide();
-							complete.hide();
-							console.log(response)
+						// 수정 버튼 클릭 시
+						$("#fboardUpd").on("click", function () {
+							$("#fboardCom").show();
+							$("#fboardCan").show();
+							$("#fboardUpd").hide();
+							$("#fileDel").show();
+							$(".docuFiles").show();
+
+							// 제목 내용 수정 가능하게 속성 지정
+							$(".topTitle").attr("contenteditable", true);
+							$(".detailCen").summernote('enable');
+						});
+
+						// 완료 버튼 클릭 시 
+						$("#fboardCom").on("click", function () {
+							// 썸머노트 내용을 숨겨진 필드에 복사
+							$("#hiddenC").val($(".detailCen").summernote('code'));
+							// 폼 제출
+							$("#fboardUpdate").submit();
+						});
+
+						// 완료 버튼 클릭 후 수정한 값 저장
+						$("#fboardUpdate").on("submit", function () {
+							$("#hiddenT").val($(".topTitle").html().trim());
+							$("#hiddenC").val($(".detailCen").html());
 						})
-					})
 
+						// 취소 버튼 클릭 시
+						$("#fboardCan").on("click", function () {
+							location.href = "/board/detail?board_seq=${board.board_seq}";
+						});
+
+
+
+						// 댓글 script
+						// 댓글 수정 버튼 클릭 시
+						$(".updateReply").on("click", function (e) {
+							console.log(e.target);
+							let update = $(e.target)
+							// 댓글 수정 완료 버튼
+							update.parent().find(".updateRly").show();
+							// 댓글 수정 취소 버튼
+							update.parent().find(".canRly").show();
+							update.parent().find(".delRly").hide();
+							update.hide();
+
+							update.parent().parent().find(".replyPrint").attr("contenteditable", true);
+						})
+
+						// 댓글 수정 취소 버튼 클릭 시
+						$(".canRly").on("click", function (e) {
+							let cancel = $(e.target);
+							cancel.parent().find('.updateReply').show();
+							cancel.parent().find('.updateRly').hide();
+							cancel.parent().find(".delRly").show();
+							cancel.hide();
+							location.href = "/board/detail?board_seq=${board.board_seq}";
+						})
+
+						// 댓글 수정 완료 버튼 클릭 시
+						$(".updateRly").on("click", function (e) {
+							let complete = $(e.target);
+							let writeDate = complete.parents('.replyList').find(".replyTxt").find(".replyDate")
+							$.ajax({
+								url: "/reply/update",
+								type: "post",
+								data: {
+									contents: complete.parent().parent().find('.replyPrint').html(),
+									reply_seq: complete.data("seq")
+								}
+							}).done(function (response) {
+
+								writeDate.html(response);
+								complete.parent().find('.updateReply').show();
+								complete.parent().find(".delRly").show();
+								complete.parent().find(".canRly").hide();
+								complete.hide();
+								console.log(response)
+							})
+						})
+
+
+						// 북마크 클릭 이벤트 
+						$("#starIcon").on("click", function () {
+							// 현재 클릭한 요소
+							var $this = $(this);
+							var boardSeq = $(this).data("board-seq");
+							var empNo = $(this).data("emp-no");
+
+							$.ajax({
+								url: "/bookmark/toggle", // 서버의 북마크 처리 엔드포인트
+								method: "post", // 요청 메서드
+								data: {
+									board_seq: boardSeq,
+									emp_no: empNo
+								}
+							}).done(function (response) {
+								// 서버 응답 성공 시 아이콘 변경
+								if ($this.hasClass("bx-star")) {
+									$this.removeClass("bx-star").addClass("bxs-star");
+								} else {
+									$this.removeClass("bxs-star").addClass("bx-star");
+								}
+								console.log("북마크 업데이트 성공");
+							})
+						})
+					});
 					// 파일 아이콘 클릭 시 파일 리스트 보이게
 					$(document).ready(function () {
 						var fileModal = $("#fileModal");
@@ -404,47 +464,8 @@
 								fileModal.hide();
 							}
 						});
-
-						// 북마크 기능
-						// 북마크 눌렀을 때 북마크한 아이콘 새로고침해도 유지됨
-
-						// 북마크 클릭 이벤트 
-						$("#starIcon").on("click", function () {
-							// 현재 클릭한 요소
-							var $this = $(this);
-							var boardSeq = $(this).data("board-seq");
-							var empNo = $(this).data("emp-no");
-
-							$.ajax({
-								url: "/bookmark/toggle", // 서버의 북마크 처리 엔드포인트
-								method: "post", // 요청 메서드
-								data: {
-									board_seq: boardSeq,
-									emp_no: empNo
-								}
-							}).done(function (response) {
-								// 서버 응답 성공 시 아이콘 변경
-								if ($this.hasClass("bx-star")) {
-									$this.removeClass("bx-star").addClass("bxs-star");
-								} else {
-									$this.removeClass("bxs-star").addClass("bx-star");
-								}
-								console.log("북마크 업데이트 성공");
-							})
-						})
 					});
-
-					if (${ bookmark }) {
-						$('#starIcon').attr('class', 'bx bxs-star')
-					}
-
-					// 삭제 이미지 클릭시 form 제출
-					function submitDeleteForm(replySeq) {
-						location.href = "/reply/delete?boardSeq=${board.board_seq}&replySeq=" + replySeq;
-					}
-
 				</script>
-
 			</body>
 
 			</html>

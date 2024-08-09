@@ -62,10 +62,12 @@ public class BoardService {
 	}
 	// 게시물 상세 조회
 	public BoardDTO detailBoard(int board_seq) throws Exception {
-		bdao.viewcount(board_seq);
 		return bdao.detailBoard(board_seq);
 	}
-
+	// 게시물 조회수 
+	public void detailView(int board_seq) throws Exception{
+		bdao.viewcount(board_seq);
+	}
 	// 닉네임 조회(자유게시판 JSTL)
 	public String selectNickname(String emp_no) throws Exception {
 		return bdao.selectNickname(emp_no);
