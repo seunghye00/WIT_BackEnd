@@ -63,19 +63,36 @@ public class EmployeeController {
 		EmployeeDTO employee = service.login(emp_no, pw);
 		Map<String, Object> response = new HashMap<>();
 		if (employee != null) {
+			// 세션에 로그인 ID 저장
 			session.setAttribute("loginID", emp_no);
-			// 우측상단 이름 및 직급 조회를 위한 코드!
-			session.setAttribute("loginName", employee.getName());
-			session.setAttribute("loginRole", employee.getRole_code());
-			// 첫 로그인시 추가 정보 입력을 위한 코드!
+
+			// 첫 로그인시 추가 정보 입력을 위한 코드
 			boolean isFirstLogin = service.FirstLogin(emp_no);
-			// FirstLogin 값을 세션에 저장
 			session.setAttribute("FirstLogin", isFirstLogin);
+
+			// 로그인 성공 처리
 			response.put("success", true);
 		} else {
+			// 로그인 실패 처리
 			response.put("success", false);
 		}
 		return response;
+	}
+
+	// 메인 페이지로 이동
+	@RequestMapping("/main")
+	public String main(Model model, HttpSession session) {
+		String empNo = (String) session.getAttribute("loginID");
+		System.out.println(empNo);
+		if (empNo != null) {
+			EmployeeDTO employee = service.employeeInfo(empNo);
+
+			model.addAttribute("employee", employee);
+		} else {
+			// 로그인 정보가 없으면 로그인 페이지로 리다이렉트
+			return "redirect:/";
+		}
+		return "main";
 	}
 
 	// 추가 정보 업데이트
@@ -155,121 +172,120 @@ public class EmployeeController {
 		response.put("value", value);
 		return response;
 	}
-	
+
 	// 주소록 전체 데이터 조회
 	@RequestMapping("/addressList")
 	public String getEmployeeAddressList(String chosung, String cpage, String category, Model model) {
 		String emp_no = (String) session.getAttribute("loginID");
-        
-        if (cpage == null) {
-            cpage = "1";
-        }
-        
-        int cpage_num = Integer.parseInt(cpage);
-        
-        if (chosung == null || chosung.isEmpty() || "전체".equals(chosung)) {
-            chosung = "";
-        }
-        
-        if (category == null || category.isEmpty() || "전체".equals(category)) {
-            category = "";
-        }
-        
-        List<Map<String, Object>> list = service.getEmployeeList(chosung, category, cpage_num);
-        
-        List<Map<String, Object>> categoryList = service.getCategories();
-        
-        int totPage = service.totalCountPage();
-        //List<Map<String, Object>> categoryList = service.getCategories(emp_no);
-        model.addAttribute("totPage", totPage);
-        model.addAttribute("cpage", cpage_num);
-        model.addAttribute("addressBookGroupList", list);
-        return "AddressBook/addressBookGroup";
-	}
-	
-	// 주소록 ajax 요청 회신
-	@RequestMapping("/groupAddressTool")
-	@ResponseBody
-	public Map<String, Object> addressBookGroupAjax(String chosung, String cpage, String category,  Model model) {
-		String emp_no = (String) session.getAttribute("loginID");
-		
+
 		if (cpage == null) {
 			cpage = "1";
 		}
-		
+
 		int cpage_num = Integer.parseInt(cpage);
-		
+
 		if (chosung == null || chosung.isEmpty() || "전체".equals(chosung)) {
 			chosung = "";
 		}
-		
+
+		if (category == null || category.isEmpty() || "전체".equals(category)) {
+			category = "";
+		}
+
+		List<Map<String, Object>> list = service.getEmployeeList(chosung, category, cpage_num);
+
+		List<Map<String, Object>> categoryList = service.getCategories();
+
+		int totPage = service.totalCountPage();
+		// List<Map<String, Object>> categoryList = service.getCategories(emp_no);
+		model.addAttribute("totPage", totPage);
+		model.addAttribute("cpage", cpage_num);
+		model.addAttribute("addressBookGroupList", list);
+		return "AddressBook/addressBookGroup";
+	}
+
+	// 주소록 ajax 요청 회신
+	@RequestMapping("/groupAddressTool")
+	@ResponseBody
+	public Map<String, Object> addressBookGroupAjax(String chosung, String cpage, String category, Model model) {
+		String emp_no = (String) session.getAttribute("loginID");
+
+		if (cpage == null) {
+			cpage = "1";
+		}
+
+		int cpage_num = Integer.parseInt(cpage);
+
+		if (chosung == null || chosung.isEmpty() || "전체".equals(chosung)) {
+			chosung = "";
+		}
+
 		System.out.println(category);
 		if (category == null || category.isEmpty() || "전체".equals(category)) {
-            category = "";
-        }
-		
+			category = "";
+		}
+
 		List<Map<String, Object>> list = service.getEmployeeList(chosung, category, cpage_num);
-		
+
 		List<Map<String, Object>> categoryList = service.getCategories();
 		int totPage = service.totalCountPage();
-		
-        Map<String, Object> response = new HashMap<>(); 
-        response.put("totPage", totPage);
-        response.put("cpage", cpage_num);
-        response.put("addressBookGroupList", list);
-        response.put("categoryList", categoryList);
-        return response;
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("totPage", totPage);
+		response.put("cpage", cpage_num);
+		response.put("addressBookGroupList", list);
+		response.put("categoryList", categoryList);
+		return response;
 	}
-	
+
 	// 주소록 카테고리 조회
 	@RequestMapping("getCategories")
-    @ResponseBody
-    public List<Map<String, Object>> getCategories() {
-        return service.getCategories();
-    }
-	
+	@ResponseBody
+	public List<Map<String, Object>> getCategories() {
+		return service.getCategories();
+	}
+
 	// 주소록 상세 데이터 조회
 	@RequestMapping("getContactDetails")
-    @ResponseBody
-    public Map<String, Object> getContactDetails(String emp_no) {
+	@ResponseBody
+	public Map<String, Object> getContactDetails(String emp_no) {
 		Map<String, Object> contact = service.getContactByEmp_no(emp_no);
-        return contact;
-    }
-	
-	// 주소록 검색
-    @RequestMapping("search")
-    @ResponseBody
-    public Map<String, Object> search(String keyword, String cpage) {
-        if (cpage == null) {
-            cpage = "1";
-        }
-        int cpage_num = Integer.parseInt(cpage);
-        List<Map<String, Object>> list = service.selectByCon(keyword, cpage_num);
-        int totPage = service.totalCountPageSearch(keyword);
+		return contact;
+	}
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("totPage", totPage);
-        response.put("cpage", cpage_num);
-        response.put("addressBookGroupList", list);
-        return response;
-    }
-    
-    // 채팅 메신저 주소록 출력
-    @ResponseBody
-    @RequestMapping("/getEmployeeList")
-    public List<Map<String, Object>> getAllMessengerEmp () {
-    	String emp_no = (String) session.getAttribute("loginID");
-    	return service.getAllMessengerEmp(emp_no);
-    }
-    
-    // 채팅 메신저 상세 디테일
-    @ResponseBody
-    @RequestMapping("/getEmployeeDetails")
-    public Map<String, Object> getEmployeeDetails(String emp_no) {
-        return service.getContactByEmpNo(emp_no);
-    }
-    
-    
+	// 주소록 검색
+	@RequestMapping("search")
+	@ResponseBody
+	public Map<String, Object> search(String keyword, String cpage) {
+		if (cpage == null) {
+			cpage = "1";
+		}
+		int cpage_num = Integer.parseInt(cpage);
+		List<Map<String, Object>> list = service.selectByCon(keyword, cpage_num);
+		int totPage = service.totalCountPageSearch(keyword);
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("totPage", totPage);
+		response.put("cpage", cpage_num);
+		response.put("addressBookGroupList", list);
+		return response;
+	}
+
+	// 채팅 메신저 주소록 출력
+	@ResponseBody
+	@RequestMapping("/getEmployeeList")
+	public List<Map<String, Object>> getAllMessengerEmp() {
+		String emp_no = (String) session.getAttribute("loginID");
+		return service.getAllMessengerEmp(emp_no);
+	}
+
+	// 채팅 메신저 상세 디테일
+	@ResponseBody
+	@RequestMapping("/getEmployeeDetails")
+	public Map<String, Object> getEmployeeDetails(String emp_no) {
+		return service.getContactByEmpNo(emp_no);
+	}
+
 	// 마이페이지 정보 업데이트
 	@RequestMapping("/update_mypage")
 	public String updateMyPage(EmployeeDTO dto, HttpSession session) throws Exception {
@@ -296,14 +312,21 @@ public class EmployeeController {
 		}
 		return "redirect:/";
 	}
-	
+
 	// ajax로 부서별 사원 목록를 요청했을 때 서버로 보내기 위한 메서드
 	@ResponseBody
 	@RequestMapping(value = "/getListByDept", produces = "application/json;charset=utf8")
 	public List<EmployeeDTO> getListByDept(String deptCode) throws Exception {
 		return service.getListByDept(deptCode);
 	}
-
+	
+	//  메신저 emp_no 이름으로 변경
+	@ResponseBody
+	@RequestMapping("/getEmployeeName")
+	public String getEmployeeName(String emp_no) throws Exception {
+		return service.getEmployeeName(emp_no);
+	}
+	
 	// 예외를 담당하는 메서드 생성
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception e) {

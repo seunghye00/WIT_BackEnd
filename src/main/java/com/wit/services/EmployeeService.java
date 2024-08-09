@@ -43,6 +43,11 @@ public class EmployeeService {
 		return dao.register(dto);
 	}
 
+	// 직원 정보 조회
+	public EmployeeDTO employeeInfo(String emp_no) {
+		return dao.employeeInfo(emp_no);
+	}
+
 	// 로그인
 	public EmployeeDTO login(String empNo, String pw) {
 		String encryptedPw = PWUtill.encryptPassword(pw);
@@ -116,72 +121,85 @@ public class EmployeeService {
 	public int delete(String empNo) {
 		return dao.delete(empNo);
 	}
-	
-	// 주소록 조회 메소드 추가
-    public List<Map<String, Object>> getEmployeeList(String chosung, String category, int cpage) {
-    	int startNum = (cpage - 1) * BoardConfig.recordCountPerPage + 1;
-	    int endNum = cpage * BoardConfig.recordCountPerPage;
 
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("chosung", chosung);
-	    params.put("category", category);
-	    params.put("startNum", startNum);
-	    params.put("endNum", endNum);
-        return dao.getEmployeeAddressList(params);
-    }
-    // 주소록 조회 메소드 추가
-    public List<EmployeeDTO> searchEmployeeList(String keyword, int cpage) {
-        return dao.searchEmployeeAddressList(keyword, cpage);
-    }
-    
-    // 주소록 검색 카운트 값 조회
-    @Transactional
-    public int totalCountPage() {
-    	return dao.totalCountPage();
-    }
-    
-    // 주소록 카테고리 조회
-    @Transactional
-    public List<Map<String, Object>> getCategories() {
-        return dao.getCategories();
-    }
-    
+	// 주소록 조회 메소드 추가
+	public List<Map<String, Object>> getEmployeeList(String chosung, String category, int cpage) {
+		int startNum = (cpage - 1) * BoardConfig.recordCountPerPage + 1;
+		int endNum = cpage * BoardConfig.recordCountPerPage;
+
+		Map<String, Object> params = new HashMap<>();
+		params.put("chosung", chosung);
+		params.put("category", category);
+		params.put("startNum", startNum);
+		params.put("endNum", endNum);
+		return dao.getEmployeeAddressList(params);
+	}
+
+	// 주소록 조회 메소드 추가
+	public List<EmployeeDTO> searchEmployeeList(String keyword, int cpage) {
+		return dao.searchEmployeeAddressList(keyword, cpage);
+	}
+
+	// 주소록 검색 카운트 값 조회
+	@Transactional
+	public int totalCountPage() {
+		return dao.totalCountPage();
+	}
+
+	// 주소록 카테고리 조회
+	@Transactional
+	public List<Map<String, Object>> getCategories() {
+		return dao.getCategories();
+	}
+
 	// 주소록 데이터 가져오기
 	public Map<String, Object> getContactByEmp_no(String emp_no) {
-	    return dao.getContactByEmp_no(emp_no);
+		return dao.getContactByEmp_no(emp_no);
 	}
-	
+
 	// 주소록 검색 카운트 값 조회
 	@Transactional
 	public int totalCountPageSearch(String keyword) {
 		return dao.totalCountPageSearch(keyword);
 	}
-	
+
 	// 주소록 검색값 레코드 조회
 	@Transactional
 	public List<Map<String, Object>> selectByCon(String keyword, int cpage) {
 		return dao.selectByCon(keyword, cpage * BoardConfig.recordCountPerPage - (BoardConfig.recordCountPerPage - 1),
 				cpage * BoardConfig.recordCountPerPage);
 	}
-	
+
 	// 메신저 주소록 조회
 	@Transactional
 	public List<Map<String, Object>> getAllMessengerEmp(String emp_no) {
-        return dao.getAllMessengerEmp(emp_no);
-    }
-	
+		return dao.getAllMessengerEmp(emp_no);
+	}
+
 	// 메신저 주소록 상세 조회
 	@Transactional
 	public Map<String, Object> getContactByEmpNo(String emp_no) {
-        return dao.getContactByEmpNo(emp_no);
-    }
+		return dao.getContactByEmpNo(emp_no);
+	}
+
 	// 부서별 사원 목록 조회
 	public List<EmployeeDTO> getListByDept(String deptCode) {
 		return dao.getListByDept(deptCode);
 	}
 
 	// 해당 사번을 가진 사원의 이름과 부서명 조회
-	public EmployeeInfoDTO getNameNDept(String emp_no) {
-		return dao.getNameNDept(emp_no);
+	public EmployeeInfoDTO getNameNDept(String empNo) {
+		return dao.getNameNDept(empNo);
+	}
+
+	// 해당 사번을 가진 사원의 이름 조회
+	public String getName(String empNo) {
+		return dao.getName(empNo);
+	}
+	
+	// 메신저 emp_no 이름으로 변경
+	@Transactional
+	public String getEmployeeName(String emp_no) {
+	    return dao.getEmployeeName(emp_no);
 	}
 }

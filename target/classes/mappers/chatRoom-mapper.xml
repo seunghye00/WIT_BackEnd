@@ -19,20 +19,17 @@
 
     <!-- 채팅방 생성 -->
     <insert id="createChatRoom">
-        INSERT INTO chat_room (chat_room_seq, chat_room_name, chat_room_code, created_by, create_date, is_read)
-        VALUES (chat_room_seq.nextval, #{chat_room_name}, #{chat_room_code}, #{emp_no2}, sysdate, 0)
+    	insert into chat_room values(chat_room_seq.nextval, #{chat_room_name}, #{chat_room_code}, #{emp_no2}, sysdate, 0)
     </insert>
 
     <!-- 그룹채팅방 생성 -->
     <insert id="createGroupChat">
-        INSERT INTO chat_room (chat_room_seq, chat_room_name, chat_room_code, created_by, create_date, is_read)
-        VALUES (chat_room_seq.nextval, #{chat_room_name}, 'G', #{creater}, sysdate, 0)
+    	insert into chat_room values(chat_room_seq.nextval, #{chat_room_name}, 'G', #{creater}, sysdate, 0)
     </insert>
 
     <!-- 채팅방 멤버 추가 -->
     <insert id="insertChatRoomMember">
-        INSERT INTO chat_room_member (chat_room_seq, emp_no)
-        VALUES (#{chat_room_seq}, #{emp_no})
+    	insert into chat_room_member values(#{chat_room_seq}, #{emp_no})
     </insert>
 
     <!-- 최근 생성된 채팅방 시퀀스 조회 -->
@@ -42,11 +39,10 @@
     
  	<!-- 사용자가 속한 채팅방 조회 -->
     <select id="getChatRoomsByUserId" resultType="map">
-       	select cr.*
+       	select distinct cr.*
 		from chat_room cr
 		join chat_room_member crm on cr.chat_room_seq = crm.chat_room_seq
 		where crm.emp_no = #{loginUserId}
-		or cr.created_by = #{loginUserId}
     </select>
     
  	<!-- 채팅방 상세 조회 -->
@@ -64,5 +60,28 @@
 		    on cr.chat_room_seq = crm.chat_room_seq 
 		where 
 		    cr.chat_room_seq = #{chat_room_seq}
+		    and e.emp_no != #{emp_no}
     </select>
+    
+    <!-- 채팅방 타이틀 수정 -->
+    <update id="updateChatRoomTitle">
+    	update chat_room
+    	set chat_room_name = #{new_title}
+    	where chat_room_seq = #{chat_room_seq}
+    </update>
+
+ 	<!-- 채팅방 코드 가져오기 -->
+    <select id="getChatRoomCode" resultType="String">
+    	select chat_room_code from chat_room where chat_room_seq = #{chat_room_seq}
+    </select>
+
+    <!-- 채팅방 삭제 -->
+    <delete id="deleteChatRoom">
+    	delete from chat_room where chat_room_seq = #{chat_room_seq}
+    </delete>
+
+    <!-- 채팅방 멤버 삭제 -->
+    <delete id="deleteChatRoomMember">
+    	delete from chat_room_member where chat_room_seq = #{chat_room_seq} and emp_no = #{emp_no}
+    </delete>
 </mapper>
