@@ -130,12 +130,15 @@
 
 	<!-- 월간 근무현황 조회 (페이징 적용) -->
 	<select id="getMonthlyWorkStatus" resultType="java.util.HashMap">
-		SELECT work_date, start_time, end_time, work_hours
+		SELECT work_date,
+		start_time, end_time, work_hours
 		FROM (
-		SELECT ROW_NUMBER() OVER (ORDER BY work_date ASC) AS rn, work_date,
+		SELECT ROW_NUMBER() OVER (ORDER
+		BY work_date ASC) AS rn, work_date,
 		start_time, end_time, work_hours
 		FROM Attendance
-		WHERE emp_no = #{empNo} AND TO_CHAR(work_date, 'YYYY-MM') = #{month}
+		WHERE emp_no = #{empNo} AND TO_CHAR(work_date,
+		'YYYY-MM') = #{month}
 		)
 		WHERE rn BETWEEN #{start} AND #{end}
 	</select>

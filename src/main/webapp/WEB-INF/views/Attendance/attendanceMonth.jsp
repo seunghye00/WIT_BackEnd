@@ -140,7 +140,7 @@
 
 						<!-- 다음 페이지로 이동 -->
 						<a
-							href="/attendance/attendance_month?cpage=${cpage + 1 > pageTotalCount ? pageTotalCount : cpage + 1}"
+							href="/attendance/attendance_month?cpage=${cpage + 1 > 4 ? pageTotalCount : cpage + 1}"
 							class="next"> <i class='bx bx-chevron-right'></i>
 						</a>
 					</div>
