@@ -4,7 +4,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,git,windows,eclipse
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,git,windows,eclipse
 
-target/m2e-wtp/web-resources/META-INF/*
+target/m2e-wtp/*
 
 ### Eclipse ###
 .metadata
