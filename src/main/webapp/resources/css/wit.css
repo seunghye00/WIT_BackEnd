@@ -2555,6 +2555,21 @@ button.disabled {
 	pointer-events: none;
 }
 
+span.ing {
+	background-color: rgb(255, 154, 42);
+	color: #fff;
+}
+
+span.done {
+	background-color: #168216;
+	color: #fff;
+}
+
+span.return {
+	background-color: #dc3545;
+	color: #fff;
+}
+
 /* 전자 결제 메인 화면 */
 .eApproval {
 	gap: 10px;
@@ -2671,22 +2686,10 @@ button.disabled {
 	height: 28px;
 }
 
-.eApproval .docuList .listBox:not(.todoList, .upcomingList) .rows:not(.listHeader) .cols:last-child span
-	{
-	width: 30%;
+.eApproval .docuList .listBox:not(.todoList, .upcomingList) .rows:not(.listHeader) .cols:last-child span {
 	border-radius: 5px;
 	color: #fff;
 	padding: 5px;
-}
-
-.eApproval .docuList .listBox.doneList .rows:not(.listHeader) .cols:last-child span
-	{
-	background-color: #26a626;
-}
-
-.eApproval .docuList .listBox.progList .rows:not(.listHeader) .cols:last-child span
-	{
-	background-color: rgb(255, 154, 42);
 }
 
 .eApproval .docuList.docuBox .listBox.progList .rows:not(.listHeader) .cols:last-child span
