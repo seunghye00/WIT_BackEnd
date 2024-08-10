@@ -35,18 +35,15 @@
 								<h3 class="toggleTit">내 캘린더</h3>
 								<ul class="subList calendarList">
 									<c:forEach items="${plist}" var="dto">
-										<li><input type="checkbox"
-											id="calendar_${dto.calendar_seq}"
-											name="calendar_${dto.calendar_seq}"
-											class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
+										<li>
+										<input type="checkbox" id="calendar_${dto.calendar_seq}" name="calendar_${dto.calendar_seq}" class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
 											<c:if test="${dto.default_yn == 'Y'}">checked</c:if>>
 											<label for="calendar_${dto.calendar_seq}">${dto.calendar_name}</label>
-											<!-- 내 일정(기본)에는 삭제 버튼 없음 기본 생성자는 default='y' --> <c:if
-												test="${dto.calendar_seq != 0 }">
+											<!-- 내 일정(기본)에는 삭제 버튼 없음 기본 생성자는 default='y' --> 
+											<c:if test="${dto.default_yn != 'Y' }">
 												<span class="sidePerSelectDel"
 													data-seq="${dto.calendar_seq}" id="sidePerSelectDel">&times;</span>
-											</c:if> <input type="hidden" id="hidden_${dto.calendar_seq}"
-											value="${dto.calendar_seq}"></li>
+											</c:if> <input type="hidden" id="hidden_${dto.calendar_seq}" value="${dto.calendar_seq}"></li>
 									</c:forEach>
 									<div>
 										<span class="sideCalendarAdd"><i
@@ -62,8 +59,8 @@
 													<form id="perCalendarForm"
 														action="/calendar/insertPerCalendar" method="post">
 														<input type="text" name="calendar_name" id="calendar_name">
-														<input type="hidden" name="emp_no"> <input
-															type="hidden" name="default_yn">
+														<input type="hidden" name="emp_no"> 
+														<input type="hidden" name="default_yn">
 													</form>
 												</div>
 												<footer>

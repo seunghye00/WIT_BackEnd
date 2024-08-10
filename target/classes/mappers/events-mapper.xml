@@ -12,14 +12,14 @@
 		#{title},
 		#{start_date},
 		#{end_date},
-		#{calendar_name},
+		#{calendar_seq},
 		#{location},
 		#{content}
 		)
 	</insert>
 
 	<select id="select" resultType="com.wit.dto.EventsDTO">
-		select * from events
+		select * from events 
 	</select>
 	
 	<delete id="delete">
