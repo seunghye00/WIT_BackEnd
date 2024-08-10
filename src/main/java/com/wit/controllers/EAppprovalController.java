@@ -64,6 +64,15 @@ public class EAppprovalController {
 		// 전자 결재 메인 화면으로 이동
 		return "eApproval/home";
 	}
+	
+	// 해당 문서의 상세 정보를 열람하는데 필요한 정보들을 담아서 전달하는 메서드
+	@RequestMapping("viewDocu")
+	public String viewDocu(int docuSeq) throws Exception {
+		System.out.println(docuSeq);
+		
+		// 전자 결재 메인 화면으로 이동
+		return "eApproval/home";
+	}
 
 	// 브라우저에서 선택한 type에 따라 결재하기 페이지로 이동 시 해당 페이지에서 초기에 노출할 데이터를 담아서 전달하는 메서드
 	@RequestMapping("apprList")

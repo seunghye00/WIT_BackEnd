@@ -39,4 +39,9 @@ public class BoardFilesDAO {
 			}
 		}
 	}
+	
+	// 파일 수정
+	public void update(BoardFilesDTO dto) throws Exception{
+		
+	}
 }
