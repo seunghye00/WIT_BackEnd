@@ -175,6 +175,7 @@ public class EAppprovalController {
 		case "M1":
 			return "eApproval/write/writeProp";
 		case "M2":
+			model.addAttribute("", formattedDate)
 			return "eApproval/write/writeLeave";
 		case "M3":
 			return "eApproval/write/writeLateness";

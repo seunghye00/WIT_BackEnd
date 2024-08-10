@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>휴가 신청서 문서 임시 저장</title>
+<title>업무 기안 문서 열람</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
@@ -17,7 +17,6 @@
 <script defer src="/js/hsh.js"></script>
 <script defer src="/js/wit.js"></script>
 </head>
-
 <body>
 	<div class="container">
 		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
@@ -26,7 +25,9 @@
 			<div class="contents">
 				<div class="sideAbout">
 					<div class="sideTxt">
-						<h2 class="sideTit">전자 결재</h2>
+						<a href="/eApproval/home">
+							<h2 class="sideTit">전자 결재</h2>
+						</a>
 					</div>
 					<div class="sideBtnBox">
 						<button class="plusBtn sideBtn disabled">새 결재 진행</button>
@@ -34,12 +35,11 @@
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApprWrite">
-					<div class="mainTitle">문서 작성 ( 휴가 신청서 )</div>
+					<div class="mainTitle">문서 작성 ( 업무 기안 )</div>
 					<div class="document">
 						<div class="choiBox">
-							<button class="ok leaveWrite" type="button">결재 요청</button>
-							<button class="green docuSaveBtn docuLeaveSave" type="button">임시
-								저장</button>
+							<button class="ok propWrite" type="button">결재 요청</button>
+							<button class="green docuSaveBtn docuPropSave" type="button">임시 저장</button>
 							<button class="red cancelWrite" type="button">취소</button>
 							<button class="grey refeBtn" type="button">참조선</button>
 							<div class="refeModal">
@@ -116,27 +116,24 @@
 												<td></td>
 												<td></td>
 											</tr>
+
 										</tbody>
 									</table>
 								</div>
 							</div>
-							<div class="docuWrite docuLeave">
+							<div class="docuWrite docuProp">
 								<form id="docuContForm">
-									<input type="hidden" name="docu_code" value="M2">
+									<input type="hidden" name="docu_code" value="M1">
 									<table>
 										<thead>
 											<tr>
-												<th>휴가 종류</th>
-												<td><select name="leave_type" id="leaveType">
-														<option value="1">연차</option>
-														<option value="2">지각</option>
-														<option value="3">조퇴</option>
-														<option value="4">경조사</option>
-														<option value="5">병가</option>
-												</select></td>
-												<th>기간 및 일시</th>
-												<td colspan="2"><input type="date" id="startLeaveDay" name="start_date" min="${today}"> <span>~</span>
-													<input type="date" id="endLeaveDay" name="end_date" min="${today}"></td>
+												<th>시행일자</th>
+												<td><input type="date" id="effDate" min="${today}"
+													value="${today}" name="eff_date"></td>
+												<th>협조부서</th>
+												<td><input type="text" name="dept_title"
+													id="collaboDept" oninput='handleOnInput(this, 20)'
+													data-label="협조 부서"></td>
 												<th>긴급</th>
 												<td>
 													<div>
@@ -147,47 +144,27 @@
 												</td>
 											</tr>
 											<tr>
-												<th>반차 여부</th>
-												<td colspan="2"><span> <input type="checkbox"
-														id="startDay"> <label for="startDay">시작일</label>
-												</span> ( <span><input type="checkbox" id="startDayAM">
-														<label for="startDayAM">오전</label></span> <span><input
-														type="checkbox" id="startDayPM"> <label
-														for="startDayPM">오후</label></span> ) <br> <span> <input
-														type="checkbox" id="endDay"> <label for="endDay">종료일</label>
-												</span> ( <span><input type="checkbox" id="endDayAM">
-														<label for="endDayAM">오전</label></span> <span><input
-														type="checkbox" id="endDayPM"> <label
-														for="endDayPM">오후</label></span> )</td>
-												<th>연차 일수</th>
-												<td colspan="3"><span> 잔여 연차 :&nbsp;&nbsp;<input class="readOnly"
-														type="text" readonly>
-												</span> <span> 신청 연차 :&nbsp;&nbsp;<input type="text" class="readOnly"
-														readonly>
-												</span></td>
-											</tr>
-											<tr>
 												<th>제목</th>
-												<td colspan="6"><input type="text" name="title"
+												<td colspan="5"><input type="text" name="title"
 													id="writeDocuTitle" oninput='handleOnInput(this, 33)'
 													data-label="문서 제목"></td>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<th>휴가 사유</th>
-												<td colspan="6"><textarea name="reason" id="reason" oninput='handleOnInput(this, 1333)'
+												<td colspan="6"><textarea name="contents"
+														id="writeDocuConts" oninput='handleOnInput(this, 1333)'
 														data-label="문서 내용"></textarea></td>
 											</tr>
 										</tbody>
 									</table>
 								</form>
 							</div>
-							<form id="fileInputForm" action="/eApproval/uploadFiles"
-								method="post" enctype="multipart/form-data">
+							<form id="fileInputForm" action="/eApproval/uploadFiles" method="post"
+								enctype="multipart/form-data">
 								<div class="docuFiles">
-									<label for="file">🔗 파일 선택</label> <input type="file" id="file"
-										name="file" multiple> <span class="uploadFiles"></span>
+									<label for="file">🔗 파일 선택</label> <input type="file" id="file" name="file"
+										multiple> <span class="uploadFiles"></span>
 								</div>
 							</form>
 						</div>
@@ -196,6 +173,5 @@
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

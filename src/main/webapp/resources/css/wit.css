@@ -2357,6 +2357,7 @@ button.disabled {
 .eApproval .docuList .listBox .rows.emptyDocuList {
 	max-height: unset;
 	height: 228px;
+	border-bottom: 2px solid #888888;
 }
 
 .eApproval .docuList .listBox .rows.emptyDocuList:hover {
@@ -2369,10 +2370,6 @@ button.disabled {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.eApproval .docuList .listBox .rows:last-child {
-    border-bottom: 2px solid #888888;
 }
 
 .eApproval .docuList .listBox .rows.listHeader {
@@ -3063,6 +3060,7 @@ button:nth-child(5) img {
 
 .eApproval .docuList.docuBox .listBox {
     flex: 9;
+    border-bottom: 2px solid #888888;
 }
 
 .eApproval .docuList.docuBox .listBox .rows .cols {
