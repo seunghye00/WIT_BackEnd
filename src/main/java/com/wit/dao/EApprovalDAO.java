@@ -140,10 +140,7 @@ public class EApprovalDAO {
 
 	// 해당 업무 기안 문서의 세부 정보를 넘겨주기 위한 메서드
 	public WorkPropDTO getPropDetail(int docuSeq) {
-		System.out.println(docuSeq);
-		WorkPropDTO dto = mybatis.selectOne("eApproval.selectPropByDocuSeq", docuSeq);
-		System.out.println(dto.getDept_title());
-		return dto;
+		return mybatis.selectOne("eApproval.selectPropByDocuSeq", docuSeq);
 	}
 
 	// 해당 휴가 신청서 문서의 세부 정보를 넘겨주기 위한 메서드

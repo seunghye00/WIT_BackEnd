@@ -38,10 +38,9 @@
 					<div class="mainTitle">문서 열람 ( 업무 기안 )</div>
 					<div class="document">
 						<div class="choiBox">
-							<button class="ok" type="button">버튼1</button>
-							<button class="green" type="button">버튼2</button>
-							<button class="red" type="button">버튼3</button>
+							<button class="ok" type="button">코멘트</button>
 							<button class="grey refeBtn" type="button">참조선</button>
+							<button class="grey" type="button">목록</button>
 							<div class="refeModal">
 								<ul>
 									<c:choose>
@@ -72,7 +71,9 @@
 											</tr>
 											<tr>
 												<th>기안일</th>
-												<td>${docuInfo.write_date}</td>
+												<td>
+													<fmt:formatDate value="${docuInfo.write_date}" pattern="yyyy-MM-dd HH:mm" />
+												</td>
 											</tr>
 											<tr>
 												<th>문서번호</th>
@@ -113,7 +114,6 @@
 													</td>
 												</c:forEach>
 											</tr>
-
 										</tbody>
 									</table>
 								</div>
@@ -123,9 +123,9 @@
 										<thead>
 											<tr>
 												<th>시행일자</th>
-												<td><input type="date" value="${docuDetail.eff_date}" disabled></td>
+												<td><input type="date" value="${docuDetail.eff_date}"readonly></td>
 												<th>협조부서</th>
-												<td><input type="text" value="${docuDetail.dept_title}" disabled></td>
+												<td><input type="text" value="${docuDetail.dept_title}" readonly></td>
 												<th>긴급</th>
 												<td>
 													<div>
@@ -135,12 +135,12 @@
 											</tr>
 											<tr>
 												<th>제목</th>
-												<td colspan="5"><input type="text" value="${docuInfo.title}" disabled></td>
+												<td colspan="5"><input type="text" value="${docuInfo.title}" readonly></td>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td colspan="6"><textarea value="${docuDetail.contents}" disabled></textarea></td>
+												<td colspan="6"><textarea readonly>${docuDetail.contents}</textarea></td>
 											</tr>
 										</tbody>
 									</table>

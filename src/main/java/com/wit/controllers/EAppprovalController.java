@@ -30,6 +30,7 @@ import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
 import com.wit.dto.LeaveRequestDTO;
 import com.wit.dto.WorkPropDTO;
+import com.wit.services.AnnualLeaveService;
 import com.wit.services.EApprovalService;
 import com.wit.services.EmployeeService;
 import com.wit.services.FileService;
@@ -46,6 +47,9 @@ public class EAppprovalController {
 
 	@Autowired
 	private FileService fServ;
+	
+	@Autowired
+	private AnnualLeaveService aServ;
 
 	@Autowired
 	private HttpSession session;
@@ -77,8 +81,6 @@ public class EAppprovalController {
 		model.addAttribute("refeList", serv.getRefeLine(docuSeq));
 		switch (dto.getDocu_code()) {
 		case "M1":
-			WorkPropDTO adto = serv.getPropDetail(docuSeq);
-			System.out.println(adto.getDept_title());
 			model.addAttribute("docuDetail", serv.getPropDetail(docuSeq));
 			return "eApproval/read/readProp";
 		case "M2":
@@ -203,6 +205,8 @@ public class EAppprovalController {
 		case "M1":
 			return "eApproval/write/writeProp";
 		case "M2":
+			// 해당 사원의 잔여 연차 갯수 조회 후 전달
+			model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
 			return "eApproval/write/writeLeave";
 		case "M3":
 			return "eApproval/write/writeLateness";

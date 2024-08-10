@@ -96,8 +96,8 @@
 	</insert>
 	
 	<!-- 지각 사유서 문서의 세부 정보를 조회하는 쿼리문 -->
-	<select id="selecLatenesstByDocuSeq" resultType="com.wit.dto.WorkPropDTO">
-		select * from lateness where document_seq = #{docuSeq}
+	<select id="selecLatenesstByDocuSeq" resultType="com.wit.dto.LatenessDTO">
+		select * from lateness_reports where document_seq = #{docuSeq}
 	</select>
 
 	<!-- 휴가 신청서 문서 작성 시 정보를 입력하는 쿼리문 -->
@@ -116,7 +116,7 @@
 	</insert>
 	
 	<!-- 휴가 신청서 문서의 세부 정보를 조회하는 쿼리문 -->
-	<select id="selecLeaveByDocuSeq" resultType="com.wit.dto.WorkPropDTO">
+	<select id="selecLeaveByDocuSeq" resultType="com.wit.dto.LeaveRequestDTO">
 		select * from leave_requests where document_seq = #{docuSeq}
 	</select>
 

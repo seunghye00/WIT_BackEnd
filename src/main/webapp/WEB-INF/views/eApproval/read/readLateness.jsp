@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,19 +40,16 @@
 					<input type="hidden" name="document_seq" value="${docuSeq}">
 					<div class="document">
 						<div class="choiBox">
-							<button class="ok latenessWrite" type="button">결재 요청</button>
-							<button class="green docuSaveBtn docuLatenessSave" type="button">임시
-								저장</button>
-							<button class="red cancelWrite" type="button">취소</button>
+							<button class="ok" type="button">결재 요청</button>
+							<button class="green" type="button">임시 저장</button>
+							<button class="red" type="button">취소</button>
 							<button class="grey refeBtn" type="button">참조선</button>
 							<div class="refeModal">
 								<ul>
 									<c:choose>
 										<c:when test="${refeList != NULL}">
 											<c:forEach items="${refeList}" var="i">
-												<c:set var="refeInfo" value="${fn:split(i, ' ')}" />
-												<li>${refeInfo[1]}${refeInfo[2]}</li>
-												<input type="hidden" name="refeList" value="${refeInfo[0]}">
+												<li>${i.emp_no}</li>
 											</c:forEach>
 										</c:when>
 										<c:otherwise>
@@ -69,19 +66,21 @@
 										<tbody>
 											<tr>
 												<th>기안자</th>
-												<td>${empInfo.name}</td>
+												<td>${writerInfo.name}</td>
 											</tr>
 											<tr>
 												<th>소속</th>
-												<td>${empInfo.dept_title}</td>
+												<td>${writerInfo.dept_title}</td>
 											</tr>
 											<tr>
 												<th>기안일</th>
-												<td>${today}</td>
+												<td>
+													<fmt:formatDate value="${docuInfo.write_date}" pattern="yyyy-MM-dd HH:mm" />
+												</td>
 											</tr>
 											<tr>
 												<th>문서번호</th>
-												<td>${docuSeq}</td>
+												<td>${docuInfo.document_seq}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -100,70 +99,57 @@
 											<tr>
 												<th>직급</th>
 												<c:forEach items="${apprList}" var="i">
-													<c:set var="apprInfo" value="${fn:split(i, ' ')}" />
-													<td>${apprInfo[2]}</td>
+													<td>${i.emp_no}</td>
 												</c:forEach>
 											</tr>
 											<tr>
 												<th>결재자</th>
 												<c:forEach items="${apprList}" var="i">
-													<c:set var="apprInfo" value="${fn:split(i, ' ')}" />
-													<td>${apprInfo[1]}<input type="hidden" name="apprList"
-														value="${apprInfo[0]}">
-													</td>
+													<td>${i.emp_no}</td>
 												</c:forEach>
 											</tr>
 											<tr>
 												<th>결재일</th>
-												<td></td>
-												<td></td>
-												<td></td>
+												<c:forEach items="${apprList}" var="i">
+													<td><fmt:formatDate value="${i.approved_date}"
+															pattern="yyyy-MM-dd HH:mm" /></td>
+												</c:forEach>
 											</tr>
 										</tbody>
 									</table>
 								</div>
 							</div>
-							<div class="docuWrite docuLateness">
+							<div class="docuWrite docuRead docuLateness">
 								<form id="docuContForm">
-									<input type="hidden" name="docu_code" value="M3">
 									<table>
 										<thead>
 											<tr>
 												<th>지각 일자</th>
-												<td><input type="date" max="${today}" id="lateDay" name="late_date"></td>
+												<td><input type="date" value="${docuDetail.late_date}" readonly></td>
 												<th>긴급</th>
 												<td>
 													<div>
-														<input type="checkbox" id="emerCheck" value="Y"
-															name="emer_yn"> <label for="emerCheck">긴급
-															문서</label>
+														<input type="checkbox" <c:if test="${docuInfo.emer_yn eq 'Y'}">checked</c:if> disabled> <label for="emerCheck">긴급 문서</label>
 													</div>
 												</td>
 											</tr>
 											<tr>
 												<th>제목</th>
-												<td colspan="3"><input type="text" name="title"
-													id="writeDocuTitle" oninput='handleOnInput(this, 33)'
-													data-label="문서 제목"></td>
+												<td colspan="3"><input type="text" value="${docuInfo.title}" readonly></td>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
 												<th>지각 사유</th>
-												<td colspan="3"><textarea name="reason" id="reason" oninput='handleOnInput(this, 1333)'
-														data-label="문서 내용"></textarea></td>
+												<td colspan="3"><textarea readonly>${docuDetail.reason}</textarea></td>
 											</tr>
 										</tbody>
 									</table>
 								</form>
 							</div>
-							<form id="fileInputForm" action="/eApproval/uploadFiles"
-								method="post" enctype="multipart/form-data">
-								<div class="docuFiles">
-									<label for="file">🔗 파일 선택</label> <input type="file" id="file"
-										name="file" multiple> <span class="uploadFiles"></span>
+							<div class="docuFiles">
+									<label>🔗 파일 목록</label> <span class="uploadFiles"></span>
 								</div>
-							</form>
 						</div>
 					</div>
 

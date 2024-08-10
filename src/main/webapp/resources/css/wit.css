@@ -2672,13 +2672,6 @@ span.return {
 	width: 45%;
 }
 
-.eApproval .docuList .listBox .rows .cols span {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-}
-
 .eApproval .docuList .listBox .rows .cols .emer {
 	height: 28px;
 }

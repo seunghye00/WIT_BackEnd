@@ -161,7 +161,7 @@
 														for="endDayPM">오후</label></span> )</td>
 												<th>연차 일수</th>
 												<td colspan="3"><span> 잔여 연차 :&nbsp;&nbsp;<input class="readOnly"
-														type="text" readonly>
+														type="text" value="${remaingLeaves}" readonly>
 												</span> <span> 신청 연차 :&nbsp;&nbsp;<input type="text" class="readOnly"
 														readonly>
 												</span></td>
