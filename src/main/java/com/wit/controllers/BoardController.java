@@ -66,6 +66,8 @@ public class BoardController {
 		EmployeeDTO employee = bserv.employeeInfo(empNo);
 
 		model.addAttribute("employee", employee);
+		// 처음 작성할 때는 파일 사이즈가 0으로 설정
+		model.addAttribute("filesSize", 0);
 
 		return "Board/writeBoard";
 	}
@@ -100,6 +102,7 @@ public class BoardController {
 		
 		model.addAttribute("board", board);
 		model.addAttribute("files", files);
+		model.addAttribute("filesSize", files.size());
 		model.addAttribute("empNo", empNo);
 		model.addAttribute("Nickname", Nickname);
 		model.addAttribute("employee", employee);
