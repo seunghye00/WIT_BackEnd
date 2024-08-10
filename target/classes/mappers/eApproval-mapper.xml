@@ -44,17 +44,32 @@
 			</otherwise>
 		</choose>
 	</insert>
+	
+	<!-- 해당 문서의 정보를 조회하는 쿼리문 -->
+	<select id="selectByDocuSeq" resultType="com.wit.dto.DocuDTO">
+		select * from documents where document_seq = #{docuSeq}
+	</select>
 
 	<!-- 결재 라인에 대한 정보를 입력하는 쿼리문 -->
 	<insert id="setApprLine">
 		insert into approvals_line values (a_line_seq.nextval, #{document_seq}, #{emp_no}, null, #{status}, #{approval_order}, null)
 	</insert>
+	
+	<!-- 결재 라인에 대한 정보를 조회하는 쿼리문 -->
+	<select id="selectApprByDocuSeq" resultType="com.wit.dto.ApprLineDTO">
+		select * from approvals_line where document_seq = #{docuSeq}
+	</select>
 
 	<!-- 참조 라인에 대한 정보를 입력하는 쿼리문 -->
 	<insert id="createRefeLine">
 		insert into reference_line values
 		(r_line_seq.nextval, #{docuSeq}, #{empNo}, 'N', null)
 	</insert>
+	
+	<!-- 참조 라인에 대한 정보를 조회하는 쿼리문 -->
+	<select id="selectRefeByDocuSeq" resultType="com.wit.dto.RefeLineDTO">
+		select * from reference_line where document_seq = #{docuSeq}
+	</select>
 
 	<!-- 임시 저장 시 문서 정보를 업데이트 하는 쿼리문 -->
 	<update id="updateBySave">
@@ -68,12 +83,22 @@
 		insert into work_proposals values (#{document_seq},
 		#{eff_date}, #{dept_title}, #{contents})
 	</insert>
+	
+	<!-- 업무 기안 문서의 세부 정보를 조회하는 쿼리문 -->
+	<select id="selectPropByDocuSeq" resultType="com.wit.dto.WorkPropDTO">
+		select * from work_proposals where document_seq = #{docuSeq}
+	</select>
 
 	<!-- 지각 사유서 문서 작성 시 정보를 입력하는 쿼리문 -->
 	<insert id="insertLateness">
 		insert into lateness_reports values (#{document_seq},
 		#{late_date}, #{reason})
 	</insert>
+	
+	<!-- 지각 사유서 문서의 세부 정보를 조회하는 쿼리문 -->
+	<select id="selecLatenesstByDocuSeq" resultType="com.wit.dto.WorkPropDTO">
+		select * from lateness where document_seq = #{docuSeq}
+	</select>
 
 	<!-- 휴가 신청서 문서 작성 시 정보를 입력하는 쿼리문 -->
 	<insert id="insertLeave">
@@ -89,6 +114,11 @@
 			</otherwise>
 		</choose>
 	</insert>
+	
+	<!-- 휴가 신청서 문서의 세부 정보를 조회하는 쿼리문 -->
+	<select id="selecLeaveByDocuSeq" resultType="com.wit.dto.WorkPropDTO">
+		select * from leave_requests where document_seq = #{docuSeq}
+	</select>
 
 	<!-- 해당 사원의 결재 대기 or 결재 예정 문서 목록을 조회하는 쿼리문 -->
 	<select id="selectListByType"

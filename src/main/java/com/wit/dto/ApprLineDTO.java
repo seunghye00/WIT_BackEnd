@@ -10,7 +10,7 @@ public class ApprLineDTO {
 	private String comments;
 	private String status;
 	private int approval_order;
-	private Timestamp approval_date;
+	private Timestamp approved_date;
 	public int getA_line_seq() {
 		return a_line_seq;
 	}
@@ -47,14 +47,14 @@ public class ApprLineDTO {
 	public void setApproval_order(int approval_order) {
 		this.approval_order = approval_order;
 	}
-	public Timestamp getApproval_date() {
-		return approval_date;
+	public Timestamp getApproved_date() {
+		return approved_date;
 	}
-	public void setApproval_date(Timestamp approval_date) {
-		this.approval_date = approval_date;
+	public void setApproved_date(Timestamp approved_date) {
+		this.approved_date = approved_date;
 	}
 	public ApprLineDTO(int a_line_seq, int document_seq, String emp_no, String comments, String status,
-			int approval_order, Timestamp approval_date) {
+			int approval_order, Timestamp approved_date) {
 		super();
 		this.a_line_seq = a_line_seq;
 		this.document_seq = document_seq;
@@ -62,7 +62,7 @@ public class ApprLineDTO {
 		this.comments = comments;
 		this.status = status;
 		this.approval_order = approval_order;
-		this.approval_date = approval_date;
+		this.approved_date = approved_date;
 	}
 	public ApprLineDTO(int document_seq, String emp_no, String status, int approval_order) {
 		super();
