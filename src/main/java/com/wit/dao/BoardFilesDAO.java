@@ -40,8 +40,8 @@ public class BoardFilesDAO {
 		}
 	}
 	
-	// 파일 수정
-	public void update(BoardFilesDTO dto) throws Exception{
-		
+	// 파일 개별 삭제
+	public void delete(int[] filesSeq) throws Exception{
+		mybatis.delete("file.deleteBySeqList",filesSeq);
 	}
 }
