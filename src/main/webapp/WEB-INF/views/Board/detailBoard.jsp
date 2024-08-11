@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 		<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 			<!DOCTYPE html>
 			<html>
 
@@ -20,6 +21,7 @@
 				<script defer src="/resources/js/boards.js"></script>
 			</head>
 
+
 			<body>
 				<div id="container">
 					<div class="sideBar">
@@ -34,10 +36,12 @@
 						</div>
 
 						<ul>
-							<li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span class="navItem">홈</span></a> <span
-									class="toolTip">홈</span></li>
-							<li><a href="#"> <i class='bx bx-paperclip'></i> <span class="navItem">주소록</span></a> <span
-									class="toolTip">주소록</span></li>
+							<li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span class="navItem">홈</span></a>
+								<span class="toolTip">홈</span>
+							</li>
+							<li><a href="#"> <i class='bx bx-paperclip'></i> <span class="navItem">주소록</span></a>
+								<span class="toolTip">주소록</span>
+							</li>
 							<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i>
 									<span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
 							<li><a href="#"> <i class='bx bx-calendar-alt'></i> <span class="navItem">캘린더</span></a>
@@ -46,8 +50,9 @@
 							<li><a href="#"> <i class='bx bxs-message-dots'></i> <span class="navItem">메신저</span></a>
 								<span class="toolTip">메신저</span>
 							</li>
-							<li><a href="#"> <i class='bx bx-clipboard'></i> <span class="navItem">전자결재</span></a> <span
-									class="toolTip">전자결재</span></li>
+							<li><a href="#"> <i class='bx bx-clipboard'></i> <span class="navItem">전자결재</span></a>
+								<span class="toolTip">전자결재</span>
+							</li>
 							<li><a href="/attendance/attendance"> <i class='bx bxs-briefcase-alt-2'></i> <span
 										class="navItem">근태관리</span></a>
 								<span class="toolTip">근태관리</span>
@@ -55,8 +60,9 @@
 							<li><a href="#"> <i class='bx bxs-check-square'></i> <span class="navItem">예약</span></a>
 								<span class="toolTip">예약</span>
 							</li>
-							<li><a href="#"> <i class='bx bx-sitemap'></i> <span class="navItem">조직도</span></a> <span
-									class="toolTip">조직도</span></li>
+							<li><a href="#"> <i class='bx bx-sitemap'></i> <span class="navItem">조직도</span></a>
+								<span class="toolTip">조직도</span>
+							</li>
 						</ul>
 					</div>
 
@@ -168,10 +174,11 @@
 										<div id="fileList">
 											<c:forEach var="file" items="${files}">
 												<div class="fileItem">
-												<a href="/board/download?sysname=${file.sysname}&oriName=${file.oriname}"> 
-													${file.oriname}
-													<button id="fileDel" style="display: none;">x</button>
-												</a>
+													<a
+														href="/board/download?sysname=${file.sysname}&oriName=${file.oriname}">
+														${file.oriname}
+														<!-- <button id="fileDel" style="display: none;">x</button> -->
+													</a>
 												</div>
 											</c:forEach>
 										</div>
@@ -208,7 +215,7 @@
 													<div class="replyTxt">
 														<!--임시로 푸바오 사진 넣어놈~! -->
 														<img src="/resources/img/푸바오.png" alt="">
-														<span>${board.emp_no}</span>
+														<span>${reply.emp_no}</span>
 														<div class="replyDate">
 															<fmt:formatDate value="${reply.write_date}"
 																pattern="yyyy-MM-dd HH:mm" />
@@ -218,26 +225,29 @@
 														<div class="replyPrint" contenteditable="false">
 															${reply.contents}
 														</div>
+
 														<div class="replyBtn">
-															<!-- 수정 아이콘-->
-															<img src="/resources/img/pen-to-square-solid.svg"
-																class="updateReply">
+															<c:if test="${reply.emp_no eq Nickname}">
+																<!-- 수정 아이콘-->
+																<img src="/resources/img/pen-to-square-solid.svg"
+																	class="updateReply">
 
-															<!-- 수정 완료 아이콘-->
-															<i class='bx bx-check updateRly' style="display: none;"
-																data-seq="${reply.reply_seq}"> </i>
-															<!-- 수정 취소 아이콘-->
-															<i class='bx bx-x canRly' style="display: none;"
-																data-seq="${reply.reply_seq}"></i>
+																<!-- 수정 완료 아이콘-->
+																<i class='bx bx-check updateRly' style="display: none;"
+																	data-seq="${reply.reply_seq}"> </i>
+																<!-- 수정 취소 아이콘-->
+																<i class='bx bx-x canRly' style="display: none;"
+																	data-seq="${reply.reply_seq}"></i>
 
-															<!-- 댓글 삭제 기능 -->
-															<!--삭제 버튼 이미지 -->
-															<img src="/resources/img/trash-solid.svg" alt="Delete"
-																style="cursor:pointer;"
-																onclick="submitDeleteForm(${reply.reply_seq});"
-																class="delRly">
-															<button style="display: none;" class="replyDelBtn"></button>
-
+																<!-- 댓글 삭제 기능 -->
+																<!--삭제 버튼 이미지 -->
+																<img src="/resources/img/trash-solid.svg" alt="Delete"
+																	style="cursor:pointer;"
+																	onclick="submitDeleteForm(${reply.reply_seq});"
+																	class="delRly">
+																<button style="display: none;"
+																	class="replyDelBtn"></button>
+															</c:if>
 														</div>
 													</div>
 												</div>
@@ -291,6 +301,9 @@
 
 
 				<script>
+					// JSP에서 계산된 파일의 길이를 JavaScript로 전달합니다.
+					var filesLength = ${ filesSize };
+					console.log(filesLength);
 					// 삭제 이미지 클릭시 form 제출
 					function submitDeleteForm(replySeq) {
 						location.href = "/reply/delete?boardSeq=${board.board_seq}&replySeq=" + replySeq;
@@ -311,19 +324,7 @@
 					console.log("Board emp_no: ${board.emp_no}");
 
 					$(document).ready(function () {
-						// 썸머노트 활성화
-						$('.detailCen').summernote({
-							height: 400, // 기본 높이 설정
-							minHeight: null, // 최소 높이 설정
-							maxHeight: null, // 최대 높이 설정
-							focus: true, // 페이지 로드 시 포커스
-							callbacks: {
-								onInit: function () {
-									// summernote 초기화 후 note-statusbar 요소 제거
-									$('.note-statusbar').remove()
-								}
-							}
-						});
+
 
 						// 수정 버튼 클릭 시
 						$("#fboardUpd").on("click", function () {
@@ -336,21 +337,30 @@
 							// 제목 내용 수정 가능하게 속성 지정
 							$(".topTitle").attr("contenteditable", true);
 							$(".detailCen").summernote('enable');
+
+							// 썸머노트 활성화
+							$('.detailCen').summernote({
+								height: 400, // 기본 높이 설정
+								minHeight: null, // 최소 높이 설정
+								maxHeight: null, // 최대 높이 설정
+								focus: true, // 페이지 로드 시 포커스
+								callbacks: {
+									onInit: function () {
+										// summernote 초기화 후 note-statusbar 요소 제거
+										$('.note-statusbar').remove()
+									}
+								}
+							});
 						});
 
 						// 완료 버튼 클릭 시 
 						$("#fboardCom").on("click", function () {
 							// 썸머노트 내용을 숨겨진 필드에 복사
 							$("#hiddenC").val($(".detailCen").summernote('code'));
+							$("#hiddenT").val($(".topTitle").html().trim());
 							// 폼 제출
 							$("#fboardUpdate").submit();
 						});
-
-						// 완료 버튼 클릭 후 수정한 값 저장
-						$("#fboardUpdate").on("submit", function () {
-							$("#hiddenT").val($(".topTitle").html().trim());
-							$("#hiddenC").val($(".detailCen").html());
-						})
 
 						// 취소 버튼 클릭 시
 						$("#fboardCan").on("click", function () {
@@ -465,6 +475,7 @@
 							}
 						});
 					});
+
 				</script>
 			</body>
 
