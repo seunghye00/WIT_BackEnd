@@ -28,8 +28,8 @@ public class CalendarController {
 	@RequestMapping("/calendar")
 	public String calendar(Model model) {
 		String empNo = (String) session.getAttribute("loginID");
-		List<PersonalCalendarDTO> plist = service.perCalendarList();
-		List<DepartmentCalendarDTO> dlist = service.depCalendarList();
+		List<PersonalCalendarDTO> plist = service.perCalendarList(empNo);
+		List<DepartmentCalendarDTO> dlist = service.depCalendarList(empNo);
 		EmployeeDTO employee = service.employeeInfo(empNo);
 
 		model.addAttribute("plist", plist);
@@ -41,10 +41,8 @@ public class CalendarController {
 	// 개인 캘린더 추가
 	@RequestMapping("/insertPerCalendar")
 	public String insertPerCalendar(PersonalCalendarDTO dto) {
-		// 임시 데이터 => 추후 수정 !!!!
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
-
 		service.insertPerCalendar(dto);
 		return "redirect:/calendar/calendar";
 	}
@@ -59,10 +57,6 @@ public class CalendarController {
 	// 부서 캘린더 추가
 	@RequestMapping("/insertDepCalendar")
 	public String insertDepCalendar(DepartmentCalendarDTO dto) {
-		// 임시 데이터 => 추후 수정 !!!!
-		String dept_code = "D1";
-		dto.setDept_code(dept_code);
-
 		service.insertDepCalendar(dto);
 		return "redirect:/calendar/calendar";
 	}
@@ -70,7 +64,6 @@ public class CalendarController {
 	// 부서 캘린더 삭제
 	@RequestMapping("/deleteDepCalendar")
 	public String deleteDepCalendar(String calendarSeq) {
-		System.out.println(calendarSeq);
 		service.deleteDepCalendar(Integer.parseInt(calendarSeq));
 		return "redirect:/calendar/calendar";
 	}

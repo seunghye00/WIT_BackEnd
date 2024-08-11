@@ -17,10 +17,11 @@
 		#{content}
 		)
 	</insert>
-
+	
+	<!-- 이벤트 조회 -->
 	<select id="getEventsByCalendar" parameterType="list" resultType="com.wit.dto.EventsDTO"> 
     SELECT e.events_seq, e.emp_no, e.title, e.start_date, e.end_date, 
-           pc.calendar_name AS calendar_name, e.location, e.content 
+           e.calendar_seq ,pc.calendar_name AS calendar_name, e.location, e.content 
     FROM events e 
     JOIN personal_calendar pc ON e.calendar_seq = pc.calendar_seq 
     WHERE e.calendar_seq IN 
@@ -31,7 +32,7 @@
     UNION
     
     SELECT e.events_seq, e.emp_no, e.title, e.start_date, e.end_date, 
-           dc.calendar_name AS calendar_name, e.location, e.content 
+            e.calendar_seq, dc.calendar_name AS calendar_name, e.location, e.content 
     FROM events e 
     JOIN department_calendar dc ON e.calendar_seq = dc.calendar_seq 
     WHERE e.calendar_seq IN 
