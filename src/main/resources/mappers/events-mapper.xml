@@ -18,16 +18,34 @@
 		)
 	</insert>
 
-	<select id="select" resultType="com.wit.dto.EventsDTO">
-		select * from events 
-	</select>
+	<select id="getEventsByCalendar" parameterType="list" resultType="com.wit.dto.EventsDTO"> 
+    SELECT e.events_seq, e.emp_no, e.title, e.start_date, e.end_date, 
+           pc.calendar_name AS calendar_name, e.location, e.content 
+    FROM events e 
+    JOIN personal_calendar pc ON e.calendar_seq = pc.calendar_seq 
+    WHERE e.calendar_seq IN 
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=")"> 
+        #{item}
+    </foreach>
+    
+    UNION
+    
+    SELECT e.events_seq, e.emp_no, e.title, e.start_date, e.end_date, 
+           dc.calendar_name AS calendar_name, e.location, e.content 
+    FROM events e 
+    JOIN department_calendar dc ON e.calendar_seq = dc.calendar_seq 
+    WHERE e.calendar_seq IN 
+    <foreach item="item" index="index" collection="list" open="(" separator="," close=")"> 
+        #{item}
+    </foreach> 
+</select>
 	
 	<delete id="delete">
 		delete from events where events_seq = #{events_seq}
 	</delete>
 	
 	<update id="updateBySeq">
-		update events set title = #{title}, start_date = #{start_date}, end_date = #{end_date}, calendar_name = #{calendar_name},
+		update events set title = #{title}, start_date = #{start_date}, end_date = #{end_date}, calendar_seq = #{calendar_seq},
 		location = #{location}, content = #{content} where events_seq = #{events_seq}
 	</update>
 

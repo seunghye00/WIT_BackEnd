@@ -10,6 +10,7 @@ public class EventsDTO {
 	private Timestamp start_date;
 	private Timestamp end_date;
 	private int calendar_seq;
+	private String calendar_name;
 	private String location;
 	private String content;
 	public int getEvents_seq() {
@@ -48,6 +49,12 @@ public class EventsDTO {
 	public void setCalendar_seq(int calendar_seq) {
 		this.calendar_seq = calendar_seq;
 	}
+	public String getCalendar_name() {
+		return calendar_name;
+	}
+	public void setCalendar_name(String calendar_name) {
+		this.calendar_name = calendar_name;
+	}
 	public String getLocation() {
 		return location;
 	}
@@ -64,7 +71,7 @@ public class EventsDTO {
 	public EventsDTO() {}
 	
 	public EventsDTO(int events_seq, String emp_no, String title, Timestamp start_date, Timestamp end_date,
-			int calendar_seq, String location, String content) {
+			int calendar_seq, String calendar_name, String location, String content) {
 		super();
 		this.events_seq = events_seq;
 		this.emp_no = emp_no;
@@ -72,6 +79,7 @@ public class EventsDTO {
 		this.start_date = start_date;
 		this.end_date = end_date;
 		this.calendar_seq = calendar_seq;
+		this.calendar_name = calendar_name;
 		this.location = location;
 		this.content = content;
 	}
