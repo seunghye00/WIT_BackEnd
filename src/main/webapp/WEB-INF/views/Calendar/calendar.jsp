@@ -18,52 +18,9 @@
 <body>
 	<!-- 공통영역 -->
 	<div class="container">
-		<div class="sideBar">
-			<div class="top">
-				<i class="bx bx-menu" id="btn"></i>
-			</div>
-			<div class="user">
-				<img src="/resources/img/WIT_logo1.png" alt="로고" class="userImg">
-				<div class="nickName">
-					<p class="bold">Wit Works</p>
-					<p></p>
-				</div>
-			</div>
-			<ul>
-				<li><a href="/employee/main"> <i class='bx bxs-home-alt-2'></i>
-						<span class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
-				<li><a href="/addressbook/addressbook"> <i
-						class='bx bx-paperclip'></i> <span class="navItem">주소록</span></a> <span
-					class="toolTip">주소록</span></li>
-				<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i>
-						<span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
-				<li><a href="/calendar/calendar"> <i
-						class='bx bx-calendar-alt'></i> <span class="navItem">캘린더</span></a> <span
-					class="toolTip">캘린더</span></li>
-				<li><a href="/messenger/messenger"> <i
-						class='bx bxs-message-dots'></i> <span class="navItem">메신저</span></a>
-					<span class="toolTip">메신저</span></li>
-				<li><a href="#"> <i class='bx bx-clipboard'></i> <span
-						class="navItem">전자결재</span></a> <span class="toolTip">전자결재</span></li>
-				<li><a href="/attendance/attendance"> <i
-						class='bx bxs-briefcase-alt-2'></i> <span class="navItem">근태관리</span></a>
-					<span class="toolTip">근태관리</span></li>
-				<li><a href="#"> <i class='bx bxs-check-square'></i> <span
-						class="navItem">예약</span></a> <span class="toolTip">예약</span></li>
-				<li><a href="#"> <i class='bx bx-sitemap'></i> <span
-						class="navItem">조직도</span></a> <span class="toolTip">조직도</span></li>
-			</ul>
-		</div>
-		<!-- 공통역역 끝 -->
+		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>	
 		<div class="main-content">
-			<div class="header">
-				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
-				<!--마이페이지로 이동-->
-				<span class="myName"><img src="/resources/img/푸바오.png"
-					alt="프로필 사진" class="userImg"><a href="/employee/mypage">${employee.name}
-						${employee.role_code}</a></span> <span class="logOut"><a
-					href="/employee/logout">LogOut</a></span>
-			</div>
+			<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
 			<div class="contents">
 				<div class="sideAbout">
 					<div class="sideTxt">
@@ -77,14 +34,16 @@
 							<li class="toggleItem">
 								<h3 class="toggleTit">내 캘린더</h3>
 								<ul class="subList calendarList">
-									<li><input type="checkbox" id="myCheckBox"
-										name="myCheckBox" class="active"> <label
-										for="myCheckBox">내 일정(기본)</label></li>
-									<c:forEach items="${list}" var="dto">
-										<li><input type="checkbox"> <label>${dto.calendar_name}</label>
-											<span class="sideSelectDel" data-seq="${dto.calendar_seq}">&times;</span>
-											<input type="hidden" id="${dto.calendar_seq}"
-											value="${dto.calendar_seq}"></li>
+									<c:forEach items="${plist}" var="dto">
+										<li>
+										<input type="checkbox" id="calendar_${dto.calendar_seq}" name="calendar_${dto.calendar_seq}" class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
+											<c:if test="${dto.default_yn == 'Y'}">checked</c:if>>
+											<label for="calendar_${dto.calendar_seq}">${dto.calendar_name}</label>
+											<!-- 내 일정(기본)에는 삭제 버튼 없음 기본 생성자는 default='y' --> 
+											<c:if test="${dto.default_yn != 'Y' }">
+												<span class="sidePerSelectDel"
+													data-seq="${dto.calendar_seq}" id="sidePerSelectDel">&times;</span>
+											</c:if> <input type="hidden" id="hidden_${dto.calendar_seq}" value="${dto.calendar_seq}"></li>
 									</c:forEach>
 									<div>
 										<span class="sideCalendarAdd"><i
@@ -97,12 +56,11 @@
 													</h3>
 												</header>
 												<div class="content">
-													<form id="calendarForm" action="/calendar/insertCalendar"
-														method="post">
-														<input type="hidden" name="emp_no"> <input
-															type="hidden" name="dept_code"> <input
-															type="hidden" name="calendar_code"> <input
-															type="text" name="calendar_name" id="calendar_name">
+													<form id="perCalendarForm"
+														action="/calendar/insertPerCalendar" method="post">
+														<input type="text" name="calendar_name" id="calendar_name">
+														<input type="hidden" name="emp_no"> 
+														<input type="hidden" name="default_yn">
 													</form>
 												</div>
 												<footer>
@@ -122,45 +80,45 @@
 							<li class="toggleItem">
 								<h3 class="toggleTit">부서 캘린더</h3>
 								<ul class="subList calendarList">
-									<li><input type="checkbox" id="deptMeeting"
-										name="deptMeeting"> <label for="deptMeeting">회의
-											일정(기본)</label></li>
-									<li><input type="checkbox" id="deptBirthday"
-										name="deptBirthday"> <label for="deptBirthday">부서원
-											생일(기본)</label></li>
-									<c:forEach items="${list}" var="dto">
-										<li><input type="checkbox"> <label>${dto.calendar_name}</label>
-											<span class="sideSelectDel" data-seq="${dto.calendar_seq}">&times;</span>
-											<input type="hidden" id="${dto.calendar_seq}"
-											value="${dto.calendar_seq}"></li>
+									<c:forEach items="${dlist}" var="dto">
+										<li>
+										<input type="checkbox" id="calendar_${dto.calendar_seq}" name="calendar_${dto.calendar_seq}" class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
+											<c:if test="${dto.default_yn == 'Y'}">checked</c:if>>
+											<label for="calendar_${dto.calendar_seq}">${dto.calendar_name}</label>
+											<!-- 회의 일정(기본)에는 삭제 버튼 없음 기본 생성자는 default='Y' --> 
+											<c:if test="${employee.role_code eq 'R2'}">
+												<span class="sideDepSelectDel" data-seq="${dto.calendar_seq}" id="sideDepSelectDel">&times;</span>
+											</c:if> 
+											<input type="hidden" id="${dto.calendar_seq}" value="${dto.calendar_seq}"></li>
 									</c:forEach>
-									<div>
-										<span class="sideCalendarAdd"><i
-											class='bx bx-plus-medical'></i> <span class="deptCalendarAdd">부서
-												캘린더 추가</span>
-											<div class="deptCalendarPopup">
-												<header>
-													<h3>
-														부서 캘린더 추가<span class="deptPopupClose">&times;</span>
-													</h3>
-												</header>
-												<div class="content">
-													<form id="deptCalendarForm"
-														action="/calendar/insertCalendar" method="post">
-														<input type="hidden" name="emp_no"> <input
-															type="hidden" name="dept_code"> <input
-															type="hidden" name="calendar_code"> <input
-															type="text" name="calendar_name" id="calendar_name">
-													</form>
-												</div>
-												<footer>
-													<div class="btns">
-														<button id="sideDeptAdd" class="okBtn">확인</button>
-														<button id="sideDeptCancel" class="cancelBtn">취소</button>
+									<c:if test="${employee.role_code eq 'R2'}">
+										<div>
+											<span class="sideCalendarAdd"><i
+												class='bx bx-plus-medical'></i> <span
+												class="deptCalendarAdd">부서 캘린더 추가</span>
+												<div class="deptCalendarPopup">
+													<header>
+														<h3>
+															부서 캘린더 추가<span class="deptPopupClose">&times;</span>
+														</h3>
+													</header>
+													<div class="content">
+														<form id="deptCalendarForm"
+															action="/calendar/insertDepCalendar" method="post">
+															<input type="text" name="calendar_name"
+																id="depCalendarName"> <input type="hidden"
+																name="dept_code">
+														</form>
 													</div>
-												</footer>
-											</div> </span>
-									</div>
+													<footer>
+														<div class="btns">
+															<button id="sideDeptAdd" class="okBtn">확인</button>
+															<button id="sideDeptCancel" class="cancelBtn">취소</button>
+														</div>
+													</footer>
+												</div> </span>
+										</div>
+									</c:if>
 								</ul>
 							</li>
 						</ul>
@@ -195,9 +153,10 @@
 								</div></li>
 							<li><span>내 캘린더</span>
 								<div>
-									<select name="calendar_name" id="choiCalendar">
-										<option>웡히 캘린더</option>
-										<option>바보 캘린더</option>
+									<select name="calendar_seq" id="choiCalendar">
+										<c:forEach items="${plist}" var="dto">
+											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+										</c:forEach>
 									</select>
 								</div></li>
 							<li><span>장소</span>
@@ -228,7 +187,7 @@
 					일정 내용<span class="modalClose" id="eventModalClose">&times;</span>
 				</h1>
 				<div class="eventCheck">
-					<form id="eventEditForm" action="events/editEvent" method="post">
+					<form id="eventEditForm" action="/events/editEvent" method="post">
 						<input type="hidden" name="events_seq" id="eventSeq">
 						<ul>
 							<li><span>일정명</span>
@@ -248,9 +207,10 @@
 								</div></li>
 							<li><span>내 캘린더</span>
 								<div>
-									<select id="choiEvent" name="calendar_name" disabled>
-										<option>웡히 캘린더</option>
-										<option>바보 캘린더</option>
+									<select id="choiEvent" name="calendar_seq" disabled>
+										<c:forEach items="${plist}" var="dto">
+											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+										</c:forEach>
 									</select>
 								</div></li>
 							<li><span>장소</span>
@@ -311,8 +271,7 @@
         	if(calendar_name !== ""){
         		console.log(calendar_name);
         		// 내 캘린더 추가
-        		$('#my_calendar_code').val('MY');
-        		$("#calendarForm").submit();
+        		$("#perCalendarForm").submit();
         		
         	}else{
         		alert("캘린더 이름을 입력해주세요.");
@@ -326,31 +285,31 @@
         
         
         
-       	// 캘린더 삭제(x)버튼 눌렀을 시
-        $('.sideSelectDel').on('click', function() {
-        // 클릭된 버튼의 data-seq 속성 값을 가져오기
-        let calendarSeq = $(this).data('seq');
-        // 클릭된 버튼 자체를 저장
-        let $this = $(this);
-        
-        let deleteConfirm = confirm('정말로 이 캘린더를 삭제하시겠습니까?');
-        
-        if (deleteConfirm) {
-            // 사용자가 확인을 클릭한 경우 삭제 요청을 서버로 전송
-            $.ajax({
-                url: '/calendar/deleteCalendar',
-                type: 'GET',
-                data: { calendarSeq: calendarSeq },
-                success: function(response) {
-                    // 삭제가 성공했으면 해당 항목을 DOM에서 제거
-                    $this.closest('li').remove();
-                },
-                error: function() {
-                    alert('삭제 요청 중 오류가 발생했습니다.');
-                }
-            });
-        }
-    });
+       	// 개인 캘린더 x 버튼
+        $(document).on('click', '.sidePerSelectDel', function() {
+    // 클릭된 버튼의 data-seq 속성 값을 가져오기
+    let calendarSeq = $(this).data('seq');
+    // 클릭된 버튼 자체를 저장
+    let $this = $(this);
+    
+    let deleteConfirm = confirm('정말로 이 캘린더를 삭제하시겠습니까?');
+    
+    if (deleteConfirm) {
+        // 사용자가 확인을 클릭한 경우 삭제 요청을 서버로 전송
+        $.ajax({
+            url: '/calendar/deletePerCalendar',
+            type: 'GET',
+            data: { calendarSeq: calendarSeq },
+            success: function(response) {
+                // 삭제가 성공했으면 해당 항목을 DOM에서 제거
+                $this.closest('li').remove();
+            },
+            error: function() {
+                alert('삭제 요청 중 오류가 발생했습니다.');
+            }
+        });
+    }
+});
 		
         // 부서 캘린더 추가 버튼
         $('.deptCalendarAdd').on('click', function () {
@@ -358,22 +317,46 @@
         })
         
         $('#sideDeptAdd').on('click', function(){
-        	let calendar_name = $('#calendar_name').val().trim();
+        	let calendar_name = $('#depCalendarName').val().trim();
         	if(calendar_name !== ""){
         		console.log(calendar_name)
-        		 // 부서 캘린더 코드 설정
-        		$('#dept_calendar_code').val('DEPT');
-        		$("#calendarForm").submit();
+        		$("#deptCalendarForm").submit();
         		
         	}else{
         		alert("캘린더 이름을 입력해주세요.");
         	}        	
         });
-		
-        // 부서 캘린더 x 버튼
+        
+     	// 내 캘린더 팝업 x 버튼
         $('.deptPopupClose').on('click', function () {
             $('.deptCalendarPopup').hide();
         })
+		
+        // 부서 캘린더 x 버튼
+        $(document).on('click', '.sideDepSelectDel', function() {
+	    // 클릭된 버튼의 data-seq 속성 값을 가져오기
+	    let calendarSeq = $(this).data('seq');
+	    // 클릭된 버튼 자체를 저장
+	    let $this = $(this);
+	    
+	    let deleteConfirm = confirm('정말로 이 캘린더를 삭제하시겠습니까?');
+	    
+	    if (deleteConfirm) {
+	        // 사용자가 확인을 클릭한 경우 삭제 요청을 서버로 전송
+	        $.ajax({
+	            url: '/calendar/deleteDepCalendar',
+	            type: 'GET',
+	            data: { calendarSeq: calendarSeq },
+	            success: function(response) {
+	                // 삭제가 성공했으면 해당 항목을 DOM에서 제거
+	                $this.closest('li').remove();
+	            },
+	            error: function() {
+	                alert('삭제 요청 중 오류가 발생했습니다.');
+	            }
+	        });
+	    }
+	});
 
         // 이벤트 클릭해서 수정 버튼 눌렀을 시
         $('#editBtn').on('click', function () {
@@ -419,14 +402,17 @@
             location.reload();
         })
         
+        // 이벤트 모달창에서 삭제 버튼 눌렀을 시
         $('#eventDel').on('click', function (){
-        	let eventSeq = $('#eventSeq').val();
-        	console.log(eventSeq);
-        	location.href = "/events/del_event?eventSeq=" + eventSeq;
-        })
-
-        $('.deleteBtn').on('click', function () {
-            // 삭제 로직 추가
+            
+            let eventDeleteConfirm = confirm('정말로 이 캘린더를 삭제하시겠습니까?');
+            
+            if (eventDeleteConfirm) {
+                // 사용자가 확인을 클릭한 경우 삭제 요청을 서버로 전송
+            	let eventSeq = $('#eventSeq').val();
+            	console.log(eventSeq);
+            	location.href = "/events/del_event?eventSeq=" + eventSeq;
+            }        	
         })
 
         $('.plusBtn.sideBtn').on('click', function () {
@@ -436,8 +422,41 @@
             })
         })
 
+    // 예시: 새로운 캘린더가 추가될 때 updateSelectOptions 호출
+    // 실제 구현에 따라 이벤트 리스너를 추가할 수 있습니다.
+    $('#sideMyAdd').on('click', function() {
+    	// 새로운 캘린더를 추가한 후 셀렉트 옵션 업데이트
+        updateSelectOptions('#choiEvent');
+        updateSelectOptions('#choiCalendar');
+    });
+
         // 캘린더 기능 시작
         document.addEventListener('DOMContentLoaded', function () {
+        	function getCheckedCalendars() {
+                let checkedCalendars = [];
+                $('input[type="checkbox"]:checked').each(function() {
+                    checkedCalendars.push($(this).attr('id').split('_')[1]);
+                });
+                return checkedCalendars;
+            }
+
+            function reloadCalendarEvents() {
+                // Ensure that the events are refetched only when needed
+                calendar.refetchEvents();
+            }
+
+            // 체크 상태 초기화
+            let checkedCalendars = getCheckedCalendars();
+
+            // 체크 박스 상태 변화되었을 시
+            $('input[type="checkbox"]').change(function() {
+                checkedCalendars = getCheckedCalendars();
+                reloadCalendarEvents();
+            });
+
+            console.log("Collected:", checkedCalendars);
+
+        	
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -466,10 +485,18 @@
                     list: '목록'
                 },
                 events: function (fetchInfo, successCallback, failureCallback) {
+                	let checkedCalendars = getCheckedCalendars();
                     $.ajax({
-                        url: '/events/all_event',  // 서버의 이벤트 데이터 엔드포인트
+                    	// 서버의 이벤트 데이터 엔드포인트
+                        url: '/events/all_event', 
                         method: 'GET',
                         dataType: 'json',
+                        data:{
+                        	// 체크된 캘린더 ID 목록을 서버로 전송
+                        	// 문자열로 변환하여 전달
+                        	calendars: checkedCalendars
+                        	
+                        }, 
                         success: function (data) {
                             console.log(data);// 서버로부터 받은 이벤트 데이터를 풀캘린더에 전달합니다.
                             
@@ -493,11 +520,13 @@
                             }                          
                             successCallback(data.map(event => ({
                                 title: event.title,
-                                start: formatDate(event.start_date), // 변환된 시작 날짜
-                                end: formatDate(event.end_date),     // 변환된 종료 날짜
+                             	// 변환된 시작 날짜
+                                start: formatDate(event.start_date), 
+                             	// 변환된 종료 날짜
+                                end: formatDate(event.end_date),     
                                 extendedProps: {
                                 	events_seq : event.events_seq,
-                                	calendar_name: event.calendar_name,
+                                	calendar_seq: event.calendar_seq,
                                     location: event.location,
                                     content: event.content
                                 }
@@ -519,12 +548,12 @@
                 },
                 eventClick: function (info) {
                 	
-                	// console.log(info);
+                	console.log(info);
                 	
                     // 이벤트 클릭 시 발생할 이벤트
                     let eventTitle = info.event.title;
                     let eventSeq = info.event.extendedProps.events_seq;
-                    let eventChoice = info.event.extendedProps.calendar_name;
+                    let eventChoice = info.event.extendedProps.calendar_seq;
                     let eventContent = info.event.extendedProps.content;
                     let eventLocation = info.event.extendedProps.location;
 
@@ -545,7 +574,7 @@
                     $('#eventStartTime').val(eventStartTime);
                     $('#eventEndDate').val(eventEndDate);
                     $('#eventEndTime').val(eventEndTime);
-                    $('#choiCalendar').val(eventChoice);
+                    $('#choiEvent').val(eventChoice);
                     $('.eventLocation').val(eventLocation);
                     $('#eventText').val(eventContent);
 					
@@ -557,6 +586,11 @@
             });
 
             calendar.render();
+            // Add event listener to checkboxes
+            $('input[type="checkbox"]').change(function () {
+                reloadCalendarEvents();
+            });
+         
         });
 
         document.getElementById('eventForm').addEventListener('submit', function (event) {
