@@ -71,6 +71,8 @@ public class EventsController {
 	}
 	
 	
+	// ghgh
+	
 	// 이벤트 삭제
 	@RequestMapping("/del_event")
 	public String delete(String eventSeq)throws Exception{

@@ -7,11 +7,9 @@ public class EventsDTO {
 	private int events_seq;
 	private String emp_no;
 	private String title;
-//	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private Timestamp start_date;
-//	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private Timestamp end_date;
-	private String calendar_name;
+	private int calendar_seq;
 	private String location;
 	private String content;
 	public int getEvents_seq() {
@@ -44,11 +42,11 @@ public class EventsDTO {
 	public void setEnd_date(Timestamp end_date) {
 		this.end_date = end_date;
 	}
-	public String getCalendar_name() {
-		return calendar_name;
+	public int getCalendar_seq() {
+		return calendar_seq;
 	}
-	public void setCalendar_name(String calendar_name) {
-		this.calendar_name = calendar_name;
+	public void setCalendar_seq(int calendar_seq) {
+		this.calendar_seq = calendar_seq;
 	}
 	public String getLocation() {
 		return location;
@@ -66,20 +64,18 @@ public class EventsDTO {
 	public EventsDTO() {}
 	
 	public EventsDTO(int events_seq, String emp_no, String title, Timestamp start_date, Timestamp end_date,
-			String calendar_name, String location, String content) {
+			int calendar_seq, String location, String content) {
 		super();
 		this.events_seq = events_seq;
 		this.emp_no = emp_no;
 		this.title = title;
 		this.start_date = start_date;
 		this.end_date = end_date;
-		this.calendar_name = calendar_name;
+		this.calendar_seq = calendar_seq;
 		this.location = location;
 		this.content = content;
 	}
 	
-	
-	
-	
+
 	
 }

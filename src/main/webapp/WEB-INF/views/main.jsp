@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="/resources/css/mky.css">
 <link rel="stylesheet" href="/resources/css/wit.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
 <script src="/resources/js/employee.js"></script>
 </head>
 
@@ -31,22 +32,21 @@
 				<div class="left">
 					<div class="leftTop">
 						<img src="/img/푸바오.png" alt="프로필 사진" class="profileImg">
-						<div class="dept-role">
-						${employee.dept_code} ${employee.role_code} 
-						</div>
-						<div class="username">
-						${employee.name}
-						</div>
+						<div class="dept-role">${employee.dept_code}
+							${employee.role_code}</div>
+						<div class="username">${employee.name}</div>
 					</div>
 					<div class="leftBottom">
 						<div id="date"></div>
 						<h3 id="clock"></h3>
 						<div class="attendance-btn">
-							<div>
+							<div class="start">
+								<img src="/img/출퇴근.png" alt="출근" class="attendance_icon">
 								<button type="button" id="start_button">출근</button>
 								<span class="check-time" id="start_time_display">00:00</span>
 							</div>
-							<div>
+							<div class="end">
+								<img src="/img/출퇴근.png" alt="퇴근" class="attendance_icon">
 								<button type="button" id="end_button">퇴근</button>
 								<span class="check-time" id="end_time_display">00:00</span>
 							</div>
@@ -91,7 +91,9 @@
 				</div>
 				<div class="right">
 					<div class="rightTop">전자결재영역</div>
-					<div class="rightBottom">캘린더영역</div>
+					<div class="rightBottom">
+						<div id="calendar" class="calendar"></div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -190,6 +192,90 @@
 					setInterval(updateClock, 1000);
 					updateClock(); // 페이지 로드 시 초기 시간 설정
 				});
+		
+		document.addEventListener('DOMContentLoaded', function () {
+		      var calendarEl = document.getElementById('calendar');
+
+		      var calendar = new FullCalendar.Calendar(calendarEl, {
+		        headerToolbar: {
+		          left: 'prev,next today',
+		          center: 'title',
+		          right: 'dayGridMonth'
+		        },
+		        dayCellContent: function (e) {
+		          return e.dayNumberText.replace('일', '');
+		        },
+		        locale: 'ko',
+		        initialView: 'dayGridMonth',
+		        initialDate: new Date(),
+		        editable: true,
+		        selectable: true,
+		        dayMaxEvents: true, // allow "more" link when too many events
+		        // multiMonthMaxColumns: 1, // guarantee single column
+		        // showNonCurrentDates: true,
+		        // fixedWeekCount: false,
+		        // businessHours: true,
+		        // weekends: false,
+		        events: [
+		          {
+		            title: 'All Day Event',
+		            start: '2023-01-01'
+		          },
+		          {
+		            title: 'Long Event',
+		            start: '2023-01-07',
+		            end: '2023-01-10'
+		          },
+		          {
+		            groupId: 999,
+		            title: 'Repeating Event',
+		            start: '2023-01-09T16:00:00'
+		          },
+		          {
+		            groupId: 999,
+		            title: 'Repeating Event',
+		            start: '2023-01-16T16:00:00'
+		          },
+		          {
+		            title: 'Conference',
+		            start: '2023-01-11',
+		            end: '2023-01-13'
+		          },
+		          {
+		            title: 'Meeting',
+		            start: '2023-01-12T10:30:00',
+		            end: '2023-01-12T12:30:00'
+		          },
+		          {
+		            title: 'Lunch',
+		            start: '2023-01-12T12:00:00'
+		          },
+		          {
+		            title: 'Meeting',
+		            start: '2023-01-12T14:30:00'
+		          },
+		          {
+		            title: 'Happy Hour',
+		            start: '2023-01-12T17:30:00'
+		          },
+		          {
+		            title: 'Dinner',
+		            start: '2023-01-12T20:00:00'
+		          },
+		          {
+		            title: 'Birthday Party',
+		            start: '2023-01-13T07:00:00'
+		          },
+		          {
+		            title: 'Click for Google',
+		            url: 'http://google.com/',
+		            start: '2023-01-28'
+		          }
+		        ]
+		      });
+
+		      calendar.render();
+		    });
 	</script>
 </body>
 

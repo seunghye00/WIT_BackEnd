@@ -153,11 +153,9 @@
 												<div class="cols boardSeq">
 													<span>${status.index + 1}</span>
 												</div>
-												<div class="cols boardTitle">
-													<a
-														href="${pageContext.request.contextPath}/board/detail?board_seq=${board.board_seq}">
-														<span>${board.title}</span>
-													</a>
+												<div class="cols boardTitle" onclick="toDetail(this)"
+													data-seq="${board.board_seq}">
+													<span>${board.title}</span>
 												</div>
 												<div class="cols boardWriter">
 													<!-- 여기서 조인해서 emp_no 자리에 닉네임이 나오게끔 했어! -->
@@ -173,23 +171,43 @@
 										</c:forEach>
 									</div>
 
-									<div class="pagination">
-										<a href="javascript:;" class="prev "><i class='bx bx-chevron-left'></i></a> <a
-											href="javascript:;" class="active">1</a> <a href="javascript:;">2</a> <a
-											href="javascript:;">3</a> <a href="javascript:;">4</a> <a
-											href="javascript:;">5</a> <a href="javascript:;" class="next active"><i
-												class='bx bx-chevron-right'></i></a>
-									</div>
+
+<!-- 									<div class="pagination"> -->
+<!-- 										<a href="javascript:;" class="prev "><i class='bx bx-chevron-left'></i></a> <a -->
+<!-- 											href="javascript:;" class="active">1</a> <a href="javascript:;">2</a> <a -->
+<!-- 											href="javascript:;">3</a> <a href="javascript:;">4</a> <a -->
+<!-- 											href="javascript:;">5</a> <a href="javascript:;" class="next active"><i -->
+<!-- 												class='bx bx-chevron-right'></i></a> -->
+<!-- 									</div> -->
+
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<script>
+
+					
 					document.getElementById('writeBtn').addEventListener('click',
 						function () {
 							window.location.href = '/board/write';
 						});
+					function toDetail(e) {
+						$.ajax({
+							url: "/board/views",
+							data: {
+								board_seq: $(e).data("seq")
+							}
+
+						}).done(function (response) {
+							window.location.href = "${pageContext.request.contextPath}/board/detail?board_seq=" + $(e).data("seq")
+						})
+
+					}
+
+
+
+
 				</script>
 			</body>
 

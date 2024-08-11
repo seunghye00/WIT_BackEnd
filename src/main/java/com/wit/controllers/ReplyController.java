@@ -26,6 +26,7 @@ public class ReplyController {
 	@RequestMapping("registProc")
 	public String input(ReplyDTO dto) throws Exception{
 		String writer = (String) session.getAttribute("loginID");
+		System.out.println(writer);
 		dto.setEmp_no(writer);
 		rs.input(dto);
 		return "redirect:/board/detail?board_seq="+dto.getBoard_seq();
