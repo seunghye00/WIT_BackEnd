@@ -4,9 +4,15 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="calendar">
+
+	<!-- 개인 기본 캘린더 추가 -->
+	<insert id="insertPerDefaultCalendar" >
+		insert into personal_calendar values (calendar_seq.nextval, '내 일정(기본)', #{empNo}, 'Y')	
+	</insert>
+
 	<!-- 개인 캘린더 출력 -->
 	<select id="perCalendarList" resultType="com.wit.dto.PersonalCalendarDTO">
-		select * from personal_calendar
+		select * from personal_calendar where emp_no = #{empNo} 
 	</select>
 	
 	
@@ -22,12 +28,14 @@
 	<!-- 개인 캘린더 삭제 -->
 	<delete id="deletePerCalendar">
 		delete from personal_calendar where calendar_seq =
-		#{calendar_seq}
+		#{calendarSeq}
 	</delete>
 	
 	<!-- 부서 캘린더 출력 -->
 	<select id="depCalendarList" resultType="com.wit.dto.DepartmentCalendarDTO">
-		select * from department_calendar
+		select * from department_calendar d
+		join employee e on d.dept_code = e.dept_code
+		where e.emp_no = #{empNo} 
 	</select>
 	
 	<!-- 부서 캘린더 추가 -->
@@ -48,14 +56,14 @@
 	<!-- 부서 캘린더 삭제 -->
 	<delete id="deleteDepCalendar">
 		delete from department_calendar where calendar_seq =
-		#{calendar_seq}
+		#{calendarSeq}
 	</delete>
 
 	<!-- 직원 정보 조회 -->
 	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
 		SELECT name, role_code
 		FROM Employee
-		WHERE emp_no = #{emp_no}
+		WHERE emp_no = #{empNo}
 	</select>
 
 </mapper>
