@@ -603,7 +603,8 @@
 /* detail page reply css start */
 .replyWrapper {
     display: flex;
-    flex: 3;
+	/*flex: 3; */
+	max-width: 400px;
     height: calc(100% - 60px);
     overflow: hidden;
     flex-direction: column;

@@ -10,7 +10,13 @@
  	
  	<!-- 댓글 리스트 출력 -->
  	<select id="selectAll" resultType="com.wit.dto.ReplyDTO">
- 		select * from reply where board_seq = ${board_seq} order by 1 desc
+ 		select r.reply_seq, r.board_seq,
+		r.contents, r.write_date,  e.nickname
+		AS emp_no
+ 		from reply r 
+ 		JOIN employee e ON r.emp_no = e.emp_no
+ 		where r.board_seq = ${board_seq} 
+ 		order by 1 desc
  	</select>
  	
  	<!-- 댓글 삭제 -->
