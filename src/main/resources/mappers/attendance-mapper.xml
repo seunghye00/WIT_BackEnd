@@ -122,14 +122,14 @@
 	</select>
 
 	<!-- 월간 레코드 수 조회 -->
-	<select id="getMonthlyRecordCount" resultType="int">
+	<select id="monthlyRecordCount" resultType="int">
 		SELECT COUNT(*)
 		FROM Attendance
 		WHERE emp_no = #{empNo} AND TO_CHAR(work_date, 'YYYY-MM') = #{month}
 	</select>
 
 	<!-- 월간 근무현황 조회 (페이징 적용) -->
-	<select id="getMonthlyWorkStatus" resultType="java.util.HashMap">
+	<select id="monthlyWorkStatus" resultType="java.util.HashMap">
 		SELECT work_date,
 		start_time, end_time, work_hours
 		FROM (
