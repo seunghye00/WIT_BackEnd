@@ -65,7 +65,7 @@ public class BoardController {
 
 		EmployeeDTO employee = bserv.employeeInfo(empNo);
 
-		model.addAttribute("employee", employee);
+		model.addAttribute("emploㄹyee", employee);
 		// 처음 작성할 때는 파일 사이즈가 0으로 설정
 		model.addAttribute("filesSize", 0);
 

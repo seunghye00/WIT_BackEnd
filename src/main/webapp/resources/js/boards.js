@@ -1,4 +1,11 @@
 $(document).ready(function () {
+    limitReplyLength()
+
+    // 댓글 수정 버튼 클릭 시에도 글자 수 제한 적용
+    $('.updateReply').on('click', function () {
+        limitReplyLength()
+    })
+
     if ($('#summernote').length)
         $('#summernote').summernote({
             height: 400, // 기본 높이 설정
@@ -38,6 +45,7 @@ $(document).ready(function () {
     $('#file').on('change', function () {
         // 선택된 파일들에 대한 파일 객체를 가져와서 저장
         const files = $(this).prop('files')
+        const fileList = $(this)
         console.log('file')
         if (files.length + addedFiles.length > 3) {
             alert('파일은 최대 3개까지만 추가 가능합니다.')
@@ -45,11 +53,13 @@ $(document).ready(function () {
             return false
         }
 
+        const length = filesLength
+
         $.each(files, function (index, file) {
             // 파일 이름이 이미 배열에 있는지 확인
 
-            // 파일 사이즈 비교 기능 추가 filesLength
             if (!addedFiles.includes(file.name) && filesLength < 3) {
+                // 파일 사이즈 비교 기능 추가 filesLength
                 // 파일 이름이 배열에 없으면 추가
                 addedFiles.push(file.name)
                 filesLength++
@@ -71,6 +81,8 @@ $(document).ready(function () {
                 })
             } else {
                 alert('최대 3개만 가능합니다')
+                fileList.val('')
+                $('.uploadFiles').text('')
             }
         })
     })
@@ -106,13 +118,3 @@ function limitReplyLength() {
         }
     })
 }
-
-// 문서가 준비되면 실행
-$(document).ready(function () {
-    limitReplyLength()
-
-    // 댓글 수정 버튼 클릭 시에도 글자 수 제한 적용
-    $('.updateReply').on('click', function () {
-        limitReplyLength()
-    })
-})

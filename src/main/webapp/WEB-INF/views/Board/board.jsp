@@ -171,19 +171,23 @@
 										</c:forEach>
 									</div>
 
-									<div class="pagination">
-										<a href="javascript:;" class="prev "><i class='bx bx-chevron-left'></i></a> <a
-											href="javascript:;" class="active">1</a> <a href="javascript:;">2</a> <a
-											href="javascript:;">3</a> <a href="javascript:;">4</a> <a
-											href="javascript:;">5</a> <a href="javascript:;" class="next active"><i
-												class='bx bx-chevron-right'></i></a>
-									</div>
+
+<!-- 									<div class="pagination"> -->
+<!-- 										<a href="javascript:;" class="prev "><i class='bx bx-chevron-left'></i></a> <a -->
+<!-- 											href="javascript:;" class="active">1</a> <a href="javascript:;">2</a> <a -->
+<!-- 											href="javascript:;">3</a> <a href="javascript:;">4</a> <a -->
+<!-- 											href="javascript:;">5</a> <a href="javascript:;" class="next active"><i -->
+<!-- 												class='bx bx-chevron-right'></i></a> -->
+<!-- 									</div> -->
+
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<script>
+
+					
 					document.getElementById('writeBtn').addEventListener('click',
 						function () {
 							window.location.href = '/board/write';
