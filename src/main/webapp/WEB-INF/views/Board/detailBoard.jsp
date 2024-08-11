@@ -177,8 +177,15 @@
 													<a
 														href="/board/download?sysname=${file.sysname}&oriName=${file.oriname}">
 														${file.oriname}
-														<!-- <button id="fileDel" style="display: none;">x</button> -->
 													</a>
+
+													<!-- 
+														1. 화면상 파일 삭제하기
+														2. 수정 완료 버튼 누르면 파일 시퀀스 보내주기
+													 -->
+
+													<button class="fileDel" style="display: none;"
+														data-seq="${file.board_files_seq}">x</button>
 												</div>
 											</c:forEach>
 										</div>
@@ -323,15 +330,25 @@
 					console.log("Login ID: ${Nickname}");
 					console.log("Board emp_no: ${board.emp_no}");
 
+					// 삭제할 파일 버튼
+					let fileArr = [];
+					$(".fileDel").on("click", function (e) {
+						// 클릭한 버튼의 파일 대상
+						console.log(e.target);
+						console.log($(e.target).parent());
+
+						filesLength--;
+						fileArr.push($(e.target).data("seq"));
+						$(e.target).parent().hide();
+					})
+
 					$(document).ready(function () {
-
-
 						// 수정 버튼 클릭 시
 						$("#fboardUpd").on("click", function () {
 							$("#fboardCom").show();
 							$("#fboardCan").show();
 							$("#fboardUpd").hide();
-							$("#fileDel").show();
+							$(".fileDel").show();
 							$(".docuFiles").show();
 
 							// 제목 내용 수정 가능하게 속성 지정
@@ -358,8 +375,21 @@
 							// 썸머노트 내용을 숨겨진 필드에 복사
 							$("#hiddenC").val($(".detailCen").summernote('code'));
 							$("#hiddenT").val($(".topTitle").html().trim());
-							// 폼 제출
-							$("#fboardUpdate").submit();
+							if (fileArr.length > 0) {
+								$.ajax({
+									url: "/uploadImage/delete",
+									data: {
+										// 직렬화: object -> String으로 바꿔주는 방법
+										files_seq: JSON.stringify(fileArr)
+									}
+								}).done(function (response) {
+									// 폼 제출
+									$("#fboardUpdate").submit();
+								})
+							} else {
+								$("#fboardUpdate").submit();
+							}
+
 						});
 
 						// 취소 버튼 클릭 시
@@ -394,16 +424,22 @@
 							location.href = "/board/detail?board_seq=${board.board_seq}";
 						})
 
+
+
 						// 댓글 수정 완료 버튼 클릭 시
 						$(".updateRly").on("click", function (e) {
 							let complete = $(e.target);
 							let writeDate = complete.parents('.replyList').find(".replyTxt").find(".replyDate")
+
 							$.ajax({
 								url: "/reply/update",
 								type: "post",
 								data: {
 									contents: complete.parent().parent().find('.replyPrint').html(),
-									reply_seq: complete.data("seq")
+									reply_seq: complete.data("seq"),
+
+
+
 								}
 							}).done(function (response) {
 
