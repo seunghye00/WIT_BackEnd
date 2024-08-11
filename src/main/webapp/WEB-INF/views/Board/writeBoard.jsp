@@ -117,6 +117,9 @@
 					</div>
 				</div>
 			</div>
+			<script>
+				var filesLength = ${ filesSize };
+			</script>
 		</body>
 
 		</html>
