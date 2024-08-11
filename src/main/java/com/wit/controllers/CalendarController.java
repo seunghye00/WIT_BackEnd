@@ -9,8 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.wit.dto.CalendarDTO;
+import com.wit.dto.DepartmentCalendarDTO;
 import com.wit.dto.EmployeeDTO;
+import com.wit.dto.PersonalCalendarDTO;
 import com.wit.services.CalendarService;
 
 @Controller
@@ -27,36 +28,50 @@ public class CalendarController {
 	@RequestMapping("/calendar")
 	public String calendar(Model model) {
 		String empNo = (String) session.getAttribute("loginID");
-		List<CalendarDTO> list = service.calendarList();
-		
+		List<PersonalCalendarDTO> plist = service.perCalendarList();
+		List<DepartmentCalendarDTO> dlist = service.depCalendarList();
 		EmployeeDTO employee = service.employeeInfo(empNo);
-		
-		model.addAttribute("list", list);
+
+		model.addAttribute("plist", plist);
+		model.addAttribute("dlist", dlist);
 		model.addAttribute("employee", employee);
 		return "/Calendar/calendar";
 	}
 
-	// 캘린더 추가
-	@RequestMapping("/insertCalendar")
-	public String insertCalendar(CalendarDTO dto) {
+	// 개인 캘린더 추가
+	@RequestMapping("/insertPerCalendar")
+	public String insertPerCalendar(PersonalCalendarDTO dto) {
 		// 임시 데이터 => 추후 수정 !!!!
-		String emp_no = "2024-0101";
-		dto.setEmp_no(emp_no);
-		String dept_code = "B";
-		dto.setDept_code(dept_code);
-		String calendar_code = "M";
-		dto.setCalendar_code(calendar_code);
-		System.out.println(dto.getCalendar_name());
+		String empNo = (String) session.getAttribute("loginID");
+		dto.setEmp_no(empNo);
 
-		service.insertCalendar(dto);
+		service.insertPerCalendar(dto);
 		return "redirect:/calendar/calendar";
 	}
 
-	// 캘린더 삭제
-	@RequestMapping("/deleteCalendar")
-	public String deleteCalendar(String calendarSeq) {
+	// 개인 캘린더 삭제
+	@RequestMapping("/deletePerCalendar")
+	public String deletePerCalendar(String calendarSeq) {
+		service.deletePerCalendar(Integer.parseInt(calendarSeq));
+		return "redirect:/calendar/calendar";
+	}
+
+	// 부서 캘린더 추가
+	@RequestMapping("/insertDepCalendar")
+	public String insertDepCalendar(DepartmentCalendarDTO dto) {
+		// 임시 데이터 => 추후 수정 !!!!
+		String dept_code = "D1";
+		dto.setDept_code(dept_code);
+
+		service.insertDepCalendar(dto);
+		return "redirect:/calendar/calendar";
+	}
+
+	// 부서 캘린더 삭제
+	@RequestMapping("/deleteDepCalendar")
+	public String deleteDepCalendar(String calendarSeq) {
 		System.out.println(calendarSeq);
-		service.deleteCalendar(Integer.parseInt(calendarSeq));
+		service.deleteDepCalendar(Integer.parseInt(calendarSeq));
 		return "redirect:/calendar/calendar";
 	}
 }
