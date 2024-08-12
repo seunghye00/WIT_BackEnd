@@ -21,8 +21,8 @@ public class EventsDAO {
 	}
 	
 	// 조회
-	public List<EventsDTO> selectList(){
-		return mybatis.selectList("events.select");
+	public List<EventsDTO> getEventsByCalendar(List<Integer> calendarSeq){
+		return mybatis.selectList("events.getEventsByCalendar", calendarSeq);
 	}
 	
 	// 수정

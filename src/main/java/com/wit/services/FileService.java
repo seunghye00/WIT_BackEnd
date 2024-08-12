@@ -47,7 +47,10 @@ public class FileService {
 			fdao.upload(new BoardFilesDTO(0, parentSeq, oriName, sysName));
 		}
 	}
-	
+	// 파일 개별 삭제
+	public void delete(int[] filesSeq) throws Exception{
+		fdao.delete(filesSeq);
+	}
 
 	// 전자 결재 문서 파일 등록
 	@Transactional
