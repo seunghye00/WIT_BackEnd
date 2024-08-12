@@ -47,7 +47,7 @@ public class EAppprovalController {
 
 	@Autowired
 	private FileService fServ;
-	
+
 	@Autowired
 	private AnnualLeaveService aServ;
 
@@ -68,11 +68,14 @@ public class EAppprovalController {
 		// 전자 결재 메인 화면으로 이동
 		return "eApproval/home";
 	}
-	
+
 	// 해당 문서의 상세 정보를 열람하는데 필요한 정보들을 담아서 전달하는 메서드
 	@RequestMapping("readDocu")
 	public String readDocu(int docuSeq, Model model) throws Exception {
-		
+
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+
 		// 해당 문서의 내용, 결재 라인, 참조 라인을 model 객체에 담아서 상세 페이지로 이동
 		DocuDTO dto = serv.getDocuInfo(docuSeq);
 		model.addAttribute("docuInfo", dto);
@@ -85,6 +88,8 @@ public class EAppprovalController {
 			return "eApproval/read/readProp";
 		case "M2":
 			model.addAttribute("docuDetail", serv.getLeaveDetail(docuSeq));
+			// 해당 사원의 잔여 연차 갯수 조회 후 전달
+			model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
 			return "eApproval/read/readLeave";
 		case "M3":
 			model.addAttribute("docuDetail", serv.getLatenessDetail(docuSeq));
@@ -101,7 +106,7 @@ public class EAppprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-		
+
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장
 		List<DocuInfoListDTO> list = null;
 		switch (type) {
@@ -135,14 +140,14 @@ public class EAppprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-		
+
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장 후 model 객체로 전달
 		List<DocuInfoListDTO> list = null;
 		model.addAttribute("type", type);
-		
+
 		switch (type) {
 		case "write":
-			list = serv.selectWriteList(empNo,docuCode);
+			list = serv.selectWriteList(empNo, docuCode);
 			// 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
 			for (DocuInfoListDTO dto : list) {
 				dto.setLast_appr_name(eServ.getName(dto.getLast_appr()));
@@ -150,7 +155,7 @@ public class EAppprovalController {
 			model.addAttribute("docuList", list);
 			break;
 		case "save":
-			model.addAttribute("docuList", serv.selecSavetList(empNo,docuCode));
+			model.addAttribute("docuList", serv.selecSavetList(empNo, docuCode));
 			break;
 		case "approved":
 			model.addAttribute("docuList", serv.selectApprovedList(empNo, docuCode));
@@ -166,7 +171,7 @@ public class EAppprovalController {
 			return "redirect:/eApproval/home";
 		}
 		model.addAttribute("docuCode", docuCode);
-		
+
 		// 해당 문서함 화면으로 이동
 		return "eApproval/list/" + type + "List";
 	}
@@ -397,7 +402,7 @@ public class EAppprovalController {
 
 	@RequestMapping("downloadFiles")
 	public void download(String oriname, String sysname, HttpServletResponse response) throws Exception {
-		
+
 		String realPath = session.getServletContext().getRealPath("upload");
 		File target = new File(realPath + "/" + sysname);
 

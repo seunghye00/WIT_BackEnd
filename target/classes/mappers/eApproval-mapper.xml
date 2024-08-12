@@ -57,7 +57,10 @@
 	
 	<!-- 결재 라인에 대한 정보를 조회하는 쿼리문 -->
 	<select id="selectApprByDocuSeq" resultType="com.wit.dto.ApprLineDTO">
-		select * from approvals_line where document_seq = #{docuSeq}
+		select a.*, name, role_title  from approvals_line a 
+		join employee e on a.emp_no = e.emp_no 
+		join role r on e.role_code = r.role_code
+		where document_seq = ${docuSeq}
 	</select>
 
 	<!-- 참조 라인에 대한 정보를 입력하는 쿼리문 -->
@@ -102,21 +105,11 @@
 
 	<!-- 휴가 신청서 문서 작성 시 정보를 입력하는 쿼리문 -->
 	<insert id="insertLeave">
-		<choose>
-			<when test="emer_yn != null">
-				insert into leave_requests values (#{document_seq},
-				#{leave_type}, #{start_date}, #{end_date}, #{half_day_yn},
-				#{reason})
-			</when>
-			<otherwise>
-				insert into leave_requests values (#{document_seq},
-				#{leave_type}, #{start_date}, #{end_date}, 'N', #{reason})
-			</otherwise>
-		</choose>
+		insert into leave_requests values (#{document_seq}, #{leave_type}, #{start_date}, #{end_date}, #{start_day_checked}, #{start_day_am_checked}, #{start_day_pm_checked}, #{end_day_checked}, #{end_day_am_checked}, #{end_day_pm_checked}, #{request_leave_days}, #{reason})
 	</insert>
 	
 	<!-- 휴가 신청서 문서의 세부 정보를 조회하는 쿼리문 -->
-	<select id="selecLeaveByDocuSeq" resultType="com.wit.dto.LeaveRequestDTO">
+	<select id="selectLeaveByDocuSeq" resultType="com.wit.dto.LeaveRequestDTO">
 		select * from leave_requests where document_seq = #{docuSeq}
 	</select>
 

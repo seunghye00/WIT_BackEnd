@@ -153,10 +153,12 @@ public class EApprovalDAO {
 		return mybatis.selectOne("eApproval.selecLatenesstByDocuSeq", docuSeq);
 	}
 
+	// 해당 문서의 결재 라인 정보를 넘겨주기 위한 메서드
 	public List<ApprLineDTO> getApprLine(int docuSeq) {
 		return mybatis.selectList("selectApprByDocuSeq", docuSeq);
 	}
 
+	// 해당 문서의 참조 라인 정보를 넘겨주기 위한 메서드
 	public List<RefeLineDTO> getRefeLine(int docuSeq) {
 		return mybatis.selectList("selectRefeByDocuSeq", docuSeq);
 	}

@@ -96,13 +96,17 @@
 											<tr>
 												<th>직급</th>
 												<c:forEach items="${apprList}" var="i">
-													<td>${i.emp_no}</td>
+													<td>${i.role_title}</td>
 												</c:forEach>
 											</tr>
 											<tr>
 												<th>결재자</th>
 												<c:forEach items="${apprList}" var="i">
-													<td>${i.emp_no}
+													<td>
+														<c:if test="${i.status eq '결재 완료'}">
+															<img src="/img/icon/stamp.png" alt="approvedStamp"><br>
+														</c:if>
+														${i.name}
 													</td>
 												</c:forEach>
 											</tr>

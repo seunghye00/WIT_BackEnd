@@ -421,6 +421,28 @@ $('.leaveWrite').on('click', () => {
 		$('#reason').focus();
 		return;
 	}
+
+	if(!$('#startDay').is(':checked')){
+		$('#startDayChecked').val('N');
+	}
+	if(!$('#startDayAM').is(':checked')){
+		$('#startDayAMChecked').val('N');
+	}
+	if(!$('#startDayPM').is(':checked')){
+		$('#startDayPMChecked').val('N');
+	}
+	if(!$('#endDay').is(':checked')){
+		$('#endDayChecked').val('N');
+	}
+	if(!$('#endDayAM').is(':checked')){
+		$('#endDayAMChecked').val('N');
+	}
+	if(!$('#endDayPM').is(':checked')){
+		$('#endDayPMChecked').val('N');
+	}
+
+    // 신청 연차 일수 문자열을 숫자로 변환 후 Form 전송
+    $('#applyLeaves').val(parseFloat($('#applyLeaves').val()));
 	sendFormData('write/Leave');
 });
 
@@ -444,6 +466,7 @@ $('.refeBtn').on('click', () => {
     $('.refeModal').toggle();
 });
 
+// input 태그의 입력 문자열 길이를 제어하는 메서드
 function handleOnInput(e, maxLength) {
 	if ($(e).val().length > maxLength) {
     	alert($(e).data('label') + "의 글자 수는 " + maxLength + "자까지만 입력 가능 합니다.");
@@ -526,3 +549,158 @@ function sendFormData(choiUrl) {
      	}
      });	
 }
+
+// 휴가 신청서에서 휴가 시작일 변화를 감지
+$('#startLeaveDay').on('change', function () {
+    if ($(this).val() == '') {
+    // 시작일 삭제 시 종료일 및 신청 연차 일수 초기화 후 체크박스 설정 초기화
+        $('#applyLeaves, #endLeaveDay').val('');
+        $('#startDay, #startDayAM, #startDayPM').prop('checked', false);
+        $('#endDay, #endDayAM, #endDayPM').prop('disabled', false);
+        return;
+    }
+    // 종료일의 선택가능한 범위 중 최솟값을 시작일로 변경 후 신청 연차 및 체크박스 기본값 설정
+    const startLeaveDay = $(this).val();
+    $('#endLeaveDay').prop('min', startLeaveDay);
+    $('#endLeaveDay').val(startLeaveDay);
+    $('#startDay, #startDayAM, #startDayPM').prop('checked', true);
+    $('#endDay, #endDayAM, #endDayPM').prop('checked', false);
+    $('#endDay, #endDayAM, #endDayPM').prop('disabled', true);
+    $('#applyLeaves').val(1).trigger('change');
+});
+
+// 휴가 신청서에서 휴가 종료일 변화를 감지
+$('#endLeaveDay').on('change', function () {
+    if ($('#startLeaveDay').val() === '') {
+    // 시작일 선택 여부 검사 후 안내문 출력
+        alert('시작일을 먼저 선택해주세요');
+        $(this).val('');
+        return;
+    }
+
+    // 시작일과 종료일을 Date객체로 변환
+    const start = new Date($('#startLeaveDay').val());
+    const end = new Date($('#endLeaveDay').val());
+
+    // 날짜 차이를 밀리초 단위로 계산
+    const time = end - start;
+
+    // 밀리초를 일수로 변환
+    const day = time / (1000 * 3600 * 24) + 1;
+
+    // 잔여 연차보다 신청 연차의 일수가 많으면 선택 초기화
+    if ($('#remainingLeaves').val() < day) {
+        alert('잔여 연차를 확인해주세요.');
+        $('#endLeaveDay').val($('#startLeaveDay').val());
+        $('#applyLeaves').val(1).trigger('change');
+        return;
+    }
+    if (day == 1) {
+        // 신청 연차가 1일인 경우 체크박스 종료일 체크박스 비활성화
+        $('#endDay, #endDayAM, #endDayPM').prop('checked', false);
+        $('#endDay, #endDayAM, #endDayPM').prop('disabled', true);
+    } else {
+        // 신청 연차가 2일 이상일 경우 종료일 체크박스 활성화
+        $('#endDay, #endDayAM, #endDayPM').prop('checked', true);
+        $('#endDay, #endDayAM, #endDayPM').prop('disabled', false);
+    }
+    // 신청 연차 일수 업데이트
+    $('#applyLeaves').val(day).trigger('change');
+});
+
+// 신청 연차 일수의 변화를 감지
+$('#applyLeaves').on('change', function () {
+    // 신청 연차 일수 문자열을 숫자로 변환
+    const applyLeaves = parseFloat($(this).val());
+
+    // 체크박스 이벤트 핸들러 초기화
+    $('#startDay, #startDayAM, #startDayPM').off('click').off('change');
+    $('#endDay, #endDayAM, #endDayPM').off('click').off('change');
+
+    if (applyLeaves == 0.5) {
+    // 신청 연차가 0.5일인 경우
+        if ($('#startDayAM').is(':checked')) {
+        // 시작일 오전이 체크되어 있을 때 체크 해제 불가능	
+            $('#startDayAM').on('click', function (e) {
+                e.preventDefault();
+                return;
+            });
+            // 시작일 혹은 시작일 오후 체크 시 체크박스 설정 및 신청 연차 일수 변경
+            $('#startDay, #startDayPM').on('change', function () {
+                $('#startDay, #startDayPM').prop('checked', true);
+                $('#applyLeaves').val(1).trigger('change');
+            });
+        } else if ($('#startDayPM').is(':checked')) {
+        // 시작일 오후가 체크되어 있을 때 체크 해제 불가능
+            $('#startDayPM').on('click', function (e) {
+                e.preventDefault();
+                return;
+            });
+            // 시작일 혹은 시작일 오전 체크 시 체크박스 설정 및 신청 연차 일수 변경
+            $('#startDay, #startDayAM').on('change', function () {
+                $('#startDay, #startDayAM').prop('checked', true);
+                $('#applyLeaves').val(1).trigger('change');
+            });
+        }
+    } else if (applyLeaves == 1) {
+    // 신청 연차가 1일인 경우 시작일 체크 해제 불가능
+        $('#startDay').on('click', function (e) {
+            e.preventDefault();
+            return;
+        });
+        // 시작일 오전 혹은 오후 체크 해제 시 시작일 체크 해제 및 신청 연자 일수 변경
+        $('#startDayAM, #startDayPM').on('change', function () {
+            $('#startDay').prop('checked', false);
+            $('#applyLeaves').val(0.5).trigger('change');
+        });
+    } else {
+    // 신청 연차가 1일 이상인 경우 시작일 오후 및 종료일 오전 체크 해제 불가능
+        $('#startDayPM, #endDayAM').on('click', function (e) {
+            e.preventDefault();
+            alert('신청 휴가가 2일 이상일 경우\n시작일 오후와 종료일 오전은 선택해제가 불가능합니다');
+            return;
+        });
+        // 시작일 체크 해제 불가능 및 체크 시 신청 연차 일수 변경
+        $('#startDay').on('click', function (e) {
+            if ($('#startDay').is(':checked')) {
+                $('#startDayAM').prop('checked', true);
+                $('#applyLeaves').val(applyLeaves + 0.5).trigger('change');
+            } else {
+                e.preventDefault();
+                alert('신청 휴가가 2일 이상일 경우\n시작일 오후는 선택해제가 불가능합니다');
+                return;
+            }
+        });
+        // 시작일 오전 체크 혹은 체크 해제 시 신청 연차 일수 변경
+        $('#startDayAM').on('click', function () {
+            if ($('#startDayAM').is(':checked')) {
+                $('#startDay').prop('checked', true)
+                $('#applyLeaves').val(applyLeaves + 0.5).trigger('change');
+            } else {
+                $('#startDay').prop('checked', false)
+                $('#applyLeaves').val(applyLeaves - 0.5).trigger('change');
+            }
+        });
+        // 종료일 체크 해제 불가능 및 체크 시 신청 연차 일수 변경
+        $('#endDay').on('click', function (e) {
+            if ($('#endDay').is(':checked')) {
+                $('#endDayPM').prop('checked', true);
+                $('#applyLeaves').val(applyLeaves + 0.5).trigger('change');
+            } else {
+                e.preventDefault();
+                alert('신청 휴가가 2일 이상일 경우\n종료일 오전은 선택해제가 불가능합니다');
+                return;
+            }
+        });
+		// 종료일 오후 체크 혹은 체크 해제 시 신청 연차 일수 변경
+        $('#endDayPM').on('click', function () {
+            if ($('#endDayPM').is(':checked')) {
+                $('#endDay').prop('checked', true);
+                $('#applyLeaves').val(applyLeaves + 0.5).trigger('change');
+            } else {
+                $('#endDay').prop('checked', false);
+                $('#applyLeaves').val(applyLeaves - 0.5).trigger('change');
+            }
+        });
+    }
+});
