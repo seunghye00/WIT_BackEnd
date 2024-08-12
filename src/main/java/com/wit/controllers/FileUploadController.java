@@ -6,20 +6,26 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-@RestController
+import com.google.gson.Gson;
+import com.wit.services.FileService;
+
+@Controller
 @RequestMapping("/uploadImage")
 public class FileUploadController {
-
+	@Autowired
+	private FileService fserv;
     private static final String UPLOAD_DIR = "C:/Users/타리/Desktop/UploadServerFile/";
     
     @PostMapping
+    @ResponseBody
     public Map<String, Object> uploadImage(MultipartHttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -42,4 +48,15 @@ public class FileUploadController {
         }
         return response;
     }
+    
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String delete(String files_seq) throws Exception{
+//    	역직렬화 string을 object로 바꾸기
+    	Gson gson = new Gson();
+    	int[] filesSeq = gson.fromJson(files_seq, int[].class);
+    	fserv.delete(filesSeq);
+    	return null;
+    }
+    
 }

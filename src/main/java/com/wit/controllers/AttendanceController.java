@@ -73,7 +73,7 @@ public class AttendanceController {
 		String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
 
 		// 레코드 수 조회
-		int recordTotalCount = service.getMonthlyRecordCount(empNo, month);
+		int recordTotalCount = service.monthlyRecordCount(empNo, month);
 
 		// 페이징 처리 로직
 		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
@@ -108,7 +108,7 @@ public class AttendanceController {
 		model.addAttribute("needNext", needNext);
 
 		// 월간 근무 현황 조회 (페이징 적용)
-		List<Map<String, Object>> monthlyWorkStatus = service.getMonthlyWorkStatus(empNo, month, cpage,
+		List<Map<String, Object>> monthlyWorkStatus = service.monthlyWorkStatus(empNo, month, cpage,
 				recordCountPerPage);
 		model.addAttribute("monthlyWorkStatus", monthlyWorkStatus);
 
