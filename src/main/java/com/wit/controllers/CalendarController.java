@@ -57,6 +57,7 @@ public class CalendarController {
 	// 부서 캘린더 추가
 	@RequestMapping("/insertDepCalendar")
 	public String insertDepCalendar(DepartmentCalendarDTO dto) {
+		System.out.println("dept code === " +dto.getDept_code());
 		service.insertDepCalendar(dto);
 		return "redirect:/calendar/calendar";
 	}
