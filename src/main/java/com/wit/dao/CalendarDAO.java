@@ -38,12 +38,12 @@ public class CalendarDAO {
 			return mybatis.selectList("calendar.depCalendarList", empNo);
 		}
 	
-	// 부서 캘린더 추가
+	// 부서 캘린더 추가 (각 부서 부장만 가능)
 	public int insertDepCalendar(DepartmentCalendarDTO dto) {
 		return mybatis.insert("calendar.insertDepCalendar", dto);
 	}
 	
-	// 부서 캘린더 삭제
+	// 부서 캘린더 삭제 (각 부서 부장만 가능)
 	public int deleteDepCalendar(int calendarSeq) {
 		return mybatis.delete("calendar.deleteDepCalendar", calendarSeq);
 	}

@@ -105,9 +105,9 @@
 													<div class="content">
 														<form id="deptCalendarForm"
 															action="/calendar/insertDepCalendar" method="post">
-															<input type="text" name="calendar_name"
-																id="depCalendarName"> <input type="hidden"
-																name="dept_code">
+															<input type="text" name="calendar_name" id="depCalendarName">
+															 <input type="hidden" name="dept_code" value="${employee.dept_code}">
+															 <input type="hidden" name="default_yn">
 														</form>
 													</div>
 													<footer>
@@ -116,7 +116,8 @@
 															<button id="sideDeptCancel" class="cancelBtn">취소</button>
 														</div>
 													</footer>
-												</div> </span>
+												</div> 
+											</span>
 										</div>
 									</c:if>
 								</ul>
@@ -318,13 +319,15 @@
         
         $('#sideDeptAdd').on('click', function(){
         	let calendar_name = $('#depCalendarName').val().trim();
+        	let dept_code = $("input[name='dept_code']").val();
+        	console.log("Dept Code: ", dept_code); 
         	if(calendar_name !== ""){
         		console.log(calendar_name)
-        		$("#deptCalendarForm").submit();
-        		
+        		console.log("Dept Code: ", dept_code); 
+        		$("#deptCalendarForm").submit();      		
         	}else{
         		alert("캘린더 이름을 입력해주세요.");
-        	}        	
+        	}
         });
         
      	// 내 캘린더 팝업 x 버튼

@@ -54,14 +54,15 @@ public class CalendarController {
 		return "redirect:/calendar/calendar";
 	}
 
-	// 부서 캘린더 추가
+	// 부서 캘린더 추가(각 부서 부장만 가능)
 	@RequestMapping("/insertDepCalendar")
 	public String insertDepCalendar(DepartmentCalendarDTO dto) {
+		System.out.println("dept code === " +dto.getDept_code());
 		service.insertDepCalendar(dto);
 		return "redirect:/calendar/calendar";
 	}
 
-	// 부서 캘린더 삭제
+	// 부서 캘린더 삭제(각 부서 부장만 가능)
 	@RequestMapping("/deleteDepCalendar")
 	public String deleteDepCalendar(String calendarSeq) {
 		service.deleteDepCalendar(Integer.parseInt(calendarSeq));

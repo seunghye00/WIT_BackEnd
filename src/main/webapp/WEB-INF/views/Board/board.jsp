@@ -103,15 +103,21 @@
 								<div class="boardList">
 									<div class="controls">
 										<div class="search">
+											<form action="/board/list" style="display:none" id="searchForm">
+												<input type="hidden" name="searchTarget" class="hiddenInput">
+												<input type="hidden" name="sortTarget" class="hiddenInput">
+												<input type="text" name="searchTxt" placeholder="검색"
+													class="hiddenInput">
+											</form>
 											<select class="form-select" aria-label="Default select example"
-												id="searchOpt">
-												<option selected>제목</option>
-												<option value="1">내용</option>
+												id="searchTarget">
+												<option selected value="title">제목</option>
+												<option value="contents">내용</option>
 											</select>
 
 											<div class="searchBox">
-												<input type="text" placeholder="검색">
-												<button class="searchBtn">
+												<input type="text" placeholder="검색" value="${searchTxt}" id="searchTxt">
+												<button class="searchBtn" id="searchBtn">
 													<i class='bx bx-search'></i>
 												</button>
 											</div>
@@ -119,9 +125,9 @@
 
 										<div class="sort">
 											<select class="form-select" aria-label="Default select example"
-												id="sortOpt">
-												<option selected>최신순</option>
-												<option value="1">조회수</option>
+												id="sortTarget">
+												<option selected value="board_seq">최신순</option>
+												<option value="views">조회수</option>
 											</select>
 										</div>
 
@@ -172,22 +178,26 @@
 									</div>
 
 
-<!-- 									<div class="pagination"> -->
-<!-- 										<a href="javascript:;" class="prev "><i class='bx bx-chevron-left'></i></a> <a -->
-<!-- 											href="javascript:;" class="active">1</a> <a href="javascript:;">2</a> <a -->
-<!-- 											href="javascript:;">3</a> <a href="javascript:;">4</a> <a -->
-<!-- 											href="javascript:;">5</a> <a href="javascript:;" class="next active"><i -->
-<!-- 												class='bx bx-chevron-right'></i></a> -->
-<!-- 									</div> -->
+									<div class="pagination">
 
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<script>
+					// 처음에 서버에서 값을 보내줄 때 빈 문자열이 아니면 서버에서 보내준 값으로 설정
+					if (${ searchTarget != "" }) {
+						document.getElementById('searchTarget').value = "${ searchTarget }";
+					}
 
-					
+					// 처음에 서버에서 값을 보내줄 때 빈 문자열이 아니면 서버에서 보내준 값으로 설정
+					if (${ sortTarget != "" }) {
+						document.getElementById('sortTarget').value = "${ sortTarget }";
+					}
+
+
 					document.getElementById('writeBtn').addEventListener('click',
 						function () {
 							window.location.href = '/board/write';
@@ -205,6 +215,62 @@
 
 					}
 
+					// 검색 버튼 누르면 검색 옵션, 정렬 옵션, 검색 내용 값 넣어주기
+					$("#searchBtn").on("click", function () {
+						let hiddenInput = $(".hiddenInput");
+						hiddenInput.eq(0).val($("#searchTarget").val());
+						hiddenInput.eq(1).val($("#sortTarget").val());
+						hiddenInput.eq(2).val($("#searchTxt").val());
+
+						$("#searchForm").submit();
+					})
+
+					// 정렬 옵션이 바뀌면 정렬 옵션값 넣어주고, 
+					// 검색 옵션, 검색 내용 값은 맨 처음 서버에서 보내준 초기값으로 설정해준다!
+					// 왜냐하면, 검색 버튼을 누르기 전이기 때문에 변한 값을 넣어주면 안된다!
+					$("#sortTarget").on("change", function () {
+						let hiddenInput = $(".hiddenInput");
+						hiddenInput.eq(0).val("${ searchTarget }");
+						hiddenInput.eq(1).val($("#sortTarget").val());
+						hiddenInput.eq(2).val("${ searchTxt }");
+
+						$("#searchForm").submit();
+					})
+
+
+					// 페이징
+					let pageNation = $(".pagination");
+
+					let cpage = ${ cpage }
+					let record_total_count = ${ record_total_count }
+					let record_count_per_page = ${ record_count_per_page }
+					let navi_count_per_page = ${ navi_count_per_page }
+					let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
+
+					let startNavi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;
+					let endNavi = startNavi + navi_count_per_page - 1;
+
+					if (endNavi > pageTotalCount) {
+						endNavi = pageTotalCount;
+					}
+
+					let needPrev = true;
+					if (startNavi == 1) {
+						needPrev = false;
+					}
+					let needNext = true;
+					if (endNavi == pageTotalCount) {
+						needNext = false;
+					}
+
+					if (needPrev)
+						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&cpage=" + (startNavi - 1) + "' class='prev " + (needPrev ? "active" : "disabled") + "'><i class='bx bx-chevron-left'></i></a>");
+
+					for (let i = startNavi; i <= endNavi; i++) {
+						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&cpage=" + i + "'>" + i + "</a> ");
+					}
+					if (needNext)
+						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&cpage=" + (endNavi + 1) + "' class='next " + (needNext ? "active" : "disabled") + "' data-page='" + (endNavi + 1) + "'><i class='bx bx-chevron-right'></i></a>");
 
 
 
