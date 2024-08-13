@@ -2702,7 +2702,8 @@ span.return {
 
 /* 전자 결재 작성 */
 .eApprWrite .choiBox {
-	flex: 1;
+	position: relative;
+	width: fit-content;
 }
 
 .eApprWrite .choiBox button {
@@ -2723,9 +2724,9 @@ span.return {
 	border: 1px solid #555;
 	width: 134px;
 	min-height: 63px;
-	position: relative;
-	top: 5px;
-	right: -304px;
+	position: absolute;
+	top: -3px;
+	right: -143px;
 	border-radius: 10px;
 	background: #fff;
 	padding: 20px 10px;
@@ -3850,11 +3851,6 @@ span.return {
 /* 원희 css end */
 
 /* 승혜 & 원희 css start */
-.sideContents .mainTitle {
-	flex: unset;
-	align-items: flex-start;
-}
-
 /* 예약 관리 메인 화면 */
 .reservation .reservList {
 	flex: 9;

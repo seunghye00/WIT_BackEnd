@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>지각 사유서 문서 임시 저장</title>
+<title>지각 사유서 문서 ( 임시 저장 )</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
@@ -37,13 +37,11 @@
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApprWrite">
-					<div class="mainTitle">문서 작성 ( 지각 사유서 )</div>
+					<div class="mainTitle">임시 저장 문서 ( 지각 사유서 )</div>
 					<div class="document">
 						<div class="choiBox">
-							<button class="ok realLatenessWrite" type="button">결재 요청</button>
-							<button class="green docuSaveBtn docuLatenessSave" type="button">임시 저장</button>
-							<button class="red delDocu" type="button">삭제</button>
-							<button class="purple refeBtn" type="button">참조선</button>
+							<button class="latenessUpdate" type="button">결재 요청</button>
+							<%@ include file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
 							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">

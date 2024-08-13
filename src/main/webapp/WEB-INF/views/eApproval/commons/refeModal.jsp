@@ -5,15 +5,15 @@
 <div class="refeModal">
 	<ul>
 		<c:choose>
-			<c:when test="${refeList != NULL}">
+			<c:when test="${empty refeList}">
+				<li>참조선 없음</li>
+			</c:when>
+			<c:otherwise>
 				<c:forEach items="${refeList}" var="i">
 					<c:set var="refeInfo" value="${fn:split(i, ' ')}" />
 					<li>${refeInfo[1]}${refeInfo[2]}</li>
 					<input type="hidden" name="refeList" value="${refeInfo[0]}">
 				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<li>참조선 없음</li>
 			</c:otherwise>
 		</c:choose>
 	</ul>

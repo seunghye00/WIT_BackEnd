@@ -39,9 +39,7 @@
 					<div class="mainTitle">문서 열람 ( 업무 기안 )</div>
 					<div class="document">
 						<div class="choiBox">
-							<button class="green" type="button">코멘트</button>
-							<button class="grey" type="button">목록</button>
-							<button class="purple refeBtn" type="button">참조선</button>
+							<%@ include file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
 							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">
@@ -115,7 +113,7 @@
 										<thead>
 											<tr>
 												<th>시행일자</th>
-												<td><input type="date" value="${docuDetail.eff_date}"readonly></td>
+												<td><input type="date" value="${docuDetail.eff_date}" readonly></td>
 												<th>협조부서</th>
 												<td><input type="text" value="${docuDetail.dept_title}" readonly></td>
 												<th>긴급</th>

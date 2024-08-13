@@ -38,10 +38,7 @@
 					<div class="mainTitle">문서 결재 ( 업무 기안 )</div>
 					<div class="document">
 						<div class="choiBox">
-							<button class="ok" type="button">결재</button>
-							<button class="red" type="button">반려</button>
-							<button class="grey" type="button">목록</button>
-							<button class="purple refeBtn" type="button">참조선</button>
+							<%@ include file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
 							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">

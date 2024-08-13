@@ -35,12 +35,10 @@
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApprWrite">
-					<div class="mainTitle">문서 작성 ( 휴가 신청서 )</div>
+					<div class="mainTitle">문서 열람 ( 휴가 신청서 )</div>
 					<div class="document">
 						<div class="choiBox">
-							<button class="green" type="button">코멘트</button>
-							<button class="grey" type="button">목록</button>
-							<button class="purple refeBtn" type="button">참조선</button>
+							<%@ include file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
 							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">

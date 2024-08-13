@@ -82,6 +82,7 @@ public class EAppprovalController {
 		model.addAttribute("writerInfo", eServ.getNameNDept(dto.getEmp_no()));
 		model.addAttribute("apprList", serv.getApprLine(docuSeq));
 		model.addAttribute("refeList", serv.getRefeLine(docuSeq));
+		model.addAttribute("type", type);
 		switch (dto.getDocu_code()) {
 		case "M1":
 			model.addAttribute("docuDetail", serv.getPropDetail(docuSeq));

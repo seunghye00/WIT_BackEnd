@@ -330,7 +330,7 @@ $('.apprBtn').on('click', () => {
 });
 
 // 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
-$('.noApprBtn').on('click', () => {
+$('.returnBtn').on('click', () => {
     $('.cancelModal').css('display', 'flex');
 
     // 취소 버튼 클릭 시 해당 모달창 비활성화
@@ -372,41 +372,53 @@ $('.propWrite').on('click', () => {
 	sendFormData('write/Prop');
 });
 
+// 임시 저장된 업무 기안 문서 열람 페이지에서 결재 요청 버튼 클릭 시
+$('.propUpdate').on('click', () => {
+	// 문서에 대한 필수 입력 값을 입력 완료했는 지 확인
+	if($('#effDate').val() == ""){	
+		alert('시행일자를 입력해주세요');
+		$('#effDate').focus();
+		return;
+	}
+	if($('#collaboDept').val() == ""){	
+		alert('협조 부서를 입력해주세요');
+		$('#collaboDept').focus();
+		return;
+	}
+	if($('#writeDocuTitle').val() == ""){	
+		alert('문서 제목을 입력해주세요');
+		$('#writeDocuTitle').focus();
+		return;
+	}
+	if($('#writeDocuConts').val() == ""){	
+		alert('문서 내용을 입력해주세요');
+		$('#writeDocuConts').focus();
+		return;
+	}
+	$('#docuUpdateForm').submit();
+	
+});
+
 // 지각 사유서 문서 작성 페이지에서 결재 요청 버튼 클릭 시
 $('.latenessWrite').on('click', () => {
 	// 필수 입력값 검사 후 데이터 전송 
-	if(checkDocuCont('lateness')){
-		sendFormData('write/Lateness');
+	if($('#lateDay').val() == ""){	
+		alert('지각 일자를 입력해주세요');
+		$('#lateDay').focus();
+		return false;
 	}
+	if($('#writeDocuTitle').val() == ""){	
+		alert('문서 제목을 입력해주세요');
+		$('#writeDocuTitle').focus();
+		return false;
+	}
+	if($('#reason').val() == ""){	
+		alert('지각 사유를 입력해주세요');
+		$('#reason').focus();
+		return false; 
+	}
+	sendFormData('write/Lateness');
 });
-
-$('.realLatenessWrite').on('click', () => {
-	// 필수 입력값 검사 후 데이터 전송 
-	if(checkDocuCont('lateness')){
-		sendFormData('saved/Lateness');
-	}
-});
-
-// 해당 문서에서 필수 입력 값을 입력 완료했는 지 확인하는 메서드
-function checkDocuCont(docuName) {
-	if(docuName == 'lateness'){
-		if($('#lateDay').val() == ""){	
-			alert('지각 일자를 입력해주세요');
-			$('#lateDay').focus();
-			return false;
-		}
-		if($('#writeDocuTitle').val() == ""){	
-			alert('문서 제목을 입력해주세요');
-			$('#writeDocuTitle').focus();
-			return false;
-		}
-		if($('#reason').val() == ""){	
-			alert('지각 사유를 입력해주세요');
-			$('#reason').focus();
-			return false; 
-		}
-	}
-}
 
 // 휴가 신청서 문서 작성 페이지에서 결재 요청 버튼 클릭 시
 $('.leaveWrite').on('click', () => {
@@ -475,6 +487,8 @@ $('.docuSaveBtn').on('click', function() {
 		}		
 	}
 });
+
+// 
 
 // 참조 버튼 클릭 시 참조선 리스트 모달창 활성화
 $('.refeBtn').on('click', () => {
