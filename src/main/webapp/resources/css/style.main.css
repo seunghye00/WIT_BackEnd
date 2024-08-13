@@ -301,6 +301,14 @@ body {
     color: rgb(255, 255, 255);
     font-size: 18px;
 }
+.header span.alert a {
+	display: flex;	
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    gap: 10px;
+    align-items: center;
+}
 
 .header span i {
     font-size: 1.6rem;
@@ -325,7 +333,8 @@ body {
 }
 
 .contents {
-    flex: 4 1 0%;
+    /* flex: 4 1 0%; */
+    height: calc(100% - 90px);
     display: flex;
     gap: 20px;
 }

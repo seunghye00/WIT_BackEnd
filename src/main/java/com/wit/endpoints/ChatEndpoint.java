@@ -72,7 +72,7 @@ public class ChatEndpoint {
 
             // 클라이언트에게 JSON 응답을 전송합니다.
             session.getBasicRemote().sendText(response.toString());
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -116,6 +116,9 @@ public class ChatEndpoint {
         // 메시지 DB에 저장
         try {
             cServ.insert(chatRoomSeq, sender, jsonMessage.get("message").getAsString());
+            
+            // 사용자가 메시지를 보냈으므로 읽음 처리
+            cServ.markMessagesAsRead(chatRoomSeq, sender);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -132,7 +135,6 @@ public class ChatEndpoint {
         // 사용자가 퇴장했다는 메시지를 해당 채팅방의 모든 클라이언트에게 전송합니다.
         broadcastUserStatus(chatRoomSeq, userName, "left");
     }
-
     @OnError
     public void onError(Throwable t, @PathParam("chatRoomSeq") String chatRoomSeq, Session session) {
         String loginID = sessionUserMap.get(session);
@@ -152,7 +154,7 @@ public class ChatEndpoint {
     }
 
     // 사용자 상태 변경을 브로드캐스트하는 메소드
-    private void broadcastUserStatus(String chatRoomSeq, String loginID, String status) {
+    public void broadcastUserStatus(String chatRoomSeq, String loginID, String status) {
         JsonObject statusMessage = new JsonObject();
         statusMessage.addProperty("user", loginID);
         statusMessage.addProperty("status", status);
@@ -160,7 +162,7 @@ public class ChatEndpoint {
         statusMessage.addProperty("send_time", getCurrentTime());
 
         synchronized (chatRooms.get(chatRoomSeq)) {
-            for (Session client : chatRooms.get(chatRoomSeq)) {
+        	for (Session client : chatRooms.get(String.valueOf(chatRoomSeq))) {
                 try {
                     client.getBasicRemote().sendText(statusMessage.toString());
                 } catch (Exception e) {

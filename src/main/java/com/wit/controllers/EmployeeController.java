@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.RoleDTO;
+import com.wit.services.CalendarService;
 import com.wit.services.EmployeeService;
 
 @Controller
@@ -24,6 +25,10 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService service;
+	
+	// 생성된 사번으로 사원의 기본 캘린더를 생성시켜주기 위해 불러옴.
+	@Autowired
+	private CalendarService cService;
 
 	@Autowired
 	private HttpSession session;
@@ -38,7 +43,7 @@ public class EmployeeController {
 		return "register";
 	}
 
-	// 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 생성)
+	// 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 조회)
 	@ResponseBody
 	@RequestMapping("/highestEmployeeID")
 	public String getHighestEmployeeID(String dept) throws Exception {
@@ -50,6 +55,8 @@ public class EmployeeController {
 	public String register(EmployeeDTO dto) throws Exception {
 		int result = service.register(dto);
 		if (result == 1) {
+			// 회원가입 성공 시 해당 회원의 기본 개인 캘린더 추가 
+			cService.insertPerDefaultCalendar(dto.getEmp_no());
 			return "redirect:/";
 		} else {
 			return "register";
@@ -84,12 +91,11 @@ public class EmployeeController {
 	public String main(Model model, HttpSession session) {
 		String empNo = (String) session.getAttribute("loginID");
 		System.out.println(empNo);
+		
 		if (empNo != null) {
 			EmployeeDTO employee = service.employeeInfo(empNo);
-
 			model.addAttribute("employee", employee);
 		} else {
-			// 로그인 정보가 없으면 로그인 페이지로 리다이렉트
 			return "redirect:/";
 		}
 		return "main";

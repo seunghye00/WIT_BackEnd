@@ -165,9 +165,17 @@ public class AttendanceService {
 		return dao.weeklyStatus(emp_no);
 	}
 
-	// 월간 근무현황 조회
-	public List<Map<String, Object>> monthlyWorkStatus(String emp_no, String month) {
-		return dao.monthlyWorkStatus(emp_no, month);
+	// 월간 레코드 수 조회
+	public int monthlyRecordCount(String empNo, String month) {
+		return dao.monthlyRecordCount(empNo, month);
+	}
+
+	// 월간 근무현황 조회 (페이징 적용)
+	public List<Map<String, Object>> monthlyWorkStatus(String empNo, String month, int cpage,
+			int recordCountPerPage) {
+		int start = (cpage - 1) * recordCountPerPage + 1;
+		int end = cpage * recordCountPerPage;
+		return dao.monthlyWorkStatus(empNo, month, start, end);
 	}
 
 	// 결근 처리

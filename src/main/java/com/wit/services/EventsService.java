@@ -19,9 +19,10 @@ public class EventsService {
 		return dao.saveEvent(dto);
 	}
 	
+	
 	// 이벤트 출력
-	public List<EventsDTO> selectList() {
-		return dao.selectList();
+	public List<EventsDTO> getEventsByCalendar(List<Integer> calendarSeq){
+	    return dao.getEventsByCalendar(calendarSeq);
 	}
 	
 	// 이벤트 수정

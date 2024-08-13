@@ -84,4 +84,11 @@
     <delete id="deleteChatRoomMember">
     	delete from chat_room_member where chat_room_seq = #{chat_room_seq} and emp_no = #{emp_no}
     </delete>
+    
+    <!-- 채팅방 알림 -->
+    <update id="updateChatRoomReadStatus">
+	    UPDATE chat_room
+	    SET is_read = #{isRead}
+	    WHERE chat_room_seq = #{chatRoomSeq}
+	</update>
 </mapper>

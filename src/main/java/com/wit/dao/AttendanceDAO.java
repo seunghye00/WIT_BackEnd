@@ -54,11 +54,21 @@ public class AttendanceDAO {
 		return mybatis.selectList("attendance.weeklyStatus", emp_no);
 	}
 
-	// 월간 근무현황 조회
-	public List<Map<String, Object>> monthlyWorkStatus(String emp_no, String month) {
+	// 월간 레코드 수 조회
+	public int monthlyRecordCount(String empNo, String month) {
 		Map<String, String> params = new HashMap<>();
-		params.put("emp_no", emp_no);
+		params.put("empNo", empNo);
 		params.put("month", month);
+		return mybatis.selectOne("attendance.monthlyRecordCount", params);
+	}
+
+	// 월간 근무현황 조회 (페이징 적용)
+	public List<Map<String, Object>> monthlyWorkStatus(String empNo, String month, int start, int end) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("month", month);
+		params.put("start", start);
+		params.put("end", end);
 		return mybatis.selectList("attendance.monthlyWorkStatus", params);
 	}
 

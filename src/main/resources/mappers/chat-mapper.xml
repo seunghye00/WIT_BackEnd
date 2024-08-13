@@ -15,6 +15,16 @@
 	
 	<!-- 채팅 입력 -->
 	<insert id="insertChat">
-		insert into chat values(chat_seq.NEXTVAL, #{chat_room_seq}, #{name}, #{sender}, #{message}, SYSDATE)
+		insert into chat(chat_seq, chat_room_seq, name, sender, message, send_time) values(chat_seq.NEXTVAL, #{chat_room_seq}, #{name}, #{sender}, #{message}, SYSDATE)
 	</insert>
+	
+	<!-- 채팅 읽었는지 확인 -->
+	<update id="markMessagesAsRead">
+	    UPDATE chat_read_status
+	    SET last_read_message_seq = (
+	        SELECT MAX(chat_seq) FROM chat WHERE chat_room_seq = #{chatRoomSeq}
+	    )
+	    WHERE chat_room_seq = #{chatRoomSeq}
+	    AND emp_no = #{empNo}
+	</update>
 </mapper>

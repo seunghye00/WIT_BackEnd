@@ -83,9 +83,9 @@ $(document).ready(function () {
     })
 
     // 사용자 첫 로그인시 팝업 업데이트 정규표현식
+    // 소문자,숫자,특수문자 를 사용하여 최소 10자리
     $('#pw').on('keyup', function () {
         let password = $(this).val().trim()
-        // 소문자,숫자,특수문자 를 사용하여 최소 10자리
         let regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*])[a-z\d!@#$%^&*]{10,}$/
         let resultLabel = $('#resultpw')
         let pwCheck = $('#pwCheck')
@@ -157,7 +157,7 @@ $(document).ready(function () {
                 .addClass('show success')
                 .html('&#x2714;')
         } else {
-            resultLabel.text('사용 불가능').css('color', 'red')
+            resultLabel.text('- 필수 입니다!').css('color', 'red')
             ssnCheck
                 .removeClass('success')
                 .addClass('show error')
@@ -184,7 +184,7 @@ $(document).ready(function () {
                 .addClass('show success')
                 .html('&#x2714;')
         } else {
-            resultLabel.text('사용 불가능').css('color', 'red')
+            resultLabel.text('- 필수 입니다!').css('color', 'red')
             phoneCheck
                 .removeClass('success')
                 .addClass('show error')
@@ -210,7 +210,7 @@ $(document).ready(function () {
                 .addClass('show success')
                 .html('&#x2714;')
         } else {
-            resultLabel.text('사용 불가능').css('color', 'red')
+            resultLabel.text('이메일은 .com , .net , .co.kr 로 끝나야합니다!').css('color', 'red')
             emailCheck
                 .removeClass('success')
                 .addClass('show error')
