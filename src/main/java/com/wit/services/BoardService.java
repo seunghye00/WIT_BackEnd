@@ -1,7 +1,9 @@
 package com.wit.services;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.wit.commons.BoardConfig;
 import com.wit.dao.BoardDAO;
 import com.wit.dao.BoardFilesDAO;
 import com.wit.dto.BoardDTO;
@@ -31,10 +34,27 @@ public class BoardService {
 	}
 
 	// 게시물 조회
-	public List<BoardDTO> list() {
-		return bdao.list();
+	public List<BoardDTO> list(String searchTxt, String searchTarget, String sortTarget, int cpage) {
+		Map<String, Object> maps = new HashMap<String, Object>();
+		maps.put("sortTarget", sortTarget); 
+		maps.put("searchTarget", searchTarget);
+		maps.put("searchTxt", searchTxt);
+		maps.put("start", cpage*BoardConfig.recordCountPerPage-(BoardConfig.recordCountPerPage-1));
+		maps.put("end", cpage*BoardConfig.recordCountPerPage);
+		
+		
+		return bdao.list(maps);
 	}
+	// 게시글 개수
+	public int boardCount(String searchTxt, String searchTarget) {
+		Map<String, Object> maps = new HashMap<String, Object>();
+	 
+		maps.put("searchTarget", searchTarget);
+		maps.put("searchTxt", searchTxt);
 	
+		return bdao.boardCount(maps);
+	}
+
 	// 게시물 수정
 	@Transactional
 	public void update(BoardDTO dto, MultipartFile[] files, String realPath) throws Exception {

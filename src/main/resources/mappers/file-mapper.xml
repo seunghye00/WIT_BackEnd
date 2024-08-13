@@ -33,6 +33,6 @@
     	where board_files_seq in
     	<foreach item="seq" collection="array" open="(" separator="," close=")">
         	#{seq}
-    	</foreach>
+    	</foreach>  
 	</delete>
 </mapper>
