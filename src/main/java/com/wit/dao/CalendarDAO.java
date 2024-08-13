@@ -18,8 +18,8 @@ public class CalendarDAO {
 	
 	
 	// 개인 캘린더 출력
-	public List<PersonalCalendarDTO> perCalendarList() {
-		return mybatis.selectList("calendar.perCalendarList");
+	public List<PersonalCalendarDTO> perCalendarList(String empNo) {
+		return mybatis.selectList("calendar.perCalendarList", empNo);
 	}
 	
 	
@@ -34,8 +34,8 @@ public class CalendarDAO {
 	}
 	
 	// 부서 캘린더 출력
-		public List<DepartmentCalendarDTO> depCalendarList() {
-			return mybatis.selectList("calendar.depCalendarList");
+		public List<DepartmentCalendarDTO> depCalendarList(String empNo) {
+			return mybatis.selectList("calendar.depCalendarList", empNo);
 		}
 	
 	// 부서 캘린더 추가
@@ -49,8 +49,12 @@ public class CalendarDAO {
 	}
 
 	// 직원 정보 조회 메소드 추가
-	public EmployeeDTO employeeInfo(String emp_no) {
-		return mybatis.selectOne("calendar.employeeInfo", emp_no);
+	public EmployeeDTO employeeInfo(String empNo) {
+		return mybatis.selectOne("calendar.employeeInfo", empNo);
 	}
 
+	// 직원 기본 캘린더 추가
+	public void insertPerDefaultCalendar(String empNo) {
+		mybatis.insert("calendar.insertPerDefaultCalendar", empNo);		
+	}
 }

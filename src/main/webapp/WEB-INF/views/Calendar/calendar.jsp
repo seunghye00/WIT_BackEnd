@@ -556,6 +556,8 @@
                     let eventChoice = info.event.extendedProps.calendar_seq;
                     let eventContent = info.event.extendedProps.content;
                     let eventLocation = info.event.extendedProps.location;
+                    
+                    console.log(eventChoice);
 
                     let eventStartUTC = new Date(info.event.start);
                     let eventEndUTC = info.event.end ? new Date(info.event.end) : new Date(eventStartUTC.getTime() + 24 * 60 * 60 * 1000);
@@ -594,56 +596,51 @@
         });
 
         document.getElementById('eventForm').addEventListener('submit', function (event) {
-            
-        	event.preventDefault(); // 기본 폼 제출 동작을 막음
-			console.log("폼태그 동작 확인");
-        	
-        	let startDate = $("#startDate").val();
-        	let startTime = $("#startTime").val();
-        	let endDate = $("#endDate").val();
-        	let endTime = $("#endTime").val();
-        	
-        	// 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듭니다.
-            let dateTimeLocal = startDate + 'T' + startTime;
-            let dateTime = new Date(dateTimeLocal);
-            let timestamp = dateTime.getTime(); // 밀리초 단위의 타임스탬프
-            
-			$("#start_at").val(timestamp);
-            
-			dateTimeLocal = endDate + 'T' + endTime;
-            dateTime = new Date(dateTimeLocal);
-            timestamp = dateTime.getTime(); // 밀리초 단위의 타임스탬프
-            
-            $("#end_at").val(timestamp);
- 			event.target.submit();
+            // 기본 폼 제출 동작을 막음
+            event.preventDefault();
+            console.log("폼태그 동작 확인");
+
+            // 필수 입력 필드들을 확인
+            let title = $("input[name='title']").val().trim();
+            let startDate = $("#startDate").val().trim();
+            let startTime = $("#startTime").val().trim();
+            let endDate = $("#endDate").val().trim();
+            let endTime = $("#endTime").val().trim();
+            let calendarSeq = $("#choiCalendar").val().trim();
+            let location = $("input[name='location']").val().trim();
+            let content = $("textarea[name='content']").val().trim();
+
+            // 필수 입력 필드가 비어 있는지 확인
+            if (!title || !startDate || !startTime || !endDate || !endTime || !calendarSeq || !location || !content) {
+                alert("모든 필드를 입력해주세요.");
+                return;
+            }
+
+            // 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열
+            let startDateTimeLocal = startDate + 'T' + startTime;
+            let startDateTime = new Date(startDateTimeLocal);
+         	// 밀리초 단위의 타임스탬프
+            let startTimestamp = startDateTime.getTime();  
+
+            let endDateTimeLocal = endDate + 'T' + endTime;
+            let endDateTime = new Date(endDateTimeLocal);
+            // 밀리초 단위의 타임스탬프
+            let endTimestamp = endDateTime.getTime(); 
+
+            // 종료일이 시작일보다 빠를 수 없도록 검증
+            if (startTimestamp > endTimestamp) {
+                alert('종료일은 시작일보다 빠를 수 없습니다. 기간을 다시 입력해주세요.');
+                return;
+            }
+
+            // 타임스탬프를 hidden input에 설정
+            $("#start_at").val(startTimestamp);
+            $("#end_at").val(endTimestamp);
+
+            // 모든 검증을 통과한 후 폼 제출
+            event.target.submit();
         });
         
-			/* document.getElementById('eventEditForm').addEventListener('submit', function (event) {
-            
-        	event.preventDefault(); // 기본 폼 제출 동작을 막음
-			console.log("폼태그 동작 확인");
-        	
-        	let eventStartDate = $("#eventStartDate").val();
-        	let eventStartTime = $("#eventStartTime").val();
-        	let eventEndDate = $("#eventEndDate").val();
-        	let eventEndTime = $("#eventEndTime").val();
-        	
-        	// 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듭니다.
-            let dateTimeLocal = eventStartDate + 'T' + eventStartTime;
-            let dateTime = new Date(dateTimeLocal);
-            let timestamp = dateTime.getTime(); // 밀리초 단위의 타임스탬프
-            
-			$("#editStartAt").val(timestamp);
-            
-            console.log(timestamp);
-            
-			dateTimeLocal = eventEndDate + 'T' + eventEndTime;
-            dateTime = new Date(dateTimeLocal);
-            timestamp = dateTime.getTime(); // 밀리초 단위의 타임스탬프
-            
-            $("#editEndAt").val(timestamp);
-			 event.target.submit(); 
-        });  */
         
         
         

@@ -261,16 +261,16 @@
 
 /* detail_board.html css start */
 .boardDetail {
-    max-height: 600px;
-    flex: 8;
-    padding: 0 30px;
-    display: flex;
-    /* flex-direction: column; */
-    /* background-color: red; */
-    /* overflow-y: scroll; */
-    /* flex-direction: column; */
-    height: auto;
-    gap: 20px;
+	max-height: 600px;
+	flex: 8;
+	padding: 0 30px;
+	display: flex;
+	/* flex-direction: column; */
+	/* background-color: red; */
+	/* overflow-y: scroll; */
+	/* flex-direction: column; */
+	height: auto;
+	gap: 20px;
 }
 
 .boardDetail .detail {
@@ -346,12 +346,12 @@
 
 /* board & fboard buttons css start */
 .boardDetail .detail .detailBott {
-    padding: 0 20px 0 20px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    justify-content: flex-end;
+	padding: 0 20px 0 20px;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	justify-content: flex-end;
 }
 
 .boardDetail img {
@@ -602,12 +602,12 @@
 
 /* detail page reply css start */
 .replyWrapper {
-    display: flex;
+	display: flex;
 	/*flex: 3; */
 	max-width: 400px;
-    height: calc(100% - 60px);
-    overflow: hidden;
-    flex-direction: column;
+	height: calc(100% - 60px);
+	overflow: hidden;
+	flex-direction: column;
 }
 
 .replyWrapper .replyTxt {
@@ -630,8 +630,8 @@
 }
 
 .replyWrapper .replyPrint {
-    word-wrap: break-word;
-    word-break: keep-all;
+	word-wrap: break-word;
+	word-break: keep-all;
 }
 
 .replyWrapper .replyLists {
@@ -1414,22 +1414,22 @@
 }
 
 .message.sent {
-    background-color: #558BCF;
-    color: white;
-    float: right;
-    text-align: right;
-    border-top-right-radius: 0;
-    display:flex;
-    flex-direction:column;
-    gap:5px;
+	background-color: #558BCF;
+	color: white;
+	float: right;
+	text-align: right;
+	border-top-right-radius: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
 }
 
-.message .sender,
-.message .text_box{
-    font-size:18px;
+.message .sender, .message .text_box {
+	font-size: 18px;
 }
-.message .timeBox{
-    font-size:12px;
+
+.message .timeBox {
+	font-size: 12px;
 }
 
 .message.sent a {
@@ -1705,14 +1705,14 @@
 }
 
 .chatRoomTitle {
-    display: flex;
-    gap:10px;
-    position: relative;
-    align-items: center;
+	display: flex;
+	gap: 10px;
+	position: relative;
+	align-items: center;
 }
 
-.chatRoomTitle #chatTitModi{
-    background-color:unset;
+.chatRoomTitle #chatTitModi {
+	background-color: unset;
 }
 
 .chatRoomTitle h2 {
@@ -1721,17 +1721,18 @@
 	word-break: keep-all;
 }
 
-.chatRoomTitle button{
-    background:unset;
-    border:none;
-    padding: 0;
-    position: absolute;
-    right: -30px;
+.chatRoomTitle button {
+	background: unset;
+	border: none;
+	padding: 0;
+	position: absolute;
+	right: -30px;
 }
-.chatRoomTitle button:hover{
-    background:unset;
-    border:none;
-    padding: 0;
+
+.chatRoomTitle button:hover {
+	background: unset;
+	border: none;
+	padding: 0;
 }
 
 .chatRoomTitle button i {
@@ -1739,9 +1740,9 @@
 	line-height: 36px
 }
 
-.chatRoomDetails ul{
-    display:flex;
-    gap:10px;
+.chatRoomDetails ul {
+	display: flex;
+	gap: 10px;
 }
 
 .chatRoomPopupBtn {
@@ -1768,8 +1769,8 @@
 }
 
 .chatRoomPopupBtn .exitBtn i {
-    font-size: 18px;
-    margin:0;
+	font-size: 18px;
+	margin: 0;
 }
 
 .chatRoomPopupBtn .closeBtn {
@@ -1790,6 +1791,10 @@
 /* 로그인 및 회원가입 */
 * {
 	box-sizing: border-box;
+}
+
+#remember_id {
+	margin-left: 5px;
 }
 
 .membership_body {
@@ -2366,7 +2371,7 @@
 	gap: 5px;
 }
 
-#date{
+#date {
 	margin-top: -10px;
 	font-size: 18px;
 }
@@ -2482,7 +2487,7 @@
 	transition: all 0.5s ease;
 }
 
-.attendance_icon{
+.attendance_icon {
 	width: 60%;
 }
 
@@ -2494,14 +2499,13 @@
 	font-weight: bold;
 }
 
-.start{
+.start {
 	
 }
 
-.end{
+.end {
 	
 }
-
 
 /* 민서 css end */
 
@@ -2612,8 +2616,8 @@ button.disabled {
 }
 
 .eApproval .docuList .listBox .rows.emptyDocuList {
-    max-height: unset;
-    height: 228px;
+	max-height: unset;
+	height: 228px;
 }
 
 .eApproval .docuList .listBox .rows.emptyDocuList:hover {
