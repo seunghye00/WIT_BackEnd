@@ -7,21 +7,27 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-@RestController // 이 클래스가 RESTful 웹 서비스를 제공하는 컨트롤러임을 나타냅니다.
-@RequestMapping("/uploadImage") // "/uploadImage" 경로로 들어오는 요청을 처리하는 클래스임을 나타냅니다.
-public class FileUploadController {
+import com.google.gson.Gson;
+import com.wit.services.FileService;
 
-    // 업로드된 파일을 저장할 디렉토리 경로를 정의합니다.
+@Controller
+@RequestMapping("/uploadImage")
+public class FileUploadController {
+	@Autowired
+	private FileService fserv;
     private static final String UPLOAD_DIR = "C:/Users/타리/Desktop/UploadServerFile/";
     
     // 파일 업로드를 처리하는 메서드입니다. POST 요청을 처리합니다.
     @PostMapping
+    @ResponseBody
     public Map<String, Object> uploadImage(MultipartHttpServletRequest request) {
         Map<String, Object> response = new HashMap<>(); // 클라이언트에게 반환할 응답 데이터를 저장할 맵을 생성합니다.
 
@@ -60,4 +66,15 @@ public class FileUploadController {
         // 최종적으로 클라이언트에게 응답 데이터를 반환합니다.
         return response;
     }
+    
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String delete(String files_seq) throws Exception{
+//    	역직렬화 string을 object로 바꾸기
+    	Gson gson = new Gson();
+    	int[] filesSeq = gson.fromJson(files_seq, int[].class);
+    	fserv.delete(filesSeq);
+    	return null;
+    }
+    
 }

@@ -39,4 +39,9 @@ public class BoardFilesDAO {
 			}
 		}
 	}
+	
+	// 파일 개별 삭제
+	public void delete(int[] filesSeq) throws Exception{
+		mybatis.delete("file.deleteBySeqList",filesSeq);
+	}
 }

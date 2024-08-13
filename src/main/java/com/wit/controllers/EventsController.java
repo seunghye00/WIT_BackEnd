@@ -1,14 +1,15 @@
 package com.wit.controllers;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,7 +32,7 @@ public class EventsController {
 	@RequestMapping("/save_event")
 	public String saveEvent(EventsDTO dto, @RequestParam("start_at") long startDate, @RequestParam("end_at") long endDate) {
 		// 임시 데이터 => 추후 수정 !!!!
-		String emp_no = "2024-0101";
+		String emp_no = (String)session.getAttribute("loginID");
 		dto.setEmp_no(emp_no);
 		
 		
@@ -50,11 +51,12 @@ public class EventsController {
 	
 	// 이벤트 조회
 	@ResponseBody
-	@RequestMapping("/all_event")
-	public List<EventsDTO> selectList(Model model) {
-		String emp_no = "2024-0101";
-		model.getAttribute(emp_no);
-		return service.selectList();
+	@GetMapping("/all_event")
+	public List<EventsDTO> getEventsByCalendar(@RequestParam(value = "calendars[]", required = false) List<Integer> calendars){
+	    if(calendars == null || calendars.isEmpty()) {
+	        return new ArrayList<>();
+	    }
+	    return service.getEventsByCalendar(calendars);
 	}
 
 	
@@ -64,12 +66,14 @@ public class EventsController {
 		dto.setStart_date(new Timestamp(eventStartDate));
 		System.out.println(eventStartDate);
 		dto.setEnd_date(new Timestamp(eventEndDate));
-		System.out.println(dto.getEvents_seq());
+		System.out.println(dto.getCalendar_seq());
 		System.out.println(dto.getLocation());
 		service.updateBySeq(dto);
 		return "redirect:/calendar/calendar";
 	}
 	
+	
+	// ghgh
 	
 	// 이벤트 삭제
 	@RequestMapping("/del_event")

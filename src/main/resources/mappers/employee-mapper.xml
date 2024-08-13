@@ -62,11 +62,18 @@
 
 	<!-- 직원 정보 조회 -->
 	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
-		SELECT e.name, r.role_title
-		as role_code
-		FROM Employee e
-		JOIN Role r ON e.role_code = r.role_code
-		WHERE e.emp_no = #{emp_no}
+		SELECT
+		e.name AS NAME,
+		r.role_title AS ROLE_CODE,
+		d.dept_title AS DEPT_CODE
+		FROM
+		Employee e
+		JOIN
+		Role r ON e.role_code = r.role_code
+		JOIN
+		Dept d ON e.dept_code = d.dept_code
+		WHERE
+		e.emp_no = #{emp_no}
 	</select>
 
 	<!-- 추가 정보 업데이트 를 위한 직원 정보 조회 -->
@@ -340,5 +347,11 @@
     <!--  메신저 emp_no 이름으로 변경 -->
 	<select id="getEmployeeName" parameterType="String" resultType="String">
 	    SELECT name FROM employee WHERE emp_no = #{emp_no}
+	</select>
+
+	<!-- 메신저 emp_no 이름으로 변경 -->
+	<select id="getEmployeeName" parameterType="String"
+		resultType="String">
+		SELECT name FROM employee WHERE emp_no = #{emp_no}
 	</select>
 </mapper>

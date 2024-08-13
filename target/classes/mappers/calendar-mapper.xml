@@ -4,31 +4,66 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="calendar">
-	<select id="calendarList" resultType="com.wit.dto.CalendarDTO">
-		select * from calendar
-	</select>
 
-	<insert id="insertCalendar"
-		parameterType="com.wit.dto.CalendarDTO">
-		insert into calendar values (calendar_seq.nextval,
-		#{emp_no},
-		#{dept_code},
-		#{calendar_name},
-		#{calendar_code})
+	<!-- 개인 기본 캘린더 추가 -->
+	<insert id="insertPerDefaultCalendar" >
+		insert into personal_calendar values (calendar_seq.nextval, '내 일정(기본)', #{empNo}, 'Y')	
 	</insert>
 
-	<delete id="deleteCalendar">
-		delete from calendar where calendar_seq =
-		#{calendar_seq}
+	<!-- 개인 캘린더 출력 -->
+	<select id="perCalendarList" resultType="com.wit.dto.PersonalCalendarDTO">
+		select * from personal_calendar where emp_no = #{empNo} 
+	</select>
+	
+	
+	<!-- 개인 캘린더 추가 -->
+	<insert id="insertPerCalendar"
+		parameterType="com.wit.dto.PersonalCalendarDTO">
+		insert into personal_calendar values (calendar_seq.nextval,
+		#{calendar_name},
+		#{emp_no},
+		#{default_yn})
+	</insert>
+	
+	<!-- 개인 캘린더 삭제 -->
+	<delete id="deletePerCalendar">
+		delete from personal_calendar where calendar_seq =
+		#{calendarSeq}
+	</delete>
+	
+	<!-- 부서 캘린더 출력 -->
+	<select id="depCalendarList" resultType="com.wit.dto.DepartmentCalendarDTO">
+		select * from department_calendar d
+		join employee e on d.dept_code = e.dept_code
+		where e.emp_no = #{empNo} 
+	</select>
+	
+	<!-- 부서 캘린더 추가 -->
+	<insert id="insertDepCalendar"
+		parameterType="com.wit.dto.DepartmentCalendarDTO">
+		insert into department_calendar 			
+		<choose>
+			<when test="default_yn == null">
+				(calendar_seq, calendar_name, dept_code) values (calendar_seq.nextval, #{calendar_name}, #{dept_code})
+			</when>
+			<otherwise>
+				values (calendar_seq.nextval, #{calendar_name}, #{dept_code}, #{default_yn})
+			</otherwise>
+		</choose>
+		 
+	</insert>
+	
+	<!-- 부서 캘린더 삭제 -->
+	<delete id="deleteDepCalendar">
+		delete from department_calendar where calendar_seq =
+		#{calendarSeq}
 	</delete>
 
 	<!-- 직원 정보 조회 -->
 	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
-		SELECT e.name, r.role_title
-		as role_code
-		FROM Employee e
-		JOIN Role r ON e.role_code = r.role_code
-		WHERE e.emp_no = #{emp_no}
+		SELECT name, role_code
+		FROM Employee
+		WHERE emp_no = #{empNo}
 	</select>
 
 </mapper>

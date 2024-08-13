@@ -1,14 +1,18 @@
 package com.wit.services;
 
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.wit.dao.BoardDAO;
 import com.wit.dao.BoardFilesDAO;
 import com.wit.dto.BoardDTO;
+import com.wit.dto.BoardFilesDTO;
 import com.wit.dto.EmployeeDTO;
 
 @Service
@@ -18,7 +22,7 @@ public class BoardService {
 	private BoardDAO bdao;
 
 	@Autowired
-	private BoardFilesDAO bfdao;
+	private BoardFilesDAO fdao;
 
 	// 게시물 등록
 	public int write(BoardDTO dto) {
@@ -30,13 +34,40 @@ public class BoardService {
 	public List<BoardDTO> list() {
 		return bdao.list();
 	}
+	
+	// 게시물 수정
+	@Transactional
+	public void update(BoardDTO dto, MultipartFile[] files, String realPath) throws Exception {
+		// 1. 게시글 작성
+		// 2. 작성된 게시글의 시퀀스번호 가져오기
+		// 3. 시퀀스번호 가지고 파일 업로드
+		bdao.update(dto);
+		
+		File realPathFile = new File(realPath);
+		if (!realPathFile.exists()) {
+			realPathFile.mkdir();
+		}
 
+		for (MultipartFile file : files) {
+			if (file.getSize() == 0) {
+				continue;
+			}
+			String oriName = file.getOriginalFilename(); // 내 원래 파일
+			String sysName = UUID.randomUUID() + "_" + oriName; // 서버 세션에 저장하기 위해 같은 이름인 파일을 구분짓기 위해서 서버에 올라간 파일
+			file.transferTo(new File(realPath + "/" + sysName));
+			
+			fdao.upload(new BoardFilesDTO(0, dto.getBoard_seq(), oriName, sysName));
+		}
+		
+	}
 	// 게시물 상세 조회
 	public BoardDTO detailBoard(int board_seq) throws Exception {
-		bdao.viewcount(board_seq);
 		return bdao.detailBoard(board_seq);
 	}
-
+	// 게시물 조회수 
+	public void detailView(int board_seq) throws Exception{
+		bdao.viewcount(board_seq);
+	}
 	// 닉네임 조회(자유게시판 JSTL)
 	public String selectNickname(String emp_no) throws Exception {
 		return bdao.selectNickname(emp_no);
@@ -48,7 +79,7 @@ public class BoardService {
 	// 주석 안달게 일부로 ^^?
 	public void delete(int board_seq) throws Exception {
 		// 첨부 파일 삭제
-		bfdao.deleteFile(board_seq);
+		fdao.deleteFile(board_seq);
 
 		// 게시물 삭제
 		bdao.deleteBoard(board_seq);
