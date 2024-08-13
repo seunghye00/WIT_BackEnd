@@ -97,7 +97,17 @@
 												<span><fmt:formatDate value="${i.done_date}" pattern="yyyy-MM-dd" /></span>
 											</div>
 											<div class="cols">
-												<span>${i.status}</span>
+												<c:choose>
+													<c:when test="${i.status eq '진행중'}">
+														<span class="ing">${i.status}</span>
+													</c:when>
+													<c:when test="${i.status eq '완료'}">
+														<span class="done">${i.status}</span>
+													</c:when>
+													<c:otherwise>
+														<span class="return">${i.status}</span>
+													</c:otherwise>
+												</c:choose>
 											</div>
 										</div>
 									</c:forEach>
