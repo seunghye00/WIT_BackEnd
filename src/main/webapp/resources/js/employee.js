@@ -6,7 +6,7 @@ $(document).ready(function () {
 		// emp_no 값을 가져옴
         var empNo = $('#emp_no').val(); 
         // 체크박스 상태 확인
-        var rememberMe = $('#remember_me').is(':checked'); 
+        var rememberMe = $('#remember_id').is(':checked'); 
         var formData = $(this).serialize();
 
         $.ajax({
@@ -42,7 +42,7 @@ $(document).ready(function () {
     // 아이디 입력 필드에 저장된 아이디 설정
         $('#emp_no').val(rememberedId); 
         // 체크박스 체크 상태 유지
-        $('#remember_me').prop('checked', true); 
+        $('#remember_id').prop('checked', true); 
     }
 
     // 관리자 페이지 신규 사원 등록 (사원번호 생성)

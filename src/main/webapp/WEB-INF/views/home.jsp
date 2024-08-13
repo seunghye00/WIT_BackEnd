@@ -32,8 +32,8 @@
 		<div class="employee_container">
 			<!-- 나중에 삭제 할 예정이긴 한데 아직 아무도 건들지 마세요! -->
 			<!-- <a href="/employee/register_form" class="insert_employee">신규 직원등록</a> -->
-			<input type="checkbox" id="remember_me" name="remember_me"> <label
-				for="remember_me">아이디 저장</label>
+			<input type="checkbox" id="remember_id" name="remember_id"> <label
+				for="remember_id">아이디 저장</label>
 		</div>
 	</div>
 </body>
