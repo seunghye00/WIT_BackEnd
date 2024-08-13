@@ -41,23 +41,8 @@
 							<button class="green docuSaveBtn docuLeaveSave" type="button">임시
 								저장</button>
 							<button class="red cancelWrite" type="button">취소</button>
-							<button class="grey refeBtn" type="button">참조선</button>
-							<div class="refeModal">
-								<ul>
-									<c:choose>
-										<c:when test="${refeList != NULL}">
-											<c:forEach items="${refeList}" var="i">
-												<c:set var="refeInfo" value="${fn:split(i, ' ')}" />
-												<li>${refeInfo[1]}${refeInfo[2]}</li>
-												<input type="hidden" name="refeList" value="${refeInfo[0]}">
-											</c:forEach>
-										</c:when>
-										<c:otherwise>
-											<li>참조선 없음</li>
-										</c:otherwise>
-									</c:choose>
-								</ul>
-							</div>
+							<button class="purple refeBtn" type="button">참조선</button>
+							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">
 							<div class="docuInfo">

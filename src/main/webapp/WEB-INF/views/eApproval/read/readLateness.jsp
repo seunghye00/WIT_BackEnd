@@ -32,6 +32,7 @@
 					</div>
 					<div class="sideBtnBox">
 						<button class="plusBtn sideBtn disabled">새 결재 진행</button>
+						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp" %>
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
@@ -40,24 +41,10 @@
 					<input type="hidden" name="document_seq" value="${docuSeq}">
 					<div class="document">
 						<div class="choiBox">
-							<button class="ok" type="button">결재 요청</button>
-							<button class="green" type="button">임시 저장</button>
-							<button class="red" type="button">취소</button>
-							<button class="grey refeBtn" type="button">참조선</button>
-							<div class="refeModal">
-								<ul>
-									<c:choose>
-										<c:when test="${refeList != NULL}">
-											<c:forEach items="${refeList}" var="i">
-												<li>${i.emp_no}</li>
-											</c:forEach>
-										</c:when>
-										<c:otherwise>
-											<li>참조선 없음</li>
-										</c:otherwise>
-									</c:choose>
-								</ul>
-							</div>
+							<button class="green" type="button">코멘트</button>
+							<button class="grey" type="button">목록</button>
+							<button class="purple refeBtn" type="button">참조선</button>
+							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">
 							<div class="docuInfo">

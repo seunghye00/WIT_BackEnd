@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>업무 기안 문서 열람</title>
+<title>지각 사유서 문서 결재</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
@@ -17,6 +17,7 @@
 <script defer src="/js/hsh.js"></script>
 <script defer src="/js/wit.js"></script>
 </head>
+
 <body>
 	<div class="container">
 		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
@@ -30,16 +31,18 @@
 						</a>
 					</div>
 					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn">새 결재 진행</button>
+						<button class="plusBtn sideBtn disabled">새 결재 진행</button>
 						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp" %>
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApprWrite">
-					<div class="mainTitle">문서 열람 ( 업무 기안 )</div>
+					<div class="mainTitle">문서 작성 ( 지각 사유서 )</div>
+					<input type="hidden" name="document_seq" value="${docuSeq}">
 					<div class="document">
 						<div class="choiBox">
-							<button class="green" type="button">코멘트</button>
+							<button class="ok" type="button">결재</button>
+							<button class="red" type="button">반려</button>
 							<button class="grey" type="button">목록</button>
 							<button class="purple refeBtn" type="button">참조선</button>
 							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
@@ -110,14 +113,13 @@
 									</table>
 								</div>
 							</div>
-							<div class="docuWrite docuRead docuProp">
+							<div class="docuWrite docuRead docuLateness">
+								<form id="docuContForm">
 									<table>
 										<thead>
 											<tr>
-												<th>시행일자</th>
-												<td><input type="date" value="${docuDetail.eff_date}"readonly></td>
-												<th>협조부서</th>
-												<td><input type="text" value="${docuDetail.dept_title}" readonly></td>
+												<th>지각 일자</th>
+												<td><input type="date" value="${docuDetail.late_date}" readonly></td>
 												<th>긴급</th>
 												<td>
 													<div>
@@ -127,21 +129,24 @@
 											</tr>
 											<tr>
 												<th>제목</th>
-												<td colspan="5"><input type="text" value="${docuInfo.title}" readonly></td>
+												<td colspan="3"><input type="text" value="${docuInfo.title}" readonly></td>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td colspan="6"><textarea readonly>${docuDetail.contents}</textarea></td>
+												<th>지각 사유</th>
+												<td colspan="3"><textarea readonly>${docuDetail.reason}</textarea></td>
 											</tr>
 										</tbody>
 									</table>
-								</div>
-								<div class="docuFiles">
+								</form>
+							</div>
+							<div class="docuFiles">
 									<label>🔗 파일 목록</label> <span class="uploadFiles"></span>
 								</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>

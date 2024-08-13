@@ -71,7 +71,7 @@ public class EAppprovalController {
 
 	// 해당 문서의 상세 정보를 열람하는데 필요한 정보들을 담아서 전달하는 메서드
 	@RequestMapping("readDocu")
-	public String readDocu(int docuSeq, Model model) throws Exception {
+	public String readDocu(int docuSeq, @RequestParam(required = false)String type, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -85,15 +85,36 @@ public class EAppprovalController {
 		switch (dto.getDocu_code()) {
 		case "M1":
 			model.addAttribute("docuDetail", serv.getPropDetail(docuSeq));
-			return "eApproval/read/readProp";
+			//해당 문서를 열람하려는 목적에 따라 경로 설정
+			if(type == null) {
+				return "eApproval/read/readProp";
+			} else if(type.equals("saved")) {
+				return "eApproval/save/saveProp";
+			} else if(type.equals("toAppr")) {
+				return "eApproval/appr/apprProp";
+			}
 		case "M2":
 			model.addAttribute("docuDetail", serv.getLeaveDetail(docuSeq));
 			// 해당 사원의 잔여 연차 갯수 조회 후 전달
 			model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
-			return "eApproval/read/readLeave";
+			//해당 문서를 열람하려는 목적에 따라 경로 설정
+			if(type == null) {
+				return "eApproval/read/readLeave";
+			} else if(type.equals("saved")) {
+				return "eApproval/save/saveLeave";
+			} else if(type.equals("toAppr")) {
+				return "eApproval/appr/apprLeave";
+			}	
 		case "M3":
 			model.addAttribute("docuDetail", serv.getLatenessDetail(docuSeq));
-			return "eApproval/read/readLateness";
+			//해당 문서를 열람하려는 목적에 따라 경로 설정
+			if(type == null) {
+				return "eApproval/read/readLateness";
+			} else if(type.equals("saved")) {
+				return "eApproval/save/saveLateness";
+			} else if(type.equals("toAppr")) {
+				return "eApproval/appr/apprLateness";
+			}
 		default:
 			// 추후 에러 페이지로 변경
 			return "redirect:/eApproval/home";
@@ -318,7 +339,6 @@ public class EAppprovalController {
 				serv.setApprLine(new ApprLineDTO(docuSeq, apprList[i], "임시 라인", (i + 1)));
 			}
 		}
-
 		// 문서의 세부 정보 입력
 		subDTO.setDocument_seq(dto.getDocument_seq());
 		serv.insertLateDocu(subDTO);
@@ -386,6 +406,13 @@ public class EAppprovalController {
 			}
 		}
 		return dto.getDocument_seq();
+	}
+	
+	// 임시 저장 페이지에서 지각 사유서 문서의 내용을 업데이트 하기 위한 메서드
+	@ResponseBody
+	@RequestMapping(value = { "/saved/Lateness", "/saved/tempLateness" }, produces = "application/json;charset=utf8")
+	public void updateLateness(int docuSeq, DocuDTO dto, LatenessDTO subDTO) throws Exception {
+		
 	}
 
 	// 결재 문서 작성 완료 시 파일을 업로드 하기 위한 메서드

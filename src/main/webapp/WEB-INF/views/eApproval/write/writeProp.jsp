@@ -41,10 +41,10 @@
 							<button class="ok propWrite" type="button">결재 요청</button>
 							<button class="green docuSaveBtn docuPropSave" type="button">임시 저장</button>
 							<button class="red cancelWrite" type="button">취소</button>
-							<button class="grey refeBtn" type="button">참조선</button>
+							<button class="purple refeBtn" type="button">참조선</button>
+							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">
-							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 							<div class="docuInfo">
 								<div class="infoTable">
 									<table>

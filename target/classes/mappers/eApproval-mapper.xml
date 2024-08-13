@@ -57,10 +57,12 @@
 	
 	<!-- 결재 라인에 대한 정보를 조회하는 쿼리문 -->
 	<select id="selectApprByDocuSeq" resultType="com.wit.dto.ApprLineDTO">
-		select a.*, name, role_title  from approvals_line a 
+		select a.*, name, role_title  
+		from approvals_line a 
 		join employee e on a.emp_no = e.emp_no 
 		join role r on e.role_code = r.role_code
 		where document_seq = ${docuSeq}
+		order by a.approval_order
 	</select>
 
 	<!-- 참조 라인에 대한 정보를 입력하는 쿼리문 -->
@@ -158,7 +160,7 @@
 	<select id="selectSaveList"
 		resultType="com.wit.dto.DocuInfoListDTO">
 		select
-		document_seq, write_date name, emer_yn, title
+		document_seq, write_date, name, emer_yn, title
 		from
 		documents d
 		join document_list dl on d.docu_code = dl.docu_code

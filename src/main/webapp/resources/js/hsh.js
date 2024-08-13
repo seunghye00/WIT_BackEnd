@@ -1,4 +1,4 @@
-// 새 결재 진행 클릭 시 문서 양식 선택 모달창 띄우는 함수
+// 새 결재 진행 클릭 시 문서 양식 선택 모달창 활성화
 $('#startApprBtn').on('click', () => {
 	
 	// 해당 버튼 비활성화
@@ -374,24 +374,39 @@ $('.propWrite').on('click', () => {
 
 // 지각 사유서 문서 작성 페이지에서 결재 요청 버튼 클릭 시
 $('.latenessWrite').on('click', () => {
-	// 문서에 대한 필수 입력 값을 입력 완료했는 지 확인
-	if($('#lateDay').val() == ""){	
-		alert('지각 일자를 입력해주세요');
-		$('#lateDay').focus();
-		return;
+	// 필수 입력값 검사 후 데이터 전송 
+	if(checkDocuCont('lateness')){
+		sendFormData('write/Lateness');
 	}
-	if($('#writeDocuTitle').val() == ""){	
-		alert('문서 제목을 입력해주세요');
-		$('#writeDocuTitle').focus();
-		return;
-	}
-	if($('#reason').val() == ""){	
-		alert('지각 사유를 입력해주세요');
-		$('#reason').focus();
-		return;
-	}
-	sendFormData('write/Lateness');
 });
+
+$('.realLatenessWrite').on('click', () => {
+	// 필수 입력값 검사 후 데이터 전송 
+	if(checkDocuCont('lateness')){
+		sendFormData('saved/Lateness');
+	}
+});
+
+// 해당 문서에서 필수 입력 값을 입력 완료했는 지 확인하는 메서드
+function checkDocuCont(docuName) {
+	if(docuName == 'lateness'){
+		if($('#lateDay').val() == ""){	
+			alert('지각 일자를 입력해주세요');
+			$('#lateDay').focus();
+			return false;
+		}
+		if($('#writeDocuTitle').val() == ""){	
+			alert('문서 제목을 입력해주세요');
+			$('#writeDocuTitle').focus();
+			return false;
+		}
+		if($('#reason').val() == ""){	
+			alert('지각 사유를 입력해주세요');
+			$('#reason').focus();
+			return false; 
+		}
+	}
+}
 
 // 휴가 신청서 문서 작성 페이지에서 결재 요청 버튼 클릭 시
 $('.leaveWrite').on('click', () => {

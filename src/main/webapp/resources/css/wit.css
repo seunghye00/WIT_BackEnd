@@ -2532,6 +2532,10 @@ button.green {
 	background-color: #168216;
 }
 
+button.purple {
+	background-color: #c058f0;
+}
+
 button:hover, button:active {
 	cursor: pointer;
 	background-color: #1268d4;
@@ -2547,6 +2551,10 @@ button.green:hover, button.green:active {
 
 button.grey:hover, button.grey:active {
 	background-color: #555;
+}
+
+button.purple:hover, button.purple:active {
+	background-color: #9733c5;
 }
 
 /* 비활성화된 버튼 스타일 */
@@ -2677,7 +2685,7 @@ span.return {
 	height: 28px;
 }
 
-.eApproval .docuList .listBox:not(.todoList, .upcomingList) .rows:not(.listHeader) .cols:last-child span {
+.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList) .rows:not(.listHeader) .cols:last-child span {
 	border-radius: 5px;
 	color: #fff;
 	padding: 5px;
@@ -3190,7 +3198,8 @@ span.return {
 	justify-content: center;
 }
 
-.eApprModal.apprChoiModal .choiCont .arrBtns button:hover, button:active
+.eApprModal.apprChoiModal .choiCont .arrBtns button:hover, 
+.eApprModal.apprChoiModal .choiCont .arrBtns button:active
 	{
 	background-color: #c0c0c0;
 }
@@ -3202,7 +3211,7 @@ span.return {
 }
 
 .eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(2) img,
-	button:nth-child(5) img {
+.eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(5) img {
 	rotate: 90deg;
 	width: 17px;
 }

@@ -31,6 +31,7 @@
 					</div>
 					<div class="sideBtnBox">
 						<button class="plusBtn sideBtn disabled">새 결재 진행</button>
+						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp" %>
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
@@ -38,26 +39,11 @@
 					<div class="mainTitle">문서 작성 ( 업무 기안 )</div>
 					<div class="document">
 						<div class="choiBox">
-							<button class="ok propWrite" type="button">결재 요청</button>
-							<button class="green docuSaveBtn docuPropSave" type="button">임시 저장</button>
-							<button class="red cancelWrite" type="button">취소</button>
-							<button class="grey refeBtn" type="button">참조선</button>
-							<div class="refeModal">
-								<ul>
-									<c:choose>
-										<c:when test="${refeList != NULL}">
-											<c:forEach items="${refeList}" var="i">
-												<c:set var="refeInfo" value="${fn:split(i, ' ')}" />
-												<li>${refeInfo[1]}${refeInfo[2]}</li>
-												<input type="hidden" name="refeList" value="${refeInfo[0]}">
-											</c:forEach>
-										</c:when>
-										<c:otherwise>
-											<li>참조선 없음</li>
-										</c:otherwise>
-									</c:choose>
-								</ul>
-							</div>
+							<button class="ok realLatenessWrite" type="button">결재 요청</button>
+							<button class="green docuSaveBtn docuLatenessSave" type="button">임시 저장</button>
+							<button class="red delDocu" type="button">삭제</button>
+							<button class="purple refeBtn" type="button">참조선</button>
+							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">
 							<div class="docuInfo">

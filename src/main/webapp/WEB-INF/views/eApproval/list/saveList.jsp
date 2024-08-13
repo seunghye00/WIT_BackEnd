@@ -64,6 +64,7 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="${docuList}" var="i">
+									<a href="/eApproval/readDocu?docuSeq=${i.document_seq}&type=saved">
 										<div class="rows">
 											<div class="cols">
 												<span><fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" /></span>
@@ -82,6 +83,7 @@
 												<span>${i.title}</span>
 											</div>
 										</div>
+										</a>
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>
