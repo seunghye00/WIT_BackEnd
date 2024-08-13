@@ -41,23 +41,8 @@
 							<button class="green docuSaveBtn docuLeaveSave" type="button">임시
 								저장</button>
 							<button class="red cancelWrite" type="button">취소</button>
-							<button class="grey refeBtn" type="button">참조선</button>
-							<div class="refeModal">
-								<ul>
-									<c:choose>
-										<c:when test="${refeList != NULL}">
-											<c:forEach items="${refeList}" var="i">
-												<c:set var="refeInfo" value="${fn:split(i, ' ')}" />
-												<li>${refeInfo[1]}${refeInfo[2]}</li>
-												<input type="hidden" name="refeList" value="${refeInfo[0]}">
-											</c:forEach>
-										</c:when>
-										<c:otherwise>
-											<li>참조선 없음</li>
-										</c:otherwise>
-									</c:choose>
-								</ul>
-							</div>
+							<button class="purple refeBtn" type="button">참조선</button>
+							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">
 							<div class="docuInfo">
@@ -128,11 +113,12 @@
 											<tr>
 												<th>휴가 종류</th>
 												<td><select name="leave_type" id="leaveType">
-														<option value="1">연차</option>
-														<option value="2">지각</option>
-														<option value="3">조퇴</option>
-														<option value="4">경조사</option>
-														<option value="5">병가</option>
+														<option value="연차">연차</option>
+														<option value="지각">지각</option>
+														<option value="조퇴">조퇴</option>
+														<option value="경조사">경조사</option>
+														<option value="병가">병가</option>
+														<option value="공가">공가</option>
 												</select></td>
 												<th>기간 및 일시</th>
 												<td colspan="2"><input type="date" id="startLeaveDay" name="start_date" min="${today}"> <span>~</span>
@@ -148,23 +134,47 @@
 											</tr>
 											<tr>
 												<th>반차 여부</th>
-												<td colspan="2"><span> <input type="checkbox"
-														id="startDay"> <label for="startDay">시작일</label>
-												</span> ( <span><input type="checkbox" id="startDayAM">
-														<label for="startDayAM">오전</label></span> <span><input
-														type="checkbox" id="startDayPM"> <label
-														for="startDayPM">오후</label></span> ) <br> <span> <input
-														type="checkbox" id="endDay"> <label for="endDay">종료일</label>
-												</span> ( <span><input type="checkbox" id="endDayAM">
-														<label for="endDayAM">오전</label></span> <span><input
-														type="checkbox" id="endDayPM"> <label
-														for="endDayPM">오후</label></span> )</td>
-												<th>연차 일수</th>
-												<td colspan="3"><span> 잔여 연차 :&nbsp;&nbsp;<input class="readOnly"
-														type="text" readonly>
-												</span> <span> 신청 연차 :&nbsp;&nbsp;<input type="text" class="readOnly"
-														readonly>
-												</span></td>
+                                                <td colspan="2">
+                                                	<span> 
+                                                		<input type="checkbox" id="startDay">
+                                                		<input type="hidden" id="startDayChecked" name="start_day_checked" value="Y"> 
+                                                		<label for="startDay">시작일</label>
+													</span> ( 
+													<span>
+														<input type="checkbox" id="startDayAM">
+														<input type="hidden" id="startDayAMChecked" name="start_day_am_checked" value="Y">
+														<label for="startDayAM">오전</label>
+													</span> 
+													<span>
+														<input type="checkbox" id="startDayPM">
+														<input type="hidden" id="startDayPMChecked" name="start_day_pm_checked" value="Y"> 
+														<label for="startDayPM">오후</label>
+													</span> ) <br> 
+													<span> 
+														<input type="checkbox" id="endDay">
+														<input type="hidden" id="endDayChecked" name="end_day_checked" value="Y"> 
+														<label for="endDay">종료일</label>
+													</span> ( 
+													<span>
+														<input type="checkbox" id="endDayAM">
+														<input type="hidden" id="endDayAMChecked" name="end_day_am_checked" value="Y">
+														<label for="endDayAM">오전</label>
+													</span> 
+													<span>
+														<input type="checkbox" id="endDayPM">
+														<input type="hidden" id="endDayPMChecked" name="end_day_pm_checked" value="Y"> 
+														<label for="endDayPM">오후</label>
+													</span> )
+												</td>
+                                                <th>연차 일수</th>
+                                                <td colspan="3">
+                                                	<span> 잔여 연차 :&nbsp;&nbsp;
+                                                		<input class="readOnly" type="text" value="${remaingLeaves}" id="remainingLeaves" readonly>
+                                                    </span> 
+                                                    <span> 신청 연차 :&nbsp;&nbsp;
+                                                    	<input type="text" id="applyLeaves" name="request_leave_days" class="readOnly" readonly>
+                                                    </span>
+                                                </td>
 											</tr>
 											<tr>
 												<th>제목</th>
