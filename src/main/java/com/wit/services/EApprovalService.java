@@ -12,6 +12,7 @@ import com.wit.dto.DocuInfoListDTO;
 import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
 import com.wit.dto.LeaveRequestDTO;
+import com.wit.dto.RefeLineDTO;
 import com.wit.dto.WorkPropDTO;
 
 @Service
@@ -93,5 +94,35 @@ public class EApprovalService {
 	// 해당 사원이 참조자인 문서 목록을 넘겨주기 위한 메서드
 	public List<DocuInfoListDTO> selectViewList(String empNo, String docuCode) {
 		return dao.selectViewList(empNo, docuCode);
+	}
+
+	// 해당 문서의 정보를 넘겨주기 위한 메서드
+	public DocuDTO getDocuInfo(int docuSeq) {
+		return dao.getDocuInfo(docuSeq);
+	}
+
+	// 해당 업무 기안 문서의 세부 정보를 넘겨주기 위한 메서드
+	public WorkPropDTO getPropDetail(int docuSeq) {
+		return dao.getPropDetail(docuSeq);
+	}
+
+	// 해당 휴가 신청서 문서의 세부 정보를 넘겨주기 위한 메서드
+	public LeaveRequestDTO getLeaveDetail(int docuSeq) {
+		return dao.getLeaveDetail(docuSeq);
+	}
+
+	// 해당 지각 사유서 문서의 세부 정보를 넘겨주기 위한 메서드
+	public LatenessDTO getLatenessDetail(int docuSeq) {
+		return dao.getLatenessDetail(docuSeq);
+	}
+
+	// 해당 문서의 결재 라인 정보를 넘겨주기 위한 메서드
+	public List<ApprLineDTO> getApprLine(int docuSeq) {
+		return dao.getApprLine(docuSeq);
+	}
+
+	// 해당 문서의 참조 라인 정보를 넘겨주기 위한 메서드
+	public List<RefeLineDTO> getRefeLine(int docuSeq) {
+		return dao.getRefeLine(docuSeq);
 	}
 }

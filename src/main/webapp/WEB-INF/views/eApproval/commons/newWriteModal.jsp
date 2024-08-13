@@ -27,17 +27,17 @@
 		</div>
 		<div class="arrBtns">
 			<button id="addAppr">
-				<img src="/img/toggle.png" alt="">
+				<img src="/img/toggle.png" alt="toggleIcon">
 			</button>
 			<button id="delAppr">
-				<img src="/img/toggle.png" alt="">
+				<img src="/img/toggle.png" alt="toggleIcon">
 			</button>
 			<div style="padding: 30px 0;"></div>
 			<button id="addRefe">
-				<img src="/img/toggle.png" alt="">
+				<img src="/img/toggle.png" alt="toggleIcon">
 			</button>
 			<button id="delRefe">
-				<img src="/img/toggle.png" alt="">
+				<img src="/img/toggle.png" alt="toggleIcon">
 			</button>
 		</div>
 		<div class="resultAppr">

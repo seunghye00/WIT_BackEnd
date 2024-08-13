@@ -73,6 +73,9 @@ public class FileUploadController {
 //    	역직렬화 string을 object로 바꾸기
     	Gson gson = new Gson();
     	int[] filesSeq = gson.fromJson(files_seq, int[].class);
+    	for (int i : filesSeq) {
+			System.out.println(i);
+		}
     	fserv.delete(filesSeq);
     	return null;
     }

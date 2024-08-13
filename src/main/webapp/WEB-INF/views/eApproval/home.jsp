@@ -39,7 +39,6 @@
 				</div>
 				<div class="sideContents eApproval">
 					<div class="mainTitle">전자 결재 홈</div>
-
 					<div class="docuList">
 						<div class="subTitle">
 							기안 진행 문서 <input type="checkbox" id="progInfo" hidden> <label
@@ -75,6 +74,7 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="${currentDocuList}" var="i">
+										<a href="/eApproval/readDocu?docuSeq=${i.document_seq}">
 										<div class="rows">
 											<div class="cols">
 												<span><fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" /></span>
@@ -93,9 +93,10 @@
 												<span>${i.title}</span>
 											</div>
 											<div class="cols">
-												<span>${i.status}</span>
+												<span class="ing">${i.status}</span>
 											</div>
 										</div>
+										</a>
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>
@@ -136,6 +137,7 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="${doneDocuList}" var="i">
+										<a href="/eApproval/readDocu?docuSeq=${i.document_seq}">
 										<div class="rows">
 											<div class="cols">
 												<span> <fmt:formatDate value="${i.write_date}"
@@ -154,9 +156,10 @@
 												<span>${i.title}</span>
 											</div>
 											<div class="cols">
-												<span>${i.status}</span>
+												<span class="done">${i.status}</span>
 											</div>
 										</div>
+										</a>
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>

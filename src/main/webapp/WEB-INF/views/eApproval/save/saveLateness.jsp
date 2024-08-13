@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>지각 사유서 문서 작성</title>
+<title>지각 사유서 문서 ( 임시 저장 )</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
@@ -32,35 +32,17 @@
 					</div>
 					<div class="sideBtnBox">
 						<button class="plusBtn sideBtn disabled">새 결재 진행</button>
+						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp" %>
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApprWrite">
-					<div class="mainTitle">문서 작성 ( 지각 사유서 )</div>
-					<input type="hidden" name="document_seq" value="${docuSeq}">
+					<div class="mainTitle">임시 저장 문서 ( 지각 사유서 )</div>
 					<div class="document">
 						<div class="choiBox">
-							<button class="ok latenessWrite" type="button">결재 요청</button>
-							<button class="green docuSaveBtn docuLatenessSave" type="button">임시
-								저장</button>
-							<button class="red cancelWrite" type="button">취소</button>
-							<button class="grey refeBtn" type="button">참조선</button>
-							<div class="refeModal">
-								<ul>
-									<c:choose>
-										<c:when test="${refeList != NULL}">
-											<c:forEach items="${refeList}" var="i">
-												<c:set var="refeInfo" value="${fn:split(i, ' ')}" />
-												<li>${refeInfo[1]}${refeInfo[2]}</li>
-												<input type="hidden" name="refeList" value="${refeInfo[0]}">
-											</c:forEach>
-										</c:when>
-										<c:otherwise>
-											<li>참조선 없음</li>
-										</c:otherwise>
-									</c:choose>
-								</ul>
-							</div>
+							<button class="latenessUpdate" type="button">결재 요청</button>
+							<%@ include file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
+							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">
 							<div class="docuInfo">
@@ -69,19 +51,21 @@
 										<tbody>
 											<tr>
 												<th>기안자</th>
-												<td>${empInfo.name}</td>
+												<td>${writerInfo.name}</td>
 											</tr>
 											<tr>
 												<th>소속</th>
-												<td>${empInfo.dept_title}</td>
+												<td>${writerInfo.dept_title}</td>
 											</tr>
 											<tr>
 												<th>기안일</th>
-												<td>${today}</td>
+												<td>
+													<fmt:formatDate value="${docuInfo.write_date}" pattern="yyyy-MM-dd HH:mm" />
+												</td>
 											</tr>
 											<tr>
 												<th>문서번호</th>
-												<td>${docuSeq}</td>
+												<td>${docuInfo.document_seq}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -100,24 +84,27 @@
 											<tr>
 												<th>직급</th>
 												<c:forEach items="${apprList}" var="i">
-													<c:set var="apprInfo" value="${fn:split(i, ' ')}" />
-													<td>${apprInfo[2]}</td>
+													<td>${i.role_title}</td>
 												</c:forEach>
 											</tr>
 											<tr>
 												<th>결재자</th>
 												<c:forEach items="${apprList}" var="i">
-													<c:set var="apprInfo" value="${fn:split(i, ' ')}" />
-													<td>${apprInfo[1]}<input type="hidden" name="apprList"
-														value="${apprInfo[0]}">
+													<td>
+														<c:if test="${i.status eq '결재 완료'}">
+															<img src="/img/icon/stamp.png" alt="approvedStamp"><br>
+														</c:if>
+														${i.name}
 													</td>
 												</c:forEach>
 											</tr>
 											<tr>
 												<th>결재일</th>
-												<td></td>
-												<td></td>
-												<td></td>
+												<c:forEach items="${apprList}" var="i">
+													<td>
+														<fmt:formatDate value="${i.approved_date}" pattern="yyyy-MM-dd HH:mm" />
+													</td>
+												</c:forEach>
 											</tr>
 										</tbody>
 									</table>
@@ -130,13 +117,12 @@
 										<thead>
 											<tr>
 												<th>지각 일자</th>
-												<td><input type="date" max="${today}" id="lateDay" name="late_date"></td>
+												<td><input type="date" value="${docuDetail.late_date}" max="${today}" id="lateDay" name="late_date"></td>
 												<th>긴급</th>
 												<td>
 													<div>
 														<input type="checkbox" id="emerCheck" value="Y"
-															name="emer_yn"> <label for="emerCheck">긴급
-															문서</label>
+															name="emer_yn" <c:if test="${docuInfo.emer_yn eq 'Y'}">checked</c:if>> <label for="emerCheck">긴급 문서</label>
 													</div>
 												</td>
 											</tr>
@@ -144,14 +130,14 @@
 												<th>제목</th>
 												<td colspan="3"><input type="text" name="title"
 													id="writeDocuTitle" oninput='handleOnInput(this, 33)'
-													data-label="문서 제목"></td>
+													data-label="문서 제목" value="${docuInfo.title}"></td>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
 												<th>지각 사유</th>
 												<td colspan="3"><textarea name="reason" id="reason" oninput='handleOnInput(this, 1333)'
-														data-label="문서 내용"></textarea></td>
+														data-label="문서 내용">${docuDetail.reason}</textarea></td>
 											</tr>
 										</tbody>
 									</table>
