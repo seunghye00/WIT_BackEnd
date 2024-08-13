@@ -331,7 +331,6 @@
 		d.dept_title, r.role_title, phone, email
 		from employee em
 		left join
-		left join
 	        dept d on em.dept_code = d.dept_code
 	    left join
 	        role r on em.role_code = r.role_code

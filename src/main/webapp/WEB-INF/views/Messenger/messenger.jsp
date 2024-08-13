@@ -15,95 +15,9 @@
 <body>
 <!-- 공통영역 -->
     <div class="container">
-        <div class="sideBar">
-            <div class="top">
-                <i class="bx bx-menu" id="btn"></i>
-            </div>
-            <div class="user">
-                <img src="../images/logo/WIT_logo1.png" alt="logo" class="userImg">
-                <div class="nickName">
-                    <p class="bold">Wit Works</p>
-                    <p></p>
-                </div>
-            </div>
-
-            <ul>
-                <li>
-                    <a href="#">
-                        <i class='bx bxs-home-alt-2'></i>
-                        <span class="navItem">홈</span>
-                    </a>
-                    <span class="toolTip">홈</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bx-paperclip'></i>
-                        <span class="navItem">주소록</span>
-                    </a>
-                    <span class="toolTip">주소록</span>
-                </li>
-                <li>
-                    <a href="board2.html">
-                        <i class="bx bxs-grid-alt"></i>
-                        <span class="navItem">게시판</span>
-                    </a>
-                    <span class="toolTip">게시판</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bx-calendar-alt'></i>
-                        <span class="navItem">캘린더</span>
-                    </a>
-                    <span class="toolTip">캘린더</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bxs-message-dots'></i>
-                        <span class="navItem">메신저</span>
-                    </a>
-                    <span class="toolTip">메신저</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bx-clipboard'></i>
-                        <span class="navItem">전자결재</span>
-                    </a>
-                    <span class="toolTip">전자결재</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bxs-briefcase-alt-2'></i>
-                        <span class="navItem">근태관리</span>
-                    </a>
-                    <span class="toolTip">근태관리</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bxs-check-square'></i>
-                        <span class="navItem">예약</span>
-                    </a>
-                    <span class="toolTip">예약</span>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class='bx bx-sitemap'></i>
-                        <span class="navItem">조직도</span>
-                    </a>
-                    <span class="toolTip">조직도</span>
-                </li>
-
-            </ul>
-        </div>
-        <!-- 공통역역 끝 -->
-
+    	<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>	
         <div class="main-content">
-            <div class="header">
-                <span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
-                <!--마이페이지로 이동-->
-                <span class="myName">
-                    <img src="../images/프로필.jpg"><a href=" #">문경원 부장</a></span>
-                <span class="logOut"><a href="#">LogOut</a></span>
-            </div>
+    		<%@ include file="/WEB-INF/views/Includes/header.jsp" %>	
             <div class="contents">
                 <div class="sideAbout">
                     <div class="sideTxt">
@@ -288,7 +202,6 @@
             data: { emp_no: emp_no },
             success: function(employee) {
                 // 프로필 정보를 업데이트
-                console.log(employee);
                 $('#profilePopup .profileTit img').attr('src', 'images/프로필.jpg'); // 이미지 경로는 실제 데이터에 맞게 수정
                 $('#profilePopup .profileTit span').text(employee.NAME);
                 $('#profileDept').text(employee.DEPT_TITLE);
@@ -363,38 +276,37 @@
 	
 	// 채팅방 조회
 	function loadChatList() {
-        $.ajax({
-            url: '/chatroom/myChatRooms',
-            method: 'GET',
-            success: function(response) {
-                var chatList = $('#chatList');
-                chatList.empty(); // 기존 목록 초기화
-
-                response.forEach(function(chatRoom) {
-                    var $listItem = $('<li>');
-                    var $link = $('<a>', {
-                        href: 'javascript:;',
-                        'data-chat-room-seq': chatRoom.CHAT_ROOM_SEQ,
-                        click: function() {
-                            showChatRoomPopup(chatRoom.CHAT_ROOM_SEQ);
-                        }
-                    });
-
-                    var $chatTitle = $('<div>', { class: 'chatTitle' });
-                    var $spanName = $('<span>').text(chatRoom.CHAT_ROOM_NAME);
-                    var $spanNotification = $('<span>', { class: 'notificationCount' }).text(chatRoom.IS_READ);
-
-                    $chatTitle.append($spanName).append($spanNotification);
-                    $link.append($chatTitle);
-                    $listItem.append($link);
-                    chatList.append($listItem);
-                });
-            },
-            error: function(error) {
-                console.error("Error loading employee list:", error);
-            }
-        });
-    }
+	    $.ajax({
+	        url: '/chatroom/myChatRooms',
+	        method: 'GET',
+	        success: function(response) {
+	            var chatList = $('#chatList');
+	            chatList.empty(); // 기존 목록 초기화
+	
+	            response.forEach(function(chatRoom) {
+	                var $listItem = $('<li>');
+	                var $link = $('<a>', {
+	                    href: 'javascript:;',
+	                    'data-chat-room-seq': chatRoom.CHAT_ROOM_SEQ,
+	                    click: function() {
+	                        showChatRoomPopup(chatRoom.CHAT_ROOM_SEQ);
+	                    }
+	                });
+	
+	                var $chatTitle = $('<div>', { class: 'chatTitle' });
+	                var $spanName = $('<span>').text(chatRoom.CHAT_ROOM_NAME);
+	
+	                $chatTitle.append($spanName);
+	                $link.append($chatTitle);
+	                $listItem.append($link);
+	                chatList.append($listItem);
+	            });
+	        },
+	        error: function(error) {
+	            console.error("Error loading chat rooms:", error);
+	        }
+	    });
+	}
 	
 	
 	// 채팅방 팝업 함수
@@ -457,6 +369,7 @@
 	        success: function(response) {
 	            if (response == "success") {
 	                alert("채팅방에서 나갔습니다.");
+	                broadcastUserLeft(chat_room_seq);
 	                closeChatRoomPopup();
 	                location.reload();
 	            } else {
@@ -468,7 +381,21 @@
 	        }
 	    });
 	}
-
+	
+	// 사용자가 채팅방을 나갔다는 알림을 전송
+	function broadcastUserLeft(chat_room_seq) {
+	    $.ajax({
+	        url: '/chatroom/broadcastUserLeft',
+	        method: 'POST',
+	        data: { chat_room_seq: chat_room_seq },
+	        success: function(response) {
+	            console.log('User left message broadcasted');
+	        },
+	        error: function(error) {
+	            console.error("Error broadcasting user left message:", error);
+	        }
+	    });
+	}
 	// 채팅방 팝업 닫는 함수
 	function closeChatRoomPopup() {
 	    $('#chatRoomPopup').css('display', 'none');
@@ -527,7 +454,8 @@
 	            success: function(response) {
 	                if (response === 'success') {
 	                    alert('단체 채팅방이 생성되었습니다.');
-	                    location.reload();
+	                    toggleView('chat');
+		                loadChatList();
 	                    // 여기서 채팅방으로 리다이렉트하거나 UI 업데이트를 할 수 있습니다.
 	                } else {
 	                    alert('채팅방 생성에 실패했습니다.');
@@ -558,7 +486,6 @@
 
 	    // 해당 chatRoomSeq를 가진 li 요소에 active 클래스 추가
 	    var activeLi = document.querySelector('.chatList li a[data-chat-room-seq="' + chat_room_seq + '"]');
-	    console.log(activeLi);
 	    if (activeLi) {
 	        activeLi.classList.add('active');
 	    }
@@ -582,7 +509,6 @@
 	        let data = JSON.parse(event.data);
 	        if (data.loginID) {
 	            // 서버에서 보낸 로그인 ID 저장
-	            console.log(data.loginID);
 	            currentLoginID = data.loginID;
 
 	            // 이전 채팅 내역 처리
@@ -621,29 +547,32 @@
 	    }
 	}
 
+	// 메시지를 화면에 추가하고, 읽음 처리하는 함수
 	function appendMessage(data, type) {
-		let chatBody = $("#chatBody");
-        let mbox = $("<div>").addClass("text_box");
-        let id_Box = $("<div>").addClass("sender");
-        let time_Box = $("<div>").addClass("timeBox");
-        let message = $("<div>").addClass("message");
-        // 메시지 데이터를 HTML로 삽입
-        mbox.html(data.message);
-        time_Box.text(data.send_time);
+	    let chatBody = $("#chatBody");
+	    let mbox = $("<div>").addClass("text_box");
+	    let id_Box = $("<div>").addClass("sender");
+	    let time_Box = $("<div>").addClass("timeBox");
+	    let message = $("<div>").addClass("message");
 
-        if (type === "received") {
-            message.addClass("received");
-            id_Box.text(data.sender + ":"); // sender로 변경
-            message.append(id_Box);
-        } else {
-            message.addClass("sent");
-        }
+	    // 메시지 데이터를 HTML로 삽입
+	    mbox.html(data.message);
+	    time_Box.text(data.send_time);
+	    if (type === "received") {
+	        message.addClass("received");
+	        id_Box.text(data.sender + ":");
+	        message.append(id_Box);
+	    } else {
+	        message.addClass("sent");
+	    }
 
-        message.append(mbox);
-        message.append(time_Box);
-        chatBody.append(message);
-        chatBody.scrollTop(chatBody[0].scrollHeight);
-    }
+	    message.append(mbox);
+	    message.append(time_Box);
+	    chatBody.append(message);
+	    
+	    // 스크롤을 최신 메시지로 이동
+	    chatBody.scrollTop(chatBody[0].scrollHeight);
+	}
 
     function displayStatusMessage(data) {
         let statusMessage = $("<div>").addClass("message status");
@@ -668,7 +597,6 @@
 	        const messageData = {
 	            message: messageHTML
 	        };
-	        console.log('Sending message:', messageData); // 디버깅 로그 추가
 	        webSocket.send(JSON.stringify(messageData));
 	        messageInput.innerHTML = '';
 	    }
@@ -715,7 +643,6 @@
 	        alert('No file selected.');
 	        return;
 	    }
-	    console.log('Upload fileToSend:', fileToSend);
 	    const formData = new FormData();
 	    formData.append('file', fileToSend);
 
@@ -839,6 +766,8 @@
 	    img.style.maxHeight = '100px'
 	    messageInput.appendChild(img)
 	}
+	
+	// 채팅 읽은 메시지 숫자 파악
 	
 	</script>
 </body>
