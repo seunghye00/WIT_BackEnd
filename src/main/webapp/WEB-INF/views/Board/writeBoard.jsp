@@ -119,6 +119,7 @@
 			</div>
 			<script>
 				var filesLength = ${ filesSize };
+				let defaultFileLength = ${ filesSize };
 			</script>
 		</body>
 
