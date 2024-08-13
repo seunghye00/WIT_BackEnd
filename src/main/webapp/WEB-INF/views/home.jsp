@@ -25,15 +25,16 @@
 				href="/employee/find_PW" class="find_pw">PW 찾기</a>
 		</div>
 		<form id="loginForm" action="/employee/login" method="post">
-			<input type="text" id="emp_no" name="emp_no" placeholder="User ID" required>
-			<input type="password" name="pw" placeholder="User PW" required>
+			<input type="text" id="emp_no" name="emp_no" placeholder="User ID"
+				required> <input type="password" name="pw"
+				placeholder="User PW" required>
 			<button type="submit">Login</button>
 		</form>
 		<div class="employee_container">
 			<!-- 나중에 삭제 할 예정이긴 한데 아직 아무도 건들지 마세요! -->
 			<!-- <a href="/employee/register_form" class="insert_employee">신규 직원등록</a> -->
-			<input type="checkbox" id="remember_id" name="remember_id"> <label
-				for="remember_id">아이디 저장</label>
+			<label for="remember_id">아이디 저장</label> <input type="checkbox"
+				id="remember_id" name="remember_id">
 		</div>
 	</div>
 </body>
