@@ -20,27 +20,18 @@ public class ChatDAO {
     public int insertChat(ChatDTO dto) {
         return mybatis.insert("chat.insertChat", dto);
     }
-
+    
+    // 메시지를 읽음 처리
+    public void updateReadCount(String chatRoomSeq, String name) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chat_room_seq", Integer.parseInt(chatRoomSeq));
+        params.put("name", name);
+        mybatis.update("chat.updateReadCount", params);
+    }
+    
     // 채팅 내역 출력
     public List<ChatDTO> chatListByRoom(int chat_room_seq) {
         return mybatis.selectList("chat.chatListByRoom", chat_room_seq);
-    }
-
-    // 채팅방의 읽음 상태 업데이트
-    public void updateChatRoomReadStatus(int chatRoomSeq, int isRead) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("chatRoomSeq", chatRoomSeq);
-        params.put("isRead", isRead);
-        mybatis.update("chat.updateChatRoomReadStatus", params);
-    }
-    
-    // 채팅 읽음 상태 업데이트
-    public void markMessagesAsRead(String chatRoomSeq, String empNo) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("chatRoomSeq", chatRoomSeq);
-        params.put("empNo", empNo);
-
-        mybatis.update("chat.markMessagesAsRead", params);
     }
 
 }
