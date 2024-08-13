@@ -14,9 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.wit.commons.BoardConfig;
 import com.wit.dto.BoardDTO;
 import com.wit.dto.BoardFilesDTO;
 import com.wit.dto.EmployeeDTO;
@@ -45,16 +47,32 @@ public class BoardController {
 	private ReplyService rs;
 	
 	// 게시판으로 이동
+	
+	// RequestBody는 객체 받을 때 쓰는 거고 
+	// RequesetParam(defaultValue = ""):값이 없을 때 기본값 설정.
 	@RequestMapping("/list")
-	public String list(Model model) throws Exception {
+	public String list(Model model,@RequestParam(defaultValue = "") String searchTarget,
+			@RequestParam(defaultValue = "") String sortTarget,
+			@RequestParam(defaultValue = "") String searchTxt,
+			@RequestParam(defaultValue = "1") int cpage) throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
-		List<BoardDTO> boardList = bserv.list();
+		List<BoardDTO> boardList = bserv.list(searchTxt, searchTarget, sortTarget, cpage);
 
 		EmployeeDTO employee = bserv.employeeInfo(empNo);
-
+		
+		model.addAttribute("searchTarget",searchTarget);
+		model.addAttribute("sortTarget",sortTarget);
+		model.addAttribute("searchTxt",searchTxt);
+		model.addAttribute("cpage",cpage);
 		model.addAttribute("list", boardList);
 		model.addAttribute("employee", employee);
-
+		
+		// 검색포함 전체 게시글 개수
+		model.addAttribute("record_total_count",bserv.boardCount(searchTxt, searchTarget) );
+		// 한 페이지에 보여줄 게시글 개수
+		model.addAttribute("record_count_per_page",BoardConfig.recordCountPerPage);
+		// navi 개수
+		model.addAttribute("navi_count_per_page",BoardConfig.naviCountPerPage);
 		return "Board/board";
 	}
 
@@ -86,7 +104,7 @@ public class BoardController {
 
 	// 게시물 상세 조회
 	@RequestMapping("detail")
-	public String detail(int board_seq, HttpSession session, Model model) throws Exception {
+	public String detail(int board_seq, Model model) throws Exception {
 
 		BoardDTO board = bserv.detailBoard(board_seq);
 		List<BoardFilesDTO> files = fserv.detailFile(board_seq);

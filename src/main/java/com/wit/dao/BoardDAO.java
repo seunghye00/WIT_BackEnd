@@ -1,6 +1,7 @@
 package com.wit.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,13 @@ public class BoardDAO {
 	}
 
 	// 게시물 조회
-	public List<BoardDTO> list() {
-		return mybatis.selectList("board.list");
+	public List<BoardDTO> list(Map<String, Object> maps) {
+		return mybatis.selectList("board.list", maps);
+	}
+	
+	// 게시글 개수
+	public int boardCount(Map<String, Object> maps) {
+		return mybatis.selectOne("board.boardCount",maps);
 	}
 
 	// 게시물 상세 조회

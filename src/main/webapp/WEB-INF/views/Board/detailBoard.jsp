@@ -146,7 +146,7 @@
 										<div class="detailCen" contenteditable="false">${board.contents}</div>
 										<div class="docuFiles" style="display: none;">
 											<label for="file">🔗 파일 선택</label>
-
+											`
 											<span class="uploadFiles"></span>
 
 										</div>
@@ -279,13 +279,18 @@
 											<div class="reportSort">
 												<div class="sort">신고 사유</div>
 												<div class="selectSort">
-													<select class="form-select form-select-sm"
-														aria-label="Small select example">
-														<option selected>욕설 및 비방</option>
-														<option value="1">스팸 및 광고</option>
-														<option value="2">음란물 및 부적절한 콘텐츠
-														</option>
-													</select>
+													<form action="/report/insert" id="reportForm">
+														<select class="form-select form-select-sm"
+															aria-label="Small select example" name="target">
+															<option value="1" selected>욕설 및 비방</option>
+															<option value="2">스팸 및 광고</option>
+															<option value="3">음란물 및 부적절한 콘텐츠
+															</option>
+														</select>
+														<input type="hidden" name="board_seq"
+															value="${board.board_seq}">
+
+													</form>
 												</div>
 											</div>
 										</div>
@@ -294,7 +299,8 @@
 												<button type="button" class="btn btn-primary"
 													id="reportClose">닫기</button>
 											</a> <a href="#">
-												<button type="button" class="btn btn-danger" id="report">신고하기</button>
+												<button type="button" class="btn btn-danger"
+													id="reportInsert">신고하기</button>
 											</a>
 										</div>
 									</div>
@@ -309,6 +315,7 @@
 
 				<script>
 					// JSP에서 계산된 파일의 길이를 JavaScript로 전달합니다.
+					let defaultFileLength = ${ filesSize };
 					var filesLength = ${ filesSize };
 					console.log(filesLength);
 					// 삭제 이미지 클릭시 form 제출
@@ -337,9 +344,11 @@
 						console.log(e.target);
 						console.log($(e.target).parent());
 
+						defaultFileLength--
 						filesLength--;
 						fileArr.push($(e.target).data("seq"));
 						$(e.target).parent().hide();
+						console.log(fileArr)
 					})
 
 					$(document).ready(function () {
@@ -378,6 +387,7 @@
 							if (fileArr.length > 0) {
 								$.ajax({
 									url: "/uploadImage/delete",
+									type: "get",
 									data: {
 										// 직렬화: object -> String으로 바꿔주는 방법
 										files_seq: JSON.stringify(fileArr)
