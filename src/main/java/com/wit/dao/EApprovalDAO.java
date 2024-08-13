@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
 import com.wit.dto.LeaveRequestDTO;
+import com.wit.dto.RefeLineDTO;
 import com.wit.dto.ApprLineDTO;
 import com.wit.dto.DocuDTO;
 import com.wit.dto.DocuInfoListDTO;
@@ -130,6 +131,36 @@ public class EApprovalDAO {
 		params.put("empNo", empNo);
 		params.put("docuCode", docuCode);
 		return mybatis.selectList("eApproval.selectViewList", params);
+	}
+
+	// 해당 문서의 정보를 넘겨주기 위한 메서드
+	public DocuDTO getDocuInfo(int docuSeq) {
+		return mybatis.selectOne("eApproval.selectByDocuSeq", docuSeq);
+	}
+
+	// 해당 업무 기안 문서의 세부 정보를 넘겨주기 위한 메서드
+	public WorkPropDTO getPropDetail(int docuSeq) {
+		return mybatis.selectOne("eApproval.selectPropByDocuSeq", docuSeq);
+	}
+
+	// 해당 휴가 신청서 문서의 세부 정보를 넘겨주기 위한 메서드
+	public LeaveRequestDTO getLeaveDetail(int docuSeq) {
+		return mybatis.selectOne("eApproval.selectLeaveByDocuSeq", docuSeq);
+	}
+
+	// 해당 지각 사유서 문서의 세부 정보를 넘겨주기 위한 메서드
+	public LatenessDTO getLatenessDetail(int docuSeq) {
+		return mybatis.selectOne("eApproval.selecLatenesstByDocuSeq", docuSeq);
+	}
+
+	// 해당 문서의 결재 라인 정보를 넘겨주기 위한 메서드
+	public List<ApprLineDTO> getApprLine(int docuSeq) {
+		return mybatis.selectList("selectApprByDocuSeq", docuSeq);
+	}
+
+	// 해당 문서의 참조 라인 정보를 넘겨주기 위한 메서드
+	public List<RefeLineDTO> getRefeLine(int docuSeq) {
+		return mybatis.selectList("selectRefeByDocuSeq", docuSeq);
 	}
 
 }

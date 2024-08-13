@@ -8,7 +8,13 @@ public class LeaveRequestDTO {
 	private String leave_type;
 	private Date start_date;
 	private Date end_date;
-	private String half_day_yn;
+	private String start_day_checked;
+	private String start_day_am_checked;
+	private String start_day_pm_checked;
+	private String end_day_checked;
+	private String end_day_am_checked;
+	private String end_day_pm_checked;
+	private float request_leave_days;
 	private String reason;
 	public int getDocument_seq() {
 		return document_seq;
@@ -34,11 +40,47 @@ public class LeaveRequestDTO {
 	public void setEnd_date(Date end_date) {
 		this.end_date = end_date;
 	}
-	public String getHalf_day_yn() {
-		return half_day_yn;
+	public String getStart_day_checked() {
+		return start_day_checked;
 	}
-	public void setHalf_day_yn(String half_day_yn) {
-		this.half_day_yn = half_day_yn;
+	public void setStart_day_checked(String start_day_checked) {
+		this.start_day_checked = start_day_checked;
+	}
+	public String getStart_day_am_checked() {
+		return start_day_am_checked;
+	}
+	public void setStart_day_am_checked(String start_day_am_checked) {
+		this.start_day_am_checked = start_day_am_checked;
+	}
+	public String getStart_day_pm_checked() {
+		return start_day_pm_checked;
+	}
+	public void setStart_day_pm_checked(String start_day_pm_checked) {
+		this.start_day_pm_checked = start_day_pm_checked;
+	}
+	public String getEnd_day_checked() {
+		return end_day_checked;
+	}
+	public void setEnd_day_checked(String end_day_checked) {
+		this.end_day_checked = end_day_checked;
+	}
+	public String getEnd_day_am_checked() {
+		return end_day_am_checked;
+	}
+	public void setEnd_day_am_checked(String end_day_am_checked) {
+		this.end_day_am_checked = end_day_am_checked;
+	}
+	public String getEnd_day_pm_checked() {
+		return end_day_pm_checked;
+	}
+	public void setEnd_day_pm_checked(String end_day_pm_checked) {
+		this.end_day_pm_checked = end_day_pm_checked;
+	}
+	public float getRequest_leave_days() {
+		return request_leave_days;
+	}
+	public void setRequest_leave_days(float request_leave_days) {
+		this.request_leave_days = request_leave_days;
 	}
 	public String getReason() {
 		return reason;
@@ -46,14 +88,21 @@ public class LeaveRequestDTO {
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
-	public LeaveRequestDTO(int document_seq, String leave_type, Date start_date, Date end_date, String half_day_yn,
-			String reason) {
+	public LeaveRequestDTO(int document_seq, String leave_type, Date start_date, Date end_date,
+			String start_day_checked, String start_day_am_checked, String start_day_pm_checked, String end_day_checked,
+			String end_day_am_checked, String end_day_pm_checked, float request_leave_days, String reason) {
 		super();
 		this.document_seq = document_seq;
 		this.leave_type = leave_type;
 		this.start_date = start_date;
 		this.end_date = end_date;
-		this.half_day_yn = half_day_yn;
+		this.start_day_checked = start_day_checked;
+		this.start_day_am_checked = start_day_am_checked;
+		this.start_day_pm_checked = start_day_pm_checked;
+		this.end_day_checked = end_day_checked;
+		this.end_day_am_checked = end_day_am_checked;
+		this.end_day_pm_checked = end_day_pm_checked;
+		this.request_leave_days = request_leave_days;
 		this.reason = reason;
 	}
 	public LeaveRequestDTO() {

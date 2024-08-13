@@ -2,7 +2,7 @@ package com.wit.dto;
 
 import java.sql.Timestamp;
 
-//전자 결재 문서 양식의 공통으로 입력되는 데이터만 보관하는 DTO 
+// 전자 결재 문서 양식의 공통으로 입력되는 데이터만 보관하는 DTO 
 public class DocuDTO {
 	private int document_seq;
 	private String emp_no;
