@@ -1,26 +1,49 @@
 $(document).ready(function () {
-	// 로그인
+    // 로그인
     $('#loginForm').on('submit', function (e) {
         e.preventDefault()
 
-        var formData = $(this).serialize()
+		// emp_no 값을 가져옴
+        var empNo = $('#emp_no').val(); 
+        // 체크박스 상태 확인
+        var rememberMe = $('#remember_id').is(':checked'); 
+        var formData = $(this).serialize();
+
         $.ajax({
             type: 'POST',
             url: '/employee/login',
             data: formData,
             success: function (response) {
-                console.log(response)
+                console.log(response);
                 if (response.success) {
-                    window.location.href = '/employee/main'
+                		// empNo가 유효한지 확인
+                    if (rememberMe && empNo) { 
+                        // 체크박스가 체크된 경우 로컬 스토리지에 아이디 저장
+                        localStorage.setItem('rememberedId', empNo);
+                    } else {
+                        // 체크박스가 체크되지 않은 경우 로컬 스토리지에서 아이디 제거
+                        localStorage.removeItem('rememberedId');
+                    }
+
+                    window.location.href = '/employee/main';
                 } else {
-                    alert('ID 및 PW를 확인 해주세요.')
+                    alert('ID 및 PW를 확인 해주세요.');
                 }
             },
             error: function () {
-                alert('로그인 중 오류가 발생했습니다.')
+                alert('로그인 중 오류가 발생했습니다.');
             },
-        })
-    })
+        });
+    });
+
+    // 페이지 로드 시 로컬 스토리지에서 아이디 불러오기
+    var rememberedId = localStorage.getItem('rememberedId');
+    if (rememberedId) {
+    // 아이디 입력 필드에 저장된 아이디 설정
+        $('#emp_no').val(rememberedId); 
+        // 체크박스 체크 상태 유지
+        $('#remember_id').prop('checked', true); 
+    }
 
     // 관리자 페이지 신규 사원 등록 (사원번호 생성)
     var departmentCodes = {
