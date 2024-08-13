@@ -2689,7 +2689,8 @@ span.return {
 	height: 28px;
 }
 
-.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList) .rows:not(.listHeader) .cols:last-child span {
+.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList) .rows:not(.listHeader) .cols:last-child span
+	{
 	border-radius: 5px;
 	color: #fff;
 	padding: 5px;
@@ -3203,8 +3204,7 @@ span.return {
 	justify-content: center;
 }
 
-.eApprModal.apprChoiModal .choiCont .arrBtns button:hover, 
-.eApprModal.apprChoiModal .choiCont .arrBtns button:active
+.eApprModal.apprChoiModal .choiCont .arrBtns button:hover, .eApprModal.apprChoiModal .choiCont .arrBtns button:active
 	{
 	background-color: #c0c0c0;
 }
@@ -3216,7 +3216,7 @@ span.return {
 }
 
 .eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(2) img,
-.eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(5) img {
+	.eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(5) img {
 	rotate: 90deg;
 	width: 17px;
 }
@@ -3358,8 +3358,8 @@ span.return {
 }
 
 .eApproval .docuList.docuBox .listBox {
-    flex: 9;
-    border-bottom: 2px solid #888888;
+	flex: 9;
+	border-bottom: 2px solid #888888;
 }
 
 .eApproval .docuList.docuBox .listBox .rows .cols {
@@ -4014,6 +4014,18 @@ span.return {
 .sideContents.reservation {
 	gap: 20px;
 }
+.sideContents.meetingRooms {
+	gap: unset;
+}
+.sideContents.meetingRooms .mainTitle {
+	align-items: flex-end;
+	gap: 20px;
+}
+
+.sideContents.meetingRooms .mainTitle span {
+	font-size: 18px;
+	color: #666;
+}
 
 .sideContents.reservation .reservBox {
 	max-height: 650px;
@@ -4132,7 +4144,7 @@ span.return {
 	border: 1px solid #ccc;
 }
 
-#calendarText {
+.modal .calendarAdd textarea {
 	margin-top: 7px;
 	width: 100%;
 	height: 150px;

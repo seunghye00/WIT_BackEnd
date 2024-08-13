@@ -196,10 +196,15 @@ public class EmployeeService {
 	public String getName(String empNo) {
 		return dao.getName(empNo);
 	}
-	
+
+	// 해당 사번을 가진 사원의 이름 조회
+	public String getDept(String empNo) {
+		return dao.getDept(empNo);
+	}
+
 	// 메신저 emp_no 이름으로 변경
 	@Transactional
 	public String getEmployeeName(String emp_no) {
-	    return dao.getEmployeeName(emp_no);
+		return dao.getEmployeeName(emp_no);
 	}
 }
