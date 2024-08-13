@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="vehicleBooking">
+	<insert id="vehicleBookingInsert" parameterType="com.wit.dto.VehicleBookingDTO">
+		insert into vehicle_booking
+		values (
+		vehicle_booking_seq.nextval,
+		#{emp_no},
+		#{vehicle_seq},
+		#{start_date},
+		#{end_date},
+		#{purpose}
+		)
+	</insert>
+	
+	<!-- 차량별 예약 조회 -->
+	<select id="reservVehicle" resultType="com.wit.dto.VehiclesDTO">
+		select * from vehicles where vehicle_seq = #{vehicle_seq}
+	</select>
+	
+	<select id="getAll" resultType="com.wit.dto.VehicleBookingDTO">
+		select * from vehicle_booking where vehicle_seq = #{vehicleSeq}
+	</select>
+</mapper>

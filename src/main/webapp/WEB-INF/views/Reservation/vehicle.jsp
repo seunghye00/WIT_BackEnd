@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
 <script defer src="/js/reserv.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
 <script defer src="/js/wit.js"></script></head></head>
 
 <body>
@@ -23,7 +25,7 @@
             <div class="contents">
                 <%@ include file="/WEB-INF/views/Reservation/commons/sideToggle.jsp"%>
                 <div class="sideContents reservation vehicles">
-                    <div class="mainTitle">차량 [ BWM X6_9688 ]</div>
+                    <div class="mainTitle" >차량 [ ${vehicle.name}_${vehicle.license_plate} ]</div>
                     <div class="reservBox">
                         <div class="calendar" id="calendar"></div>
                     </div>
@@ -35,32 +37,38 @@
             <div class="modalContent">
                 <h1>차량 예약<span class="modalClose">&times</span></h1>
                 <div class="calendarAdd">
+                <form id="vehicleForm" action="/reservation/saveVehicle" method="post">
                     <ul>
                         <li>
                             <span>차량 명</span>
-                            <div><input type="text" value="BMW X6" readonly></div>
+                            <div><input type="text" id="vehicleName" value="${vehicle.name}" readonly></div>
                         </li>
                         <li>
                             <span>예약 기간</span>
-                            <div><input type="date" class="startDate dateInput">&nbsp;&nbsp;<input type="time"
-                                    class="startDate dateInput">&nbsp;&nbsp;~&nbsp;&nbsp;<input type="date"
-                                    class="endDate dateInput">&nbsp;&nbsp;<input type="time" class="endDate dateInput">
+                            <div><input type="date" class="startDate dateInput" id="startDate" name="startDate">&nbsp;&nbsp;
+                            <input type="time" class="startDate dateInput" id="startTime" name="startTime">&nbsp;&nbsp;~&nbsp;&nbsp;
+                            <input type="date" class="endDate dateInput" id="endDate" name="endDate">&nbsp;&nbsp;
+                            <input type="time" class="endDate dateInput" id ="endTime" name="endTime">
                             </div>
                         </li>
                         <li>
                             <span>탑승자</span>
-                            <div><input type="text" class="eventLocation" value="운전자" readonly></div>
+                            <div><input type="text" id="driver" class="driver" value="운전자" readonly></div>
                         </li>
                         <li>
                             <span>예약 목적</span>
-                            <div><textarea id="calendarText"></textarea></div>
+                            <div><textarea id="calendarText" name="purpose"></textarea></div>
                         </li>
                         <li>
                             <div class="btns">
-                                <button id="addBtn" class="okBtn">완료</button><button class="cancelBtn">취소</button>
+                                <button type="submit" id="addBtn" class="okBtn">완료</button><button class="cancelBtn">취소</button>
                             </div>
                         </li>
                     </ul>
+                    <input type="hidden" id="vehicleSeq" name="vehicle_seq" value="${vehicle.vehicle_seq }">
+                    <input type="hidden" name="vehicleStartAt" id="vehicleStartAt">
+                    <input type="hidden" name="vehicleEndAt" id="vehicleEndAt">
+                    </form>
                 </div>
             </div>
         </div>
@@ -72,7 +80,7 @@
                     <ul>
                         <li>
                             <span>차량 명</span>
-                            <div><input type="text" value="BMW X6" readonly></div>
+                            <div><input type="text" id="eventVehicleName" value="${vehicle.name}" readonly></div>
                         </li>
                         <li>
                             <span>예약자</span>
@@ -81,20 +89,20 @@
                         </li>
                         <li>
                             <span>예약 기간</span>
-                            <div><input type="date" id="startDate" class="startDate dateInput"
-                                    readonly>&nbsp;&nbsp;<input type="time" id="startTime" class="startDate dateInput"
-                                    readonly>&nbsp;&nbsp;~&nbsp;&nbsp;<input type="date" id="endDate"
-                                    class="endDate dateInput" readonly>&nbsp;&nbsp;<input type="time" id="endTime"
+                            <div><input type="date" id="eventVehicleStartDate" class="startDate dateInput"
+                                    readonly>&nbsp;&nbsp;<input type="time" id="eventVehicleStartTime" class="startDate dateInput"
+                                    readonly>&nbsp;&nbsp;~&nbsp;&nbsp;<input type="date" id="eventVehicleEndDate"
+                                    class="endDate dateInput" readonly>&nbsp;&nbsp;<input type="time" id="eventVehicleEndTime"
                                     class="endDate dateInput" readonly>
                             </div>
                         </li>
                         <li>
                             <span>탑승자</span>
-                            <div><input type="text" class="eventLocation" value="운전자" readonly></div>
+                            <div><input type="text" class="driver" value="운전자" readonly></div>
                         </li>
                         <li>
                             <span>예약 목적</span>
-                            <div><textarea id="calendarText" readonly>드라이브</textarea></div>
+                            <div><textarea id="eventText" readonly>드라이브</textarea></div>
                         </li>
                     </ul>
                 </div>
