@@ -38,7 +38,7 @@
 		where e.emp_no = #{empNo} 
 	</select>
 	
-	<!-- 부서 캘린더 추가 -->
+	<!-- 부서 캘린더 추가 (각 부서 부장만 가능) -->
 	<insert id="insertDepCalendar"
 		parameterType="com.wit.dto.DepartmentCalendarDTO">
 		insert into department_calendar 			
@@ -53,7 +53,7 @@
 		</choose>	 
 	</insert>
 	
-	<!-- 부서 캘린더 삭제 -->
+	<!-- 부서 캘린더 삭제 (각 부서 부장만 가능) -->
 	<delete id="deleteDepCalendar">
 		delete from department_calendar where calendar_seq =
 		#{calendarSeq}
