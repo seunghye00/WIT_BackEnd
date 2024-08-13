@@ -2536,6 +2536,10 @@ button.green {
 	background-color: #168216;
 }
 
+button.purple {
+	background-color: #c058f0;
+}
+
 button:hover, button:active {
 	cursor: pointer;
 	background-color: #1268d4;
@@ -2551,6 +2555,10 @@ button.green:hover, button.green:active {
 
 button.grey:hover, button.grey:active {
 	background-color: #555;
+}
+
+button.purple:hover, button.purple:active {
+	background-color: #9733c5;
 }
 
 /* 비활성화된 버튼 스타일 */
@@ -2633,6 +2641,7 @@ span.return {
 .eApproval .docuList .listBox .rows.emptyDocuList {
 	max-height: unset;
 	height: 228px;
+	border-bottom: 2px solid #888888;
 }
 
 .eApproval .docuList .listBox .rows.emptyDocuList:hover {
@@ -2645,10 +2654,6 @@ span.return {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-}
-
-.eApproval .docuList .listBox .rows:last-child {
-	border-bottom: 2px solid #888888;
 }
 
 .eApproval .docuList .listBox .rows.listHeader {
@@ -2680,18 +2685,11 @@ span.return {
 	width: 45%;
 }
 
-.eApproval .docuList .listBox .rows .cols span {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-}
-
 .eApproval .docuList .listBox .rows .cols .emer {
 	height: 28px;
 }
 
-.eApproval .docuList .listBox:not(.todoList, .upcomingList) .rows:not(.listHeader) .cols:last-child span {
+.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList) .rows:not(.listHeader) .cols:last-child span {
 	border-radius: 5px;
 	color: #fff;
 	padding: 5px;
@@ -2704,7 +2702,8 @@ span.return {
 
 /* 전자 결재 작성 */
 .eApprWrite .choiBox {
-	flex: 1;
+	position: relative;
+	width: fit-content;
 }
 
 .eApprWrite .choiBox button {
@@ -2725,9 +2724,9 @@ span.return {
 	border: 1px solid #555;
 	width: 134px;
 	min-height: 63px;
-	position: relative;
-	top: 5px;
-	right: -304px;
+	position: absolute;
+	top: -3px;
+	right: -143px;
 	border-radius: 10px;
 	background: #fff;
 	padding: 20px 10px;
@@ -3204,7 +3203,8 @@ span.return {
 	justify-content: center;
 }
 
-.eApprModal.apprChoiModal .choiCont .arrBtns button:hover, button:active
+.eApprModal.apprChoiModal .choiCont .arrBtns button:hover, 
+.eApprModal.apprChoiModal .choiCont .arrBtns button:active
 	{
 	background-color: #c0c0c0;
 }
@@ -3216,7 +3216,7 @@ span.return {
 }
 
 .eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(2) img,
-	button:nth-child(5) img {
+.eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(5) img {
 	rotate: 90deg;
 	width: 17px;
 }
@@ -3358,7 +3358,8 @@ span.return {
 }
 
 .eApproval .docuList.docuBox .listBox {
-	flex: 9;
+    flex: 9;
+    border-bottom: 2px solid #888888;
 }
 
 .eApproval .docuList.docuBox .listBox .rows .cols {
@@ -3850,11 +3851,6 @@ span.return {
 /* 원희 css end */
 
 /* 승혜 & 원희 css start */
-.sideContents .mainTitle {
-	flex: unset;
-	align-items: flex-start;
-}
-
 /* 예약 관리 메인 화면 */
 .reservation .reservList {
 	flex: 9;
