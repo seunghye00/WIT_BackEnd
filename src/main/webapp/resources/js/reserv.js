@@ -129,7 +129,7 @@ $(document).ready(function() {
                                 return isoString;
                             }                          
                             successCallback(data.map(event => ({
-                                title: event.name,
+                                title: event.emp_no,
                              	// 변환된 시작 날짜
                                 start: formatDate(event.start_date), 
                              	// 변환된 종료 날짜

@@ -4,6 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="vehicleBooking">
+	<!-- 차량 예약 추가 -->
 	<insert id="vehicleBookingInsert" parameterType="com.wit.dto.VehicleBookingDTO">
 		insert into vehicle_booking
 		values (
@@ -21,6 +22,7 @@
 		select * from vehicles where vehicle_seq = #{vehicle_seq}
 	</select>
 	
+	<!-- 차량별 예약 이벤트 조회 -->
 	<select id="getAll" resultType="com.wit.dto.VehicleBookingDTO">
 		select * from vehicle_booking where vehicle_seq = #{vehicleSeq}
 	</select>
