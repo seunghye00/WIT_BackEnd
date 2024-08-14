@@ -2674,22 +2674,25 @@ span.return {
 
 .eApproval .docuList .listBox {
 	height: 85%;
-	width: 100%;
+	border-bottom: 2px solid #888888;
+}
+
+.eApproval .docuList .listBox a {
+	border-bottom: 1px solid #c1c1c1;
 	display: flex;
-	flex-direction: column;
-	font-size: 16px;
+}
+
+.eApproval .docuList .listBox:not(.progList, .doneList) a {
+	min-height: 49px;
 }
 
 .eApproval .docuList .listBox .rows {
-	flex: 1;
-	display: flex;
-	border-bottom: 1px solid #c1c1c1;
+	border-bottom: unset;
 }
 
 .eApproval .docuList .listBox .rows.emptyDocuList {
 	max-height: unset;
 	height: 228px;
-	border-bottom: 2px solid #888888;
 }
 
 .eApproval .docuList .listBox .rows.emptyDocuList:hover {
@@ -2705,9 +2708,12 @@ span.return {
 }
 
 .eApproval .docuList .listBox .rows.listHeader {
-	border-radius: 15px;
-	background-color: #555;
-	color: #fff;
+	max-height: 48px;
+}
+
+.eApproval .docuList .listBox.progList .rows.listHeader, 
+.eApproval .docuList .listBox.doneList .rows.listHeader {
+	max-height: 45px;
 }
 
 .eApproval .docuList .listBox .rows.listHeader:hover {
@@ -2716,8 +2722,6 @@ span.return {
 
 .eApproval .docuList .listBox .rows .cols {
 	padding: 7px 0;
-	display: flex;
-	justify-content: center;
 }
 
 .eApproval .docuList .listBox .rows .cols:nth-child(1), .cols:nth-child(2),
@@ -2737,7 +2741,8 @@ span.return {
 	height: 28px;
 }
 
-.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList) .rows:not(.listHeader) .cols:last-child span {
+.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList) .rows:not(.listHeader) .cols:last-child span
+	{
 	border-radius: 5px;
 	color: #fff;
 	padding: 5px;
@@ -3251,8 +3256,7 @@ span.return {
 	justify-content: center;
 }
 
-.eApprModal.apprChoiModal .choiCont .arrBtns button:hover, 
-.eApprModal.apprChoiModal .choiCont .arrBtns button:active
+.eApprModal.apprChoiModal .choiCont .arrBtns button:hover, .eApprModal.apprChoiModal .choiCont .arrBtns button:active
 	{
 	background-color: #c0c0c0;
 }
@@ -3264,7 +3268,7 @@ span.return {
 }
 
 .eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(2) img,
-.eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(5) img {
+	.eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(5) img {
 	rotate: 90deg;
 	width: 17px;
 }
@@ -3406,8 +3410,8 @@ span.return {
 }
 
 .eApproval .docuList.docuBox .listBox {
-    flex: 9;
-    border-bottom: 2px solid #888888;
+	flex: 9;
+	border-bottom: 2px solid #888888;
 }
 
 .eApproval .docuList.docuBox .listBox .rows .cols {
@@ -4063,6 +4067,20 @@ span.return {
 	gap: 20px;
 }
 
+.sideContents.meetingRooms {
+	gap: unset;
+}
+
+.sideContents.meetingRooms .mainTitle {
+	align-items: flex-end;
+	gap: 20px;
+}
+
+.sideContents.meetingRooms .mainTitle span {
+	font-size: 18px;
+	color: #666;
+}
+
 .sideContents.reservation .reservBox {
 	max-height: 650px;
 	flex: 9;
@@ -4180,7 +4198,7 @@ span.return {
 	border: 1px solid #ccc;
 }
 
-#calendarText {
+.modal .calendarAdd textarea {
 	margin-top: 7px;
 	width: 100%;
 	height: 150px;

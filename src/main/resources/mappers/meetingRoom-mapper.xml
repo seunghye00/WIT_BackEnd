@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="meetingRoom">
+	<!-- 회의실 목록을 조회하기 위한 쿼리문 -->
+	<select id="selectAll" resultType="com.wit.dto.MeetingRoomDTO">
+		select room_seq, name from meeting_room 
+	</select>
+	
+	<!-- 해당 회의실의 정보를 조회하기 위한 쿼리문 -->
+	<select id="selectBySeq" resultType="com.wit.dto.MeetingRoomDTO">
+		select * from meeting_room where room_seq = #{roomSeq}
+	</select>
+	
+	<!-- 회의실 예약 정보를 입력하기 위한 쿼리문 -->
+	<insert id="insert">
+		insert into room_booking values (room_booking_seq.nextval, #{emp_no}, #{dept_title}, #{room_seq}, #{start_date}, #{end_date}, #{purpose})
+	</insert>
+	
+	<!-- 해당 회의실의 모든 예약 정보를 조회하기 위한 쿼리문 -->
+	<select id="selectAllBySeq" resultType="com.wit.dto.RoomBookingDTO">
+		select * from room_booking where room_seq = #{roomSeq}
+	</select>
+</mapper>
