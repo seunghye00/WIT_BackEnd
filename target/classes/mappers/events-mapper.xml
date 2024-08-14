@@ -39,7 +39,7 @@
     <foreach item="item" index="index" collection="list" open="(" separator="," close=")"> 
         #{item}
     </foreach> 
-</select>
+	</select>
 	
 	<delete id="delete">
 		delete from events where events_seq = #{events_seq}
