@@ -25,10 +25,10 @@
 			<li class="toggleItem">
 				<h3 class="toggleTit">차량</h3>
 				<ul class="subList">
-					<li><a href="/reservation/vehicle">BMW X6_9688</a></li>
-					<li><a href="/reservation/vehicle">싼타페_7574</a></li>
-					<li><a href="/reservation/vehicle">마이바흐_1106</a></li>
-					<li><a href="/reservation/vehicle">G90_9720</a></li>
+					<li><a href="/reservation/vehicle?vehicleSeq=1" >BMW X6_9688</a></li>
+					<li><a href="/reservation/vehicle?vehicleSeq=2">싼타페_7574</a></li>
+					<li><a href="/reservation/vehicle?vehicleSeq=3">마이바흐_1106</a></li>
+					<li><a href="/reservation/vehicle?vehicleSeq=4">G90_9720</a></li>
 				</ul>
 			</li>
 		</ul>
