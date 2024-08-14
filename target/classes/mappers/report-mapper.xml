@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="report">
+  <insert id="insert">
+  	insert into report values(report_seq.nextval,${board_seq}, #{emp_no},#{report_type},sysdate)
+  </insert>
+</mapper>

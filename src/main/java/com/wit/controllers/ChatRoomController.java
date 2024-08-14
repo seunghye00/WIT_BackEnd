@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.wit.dto.NotificationDTO;
 import com.wit.services.ChatRoomService;
 import com.wit.services.ChatService;
-import com.wit.services.NotificationService;
 
 @Controller
 @RequestMapping("/chatroom/")
@@ -28,9 +26,6 @@ public class ChatRoomController {
 
     @Autowired
     private HttpSession session;
-
-    @Autowired
-    private NotificationService notiServ;
 
     // 개인 채팅방 생성
     @RequestMapping("create")

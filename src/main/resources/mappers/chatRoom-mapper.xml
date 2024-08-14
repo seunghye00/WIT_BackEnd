@@ -42,10 +42,21 @@
     
     <!-- 사용자가 속한 채팅방 조회 -->
     <select id="getChatRoomsByUserId" resultType="map">
-        SELECT cr.chat_room_seq, crm.chat_room_name, cr.room_type, cr.created_date
-        FROM chat_room cr
-        JOIN chat_room_member crm ON cr.chat_room_seq = crm.chat_room_seq
-        WHERE crm.emp_no = #{empNo, jdbcType=VARCHAR}
+		SELECT 
+		    crm.CHAT_ROOM_SEQ,
+		    crm.CHAT_ROOM_NAME,
+		    COUNT(c.chat_seq) AS unread_count
+		FROM 
+		    chat_room_member crm
+		LEFT JOIN 
+		    chat c ON crm.CHAT_ROOM_SEQ = c.chat_room_seq 
+		    AND c.read_count = 1 
+		    AND c.name != crm.emp_no
+		WHERE 
+		    crm.emp_no = #{empNo}
+		GROUP BY 
+		    crm.CHAT_ROOM_SEQ, 
+		    crm.CHAT_ROOM_NAME
     </select>
     
     <!-- 채팅방 상세 조회 -->

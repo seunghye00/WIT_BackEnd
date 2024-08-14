@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.JsonObject;
 import com.wit.dao.ChatDAO;
-import com.wit.dao.NotificationDAO;
 import com.wit.dto.ChatDTO;
 import com.wit.endpoints.ChatEndpoint;
 
@@ -20,9 +19,6 @@ public class ChatService {
     
     @Autowired
     private UserService userv;
-    
-    @Autowired
-    private NotificationDAO notiDao;
     
     // 메시지를 읽음 처리
     @Transactional

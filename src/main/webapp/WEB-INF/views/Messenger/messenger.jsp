@@ -280,7 +280,7 @@
 	        url: '/chatroom/myChatRooms',
 	        method: 'GET',
 	        success: function(response) {
-	        	console.log(response);
+	            console.log(response);
 	            var chatList = $('#chatList');
 	            chatList.empty(); // 기존 목록 초기화
 	
@@ -297,6 +297,15 @@
 	                var $chatTitle = $('<div>', { class: 'chatTitle' });
 	                var $spanName = $('<span>').text(chatRoom.CHAT_ROOM_NAME);
 	                $chatTitle.append($spanName);
+	                
+	                // 읽지 않은 메시지가 있는 경우 표시
+	                if (chatRoom.UNREAD_COUNT > 0) {
+	                    var $unreadCount = $('<span>', { 
+	                        class: 'notificationCount' 
+	                    }).text(chatRoom.UNREAD_COUNT);
+	                    $chatTitle.append($unreadCount);
+	                }
+	
 	                $link.append($chatTitle);
 	                $listItem.append($link);
 	                chatList.append($listItem);
