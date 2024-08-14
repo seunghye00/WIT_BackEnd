@@ -8,87 +8,88 @@
 
     <!-- 개인 채팅방 존재 여부 확인 -->
     <select id="isPrivateChatRoomExists" resultType="int">
-        select count(*)
-        from chat_room cr
-        join chat_room_member crm1 on cr.chat_room_seq = crm1.chat_room_seq
-        join chat_room_member crm2 on cr.chat_room_seq = crm2.chat_room_seq
-        where crm1.emp_no = #{emp_no1}
-          and crm2.emp_no = #{emp_no2}
-          and cr.chat_room_code = 'P'
+        SELECT COUNT(*)
+        FROM chat_room cr
+        JOIN chat_room_member crm1 ON cr.chat_room_seq = crm1.chat_room_seq
+        JOIN chat_room_member crm2 ON cr.chat_room_seq = crm2.chat_room_seq
+        WHERE crm1.emp_no = #{emp_no1}
+          AND crm2.emp_no = #{emp_no2}
+          AND cr.room_type = '1:1'
     </select>
 
     <!-- 채팅방 생성 -->
     <insert id="createChatRoom">
-    	insert into chat_room values(chat_room_seq.nextval, #{chat_room_name}, #{chat_room_code}, #{emp_no2}, sysdate, 0)
+        INSERT INTO chat_room (chat_room_seq, room_type, created_date)
+        VALUES (chat_room_seq.NEXTVAL, #{roomType}, SYSDATE)
     </insert>
 
     <!-- 그룹채팅방 생성 -->
     <insert id="createGroupChat">
-    	insert into chat_room values(chat_room_seq.nextval, #{chat_room_name}, 'G', #{creater}, sysdate, 0)
+        INSERT INTO chat_room (chat_room_seq, room_type, created_date)
+        VALUES (chat_room_seq.NEXTVAL, 'GROUP', SYSDATE)
     </insert>
-
+	
     <!-- 채팅방 멤버 추가 -->
-    <insert id="insertChatRoomMember">
-    	insert into chat_room_member values(#{chat_room_seq}, #{emp_no})
-    </insert>
+	<insert id="addChatRoomMember">
+	    INSERT INTO chat_room_member (chat_room_seq, emp_no, chat_room_name)
+	    VALUES (#{chatRoomSeq}, #{empNo}, #{chatRoomName})
+	</insert>
 
     <!-- 최근 생성된 채팅방 시퀀스 조회 -->
     <select id="getLastChatRoomSeq" resultType="int">
-        select chat_room_seq.currval from dual
+        SELECT chat_room_seq.CURRVAL FROM dual
     </select>
     
- 	<!-- 사용자가 속한 채팅방 조회 -->
+    <!-- 사용자가 속한 채팅방 조회 -->
     <select id="getChatRoomsByUserId" resultType="map">
-       	select distinct cr.*
-		from chat_room cr
-		join chat_room_member crm on cr.chat_room_seq = crm.chat_room_seq
-		where crm.emp_no = #{loginUserId}
+		SELECT 
+		    crm.CHAT_ROOM_SEQ,
+		    crm.CHAT_ROOM_NAME,
+		    COUNT(c.chat_seq) AS unread_count
+		FROM 
+		    chat_room_member crm
+		LEFT JOIN 
+		    chat c ON crm.CHAT_ROOM_SEQ = c.chat_room_seq 
+		    AND c.read_count = 1 
+		    AND c.name != crm.emp_no
+		WHERE 
+		    crm.emp_no = #{empNo}
+		GROUP BY 
+		    crm.CHAT_ROOM_SEQ, 
+		    crm.CHAT_ROOM_NAME
     </select>
     
- 	<!-- 채팅방 상세 조회 -->
+    <!-- 채팅방 상세 조회 -->
     <select id="getDetailChatRooms" resultType="map">
-       	select 
-		    e.name,
-		    cr.chat_room_name
-		from 
-		    employee e
-		join 
-		    chat_room_member crm 
-		    on e.emp_no = crm.emp_no
-		join 
-		    chat_room cr 
-		    on cr.chat_room_seq = crm.chat_room_seq 
-		where 
-		    cr.chat_room_seq = #{chat_room_seq}
-		    and e.emp_no != #{emp_no}
+        SELECT e.name AS member_name, crm.chat_room_name
+        FROM employee e
+        JOIN chat_room_member crm ON e.emp_no = crm.emp_no
+        JOIN chat_room cr ON cr.chat_room_seq = crm.chat_room_seq
+        WHERE cr.chat_room_seq = #{chatRoomSeq}
+        and e.emp_no = #{empNo}
     </select>
     
     <!-- 채팅방 타이틀 수정 -->
     <update id="updateChatRoomTitle">
-    	update chat_room
-    	set chat_room_name = #{new_title}
-    	where chat_room_seq = #{chat_room_seq}
+        UPDATE chat_room_member
+        SET chat_room_name = #{newTitle}
+        WHERE chat_room_seq = #{chatRoomSeq}
+          AND emp_no = #{empNo}
     </update>
 
- 	<!-- 채팅방 코드 가져오기 -->
+    <!-- 채팅방 코드 가져오기 -->
     <select id="getChatRoomCode" resultType="String">
-    	select chat_room_code from chat_room where chat_room_seq = #{chat_room_seq}
+        SELECT room_type FROM chat_room WHERE chat_room_seq = #{chatRoomSeq}
     </select>
 
     <!-- 채팅방 삭제 -->
     <delete id="deleteChatRoom">
-    	delete from chat_room where chat_room_seq = #{chat_room_seq}
+        DELETE FROM chat_room WHERE chat_room_seq = #{chatRoomSeq}
     </delete>
 
     <!-- 채팅방 멤버 삭제 -->
     <delete id="deleteChatRoomMember">
-    	delete from chat_room_member where chat_room_seq = #{chat_room_seq} and emp_no = #{emp_no}
+        DELETE FROM chat_room_member WHERE chat_room_seq = #{chatRoomSeq} AND emp_no = #{empNo}
     </delete>
     
-    <!-- 채팅방 알림 -->
-    <update id="updateChatRoomReadStatus">
-	    UPDATE chat_room
-	    SET is_read = #{isRead}
-	    WHERE chat_room_seq = #{chatRoomSeq}
-	</update>
 </mapper>

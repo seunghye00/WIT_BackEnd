@@ -38,46 +38,17 @@
 	  </div>
 	</div>
 <script>
-	$(document).ready(function() {
-	    updateNotificationCount();
-	});
-	// 알림 개수 업데이트
-	function updateNotificationCount() {
-	    $.ajax({
-	        url: '/chatroom/notificationCount',
-	        type: 'GET',
-	        success: function(data) {
-	            if (data > 0) {
-	                $('.badge').text(data);
-	            } else {
-	                $('.badge').text('');
-	            }
-	        },
-	        error: function(err) {
-	            console.error('Error fetching notification count', err);
-	        }
-	    });
-	}
-
-	// 알림 목록 로드
-	function loadNotifications() {
-	    $.ajax({
-	        url: '/chatroom/getNotifications',
-	        type: 'GET',
-	        success: function(notifications) {
-	        	
-	            $('#notificationList').empty();
-	            if (notifications.length > 0) {
-	                notifications.forEach(function(notification) {
-	                    $('#notificationList').append('<li>' + notification.noti_text + '</li>');
-	                });
-	            } else {
-	                $('#notificationList').append('<li>새로운 알림이 없습니다.</li>');
-	            }
-	        },
-	        error: function(err) {
-	            console.error('Error loading notifications', err);
-	        }
-	    });
-	}
+//읽지 않은 메시지를 알림하는 함수
+function displayUnreadMessageNotification(data) {
+    let notificationArea = $("#notificationArea");
+    let notification = $("<div>").addClass("notification").text(data.sender + "님의 새 메시지가 도착했습니다.");
+    notificationArea.append(notification);
+	console.log(data);
+    // 5초 후에 알림을 사라지게 하는 예시
+    setTimeout(function() {
+        notification.fadeOut(500, function() {
+            $(this).remove();
+        });
+    }, 5000);
+}
 </script>

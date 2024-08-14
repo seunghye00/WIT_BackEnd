@@ -76,11 +76,13 @@ public class ChatEndpoint {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // 새로운 사용자가 입장했다는 메시지를 해당 채팅방의 모든 클라이언트에게 전송합니다.
-        broadcastUserStatus(chatRoomSeq, userName, "joined");
+        
+        // 발신자와 로그인한 사용자가 동일하지 않을 때만 자동 읽음 처리
+        if (!sessionUserMap.get(session).equals(loginID)) {
+            cServ.markMessagesAsRead(chatRoomSeq, loginID);
+        }
     }
-
+    
     @OnMessage
     public void onMessage(@PathParam("chatRoomSeq") String chatRoomSeq, Session session, String message) {
         System.out.println("Received message: " + message); // 디버깅 로그 추가
@@ -93,34 +95,43 @@ public class ChatEndpoint {
         // 로그인 ID 가져오기
         String sender = sessionUserMap.get(session);
         String userName = cServ.getUserNameByLoginID(sender);
-        
+
+        // 메시지 DB에 저장 및 chat_seq 반환
+        int chatSeq;
+        try {
+            chatSeq = cServ.insert(chatRoomSeq, sender, jsonMessage.get("message").getAsString(), 1);  // read_count를 1로 설정
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
         // 메시지 데이터 생성
         JsonObject data = new JsonObject();
+        data.addProperty("chat_seq", chatSeq);  // chat_seq를 포함
+        data.addProperty("chat_room_seq", chatRoomSeq);  // chat_room_seq를 포함
         data.addProperty("userName", userName);
         data.addProperty("sender", userName);
         data.addProperty("message", jsonMessage.get("message").getAsString());
         data.addProperty("send_time", currentTime);
         data.addProperty("type", "chat");
+        data.addProperty("read_count", 1);  // 기본적으로 1로 설정
 
         // 메시지 전송
         synchronized (chatRooms.get(chatRoomSeq)) {
             for (Session client : chatRooms.get(chatRoomSeq)) {
                 try {
+                    String recipient = sessionUserMap.get(client);
+                    if (recipient != null && !recipient.equals(sender)) {
+                        // 읽음 처리는 여기서 하지 않고 클라이언트 측에서 메시지를 수신했을 때 처리
+                        if (client.isOpen()) {
+                            // 여전히 read_count를 1로 유지
+                        }
+                    }
                     client.getBasicRemote().sendText(data.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }
-
-        // 메시지 DB에 저장
-        try {
-            cServ.insert(chatRoomSeq, sender, jsonMessage.get("message").getAsString());
-            
-            // 사용자가 메시지를 보냈으므로 읽음 처리
-            cServ.markMessagesAsRead(chatRoomSeq, sender);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -129,11 +140,6 @@ public class ChatEndpoint {
         String loginID = sessionUserMap.get(session);
         chatRooms.get(chatRoomSeq).remove(session);
         sessionUserMap.remove(session);
-        
-        // 사용자의 이름을 가져옴
-        String userName = cServ.getUserNameByLoginID(loginID);
-        // 사용자가 퇴장했다는 메시지를 해당 채팅방의 모든 클라이언트에게 전송합니다.
-        broadcastUserStatus(chatRoomSeq, userName, "left");
     }
     @OnError
     public void onError(Throwable t, @PathParam("chatRoomSeq") String chatRoomSeq, Session session) {

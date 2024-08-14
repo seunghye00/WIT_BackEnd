@@ -1336,15 +1336,11 @@
 }
 
 .chatList .chatTitle {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.chatList .notiBox {
-	
-}
 
 .notificationCount {
 	color: #fff;
@@ -1396,7 +1392,7 @@
     border-radius: 25px;
     position: relative;
     transition: padding-bottom 0.3s;
-    max-height:700px;
+    max-height: 100%;
 }
 
 .message {
@@ -1431,17 +1427,19 @@
 .message .sender, .message .text_box {
 	font-size: 18px;
 }
-.message .timeBox{
+.message .subBox{
     font-size:12px;
     position: absolute;
     left: -40px;
     bottom: 0;
+    color:#333;
 }
 
-.message.received .timeBox{
+.message.received .subBox{
     left: unset;
     right: -40px;
     bottom: 0;
+    color:#333;
 }
 
 .message.sent a {
@@ -1475,7 +1473,7 @@
 	border: 1px solid #c1c1c1;
 	border-radius: 5px;
 	margin-right: 10px;
-	min-height: 40px;
+	max-height: 60px;
 	overflow-y: auto;
 }
 
@@ -1799,7 +1797,7 @@
 
 /* 헤더 알림  */
 .aram_modal {
-    /* display: none; */
+    display: none;
     position: fixed;
     z-index: 1;
     right: 20px;

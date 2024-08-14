@@ -81,7 +81,7 @@
     <div id="profilePopup" class="profilePopup">
         <div class="profileInfo">
             <div class="profileTit">
-                <img src="images/프로필.jpg" alt="프로필 이미지">
+                <img src="/resources/img/푸바오.png" alt="프로필 이미지">
                 <span>문경원</span>
             </div>
             <div class="profileDetails">
@@ -202,7 +202,7 @@
             data: { emp_no: emp_no },
             success: function(employee) {
                 // 프로필 정보를 업데이트
-                $('#profilePopup .profileTit img').attr('src', 'images/프로필.jpg'); // 이미지 경로는 실제 데이터에 맞게 수정
+                $('#profilePopup .profileTit img').attr('src', '/uploads/1723616460518_13.jpg'); // 이미지 경로는 실제 데이터에 맞게 수정
                 $('#profilePopup .profileTit span').text(employee.NAME);
                 $('#profileDept').text(employee.DEPT_TITLE);
                 $('#profileRole').text(employee.ROLE_TITLE);
@@ -210,7 +210,7 @@
                 $('#profileEmail').text(employee.EMAIL);
                 
             	// emp_no를 데이터 속성으로 저장
-                $('#profilePopup').data('emp_no', emp_no);
+                $('#profilePopup').data('emp_no', employee.EMP_NO);
 
                 // 팝업을 표시
                 $('#profilePopup').css('display', 'flex');
@@ -235,7 +235,6 @@
 	            selectedAddresses.push(`주소록 ${index + 1}`) // 체크된 항목의 이름을 배열에 추가
 	        }
 	    })
-	    console.log('선택된 주소록:', selectedAddresses) // 선택된 주소록 출력
 	}
 	
 	
@@ -295,8 +294,16 @@
 	
 	                var $chatTitle = $('<div>', { class: 'chatTitle' });
 	                var $spanName = $('<span>').text(chatRoom.CHAT_ROOM_NAME);
-	
 	                $chatTitle.append($spanName);
+	                
+	                // 읽지 않은 메시지가 있는 경우 표시
+	                if (chatRoom.UNREAD_COUNT > 0) {
+	                    var $unreadCount = $('<span>', { 
+	                        class: 'notificationCount' 
+	                    }).text(chatRoom.UNREAD_COUNT);
+	                    $chatTitle.append($unreadCount);
+	                }
+	
 	                $link.append($chatTitle);
 	                $listItem.append($link);
 	                chatList.append($listItem);
@@ -321,7 +328,7 @@
 	            $chatRoomDetails.empty();  // 기존 내용을 지웁니다.
 	        	 response.forEach(function(chatRoomDetails) {
 		            // 채팅방 정보를 팝업에 표시
-	 	           	var $listName = $('<li>').text(chatRoomDetails.NAME);
+	 	           	var $listName = $('<li>').text(chatRoomDetails.MEMBER_NAME);
                 	$chatRoomDetails.append($listName);
 	        		$('#chatRoomPopup .chatRoomTitle h2').text(chatRoomDetails.CHAT_ROOM_NAME);
 	        	 })
@@ -339,7 +346,6 @@
 	// 채팅방 제목 수정
 	function editTitle() {
 	    var new_title = prompt("새 채팅방 제목을 입력하세요:");
-	    console.log(new_title)
 	    if (new_title) {
 	        var chat_room_seq = $('#chatTitModi').data('chat_room_seq'); // 여기에서 chat_room_seq를 가져옵니다.
 	        $('#chatRoomPopup .chatRoomTitle h2').text(new_title);
@@ -350,6 +356,8 @@
 	            data: { chat_room_seq: chat_room_seq, new_title: new_title },
 	            success: function(response) {
 	                alert("채팅방 제목이 변경되었습니다.");
+	                toggleView('chat');
+	                loadChatList();
 	            },
 	            error: function(error) {
 	                console.error("Error updating chat room title:", error);
@@ -361,7 +369,6 @@
 	// 채팅방 나가기
 	function exitChatRoom() {
 	    var chat_room_seq = $('#chatTitModi').data('chat_room_seq');
-	    console.log(chat_room_seq);
 	    $.ajax({
 	        url: '/chatroom/exit',
 	        method: 'POST',
@@ -369,30 +376,15 @@
 	        success: function(response) {
 	            if (response == "success") {
 	                alert("채팅방에서 나갔습니다.");
-	                broadcastUserLeft(chat_room_seq);
 	                closeChatRoomPopup();
-	                location.reload();
+	                toggleView('chat');
+	                loadChatList();
 	            } else {
 	                alert("채팅방 나가기에 실패했습니다.");
 	            }
 	        },
 	        error: function(error) {
 	            console.error("Error exiting chat room:", error);
-	        }
-	    });
-	}
-	
-	// 사용자가 채팅방을 나갔다는 알림을 전송
-	function broadcastUserLeft(chat_room_seq) {
-	    $.ajax({
-	        url: '/chatroom/broadcastUserLeft',
-	        method: 'POST',
-	        data: { chat_room_seq: chat_room_seq },
-	        success: function(response) {
-	            console.log('User left message broadcasted');
-	        },
-	        error: function(error) {
-	            console.error("Error broadcasting user left message:", error);
 	        }
 	    });
 	}
@@ -501,10 +493,12 @@
 	    if (webSocket) {
 	        webSocket.close();
 	    }
-	    webSocket = new WebSocket('ws://192.168.1.107/chat/' + chat_room_seq);
+	    
+	    webSocket = new WebSocket('ws://192.168.45.236/chat/' + chat_room_seq);
 	    webSocket.onopen = function (event) {
 	        console.log("WebSocket is open now.");
 	    };
+	    
 	    webSocket.onmessage = function (event) {
 	        let data = JSON.parse(event.data);
 	        if (data.loginID) {
@@ -518,11 +512,18 @@
 	        } else if (data.type === "chat") {
 	            // 채팅 메시지 처리
 	            appendMessage(data, data.sender === currentLoginID ? 'sent' : 'received');
+	            
+	            // 읽음 처리 호출 (메시지 전송자가 현재 사용자가 아닌 경우에만 호출)
+	            if (data.sender !== currentLoginID && data.read_count !== 0) {
+	                markMessageAsRead(data.chat_room_seq, data.chat_seq);
+	                displayUnreadMessageNotification(data);
+	            }
 	        } else if (data.type === "status") {
 	            // 사용자 상태 메시지 처리 (입장 및 퇴장)
 	            displayStatusMessage(data);
 	        }
 	    };
+	    
 
 	    webSocket.onclose = function (event) {
 	        console.log("Disconnected from chat room:", chat_room_seq);
@@ -552,9 +553,10 @@
 	    let chatBody = $("#chatBody");
 	    let mbox = $("<div>").addClass("text_box");
 	    let id_Box = $("<div>").addClass("sender");
+	    let subBox = $("<div>").addClass("subBox");
 	    let time_Box = $("<div>").addClass("timeBox");
+	    let readBox = $("<div>").addClass("readBox");
 	    let message = $("<div>").addClass("message");
-
 	    // 메시지 데이터를 HTML로 삽입
 	    mbox.html(data.message);
 	    time_Box.text(data.send_time);
@@ -565,13 +567,24 @@
 	    } else {
 	        message.addClass("sent");
 	    }
-
-	    message.append(mbox);
-	    message.append(time_Box);
-	    chatBody.append(message);
 	    
+	    // 만약 메시지가 읽히지 않은 상태라면 `unread` 클래스를 추가합니다.
+	    if (data.read_count === 1) {
+	    	readBox.append(data.read_count);
+	    }
+
+	    subBox.append(readBox);
+	    subBox.append(time_Box);
+	    message.append(mbox);
+	    message.append(subBox);
+	    chatBody.append(message);
 	    // 스크롤을 최신 메시지로 이동
 	    chatBody.scrollTop(chatBody[0].scrollHeight);
+	    
+	    // 메시지가 화면에 표시되었을 때 읽음 처리 요청을 서버로 보냅니다.
+	  	if (type === "received" && data.read_count === 1) {
+	        markMessageAsRead(data.chat_room_seq, data.chat_seq); // chat_seq를 서버로 전송하여 읽음 처리
+	    }
 	}
 
     function displayStatusMessage(data) {
@@ -652,7 +665,6 @@
 	    })
 	    .then(response => response.json())
 	    .then(data => {
-	        console.log('Upload response:', data); // 디버깅 로그 추가
 	        if (data.success) {
 	            const messageInput = document.getElementById('messageInput');
 	            messageInput.innerHTML = '';
@@ -709,14 +721,12 @@
 	                    })
 	                    .then(response => response.json())
 	                    .then(data => {
-	                        console.log('Upload response:', data); // 디버깅 로그 추가
 	                        if (data.success) {
 	                            const img = document.createElement('img');
 	                            img.src = data.url;
 	                            img.alt = "Pasted Image";
 	                            img.style.maxWidth = "100%";
 	                            img.style.maxHeight = "200px";
-	                            console.log('Generated img:', img); // 디버깅 로그 추가
 	                            messageInput.innerHTML = '';
 	                            messageInput.appendChild(img);
 	                        } else {
@@ -767,8 +777,29 @@
 	    messageInput.appendChild(img)
 	}
 	
-	// 채팅 읽은 메시지 숫자 파악
+	// 메시지를 읽었을 때 서버로 읽음 처리 요청을 보내는 함수
+	function markMessageAsRead(chatRoomSeq, messageSeq) {
+	    $.ajax({
+	        url: '/chatroom/markAsRead',
+	        method: 'POST',
+	        data: {
+	            chatRoomSeq: chatRoomSeq,
+	            messageSeq: messageSeq
+	        },
+	        success: function(response) {
+	            if (response === 'success') {
 	
+	                // 메시지의 readBox를 숨기거나 0으로 설정하여 읽음 상태를 반영
+	                $('div.message').find('.readBox').filter(function() {
+	                    return $(this).text() === '1';
+	                }).text('0').hide(); // 또는 `remove()`로 완전히 제거할 수 있습니다.
+	            }
+	        },
+	        error: function(error) {
+	            console.error("Error marking message as read:", error);
+	        }
+	    });
+	}
 	</script>
 </body>
 
