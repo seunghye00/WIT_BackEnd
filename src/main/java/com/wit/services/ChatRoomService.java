@@ -12,103 +12,102 @@ import com.wit.dao.ChatRoomDAO;
 
 @Service
 public class ChatRoomService {
-	@Autowired
-	private ChatRoomDAO dao;
+    @Autowired
+    private ChatRoomDAO dao;
+    
+    @Autowired
+    private UserService userv;
+    
+    // 개인 채팅방 생성
+    @Transactional
+    public String createPrivateChat(String emp_no1, String empNo2) {
+    	// 채팅방 생성
+        Map<String, Object> params = new HashMap<>();
+        params.put("roomType", "1:1");
+        dao.createChatRoom(params);
+        int chatRoomSeq = dao.getLastChatRoomSeq();
 
-	// 개인 채팅방 생성
-	@Transactional
-	public String createPrivateChat(String emp_no1, String emp_no2, String chat_room_name) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("emp_no1", emp_no1);
-		params.put("emp_no2", emp_no2);
-		params.put("chat_room_name", chat_room_name);
-		params.put("chat_room_code", "P");
+        // emp_no1 이름 가져오기
+        String empNo1Name = userv.getUserNameByLoginID(emp_no1);
+        // emp_no2 이름 가져오기
+        String empNo2Name = userv.getUserNameByLoginID(empNo2);
 
-		// 중복 확인
-		int count = dao.isPrivateChatRoomExists(params);
-		if (count == 0) {
-			dao.createChatRoom(params);
-			int chatRoomSeq = dao.getLastChatRoomSeq();
+        // 멤버 추가
+        addChatRoomMember(chatRoomSeq, emp_no1, empNo2Name);
+        addChatRoomMember(chatRoomSeq, empNo2, empNo1Name);
 
-			// 멤버 추가
-			Map<String, Object> memberParams1 = new HashMap<>();
-			memberParams1.put("chat_room_seq", chatRoomSeq);
-			memberParams1.put("emp_no", emp_no1);
-			dao.insertChatRoomMember(memberParams1);
+        return "success";
+    }
 
-			Map<String, Object> memberParams2 = new HashMap<>();
-			memberParams2.put("chat_room_seq", chatRoomSeq);
-			memberParams2.put("emp_no", emp_no2);
-			dao.insertChatRoomMember(memberParams2);
-			return "success";
-		} else {
-			// 이미 존재하는 경우 처리
-			// 예를 들어, 이미 존재하는 채팅방의 정보를 반환하거나 처리합니다.
-			return "false";
-		}
-	}
+    // 그룹 채팅방 생성
+    @Transactional
+    public void createGroupChat(String chatRoomName, List<String> empNos, String creatorEmpNo) {
+        // 그룹 채팅방 생성
+        dao.createGroupChat();
+        
+        // 채팅방 시퀀스 가져오기
+        int chatRoomSeq = dao.getLastChatRoomSeq();
+        System.out.println(chatRoomSeq);
 
-	// 그룹 채팅방 생성
-	@Transactional
-	public void createGroupChat(String chatRoomName, List<String> empNos, String creater) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("chat_room_name", chatRoomName);
-		params.put("creater", creater);
-		dao.createGroupChat(params);
+        // 생성자를 그룹 채팅방에 추가
+        String creatorName = userv.getUserNameByLoginID(creatorEmpNo);
+        addChatRoomMember(chatRoomSeq, creatorEmpNo, chatRoomName);
 
-		int chatRoomSeq = dao.getLastChatRoomSeq();
+        // 다른 멤버들을 추가
+        for (String empNo : empNos) {
+            String empName = userv.getUserNameByLoginID(empNo); // 멤버의 이름을 가져옴
+            addChatRoomMember(chatRoomSeq, empNo, chatRoomName);
+        }
+    }
 
-		// creater를 empNos 리스트에 추가
-	    empNos.add(creater);		
-		for (String empNo : empNos) {
-			Map<String, Object> memberParams = new HashMap<>();
-			memberParams.put("chat_room_seq", chatRoomSeq);
-			memberParams.put("emp_no", empNo);
-			dao.insertChatRoomMember(memberParams);
-		}
-	}
+    // 멤버 추가 메서드
+    @Transactional
+    private void addChatRoomMember(int chatRoomSeq, String empNo, String chatRoomName) {
+        Map<String, Object> memberParams = new HashMap<>();
+        memberParams.put("chatRoomSeq", chatRoomSeq);
+        memberParams.put("empNo", empNo);
+        memberParams.put("chatRoomName", chatRoomName);
+        dao.addChatRoomMember(memberParams);
+    }
+    
+    // 채팅방 목록 조회
+    @Transactional
+    public List<Map<String, Object>> getChatRoomsByUserId(String empNo) {
+        return dao.getChatRoomsByUserId(empNo);
+    }
 
-	// 채팅방 목록 조회
-	@Transactional
-	public List<Map<String, Object>> getChatRoomsByUserId(String loginUserId) {
-		return dao.getChatRoomsByUserId(loginUserId);
-	}
+    // 채팅방 상세 조회
+    @Transactional
+    public List<Map<String, Object>> getDetailChatRooms(int chatRoomSeq, String empNo) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chatRoomSeq", chatRoomSeq);
+        params.put("empNo", empNo);
+        return dao.getDetailChatRooms(params);
+    }
 
-	// 채팅방 상세 조회
-	@Transactional
-	public List<Map<String, Object>> getDetailChatRooms(int chat_room_seq, String emp_no) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("chat_room_seq", chat_room_seq);
-		params.put("emp_no", emp_no);
-		return dao.getDetailChatRooms(params);
-	}
+    // 채팅방 제목 수정
+    @Transactional
+    public void updateChatRoomTitle(int chat_room_seq, String new_title, String empNo) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chatRoomSeq", chat_room_seq);
+        params.put("newTitle", new_title);
+        params.put("empNo", empNo);
+        dao.updateChatRoomTitle(params);
+    }
 
-	// 채팅방 제목 수정
-	@Transactional
-	public void updateChatRoomTitle(int chat_room_seq, String new_title) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("chat_room_seq", chat_room_seq);
-		params.put("new_title", new_title);
-		dao.updateChatRoomTitle(params);
-	}
+    // 채팅방 나가기
+    @Transactional
+    public String exitChatRoom(int chatRoomSeq, String empNo) {
+        // 1:1 채팅방인지 확인
+        Map<String, Object> params = new HashMap<>();
+        params.put("chatRoomSeq", chatRoomSeq);
+        params.put("empNo", empNo);
+        String chatRoomCode = dao.getChatRoomCode(params);
 
-	// 채팅방 제목 수정
-	@Transactional
-	public String exitChatRoom(int chat_room_seq, String emp_no) {
-		
-		// 1:1 채팅방인지 확인
-		Map<String, Object> params = new HashMap<>();
-		params.put("chat_room_seq", chat_room_seq);
-		params.put("emp_no", emp_no);
-		String chatRoomCode = dao.getChatRoomCode(params);
-
-		if ("P".equals(chatRoomCode)) {
-			dao.deleteChatRoom(chat_room_seq);
-			dao.deleteChatRoomMember(chat_room_seq, emp_no);
-			return "success";
-		} else {
-			dao.deleteChatRoomMember(chat_room_seq, emp_no);
-			return "success";
-		}
-	}
+        if ("1:1".equals(chatRoomCode)) {
+            dao.deleteChatRoom(chatRoomSeq);
+        }
+        dao.deleteChatRoomMember(chatRoomSeq, empNo);
+        return "success";
+    }
 }

@@ -17,7 +17,7 @@
         WHERE board_seq = #{board_seq}
     </select>
 
-    <!-- 파일 삭제 -->
+    <!-- 게시판 삭제할 때 -> 파일 전체 삭제 -->
     <delete id="deleteFile" parameterType="int">
         DELETE FROM board_files WHERE board_seq = #{board_seq}
     </delete>
@@ -26,5 +26,13 @@
     <select id="selectFile" parameterType="int" resultType="String">
         SELECT sysname FROM board_files WHERE board_seq = #{board_seq}
     </select>
-
+    
+    <!-- 개별 파일 삭제 -->
+  	<delete id="deleteBySeqList" parameterType="int[]">
+    	delete from board_files
+    	where board_files_seq in
+    	<foreach item="seq" collection="array" open="(" separator="," close=")">
+        	#{seq}
+    	</foreach>  
+	</delete>
 </mapper>

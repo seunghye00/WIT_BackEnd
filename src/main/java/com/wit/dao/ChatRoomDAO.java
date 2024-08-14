@@ -13,19 +13,19 @@ public class ChatRoomDAO {
     @Autowired
     private SqlSession mybatis;
 
-    // 개인 채팅방 생성
+    // 채팅방 생성
     public void createChatRoom(Map<String, Object> params) {
         mybatis.insert("chatRoom.createChatRoom", params);
     }
 
-    // 그룹 채팅방 생성
-    public void createGroupChat(Map<String, Object> params) {
-        mybatis.insert("chatRoom.createGroupChat", params);
+    // 채팅방 멤버 추가
+    public void addChatRoomMember(Map<String, Object> params) {
+        mybatis.insert("chatRoom.addChatRoomMember", params);
     }
 
-    // 채팅방 멤버 추가
-    public void insertChatRoomMember(Map<String, Object> params) {
-        mybatis.insert("chatRoom.insertChatRoomMember", params);
+    // 그룹 채팅방 생성
+    public void createGroupChat() {
+    	mybatis.insert("chatRoom.createGroupChat");
     }
 
     // 개인 채팅방 존재 여부 확인
@@ -37,37 +37,37 @@ public class ChatRoomDAO {
     public int getLastChatRoomSeq() {
         return mybatis.selectOne("chatRoom.getLastChatRoomSeq");
     }
-    
+
     // 특정 사용자가 속한 채팅방 조회
-    public List<Map<String, Object>> getChatRoomsByUserId(String loginUserId) {
-        return mybatis.selectList("chatRoom.getChatRoomsByUserId", loginUserId);
+    public List<Map<String, Object>> getChatRoomsByUserId(String empNo) {
+        return mybatis.selectList("chatRoom.getChatRoomsByUserId", empNo);
     }
-    
+
     // 채팅방 상세 조회
     public List<Map<String, Object>> getDetailChatRooms(Map<String, Object> params) {
-    	return mybatis.selectList("chatRoom.getDetailChatRooms", params);
+        return mybatis.selectList("chatRoom.getDetailChatRooms", params);
     }
-    
+
     // 채팅방 타이틀 수정
     public void updateChatRoomTitle(Map<String, Object> params) {
         mybatis.update("chatRoom.updateChatRoomTitle", params);
     }
-    
+
     // 채팅방 코드 가져오기
     public String getChatRoomCode(Map<String, Object> params) {
         return mybatis.selectOne("chatRoom.getChatRoomCode", params);
     }
 
     // 채팅방 삭제
-    public void deleteChatRoom(int chat_room_seq) {
-        mybatis.delete("chatRoom.deleteChatRoom", chat_room_seq);
+    public void deleteChatRoom(int chatRoomSeq) {
+        mybatis.delete("chatRoom.deleteChatRoom", chatRoomSeq);
     }
 
     // 채팅방 멤버 삭제
-    public void deleteChatRoomMember(int chat_room_seq, String emp_no) {
+    public void deleteChatRoomMember(int chatRoomSeq, String empNo) {
         Map<String, Object> params = new HashMap<>();
-        params.put("chat_room_seq", chat_room_seq);
-        params.put("emp_no", emp_no);
+        params.put("chatRoomSeq", chatRoomSeq);
+        params.put("empNo", empNo);
         mybatis.delete("chatRoom.deleteChatRoomMember", params);
     }
 }
