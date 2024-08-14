@@ -32,17 +32,17 @@ public class CalendarService {
 		return dao.insertPerCalendar(dto);
 	}
 
-	// 부서캘린더 추가
+	// 부서캘린더 추가 (각 부서 부장만 가능)
 	public int insertDepCalendar(DepartmentCalendarDTO dto) {
 		return dao.insertDepCalendar(dto);
 	}
 
-	// 개인캘린더 삭제
+	// 개인캘린더 삭제 
 	public int deletePerCalendar(int calendarSeq) {
 		return dao.deletePerCalendar(calendarSeq);
 	}
 
-	// 부서캘린더 삭제
+	// 부서캘린더 삭제 (각 부서 부장만 가능)
 	public int deleteDepCalendar(int calendarSeq) {
 		return dao.deleteDepCalendar(calendarSeq);
 	}
