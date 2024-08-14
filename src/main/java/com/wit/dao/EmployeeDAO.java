@@ -180,4 +180,8 @@ public class EmployeeDAO {
 		return mybatis.selectOne("employee.getName", empNo);
 	}
 
+	// 해당 사번을 지닌 직원의 부서명 조회
+	public String getDept(String empNo) {
+		return mybatis.selectOne("employee.getDept", empNo);
+	}
 }

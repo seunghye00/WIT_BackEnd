@@ -312,7 +312,7 @@ public class EAppprovalController {
 
 		// 현재 요청된 URL을 확인
 		String currentUrl = request.getRequestURI();
-		System.out.println(currentUrl);
+
 		// 요청된 URL에 따라 분기 처리
 		if ("/eApproval/write/Lateness".equals(currentUrl)) {
 

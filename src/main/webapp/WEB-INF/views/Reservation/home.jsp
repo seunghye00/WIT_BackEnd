@@ -12,7 +12,9 @@
 	rel='stylesheet'>
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
-<script defer src="/js/hsh.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
+<script defer src="/js/reserv.js"></script>
 <script defer src="/js/wit.js"></script>
 </head>
 <body>
