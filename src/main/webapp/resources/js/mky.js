@@ -1,5 +1,3 @@
-let fileToSend = null; // 전송할 파일을 저장하는 변수
-
 // 주소록 토글 이벤트 설정
 const toggleItems = document.querySelectorAll('.toggleItem');
 toggleItems.forEach(function (toggleItem) {

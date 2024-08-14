@@ -1088,15 +1088,15 @@
 }
 
 .modal-content {
-	background-color: #fefefe;
-	margin: 5% auto;
-	padding: 30px;
-	border: 3px solid #558BCF;
-	width: 50%;
-	border-radius: 25px;
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 30px;
+    border: 3px solid #558BCF;
+    width: 50%;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .modal-category {
@@ -1336,15 +1336,11 @@
 }
 
 .chatList .chatTitle {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.chatList .notiBox {
-	
-}
 
 .notificationCount {
 	color: #fff;
@@ -1371,10 +1367,9 @@
 
 /* 채팅 콘텐츠  */
 .chatContainer {
-	background-color: #fff;
-	position: relative;
-	height: 86vh;
-	gap: 15px;
+    background-color: #fff;
+    position: relative;
+    gap: 15px;
 }
 
 .chatHeader {
@@ -1390,22 +1385,26 @@
 }
 
 .chatBody {
-	flex: 1;
-	padding: 20px;
-	overflow-y: auto;
-	background-color: rgb(220, 236, 252);
-	border-radius: 25px;
-	position: relative;
-	transition: padding-bottom 0.3s;
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: rgb(220, 236, 252);
+    border-radius: 25px;
+    position: relative;
+    transition: padding-bottom 0.3s;
+    max-height: 100%;
 }
 
 .message {
-	margin-bottom: 10px;
-	max-width: 70%;
-	padding: 10px;
-	border-radius: 10px;
-	position: relative;
-	clear: both;
+    margin-bottom: 10px;
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    position: relative;
+    clear: both;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .message.status {
@@ -1414,22 +1413,33 @@
 }
 
 .message.sent {
-	background-color: #558BCF;
-	color: white;
-	float: right;
-	text-align: right;
-	border-top-right-radius: 0;
-	display: flex;
-	flex-direction: column;
-	gap: 5px;
+    background-color: #558BCF;
+    color: white;
+    float: right;
+    text-align: right;
+    border-top-right-radius: 0;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    position: relative;
 }
 
 .message .sender, .message .text_box {
 	font-size: 18px;
 }
+.message .subBox{
+    font-size:12px;
+    position: absolute;
+    left: -40px;
+    bottom: 0;
+    color:#333;
+}
 
-.message .timeBox {
-	font-size: 12px;
+.message.received .subBox{
+    left: unset;
+    right: -40px;
+    bottom: 0;
+    color:#333;
 }
 
 .message.sent a {
@@ -1463,7 +1473,7 @@
 	border: 1px solid #c1c1c1;
 	border-radius: 5px;
 	margin-right: 10px;
-	min-height: 40px;
+	max-height: 60px;
 	overflow-y: auto;
 }
 
@@ -1784,6 +1794,44 @@
 	top: 11px;
 	right: 0;
 }
+
+/* 헤더 알림  */
+.aram_modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    right: 20px;
+    top: 90px;
+    width: fit-content;
+    height: 100%;
+    /* overflow: auto; */
+    /* background-color: rgb(0, 0, 0); */
+    /* background-color: rgba(0, 0, 0, 0.4); */
+    /* padding-top: 60px; */
+}
+
+.aram_modal .modal-content {background-color: #fefefe;margin: 0;padding: 20px;border: 3px solid #558BCF;width: 250px;border-radius: 25px;display: flex;flex-direction: column;gap: 20px;}
+
+.aram_modal .modal-content .modal-header {
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.aram_modal .modal-content .modal-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.aram_modal .modal-content .modal-header button {
+    padding: 0;
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 
 /* 경원 css end */
 
@@ -2626,22 +2674,25 @@ span.return {
 
 .eApproval .docuList .listBox {
 	height: 85%;
-	width: 100%;
+	border-bottom: 2px solid #888888;
+}
+
+.eApproval .docuList .listBox a {
+	border-bottom: 1px solid #c1c1c1;
 	display: flex;
-	flex-direction: column;
-	font-size: 16px;
+}
+
+.eApproval .docuList .listBox:not(.progList, .doneList) a {
+	min-height: 49px;
 }
 
 .eApproval .docuList .listBox .rows {
-	flex: 1;
-	display: flex;
-	border-bottom: 1px solid #c1c1c1;
+	border-bottom: unset;
 }
 
 .eApproval .docuList .listBox .rows.emptyDocuList {
 	max-height: unset;
 	height: 228px;
-	border-bottom: 2px solid #888888;
 }
 
 .eApproval .docuList .listBox .rows.emptyDocuList:hover {
@@ -2657,9 +2708,12 @@ span.return {
 }
 
 .eApproval .docuList .listBox .rows.listHeader {
-	border-radius: 15px;
-	background-color: #555;
-	color: #fff;
+	max-height: 48px;
+}
+
+.eApproval .docuList .listBox.progList .rows.listHeader, 
+.eApproval .docuList .listBox.doneList .rows.listHeader {
+	max-height: 45px;
 }
 
 .eApproval .docuList .listBox .rows.listHeader:hover {
@@ -2668,8 +2722,6 @@ span.return {
 
 .eApproval .docuList .listBox .rows .cols {
 	padding: 7px 0;
-	display: flex;
-	justify-content: center;
 }
 
 .eApproval .docuList .listBox .rows .cols:nth-child(1), .cols:nth-child(2),
@@ -2689,7 +2741,8 @@ span.return {
 	height: 28px;
 }
 
-.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList) .rows:not(.listHeader) .cols:last-child span {
+.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList) .rows:not(.listHeader) .cols:last-child span
+	{
 	border-radius: 5px;
 	color: #fff;
 	padding: 5px;
@@ -3203,8 +3256,7 @@ span.return {
 	justify-content: center;
 }
 
-.eApprModal.apprChoiModal .choiCont .arrBtns button:hover, 
-.eApprModal.apprChoiModal .choiCont .arrBtns button:active
+.eApprModal.apprChoiModal .choiCont .arrBtns button:hover, .eApprModal.apprChoiModal .choiCont .arrBtns button:active
 	{
 	background-color: #c0c0c0;
 }
@@ -3216,7 +3268,7 @@ span.return {
 }
 
 .eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(2) img,
-.eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(5) img {
+	.eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(5) img {
 	rotate: 90deg;
 	width: 17px;
 }
@@ -3358,8 +3410,8 @@ span.return {
 }
 
 .eApproval .docuList.docuBox .listBox {
-    flex: 9;
-    border-bottom: 2px solid #888888;
+	flex: 9;
+	border-bottom: 2px solid #888888;
 }
 
 .eApproval .docuList.docuBox .listBox .rows .cols {
@@ -4015,6 +4067,20 @@ span.return {
 	gap: 20px;
 }
 
+.sideContents.meetingRooms {
+	gap: unset;
+}
+
+.sideContents.meetingRooms .mainTitle {
+	align-items: flex-end;
+	gap: 20px;
+}
+
+.sideContents.meetingRooms .mainTitle span {
+	font-size: 18px;
+	color: #666;
+}
+
 .sideContents.reservation .reservBox {
 	max-height: 650px;
 	flex: 9;
@@ -4132,7 +4198,7 @@ span.return {
 	border: 1px solid #ccc;
 }
 
-#calendarText {
+.modal .calendarAdd textarea {
 	margin-top: 7px;
 	width: 100%;
 	height: 150px;

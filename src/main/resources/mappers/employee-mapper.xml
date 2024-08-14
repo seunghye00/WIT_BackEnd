@@ -186,8 +186,16 @@
 
 	<!-- 사원 이름 조회 -->
 	<select id="getName" resultType="String">
-		select name from employee where
-		emp_no = #{empNo}
+		select name from employee where emp_no = #{empNo}
+	</select>
+	
+	<!-- 사원 부서명 조회 -->
+	<select id="getDept" resultType="String">
+		select dept_title
+		from employee e
+		join dept d on
+		e.dept_code = d.dept_code
+		where emp_no = #{empNo}
 	</select>
 
 	<!-- PW찾기(수정) 을 위한 직원 정보 확인 -->
@@ -283,8 +291,7 @@
 		r.role_title
 		from
 		employee em
-		left
-		join
+		left join
 		dept d on em.dept_code = d.dept_code
 		left join
 		role r on
@@ -338,17 +345,15 @@
 		d.dept_title, r.role_title, phone, email
 		from employee em
 		left join
-		left
-		join
-		dept d on em.dept_code = d.dept_code
-		left join
-		role r on em.role_code = r.role_code
-		where emp_no = #{emp_no}
+	        dept d on em.dept_code = d.dept_code
+	    left join
+	        role r on em.role_code = r.role_code
+	    where emp_no = #{emp_no}
+    </select>
+    
+    <!--  메신저 emp_no 이름으로 변경 -->
+	<select id="getEmployeeName" parameterType="String" resultType="String">
+	    SELECT name FROM employee WHERE emp_no = #{emp_no}
 	</select>
 
-	<!-- 메신저 emp_no 이름으로 변경 -->
-	<select id="getEmployeeName" parameterType="String"
-		resultType="String">
-		SELECT name FROM employee WHERE emp_no = #{emp_no}
-	</select>
 </mapper>
