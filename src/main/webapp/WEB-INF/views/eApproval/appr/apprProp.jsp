@@ -30,7 +30,8 @@
 						</a>
 					</div>
 					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn">새 결재 진행</button>
+						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
+						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp" %>
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>

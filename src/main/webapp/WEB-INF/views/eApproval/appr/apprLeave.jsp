@@ -29,7 +29,7 @@
 						<h2 class="sideTit">전자 결재</h2>
 					</div>
 					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn disabled">새 결재 진행</button>
+						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
 						<%@ include
 							file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp"%>
 					</div>
