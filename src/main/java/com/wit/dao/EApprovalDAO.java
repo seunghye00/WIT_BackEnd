@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
@@ -55,7 +56,7 @@ public class EApprovalDAO {
 		params.put("empNo", empNo);
 		mybatis.insert("eApproval.createRefeLine", params);
 	}
-	
+
 	// 업무 기안 문서의 정보를 입력하기 위한 메서드
 	public void insertPropDocu(WorkPropDTO dto) {
 		mybatis.insert("eApproval.insertProp", dto);
@@ -70,20 +71,7 @@ public class EApprovalDAO {
 	public void insertLeaveDocu(LeaveRequestDTO dto) {
 		mybatis.insert("eApproval.insertLeave", dto);
 	}
-/*
-	// 임시 저장 시 해당 문서의 정보를 업데이트하기 위한 메서드
-	public void updateBySave(int docuSeq, String title, String emerYN) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("docuSeq", docuSeq);
-		params.put("title", title);
-		if (emerYN == null) {
-			emerYN = "N";
-		}
-		params.put("emerYN", emerYN);
-		mybatis.update("eApproval.updateBySave", params);
-	}
-*/
-	
+
 	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록을 조회하기 위한 메서드
 	public List<DocuInfoListDTO> selectListByType(String empNo, String status, String docuCode) {
 		Map<String, String> params = new HashMap<>();
@@ -155,12 +143,36 @@ public class EApprovalDAO {
 
 	// 해당 문서의 결재 라인 정보를 넘겨주기 위한 메서드
 	public List<ApprLineDTO> getApprLine(int docuSeq) {
-		return mybatis.selectList("selectApprByDocuSeq", docuSeq);
+		return mybatis.selectList("eApproval.selectApprByDocuSeq", docuSeq);
 	}
 
 	// 해당 문서의 참조 라인 정보를 넘겨주기 위한 메서드
 	public List<RefeLineDTO> getRefeLine(int docuSeq) {
-		return mybatis.selectList("selectRefeByDocuSeq", docuSeq);
+		return mybatis.selectList("eApproval.selectRefeByDocuSeq", docuSeq);
 	}
 
+	// 해당 문서를 삭제하기 위한 메서드
+	public void delDocu(int docuSeq) {
+		mybatis.delete("eApproval.deleteByDocuSeq", docuSeq);
+	}
+
+	// 해당 문서의 정보를 업데이트 하기 위한 메서드
+	public int updateDocu(DocuDTO dto) {
+		return mybatis.update("eApproval.updateByDocuSeq", dto);
+	}
+
+	// 지각 사유서 문서의 정보를 업데이트 하기 위한 메서드
+	public void updateLatenessDocu(LatenessDTO dto) {
+		mybatis.update("eApproval.updateLatenessByDocuSeq", dto);
+	}
+
+	// 휴가 신청서 문서의 정보를 업데이트 하기 위한 메서드
+	public void updateLeaveDocu(LeaveRequestDTO dto) {
+		mybatis.update("eApproval.updateLeaveByDocuSeq", dto);
+	}
+
+	// 업무 기안 문서의 정보를 업데이트 하기 위한 메서드
+	public void updatePropDocu(WorkPropDTO dto) {
+		mybatis.update("eApproval.updatePropByDocuSeq", dto);
+	}
 }

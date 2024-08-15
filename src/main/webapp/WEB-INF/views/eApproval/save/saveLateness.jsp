@@ -58,7 +58,7 @@
 												<td>${writerInfo.dept_title}</td>
 											</tr>
 											<tr>
-												<th>기안일</th>
+												<th>작성일</th>
 												<td>
 													<fmt:formatDate value="${docuInfo.write_date}" pattern="yyyy-MM-dd HH:mm" />
 												</td>
@@ -111,8 +111,9 @@
 								</div>
 							</div>
 							<div class="docuWrite docuLateness">
-								<form id="docuContForm">
-									<input type="hidden" name="docu_code" value="M3">
+								<form id="docuContForm" action="/eApproval/update" method="post">
+									<input type="hidden" name="docu_code" value="M1">
+									<input type="hidden" name="document_seq" value="${docuInfo.document_seq}" id="docuSeq">
 									<table>
 										<thead>
 											<tr>

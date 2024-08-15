@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ import com.wit.dto.DocuInfoListDTO;
 import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
 import com.wit.dto.LeaveRequestDTO;
+import com.wit.dto.RefeLineDTO;
 import com.wit.dto.WorkPropDTO;
 import com.wit.services.AnnualLeaveService;
 import com.wit.services.EApprovalService;
@@ -71,7 +73,7 @@ public class EAppprovalController {
 
 	// 해당 문서의 상세 정보를 열람하는데 필요한 정보들을 담아서 전달하는 메서드
 	@RequestMapping("readDocu")
-	public String readDocu(int docuSeq, @RequestParam(required = false)String type, Model model) throws Exception {
+	public String readDocu(int docuSeq, @RequestParam(required = false) String type, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -86,40 +88,76 @@ public class EAppprovalController {
 		switch (dto.getDocu_code()) {
 		case "M1":
 			model.addAttribute("docuDetail", serv.getPropDetail(docuSeq));
-			//해당 문서를 열람하려는 목적에 따라 경로 설정
-			if(type == null) {
+			// 해당 문서를 열람하려는 목적에 따라 경로 설정
+			if (type == null) {
 				return "eApproval/read/readProp";
-			} else if(type.equals("saved")) {
+			} else if (type.equals("saved")) {
 				return "eApproval/save/saveProp";
-			} else if(type.equals("toAppr")) {
+			} else if (type.equals("toAppr")) {
 				return "eApproval/appr/apprProp";
 			}
 		case "M2":
 			model.addAttribute("docuDetail", serv.getLeaveDetail(docuSeq));
 			// 해당 사원의 잔여 연차 갯수 조회 후 전달
-			model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
-			//해당 문서를 열람하려는 목적에 따라 경로 설정
-			if(type == null) {
+			// model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
+			// 해당 문서를 열람하려는 목적에 따라 경로 설정
+			if (type == null) {
 				return "eApproval/read/readLeave";
-			} else if(type.equals("saved")) {
+			} else if (type.equals("saved")) {
 				return "eApproval/save/saveLeave";
-			} else if(type.equals("toAppr")) {
+			} else if (type.equals("toAppr")) {
 				return "eApproval/appr/apprLeave";
-			}	
+			}
 		case "M3":
 			model.addAttribute("docuDetail", serv.getLatenessDetail(docuSeq));
-			//해당 문서를 열람하려는 목적에 따라 경로 설정
-			if(type == null) {
+			// 해당 문서를 열람하려는 목적에 따라 경로 설정
+			if (type == null) {
 				return "eApproval/read/readLateness";
-			} else if(type.equals("saved")) {
+			} else if (type.equals("saved")) {
 				return "eApproval/save/saveLateness";
-			} else if(type.equals("toAppr")) {
+			} else if (type.equals("toAppr")) {
 				return "eApproval/appr/apprLateness";
 			}
 		default:
 			// 추후 에러 페이지로 변경
 			return "redirect:/eApproval/home";
 		}
+	}
+
+	@ResponseBody
+	@Transactional
+	@RequestMapping(value = { "/reSaveDocu", "/update" })
+	public int reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO, HttpServletRequest request) throws Exception {
+		
+		// 현재 요청된 URL을 확인
+		String currentUrl = request.getRequestURI();
+
+		// 요청된 URL에 따라 문서 상태 변경
+		if (currentUrl.equals("/eApproval/reSaveDocu")) {
+			dto.setStatus("임시 저장");			
+		} else {
+			dto.setStatus("진행중");	
+		}
+		
+		// 문서 정보 업데이트 ( 작성일, 제목, 상태 )
+		int result = serv.updateDocu(dto);
+		
+		// 문서 양식에 따라 해당 문서의 세부 정보 업데이트
+		switch(dto.getDocu_code()) {
+		case "M1":
+			serv.updatePropDocu(wDTO);
+			break;
+		case "M2":
+			serv.updateLeaveDocu(lrDTO);
+			break;
+		case "M3":
+			serv.updateLatenessDocu(lnDTO);
+			break;
+		default: 
+			break;
+		}
+		
+		return result;
 	}
 
 	// 브라우저에서 선택한 type에 따라 결재하기 페이지로 이동 시 해당 페이지에서 초기에 노출할 데이터를 담아서 전달하는 메서드
@@ -206,6 +244,13 @@ public class EAppprovalController {
 		return list;
 	}
 
+	// 임시 저장 상태인 해당 문서를 삭제하기 위한 메서드
+	@RequestMapping("delDocu")
+	public String delDocu(int docuSeq) throws Exception {
+		serv.delDocu(docuSeq);
+		return "redirect:/eApproval/privateList?type=save";
+	}
+
 	// 전자 결재 작성페이지로 이동 시 노출할 데이터를 담아서 전달하는 메서드
 	@RequestMapping(value = "writeProc", method = RequestMethod.POST)
 	public String writeProc(String docuCode, @RequestParam("apprList") String[] apprList,
@@ -233,7 +278,7 @@ public class EAppprovalController {
 			return "eApproval/write/writeProp";
 		case "M2":
 			// 해당 사원의 잔여 연차 갯수 조회 후 전달
-			model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
+			// model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
 			return "eApproval/write/writeLeave";
 		case "M3":
 			return "eApproval/write/writeLateness";
@@ -258,7 +303,7 @@ public class EAppprovalController {
 		String currentUrl = request.getRequestURI();
 
 		// 요청된 URL에 따라 분기 처리
-		if ("/eApproval/write/Prop".equals(currentUrl)) {
+		if (currentUrl.equals("/eApproval/write/Prop")) {
 
 			// 문서 상태 설정
 			dto.setStatus("진행중");
@@ -271,7 +316,7 @@ public class EAppprovalController {
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
 
-		} else if ("/eApproval/write/tempProp".equals(currentUrl)) {
+		} else if (currentUrl.equals("/eApproval/write/tempProp")) {
 
 			// 문서 상태 설정
 			dto.setStatus("임시 저장");
@@ -314,7 +359,7 @@ public class EAppprovalController {
 		String currentUrl = request.getRequestURI();
 
 		// 요청된 URL에 따라 분기 처리
-		if ("/eApproval/write/Lateness".equals(currentUrl)) {
+		if (currentUrl.equals("/eApproval/write/Lateness")) {
 
 			// 문서 상태 설정
 			dto.setStatus("진행중");
@@ -327,7 +372,7 @@ public class EAppprovalController {
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
 
-		} else if ("/eApproval/write/tempLateness".equals(currentUrl)) {
+		} else if (currentUrl.equals("/eApproval/write/tempLateness")) {
 
 			// 문서 상태 설정
 			dto.setStatus("임시 저장");
@@ -369,7 +414,7 @@ public class EAppprovalController {
 		String currentUrl = request.getRequestURI();
 
 		// 요청된 URL에 따라 분기 처리
-		if ("/eApproval/write/Leave".equals(currentUrl)) {
+		if (currentUrl.equals("/eApproval/write/Leave")) {
 
 			// 문서 상태 설정
 			dto.setStatus("진행중");
@@ -382,7 +427,7 @@ public class EAppprovalController {
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
 
-		} else if ("/eApproval/write/tempLeave".equals(currentUrl)) {
+		} else if (currentUrl.equals("/eApproval/write/tempLeave")) {
 
 			// 문서 상태 설정
 			dto.setStatus("임시 저장");
@@ -407,13 +452,6 @@ public class EAppprovalController {
 			}
 		}
 		return dto.getDocument_seq();
-	}
-	
-	// 임시 저장 페이지에서 지각 사유서 문서의 내용을 업데이트 하기 위한 메서드
-	@ResponseBody
-	@RequestMapping(value = { "/saved/Lateness", "/saved/tempLateness" }, produces = "application/json;charset=utf8")
-	public void updateLateness(int docuSeq, DocuDTO dto, LatenessDTO subDTO) throws Exception {
-		
 	}
 
 	// 결재 문서 작성 완료 시 파일을 업로드 하기 위한 메서드

@@ -9,8 +9,8 @@
    
    <!-- Root Context: defines shared resources visible to all other web components -->
    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
-      <property name="username" value="wit" />
-      <property name="password" value="wit" />
+      <property name="username" value="test0814" />
+      <property name="password" value="test0814" />
       <property name="driverClassName"
          value="oracle.jdbc.driver.OracleDriver" />
       <property name="jdbcUrl"

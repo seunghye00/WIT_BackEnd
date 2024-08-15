@@ -339,6 +339,26 @@ $('.returnBtn').on('click', () => {
     });
 });
 
+// 임시 저장 문서 페이지에서 목록 버튼 클릭 시 임시 저장 문서함으로 이동
+$('.goSavaList').on('click', () => {
+	if(confirm('저장하지 않은 수정 사항은 기록되지 않습니다.')){
+		location.href = '/eApproval/privateList?type=save';
+	}
+});
+
+// 문서 열람 페이지에서 목록 버튼 클릭 시 바로 전 페이지로 이동
+$('.goBack').on('click', () => {
+	window.history.back();
+});
+
+// 임시 저장 문서 페이지에서 삭제 버튼 클릭 시 임시 저장 문서함으로 이동
+$('.delDocu').on('click', () => {
+	if(confirm('정말로 삭제하시겠습니까 ?')){
+		location.href = '/eApproval/delDocu?docuSeq=' + $('#docuSeq').val();
+	}
+});
+
+
 // 결재 문서 작성 페이지에서 취소 버튼 클릭 시 이전 페이지로 이동
 $('.cancelWrite').on('click', () => {
 	if(confirm('정말로 작성을 취소하시겠습니까 ?')){
@@ -374,15 +394,21 @@ $('.propWrite').on('click', () => {
 
 // 임시 저장된 업무 기안 문서 열람 페이지에서 결재 요청 버튼 클릭 시
 $('.propUpdate').on('click', () => {
+	
 	// 문서에 대한 필수 입력 값을 입력 완료했는 지 확인
-	if($('#effDate').val() == ""){	
-		alert('시행일자를 입력해주세요');
-		$('#effDate').focus();
+	if($('#leaveType').val() == "") {
+		alert('휴가 종류를 선택해주세요');
+		$('#leaveType').focus();
 		return;
 	}
-	if($('#collaboDept').val() == ""){	
-		alert('협조 부서를 입력해주세요');
-		$('#collaboDept').focus();
+	if($('#startLeaveDay').val() == ""){	
+		alert('시작 일자를 선택해주세요');
+		$('#startLeaveDay').focus();
+		return;
+	}
+	if($('#endLeaveDay').val() == ""){	
+		alert('종료 일자를 선택해주세요');
+		$('#endLeaveDay').focus();
 		return;
 	}
 	if($('#writeDocuTitle').val() == ""){	
@@ -390,13 +416,92 @@ $('.propUpdate').on('click', () => {
 		$('#writeDocuTitle').focus();
 		return;
 	}
-	if($('#writeDocuConts').val() == ""){	
-		alert('문서 내용을 입력해주세요');
-		$('#writeDocuConts').focus();
+	if($('#reason').val() == ""){	
+		alert('휴가 사유를 입력해주세요');
+		$('#reason').focus();
 		return;
 	}
-	$('#docuUpdateForm').submit();
+
+	if(!$('#startDay').is(':checked')){
+		$('#startDayChecked').val('N');
+	}
+	if(!$('#startDayAM').is(':checked')){
+		$('#startDayAMChecked').val('N');
+	}
+	if(!$('#startDayPM').is(':checked')){
+		$('#startDayPMChecked').val('N');
+	}
+	if(!$('#endDay').is(':checked')){
+		$('#endDayChecked').val('N');
+	}
+	if(!$('#endDayAM').is(':checked')){
+		$('#endDayAMChecked').val('N');
+	}
+	if(!$('#endDayPM').is(':checked')){
+		$('#endDayPMChecked').val('N');
+	}
+
+    // 신청 연차 일수 문자열을 숫자로 변환 후 Form 전송
+    $('#applyLeaves').val(parseFloat($('#applyLeaves').val()));
+    
+	// 문서의 긴급 여부 체크
+	if($('#emerCheck').is(':checked')){
+		$('#emerChecked').val('Y');
+	}
 	
+	$('#docuContForm').submit();
+});
+
+// 임시 저장된 지각 사유서 문서 열람 페이지에서 결재 요청 버튼 클릭 시
+$('.latenessUpdate').on('click', () => {
+	
+	// 필수 입력값 검사 후 데이터 전송 
+	if($('#lateDay').val() == ""){	
+		alert('지각 일자를 입력해주세요');
+		$('#lateDay').focus();
+		return false;
+	}
+	if($('#writeDocuTitle').val() == ""){	
+		alert('문서 제목을 입력해주세요');
+		$('#writeDocuTitle').focus();
+		return false;
+	}
+	if($('#reason').val() == ""){	
+		alert('지각 사유를 입력해주세요');
+		$('#reason').focus();
+		return false; 
+	}
+	
+	// 문서의 긴급 여부 체크
+	if($('#emerCheck').is(':checked')){
+		$('#emerChecked').val('Y');
+	}
+	
+	$('#docuContForm').submit();
+});
+
+// 임시 저장된 문서 열람 페이지에서 임시 저장 버튼 클릭 시
+$('.reSaveDocu').on('click', () => {
+	if(confirm('현재까지 작성된 내용을 저장하시겠습니까 ?\n파일 목록은 저장되지 않습니다.')){
+		
+		// 문서의 긴급 여부 체크
+		if($('#emerCheck').is(':checked')){
+			$('#emerChecked').val('Y');
+		}
+		
+		// AJAX로 서버에 전송
+     	$.ajax({
+     		type: 'POST',
+        	url: '/eApproval/reSaveDocu',
+        	data: $("#docuContForm").serialize()
+     	}).done((resp) => {
+     		if(resp > 0){
+     			alert('저장되었습니다.');
+     		}
+     		// 페이지 새로 고침
+     		location.reload();
+     	});
+	}
 });
 
 // 지각 사유서 문서 작성 페이지에서 결재 요청 버튼 클릭 시
@@ -488,7 +593,6 @@ $('.docuSaveBtn').on('click', function() {
 	}
 });
 
-// 
 
 // 참조 버튼 클릭 시 참조선 리스트 모달창 활성화
 $('.refeBtn').on('click', () => {
@@ -550,6 +654,11 @@ function sendFormData(choiUrl) {
 	// 결재 라인 & 참조 라인 정보를 form 태그 내부에 추가
 	$(".apprTable input").appendTo("#docuContForm");
 	$(".refeModal input").appendTo("#docuContForm");
+	
+	// 문서의 긴급 여부 체크
+	if($('#emerCheck').is(':checked')){
+		$('#emerChecked').val('Y');
+	}
 	
  	// 폼 데이터를 직렬화 후 변수에 저장
 	let formData = $("#docuContForm").serialize();

@@ -32,17 +32,7 @@
 			keyProperty="document_seq">
 			select document_seq.currval from dual
 		</selectKey>
-		<choose>
-			<when test="emer_yn != null">
-				insert into documents values (document_seq.nextval,
-				#{emp_no}, #{title}, sysdate, null, #{status}, #{emer_yn},
-				#{docu_code})
-			</when>
-			<otherwise>
-				insert into documents values (document_seq.nextval,
-				#{emp_no}, #{title}, sysdate, null, #{status}, 'N', #{docu_code})
-			</otherwise>
-		</choose>
+			insert into documents values (document_seq.nextval, #{emp_no}, #{title}, sysdate, null, #{status}, #{emer_yn}, #{docu_code})
 	</insert>
 	
 	<!-- 해당 문서의 정보를 조회하는 쿼리문 -->
@@ -75,13 +65,6 @@
 	<select id="selectRefeByDocuSeq" resultType="com.wit.dto.RefeLineDTO">
 		select * from reference_line where document_seq = #{docuSeq}
 	</select>
-
-	<!-- 임시 저장 시 문서 정보를 업데이트 하는 쿼리문 -->
-	<update id="updateBySave">
-		update documents set title = #{title}, emer_yn =
-		#{emerYN}, write_date = sysdate, status = '임시 저장' where document_seq =
-		#{docuSeq}
-	</update>
 
 	<!-- 업무 기안 문서 작성 시 정보를 입력하는 쿼리문 -->
 	<insert id="insertProp">
@@ -225,4 +208,34 @@
 			and d.docu_code = #{docuCode}
 		</if>
 	</select>
+	
+	<!-- 해당 문서를 삭제하기 위한 쿼리문 -->
+	<delete id="deleteByDocuSeq">
+		delete from documents where document_seq = #{docuSeq}
+	</delete>
+	
+	<!-- 해당 문서의 정보를 업데이트하기 위한 쿼리문 -->
+	<update id="updateByDocuSeq">
+		update documents set title = #{title}, emer_yn = #{emer_yn}, status = #{status}, write_date = sysdate where document_seq = #{document_seq}
+	</update>
+	
+	<!-- 업무 기안 문서의 정보를 업데이트하기 위한 쿼리문 -->
+	<update id="updatePropByDocuSeq">
+		update work_proposals set eff_date = #{eff_date}, dept_title = #{dept_title}, contents = #{contents} where document_seq = #{document_seq}
+	</update>
+	
+	<!-- 지각 사유서 문서의 정보를 업데이트하기 위한 쿼리문 -->
+	<update id="updateLatenessByDocuSeq">
+		update lateness_reports set late_date = #{late_date}, reason = #{reason} where document_seq = #{document_seq}
+	</update>
+	
+	<!-- 휴가 신청서 문서의 정보를 업데이트하기 위한 쿼리문 -->
+	<update id="updateLeaveByDocuSeq">
+		update leave_requests set leave_type = #{leave_type}, start_date = #{start_date}, end_date = #{end_date},
+		start_day_checked = #{start_day_checked}, start_day_am_checked = #{start_day_am_checked},
+		start_day_pm_checked = #{start_day_pm_checked}, end_day_checked = #{end_day_checked},
+		end_day_am_checked = #{end_day_am_checked}, end_day_pm_checked = #{end_day_pm_checked},
+		request_leave_days = #{request_leave_days}, reason = #{reason}
+		where document_seq = #{document_seq}
+	</update>
 </mapper>

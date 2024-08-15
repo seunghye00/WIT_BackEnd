@@ -1,11 +1,13 @@
 package com.wit.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wit.dao.EApprovalDAO;
+import com.wit.dao.EmployeeDAO;
 import com.wit.dto.ApprLineDTO;
 import com.wit.dto.DocuDTO;
 import com.wit.dto.DocuInfoListDTO;
@@ -20,6 +22,9 @@ public class EApprovalService {
 
 	@Autowired
 	private EApprovalDAO dao;
+
+	@Autowired
+	private EmployeeDAO eDao;
 
 	// 문서 상태에 따라 해당 사원이 작성한 문서 목록을 넘겨주기 위한 메서드
 	public List<DocuInfoListDTO> selectByStatus(String status, String empNo) {
@@ -60,12 +65,7 @@ public class EApprovalService {
 	public void insertLeaveDocu(LeaveRequestDTO dto) {
 		dao.insertLeaveDocu(dto);
 	}
-/*
-	// 해당 문서의 정보를 업데이트하기 위한 메서드
-	public void updateDocu(int docuSeq, String title, String emerYN) {
-		dao.updateBySave(docuSeq, title, emerYN);
-	} */
-	
+
 	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록을 문서 종류에 따라 넘겨주기 위한 메서드
 	public List<DocuInfoListDTO> selectListByType(String empNo, String status, String docuCode) {
 		return dao.selectListByType(empNo, status, docuCode);
@@ -122,7 +122,38 @@ public class EApprovalService {
 	}
 
 	// 해당 문서의 참조 라인 정보를 넘겨주기 위한 메서드
-	public List<RefeLineDTO> getRefeLine(int docuSeq) {
-		return dao.getRefeLine(docuSeq);
+	public List<String> getRefeLine(int docuSeq) {
+		List<String> list = new ArrayList<>(); // 리스트 초기화
+		for (RefeLineDTO dto : dao.getRefeLine(docuSeq)) {
+			String empNo = dto.getEmp_no();
+			list.add(eDao.getName(empNo) + " " + eDao.getRole(empNo));
+		}
+		return list;
 	}
+
+	// 해당 문서를 삭제하기 위한 메서드
+	public void delDocu(int docuSeq) {
+		dao.delDocu(docuSeq);
+	}
+
+	// 해당 문서를 업데이트 하기 위한 메서드
+	public int updateDocu(DocuDTO dto) {
+		return dao.updateDocu(dto);
+	}
+
+	// 업무 기안 문서를 업데이트 하기 위한 메서드
+	public void updatePropDocu(WorkPropDTO dto) {
+		dao.updatePropDocu(dto);
+	}
+
+	// 지각 사유서 문서를 업데이트 하기 위한 메서드
+	public void updateLatenessDocu(LatenessDTO dto) {
+		dao.updateLatenessDocu(dto);
+	}
+	
+	// 휴가 신청서 문서를 업데이트 하기 위한 메서드
+	public void updateLeaveDocu(LeaveRequestDTO dto) {
+		dao.updateLeaveDocu(dto);
+	}
+
 }
