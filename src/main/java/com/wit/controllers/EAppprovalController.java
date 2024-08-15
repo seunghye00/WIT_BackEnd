@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -30,7 +31,6 @@ import com.wit.dto.DocuInfoListDTO;
 import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
 import com.wit.dto.LeaveRequestDTO;
-import com.wit.dto.RefeLineDTO;
 import com.wit.dto.WorkPropDTO;
 import com.wit.services.AnnualLeaveService;
 import com.wit.services.EApprovalService;
@@ -124,26 +124,113 @@ public class EAppprovalController {
 		}
 	}
 
+	// 해당 문서를 반려 처리하기 위한 메서드
+	@Transactional
+	@RequestMapping("returnDocu")
+	public String returnDocu(int docuSeq, String comments) throws Exception {
+		
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+		List<ApprLineDTO> list = serv.getApprLine(docuSeq);
+
+		// 해당 사원의 결재 순서에 따라 결재 라인 정보 업데이트
+		for (int i = 0; i < 3; i++) {
+			ApprLineDTO dto = list.get(i);
+			if (dto.getEmp_no().equals(empNo)) {
+				dto.setComments(comments);
+				serv.insertComments(dto);
+				serv.updateApprLineAll(docuSeq, i + 1);
+				// 문서 상태 업데이트
+				serv.updateDocuStatus(docuSeq, "반려");
+				break;
+			}
+		}
+		return "redirect:/eApproval/apprList?type=todo";
+	}
+
+	// 해당 문서를 결재 처리하기 위한 메서드
+	@Transactional
+	@RequestMapping("apprDocu")
+	public String apprDocu(int docuSeq, String comments) throws Exception {
+
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+
+		// 해당 문서의 결재 라인과 해당 사원의 결재 순서 조회 후 변수에 저장
+		int apprOrder = 0;
+		for(ApprLineDTO dto : serv.getApprLine(docuSeq)) {
+			if(empNo.equals(dto.getEmp_no())) {
+				apprOrder = dto.getApproval_order();
+				break;
+			} 
+		}
+		// 해당 사원의 결재 순서에 따라 결재 라인 정보 업데이트
+		switch (apprOrder) {
+		case 1:
+			serv.updateApprLine(docuSeq, 1, "결재 완료");
+			serv.updateApprLine(docuSeq, 2, "결재 대기");
+			serv.updateApprLine(docuSeq, 3, "결재 예정");
+			break;
+		case 2:
+			serv.updateApprLine(docuSeq, 2, "결재 완료");
+			serv.updateApprLine(docuSeq, 3, "결재 대기");
+			break;
+		case 3:
+			serv.updateApprLine(docuSeq, 3, "결재 완료");
+			serv.updateDocuStatus(docuSeq, "완료");
+			break;
+		default:
+			// 추후 에러 페이지로 변경
+			return "redirect:/eApproval/home";
+		}
+		return "redirect:/eApproval/apprList?type=todo";
+	}
+
+	// 해당 문서를 전결 처리하기 위한 메서드
+	@Transactional
+	@RequestMapping("apprAllDocu")
+	public String apprAllDocu(int docuSeq, String comments) throws Exception {
+
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+		List<ApprLineDTO> list = serv.getApprLine(docuSeq);
+
+		// 해당 사원의 결재 순서에 따라 결재 라인 정보 업데이트
+		for (int i = 0; i < 3; i++) {
+			ApprLineDTO dto = list.get(i);
+			if (dto.getEmp_no().equals(empNo)) {
+				dto.setComments(comments);
+				serv.insertComments(dto);
+				serv.updateApprLineAll(docuSeq, i + 1);
+				// 문서 상태 업데이트
+				serv.updateDocuStatus(docuSeq, "완료");
+				break;
+			}
+		}
+		return "redirect:/eApproval/apprList?type=todo";
+	}
+
 	@ResponseBody
 	@Transactional
 	@RequestMapping(value = { "/reSaveDocu", "/update" })
-	public int reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO, HttpServletRequest request) throws Exception {
-		
+	public int reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO,
+			HttpServletRequest request) throws Exception {
+
 		// 현재 요청된 URL을 확인
 		String currentUrl = request.getRequestURI();
 
 		// 요청된 URL에 따라 문서 상태 변경
 		if (currentUrl.equals("/eApproval/reSaveDocu")) {
-			dto.setStatus("임시 저장");			
+			dto.setStatus("임시 저장");
 		} else {
-			dto.setStatus("진행중");	
+			dto.setStatus("진행중");
 		}
-		
+
 		// 문서 정보 업데이트 ( 작성일, 제목, 상태 )
 		int result = serv.updateDocu(dto);
-		
+
 		// 문서 양식에 따라 해당 문서의 세부 정보 업데이트
-		switch(dto.getDocu_code()) {
+		switch (dto.getDocu_code()) {
 		case "M1":
 			serv.updatePropDocu(wDTO);
 			break;
@@ -153,10 +240,10 @@ public class EAppprovalController {
 		case "M3":
 			serv.updateLatenessDocu(lnDTO);
 			break;
-		default: 
+		default:
 			break;
 		}
-		
+
 		return result;
 	}
 
@@ -218,12 +305,27 @@ public class EAppprovalController {
 			model.addAttribute("docuList", serv.selecSavetList(empNo, docuCode));
 			break;
 		case "approved":
-			model.addAttribute("docuList", serv.selectApprovedList(empNo, docuCode));
+			list = serv.selectApprovedList(empNo, docuCode);
+			// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+			for (DocuInfoListDTO dto : list) {
+				dto.setWriter(eServ.getName(dto.getEmp_no()));
+			}
+			model.addAttribute("docuList", list);
 			break;
 		case "return":
+			list = serv.selectApprovedList(empNo, docuCode);
+			// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+			for (DocuInfoListDTO dto : list) {
+				dto.setWriter(eServ.getName(dto.getEmp_no()));
+			}
 			model.addAttribute("docuList", serv.selectReturnList(empNo, docuCode));
 			break;
 		case "view":
+			list = serv.selectApprovedList(empNo, docuCode);
+			// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+			for (DocuInfoListDTO dto : list) {
+				dto.setWriter(eServ.getName(dto.getEmp_no()));
+			}
 			model.addAttribute("docuList", serv.selectViewList(empNo, docuCode));
 			break;
 		default:

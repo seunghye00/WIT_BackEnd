@@ -3457,8 +3457,8 @@ span.return {
 	align-items: center;
 }
 
-/* 전자 결재 반려 모달창 */
-.cancelModal, .apprModal {
+/* 전자 결재 문서 결재 & 반려 모달창 */
+.returnModal, .apprModal {
 	display: none;
 	border: 1px solid black;
 	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
@@ -3477,17 +3477,35 @@ span.return {
 	gap: 15px;
 }
 
-.cancelModal .cancelModalTitle, .apprModal .apprModalTitle {
+.returnModal .returnModalTitle, .apprModal .apprModalTitle {
 	flex: 1;
 	font-size: 24px;
 }
 
-.cancelModal .cancelComm, .apprModal .apprComm {
+.returnModal .returnModalTitle span, 
+.apprModal .apprModalTitle span {
+	position: relative;
+	top: -18px;
+    right: -95px;
+    color: #999;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.returnModal .returnModalTitle span:hover,
+.returnModal .returnModalTitle span:active,
+.apprModal .apprModalTitle span:hover,
+.apprModal .apprModalTitle span:active {
+	cursor: pointer;
+    color: #777;
+}
+
+.returnModal .returnComm, .apprModal .apprComm {
 	flex: 4;
 	width: 100%;
 }
 
-.cancelModal .cancelComm textarea, .apprModal .apprComm textarea {
+.returnModal .returnComm textarea, .apprModal .apprComm textarea {
 	width: 100%;
 	height: 100%;
 	resize: none;
@@ -3495,7 +3513,7 @@ span.return {
 	border-radius: 8px;
 }
 
-.cancelModal .modalBtnBox, .apprModal .modalBtnBox {
+.returnModal .modalBtnBox, .apprModal .modalBtnBox {
 	flex: 1;
 	display: flex;
 	align-items: end;

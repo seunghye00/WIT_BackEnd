@@ -118,6 +118,7 @@
 		approval_order = 3 and
 		d.document_seq in (select document_seq from approvals_line where emp_no = #{empNo}
 		and status = #{status})
+		order by 1 desc
 	</select>
 
 	<!-- 해당 사원의 기안 문서 목록을 조회하는 쿼리문 -->
@@ -137,6 +138,7 @@
 		<if test="docuCode != null">
 			and d.docu_code = #{docuCode}
 		</if>
+		order by 1 desc
 	</select>
 
 	<!-- 해당 사원의 임시 저장 문서 목록을 조회하는 쿼리문 -->
@@ -152,6 +154,7 @@
 		<if test="docuCode != null">
 			and d.docu_code = #{docuCode}
 		</if>
+		order by 1 desc
 	</select>
 
 	<!-- 해당 사원이 결재한 문서 목록을 조회하는 쿼리문 -->
@@ -170,6 +173,7 @@
 		<if test="docuCode != null">
 			and d.docu_code = #{docuCode}
 		</if>
+		order by 1 desc
 	</select>
 
 	<!-- 해당 사원이 반려한 문서 목록을 조회하는 쿼리문 -->
@@ -189,6 +193,7 @@
 		<if test="docuCode != null">
 			and d.docu_code = #{docuCode}
 		</if>
+		order by 1 desc
 	</select>
 
 	<!-- 해당 사원이 참조자인 문서 목록을 조회하는 쿼리문 -->
@@ -207,6 +212,7 @@
 		<if test="docuCode != null">
 			and d.docu_code = #{docuCode}
 		</if>
+		order by 1 desc
 	</select>
 	
 	<!-- 해당 문서를 삭제하기 위한 쿼리문 -->
@@ -238,4 +244,29 @@
 		request_leave_days = #{request_leave_days}, reason = #{reason}
 		where document_seq = #{document_seq}
 	</update>
+	
+	<!-- 해당 문서에 대한 코멘트를 입력하기 위한 뭐리문 -->
+	<update id="insertComments">
+		update approvals_line set comments = #{comments}, status = '결재 완료', approved_date = sysdate where document_seq = #{document_seq} and emp_no = #{emp_no}
+	</update>
+	
+	<!-- 반려 처리 후 문서의 결재 라인 상태를 업데이트하기 위한 쿼리문 -->
+	<update id="updateApprLineAll">
+		update approvals_line set status = '결재 완료', approved_date = sysdate where document_seq = #{docuSeq} and approval_order > #{order}
+	</update>
+	
+	<!-- 결재 처리 후 문서의 결재 라인 상태를 업데이트하기 위한 쿼리문 -->
+	<update id="updateApprLine">
+		update approvals_line set status = #{status}
+		<if test="status == '결재 완료'">
+			, approved_date = sysdate 
+		</if>
+		where document_seq = #{docuSeq} and approval_order = #{order}
+	</update>
+	
+	<!-- 해당 문서 상태를 업데이트하기 위한 쿼리문 -->
+	<update id="updateDocuStatus">
+		update documents set status = #{status}, done_date = sysdate where document_seq = #{docuSeq}
+	</update>
+	
 </mapper>

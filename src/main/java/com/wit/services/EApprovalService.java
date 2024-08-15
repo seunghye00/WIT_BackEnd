@@ -156,4 +156,23 @@ public class EApprovalService {
 		dao.updateLeaveDocu(dto);
 	}
 
+	// 해당 문서의 결재 라인 상태를 반려 처리에 따라 변경하기 위한 메서드 
+	public void updateApprLineAll(int docuSeq, int i) {
+		dao.updateApprLineAll(docuSeq, i);
+	}
+
+	// 해당 문서에 대한 코멘트를 입력하기 위한 메서드
+	public void insertComments(ApprLineDTO dto) {
+		dao.inserComments(dto);	
+	}
+
+	// 문서 상태를 업데이트 하기 위한 메서드
+	public void updateDocuStatus(int docuSeq, String status) {
+		dao.updateDocuStatus(docuSeq, status);
+	}
+
+	// 해당 결재 라인의 상태를 변경하기 위한 메서드
+	public void updateApprLine(int docuSeq, int i, String status) {
+		dao.updateApprLine(docuSeq, i, status);
+	}
 }

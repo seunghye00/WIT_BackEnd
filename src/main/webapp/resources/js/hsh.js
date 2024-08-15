@@ -566,7 +566,6 @@ $('.docuSaveBtn').on('click', function() {
 	}
 });
 
-
 // 참조 버튼 클릭 시 참조선 리스트 모달창 활성화
 $('.refeBtn').on('click', () => {
     $('.refeModal').toggle();
@@ -626,26 +625,75 @@ $('.apprBtn').on('click', () => {
     $('.apprModal').css('display', 'flex');
 
     // 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
-    $('.noApprBtn').on('click', () => {
+    $('.returnBtn').on('click', () => {
         $('.apprModal').hide();
-        $('.cancelModal').css('display', 'flex');
+        $('.returnModal').css('display', 'flex');
     });
 
-    // 취소 버튼 클릭 시 해당 모달창 비활성화
+    // 취소 버튼 클릭 시 현재 모달창 비활성화
     $('.closeModal').on('click', () => {
         $('.apprModal').hide();
+    });
+    
+    // 새 결재 진행 버튼 클릭 시 현재 모달창 비활성화
+    $('#startApprBtn').on('click', () => {
+    	$('.apprModal').hide();
     });
 });
 
 // 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
 $('.returnBtn').on('click', () => {
-    $('.cancelModal').css('display', 'flex');
+    $('.returnModal').css('display', 'flex');
 
-    // 취소 버튼 클릭 시 해당 모달창 비활성화
+    // 취소 버튼 클릭 시 현재 모달창 비활성화
     $('.closeModal').on('click', () => {
-        $('.cancelModal').hide();
+        $('.returnModal').hide();
+    });
+    
+    // 결재 버튼 클릭 시 결재 모달창 활성화
+    $('.apprBtn').on('click', () => {
+    	$('.returnModal').hide();
+    	$('.apprModal').css('display', 'flex');
+    });
+    
+    // 새 결재 진행 버튼 클릭 시 현재 모달창 비활성화
+    $('#startApprBtn').on('click', () => {
+    	$('.returnModal').hide();
     });
 });
+
+// 반려 코멘트 모달창에서 완료 버튼 클릭 시
+$('.docuReturn').on('click', () => {
+	if($('#returnComm').val().trim() == ""){
+		alert('코멘트를 입력해주세요');
+		$('#returnComm').focus();
+		return;
+	}
+	$('#returnComm').val($('#returnComm').val().trim());
+	location.href="/eApproval/returnDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#returnComm').val();
+}); 
+
+// 결재 코멘트 모달창에서 결재 버튼 클릭 시
+$('.docuAppr').on('click', () => {
+	if($('#apprComm').val().trim() == ""){
+		alert('코멘트를 입력해주세요');
+		$('#apprComm').focus();
+		return;
+	}
+	$('#apprComm').val($('#apprComm').val().trim());
+	location.href="/eApproval/apprDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#returnComm').val();
+}); 
+
+// 결재 코멘트 모달창에서 전결 버튼 클릭 시
+$('.docuAllAppr').on('click', () => {
+	if($('#apprComm').val().trim() == ""){
+		alert('코멘트를 입력해주세요');
+		$('#apprComm').focus();
+		return;
+	}
+	$('#apprComm').val($('#apprComm').val().trim());
+	location.href="/eApproval/apprAllDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#returnComm').val();
+}); 
 
 // AJAX로 서버에 해당 문서의 데이터를 보내고 문서 번호를 받아오는 메서드
 function sendFormData(choiUrl) {

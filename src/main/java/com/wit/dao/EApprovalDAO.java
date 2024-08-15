@@ -175,4 +175,34 @@ public class EApprovalDAO {
 	public void updatePropDocu(WorkPropDTO dto) {
 		mybatis.update("eApproval.updatePropByDocuSeq", dto);
 	}
+	
+	// 해당 문서의 결재 라인 상태를 전부 변경하기 위한 메서드
+	public void updateApprLineAll(int docuSeq, int i) {
+		Map<String, Integer> params = new HashMap<>();
+		params.put("docuSeq", docuSeq);
+		params.put("order", i);
+		mybatis.update("eApproval.updateApprLineAll", params);
+	}
+
+	// 해당 문서에 대한 코멘트를 입력하기 위한 메서드
+	public void inserComments(ApprLineDTO dto) {
+		mybatis.update("eApproval.insertComments", dto);
+	}
+
+	// 해당 문서 상태를 업데이트하기 위한 메서드
+	public void updateDocuStatus(int docuSeq, String status) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("docuSeq", docuSeq);
+		params.put("status", status);
+		mybatis.update("eApproval.updateDocuStatus", params);
+	}
+
+	// 해당 문서의 결재 라인 상태를 변경하기 위한 메서드
+	public void updateApprLine(int docuSeq, int i, String status) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("docuSeq", docuSeq);
+		params.put("order", i);
+		params.put("status", status);
+		mybatis.update("eApproval.updateApprLine", params);
+	}
 }
