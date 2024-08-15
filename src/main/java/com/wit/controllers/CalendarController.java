@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wit.dto.DepartmentCalendarDTO;
 import com.wit.dto.EmployeeDTO;
@@ -31,6 +32,7 @@ public class CalendarController {
 		List<PersonalCalendarDTO> plist = service.perCalendarList(empNo);
 		List<DepartmentCalendarDTO> dlist = service.depCalendarList(empNo);
 		EmployeeDTO employee = service.employeeInfo(empNo);
+		employee.setEmp_no(empNo);
 
 		model.addAttribute("plist", plist);
 		model.addAttribute("dlist", dlist);
@@ -66,5 +68,14 @@ public class CalendarController {
 	public String deleteDepCalendar(String calendarSeq) {
 		service.deleteDepCalendar(Integer.parseInt(calendarSeq));
 		return "redirect:/calendar/calendar";
+	}
+
+	// 캘린더 타입 조회
+	@ResponseBody
+	@RequestMapping(value = "/getCalendarType", produces = "application/json;charset=utf8")
+	public String getCalendarType(int calendarSeq) {
+		String calendarType = service.getCalendarType(calendarSeq);
+		String jsonResponse = "{\"type\": \"" + calendarType + "\"}";
+		return jsonResponse;
 	}
 }

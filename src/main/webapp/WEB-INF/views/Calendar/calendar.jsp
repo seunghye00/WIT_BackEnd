@@ -18,9 +18,9 @@
 <body>
 	<!-- 공통영역 -->
 	<div class="container">
-		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>	
+		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
 		<div class="main-content">
-			<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
+			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
 			<div class="contents">
 				<div class="sideAbout">
 					<div class="sideTxt">
@@ -35,15 +35,18 @@
 								<h3 class="toggleTit">내 캘린더</h3>
 								<ul class="subList calendarList">
 									<c:forEach items="${plist}" var="dto">
-										<li>
-										<input type="checkbox" id="calendar_${dto.calendar_seq}" name="calendar_${dto.calendar_seq}" class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
+										<li><input type="checkbox"
+											id="calendar_${dto.calendar_seq}"
+											name="calendar_${dto.calendar_seq}"
+											class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
 											<c:if test="${dto.default_yn == 'Y'}">checked</c:if>>
 											<label for="calendar_${dto.calendar_seq}">${dto.calendar_name}</label>
-											<!-- 내 일정(기본)에는 삭제 버튼 없음 기본 생성자는 default='y' --> 
-											<c:if test="${dto.default_yn != 'Y' }">
+											<!-- 내 일정(기본)에는 삭제 버튼 없음 기본 생성자는 default='y' --> <c:if
+												test="${dto.default_yn != 'Y' }">
 												<span class="sidePerSelectDel"
 													data-seq="${dto.calendar_seq}" id="sidePerSelectDel">&times;</span>
-											</c:if> <input type="hidden" id="hidden_${dto.calendar_seq}" value="${dto.calendar_seq}"></li>
+											</c:if> <input type="hidden" id="hidden_${dto.calendar_seq}"
+											value="${dto.calendar_seq}"></li>
 									</c:forEach>
 									<div>
 										<span class="sideCalendarAdd"><i
@@ -59,8 +62,8 @@
 													<form id="perCalendarForm"
 														action="/calendar/insertPerCalendar" method="post">
 														<input type="text" name="calendar_name" id="calendar_name">
-														<input type="hidden" name="emp_no"> 
-														<input type="hidden" name="default_yn">
+														<input type="hidden" name="emp_no"> <input
+															type="hidden" name="default_yn">
 													</form>
 												</div>
 												<footer>
@@ -81,15 +84,18 @@
 								<h3 class="toggleTit">부서 캘린더</h3>
 								<ul class="subList calendarList">
 									<c:forEach items="${dlist}" var="dto">
-										<li>
-										<input type="checkbox" id="calendar_${dto.calendar_seq}" name="calendar_${dto.calendar_seq}" class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
+										<li><input type="checkbox"
+											id="calendar_${dto.calendar_seq}"
+											name="calendar_${dto.calendar_seq}"
+											class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
 											<c:if test="${dto.default_yn == 'Y'}">checked</c:if>>
 											<label for="calendar_${dto.calendar_seq}">${dto.calendar_name}</label>
-											<!-- 회의 일정(기본)에는 삭제 버튼 없음 기본 생성자는 default='Y' --> 
-											<c:if test="${employee.role_code eq 'R2'}">
-												<span class="sideDepSelectDel" data-seq="${dto.calendar_seq}" id="sideDepSelectDel">&times;</span>
-											</c:if> 
-											<input type="hidden" id="${dto.calendar_seq}" value="${dto.calendar_seq}"></li>
+											<!-- 회의 일정(기본)에는 삭제 버튼 없음 기본 생성자는 default='Y' --> <c:if
+												test="${employee.role_code eq 'R2'}">
+												<span class="sideDepSelectDel"
+													data-seq="${dto.calendar_seq}" id="sideDepSelectDel">&times;</span>
+											</c:if> <input type="hidden" id="${dto.calendar_seq}"
+											value="${dto.calendar_seq}"></li>
 									</c:forEach>
 									<c:if test="${employee.role_code eq 'R2'}">
 										<div>
@@ -105,9 +111,10 @@
 													<div class="content">
 														<form id="deptCalendarForm"
 															action="/calendar/insertDepCalendar" method="post">
-															<input type="text" name="calendar_name" id="depCalendarName">
-															 <input type="hidden" name="dept_code" value="${employee.dept_code}">
-															 <input type="hidden" name="default_yn">
+															<input type="text" name="calendar_name"
+																id="depCalendarName"> <input type="hidden"
+																name="dept_code" value="${employee.dept_code}">
+															<input type="hidden" name="default_yn">
 														</form>
 													</div>
 													<footer>
@@ -116,8 +123,7 @@
 															<button id="sideDeptCancel" class="cancelBtn">취소</button>
 														</div>
 													</footer>
-												</div> 
-											</span>
+												</div> </span>
 										</div>
 									</c:if>
 								</ul>
@@ -155,9 +161,21 @@
 							<li><span>내 캘린더</span>
 								<div>
 									<select name="calendar_seq" id="choiCalendar">
-										<c:forEach items="${plist}" var="dto">
-											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
-										</c:forEach>
+										<!-- role_code가 'R2'인 경우 -->
+										<c:if test="${employee.role_code eq 'R2'}">
+											<c:forEach items="${plist}" var="dto">
+												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											</c:forEach>
+											<c:forEach items="${dlist}" var="dto">
+												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											</c:forEach>
+										</c:if>
+										<!-- role_code가 'R2'가 아닌 경우 -->
+										<c:if test="${employee.role_code ne 'R2'}">
+											<c:forEach items="${plist}" var="dto">
+												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											</c:forEach>
+										</c:if>
 									</select>
 								</div></li>
 							<li><span>장소</span>
@@ -181,8 +199,8 @@
 				</div>
 			</div>
 		</div>
-		<!-- event 클릭 시 모달 -->
-		<div id="eventModal" class="modal">
+		<!-- 개인 캘린더 event 클릭 시 모달 -->
+		<div id="personEventModal" class="modal">
 			<div class="modalContent">
 				<h1>
 					일정 내용<span class="modalClose" id="eventModalClose">&times;</span>
@@ -224,13 +242,89 @@
 									<textarea id="eventText" name="content" disabled></textarea>
 								</div></li>
 							<li>
-								<div class="btns">
-									<button type="button" id="editBtn">수정</button>
-									<button type="submit" id="confirmBtn" class="okBtn">확인</button>
-									<button type="button" class="deleteBtn" id="eventDel">삭제</button>
-									<button type="button" class="cancelBtn editCancelBtn">취소</button>
-								</div>
-							</li>
+										<div class="btns">
+											<button type="button" id="editBtn">수정</button>
+											<button type="submit" id="confirmBtn" class="okBtn">확인</button>
+											<button type="button" class="deleteBtn" id="eventDel">삭제</button>
+											<button type="button" class="cancelBtn editCancelBtn">취소</button>
+										</div>
+									</li>
+						</ul>
+						<input type="hidden" name="editStartAt" id="editStartAt">
+						<input type="hidden" name="editEndAt" id="editEndAt">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 부서 캘린더 event 클릭 시 모달 -->
+		<div id="deptEventModal" class="modal">
+			<div class="modalContent">
+				<h1>
+					일정 내용<span class="modalClose" id="eventModalClose">&times;</span>
+				</h1>
+				<div class="eventCheck">
+					<form id="deptEventEditForm" action="/events/editEvent" method="post">
+						<input type="hidden" name="events_seq" id="eventSeq">
+						<ul>
+							<li><span>일정명</span>
+								<div>
+									<input type="text" class="eventName" name="title" disabled>
+								</div></li>
+							<li><span>일정기간</span>
+								<div>
+									<input type="date" id="eventStartDate"
+										class="startDate dateInput" name="editStartDate" disabled>
+									<input type="time" id="eventStartTime"
+										class="startDate dateInput" name="editStartTime" disabled>
+									~ <input type="date" id="eventEndDate"
+										class="endDate dateInput" name="editEndDate" disabled>
+									<input type="time" id="eventEndTime" class="endDate dateInput"
+										name="editEndTime" disabled>
+								</div></li>
+							<li><span>부서 캘린더</span>
+								<div>
+									<select id="choiEvent" name="calendar_seq" disabled>
+										<!-- role_code가 'R2'인 경우 -->
+										<c:if test="${employee.role_code eq 'R2'}">
+											<c:forEach items="${plist}" var="dto">
+												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											</c:forEach>
+											<c:forEach items="${dlist}" var="dto">
+												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											</c:forEach>
+										</c:if>
+										<!-- role_code가 'R2'가 아닌 경우 -->
+										<c:if test="${employee.role_code ne 'R2'}">
+											<c:forEach items="${plist}" var="dto">
+												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											</c:forEach>
+										</c:if>
+									</select>
+								</div></li>
+							<li><span>장소</span>
+								<div>
+									<input type="text" class="eventLocation" name="location"
+										disabled>
+								</div></li>
+							<li><span>내용</span>
+								<div>
+									<textarea id="eventText" name="content" disabled></textarea>
+								</div></li>
+							<li><c:choose>
+									<c:when test="${employee.role_code eq 'R2'}">
+										<div class="btns">
+											<button type="button" id="editBtn">수정</button>
+											<button type="submit" id="confirmBtn" class="okBtn">확인</button>
+											<button type="button" class="deleteBtn" id="eventDel">삭제</button>
+											<button type="button" class="cancelBtn editCancelBtn">취소</button>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="btns"></div>
+									</c:otherwise>
+								</c:choose></li>
 						</ul>
 						<input type="hidden" name="editStartAt" id="editStartAt">
 						<input type="hidden" name="editEndAt" id="editEndAt">
@@ -435,6 +529,9 @@
 
         // 캘린더 기능 시작
         document.addEventListener('DOMContentLoaded', function () {
+        	
+        	let calendarType = "";
+        	
         	function getCheckedCalendars() {
                 let checkedCalendars = [];
                 $('input[type="checkbox"]:checked').each(function() {
@@ -542,6 +639,7 @@
                     });
                 },
                 dateClick: function (info) {
+
                     // 날짜 클릭 시 발생할 이벤트
                     $('.startDate').val(info.dateStr);
                     $("#calendarModal").show();
@@ -550,7 +648,6 @@
                     });
                 },
                 eventClick: function (info) {
-                	
                 	console.log(info);
                 	
                     // 이벤트 클릭 시 발생할 이벤트
@@ -559,8 +656,6 @@
                     let eventChoice = info.event.extendedProps.calendar_seq;
                     let eventContent = info.event.extendedProps.content;
                     let eventLocation = info.event.extendedProps.location;
-                    
-                    console.log(eventChoice);
 
                     let eventStartUTC = new Date(info.event.start);
                     let eventEndUTC = info.event.end ? new Date(info.event.end) : new Date(eventStartUTC.getTime() + 24 * 60 * 60 * 1000);
@@ -572,7 +667,7 @@
                     let eventStartTime = eventStartKST.toISOString().split('T')[1].substring(0, 5);
                     let eventEndDate = eventEndKST.toISOString().split('T')[0];
                     let eventEndTime = eventEndKST.toISOString().split('T')[1].substring(0, 5);
-
+                    
                     $('.eventName').val(eventTitle);
                     $('#eventSeq').val(eventSeq);
                     $('#eventStartDate').val(eventStartDate);
@@ -582,14 +677,35 @@
                     $('#choiEvent').val(eventChoice);
                     $('.eventLocation').val(eventLocation);
                     $('#eventText').val(eventContent);
-					
-                    $("#eventModal").show();
-                    $(".modalClose").on("click", function () {
-                        $("#eventModal").hide();
-                    });
+                     
+                    
+                    $.ajax({
+        	            url: '/calendar/getCalendarType',
+        	            data: { 
+        	            	calendarSeq: eventChoice 
+        	            },
+        	            dataType: 'json'
+        	        }).done((resp)=>{
+        	        	calendarType = resp;
+        	        	
+        	        }).fail((jqXHR, textStatus, errorThrown) => {
+        	            console.error('AJAX 요청 실패:', textStatus, errorThrown);
+        	        });
+                 
+                    if(calendarType == 'personal'){
+                		$("#personEventModal").show();
+                		$(".modalClose").on("click", function () {
+                            $("#personEventModal").hide();
+                        });
+                	} else {
+                		$("#deptEventModal").show();
+                		$(".modalClose").on("click", function () {
+                            $("#deptEventModal").hide();
+                        });
+                	}
                 }
             });
-
+            
             calendar.render();
             // Add event listener to checkboxes
             $('input[type="checkbox"]').change(function () {

@@ -45,15 +45,14 @@
                         </li>
                         <li>
                             <span>예약 기간</span>
-                            <div><input type="date" class="startDate dateInput" id="startDate" name="startDate">&nbsp;&nbsp;
-                            <input type="time" class="startDate dateInput" id="startTime" name="startTime">&nbsp;&nbsp;~&nbsp;&nbsp;
-                            <input type="date" class="endDate dateInput" id="endDate" name="endDate">&nbsp;&nbsp;
+                            <div><input type="date" class="startDate dateInput" id="startDate" name="startDate">&nbsp;
+                            <input type="time" class="startDate dateInput" id="startTime" name="startTime">&nbsp;&nbsp;~&nbsp;&nbsp;<input type="date" class="endDate dateInput" id="endDate" name="endDate">&nbsp;
                             <input type="time" class="endDate dateInput" id ="endTime" name="endTime">
                             </div>
                         </li>
                         <li>
                             <span>탑승자</span>
-                            <div><input type="text" id="driver" class="driver" value="운전자" readonly></div>
+                            <div><input type="text" id="passenger" name="passenger"></div>
                         </li>
                         <li>
                             <span>예약 목적</span>
@@ -68,6 +67,8 @@
                     <input type="hidden" id="vehicleSeq" name="vehicle_seq" value="${vehicle.vehicle_seq }">
                     <input type="hidden" name="vehicleStartAt" id="vehicleStartAt">
                     <input type="hidden" name="vehicleEndAt" id="vehicleEndAt">
+                    <input type="hidden" name="dept_title" id="deptTitle">
+                    <input type="hidden" name="name" id="name">
                     </form>
                 </div>
             </div>
@@ -75,7 +76,7 @@
         <!-- 일정을 클릭 시 모달 -->
         <div id="eventModal" class="modal">
             <div class="modalContent">
-                <h1>회의실 예약 내용<span class="modalClose">&times</span></h1>
+                <h1>차량 예약 내용<span class="modalClose">&times</span></h1>
                 <div class="calendarAdd">
                     <ul>
                         <li>
@@ -84,7 +85,7 @@
                         </li>
                         <li>
                             <span>예약자</span>
-                            <div><input type="text" value="인사부" readonly>&nbsp;&nbsp;<input type="text" value="이웡히"
+                            <div><input type="text" id="eventDeptTitle" readonly>&nbsp;&nbsp;<input type="text" id="eventName"
                                     readonly></div>
                         </li>
                         <li>
@@ -98,11 +99,11 @@
                         </li>
                         <li>
                             <span>탑승자</span>
-                            <div><input type="text" class="driver" value="운전자" readonly></div>
+                            <div><input type="text" id="eventPassenger" readonly></div>
                         </li>
                         <li>
                             <span>예약 목적</span>
-                            <div><textarea id="eventText" readonly>드라이브</textarea></div>
+                            <div><textarea id="eventText" readonly></textarea></div>
                         </li>
                     </ul>
                 </div>

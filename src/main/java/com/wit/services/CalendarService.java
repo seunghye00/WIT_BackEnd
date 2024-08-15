@@ -57,4 +57,14 @@ public class CalendarService {
 		// 해당 사번으로 사원 개인의 기본 캘린더 등록
 		dao.insertPerDefaultCalendar(empNo);
 	}
+
+	// 캘린더 타입 조회
+	public String getCalendarType(int calendarSeq) {
+		System.out.println(dao.selectPersonalByCalendarSeq(calendarSeq));
+		if(dao.selectPersonalByCalendarSeq(calendarSeq) > 0) {
+			return "personal";
+		} else {
+			return "dept";
+		}
+	}
 }

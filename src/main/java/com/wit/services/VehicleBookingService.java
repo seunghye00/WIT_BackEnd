@@ -6,26 +6,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wit.dao.VehicleBookingDAO;
+import com.wit.dto.EmployeeDTO;
 import com.wit.dto.VehicleBookingDTO;
 import com.wit.dto.VehiclesDTO;
 
 @Service
 public class VehicleBookingService {
-	
+
 	@Autowired
 	private VehicleBookingDAO dao;
-	
+
 	public VehiclesDTO reservVehicle(int vehicleSeq) {
 		return dao.reservVehicle(vehicleSeq);
 	}
-	
+
 	// 차량 예약 추가
 	public int saveVehicle(VehicleBookingDTO dto) {
 		return dao.saveVehicle(dto);
 	}
-	
+
 	// 차량 예약 정보 조회
-	public List<VehicleBookingDTO> getAll(String vehicleSeq){
-		return dao.getAll(vehicleSeq);
+	public List<VehicleBookingDTO> getAllVehicleBooking(String vehicleSeq){
+		return dao.getAllVehicleBooking(vehicleSeq);
+	}
+
+	// 직원 정보 조회
+	public EmployeeDTO employeeInfo(String empNo) {
+		return dao.employeeInfo(empNo);
 	}
 }

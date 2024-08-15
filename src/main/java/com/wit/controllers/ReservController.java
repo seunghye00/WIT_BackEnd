@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wit.dto.EmployeeInfoDTO;
 import com.wit.dto.RoomBookingDTO;
+import com.wit.dto.VehicleBookingDTO;
 import com.wit.services.EmployeeService;
 import com.wit.services.MeetingRoomService;
-import com.wit.dto.VehicleBookingDTO;
 import com.wit.services.VehicleBookingService;
 
 @Controller
@@ -83,33 +84,40 @@ public class ReservController {
 	@RequestMapping("vehicle")
 	public String reservVehicle(int vehicleSeq, Model model) throws Exception {
 		model.addAttribute("vehicle", vService.reservVehicle(vehicleSeq));
+		
 		return "Reservation/vehicle";
 	}
 
-	// 차량 예약 추가
+	// 차량 예약 데이터 등록
 	@RequestMapping("saveVehicle")
 	public String saveVehicle(VehicleBookingDTO dto, @RequestParam("vehicleStartAt") long startDate,
-			@RequestParam("vehicleEndAt") long endDate) {
-		String emp_no = (String) session.getAttribute("loginID");
-		dto.setEmp_no(emp_no);
+			@RequestParam("vehicleEndAt") long endDate, Model model) {
 		
-		System.out.println(dto.getVehicle_seq());
-		System.out.println(dto.getPurpose());
+		String empNo = (String) session.getAttribute("loginID");
+		dto.setEmp_no(empNo);	
+
+	    // name 값을 모델에 추가하여 JSP에서 사용 가능하게 함
+	    // model.addAttribute("name", name);
+		EmployeeInfoDTO eDTO = eServ.getNameNDept(empNo);
+		dto.setDept_title(eDTO.getDept_title());
+		dto.setName(eDTO.getName());
 		dto.setStart_date(new Timestamp(startDate));
 		dto.setEnd_date(new Timestamp(endDate));
+		
 		int result = vService.saveVehicle(dto);
 
 		if (result == 1) {
 			return "redirect:/reservation/vehicle?vehicleSeq=" + dto.getVehicle_seq();
 		}
+		// 추후 오류 페이지로 수정
 		return "redirect:/reservation/vehicle?vehicleSeq=" + dto.getVehicle_seq();
 	}
 
 	// 차량 예약 조회
 	@ResponseBody
-	@RequestMapping("/vehicleEvent")
-	public List<VehicleBookingDTO> getAll(String vehicleSeq) throws Exception {
-		return vService.getAll(vehicleSeq);
+	@RequestMapping("/allVehicleBooking")
+	public List<VehicleBookingDTO> getAllVehicleBooking(String vehicleSeq) throws Exception {
+		return vService.getAllVehicleBooking(vehicleSeq);
 	}
 	
 	@ExceptionHandler(Exception.class)
