@@ -309,35 +309,8 @@ function getEmployeeList(dept) {
 	});
 }
 
-
 // 모달창에서 X 버튼 클릭 시 페이지 새로고침
 $('.closeModal').on('click', () => location.reload());
-
-// 결재 or 전결 버튼 클릭 시 결재 코멘트 입력 모달창 활성화
-$('.apprBtn').on('click', () => {
-    $('.apprModal').css('display', 'flex');
-
-    // 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
-    $('.noApprBtn').on('click', () => {
-        $('.apprModal').hide();
-        $('.cancelModal').css('display', 'flex');
-    });
-
-    // 취소 버튼 클릭 시 해당 모달창 비활성화
-    $('.closeModal').on('click', () => {
-        $('.apprModal').hide();
-    });
-});
-
-// 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
-$('.returnBtn').on('click', () => {
-    $('.cancelModal').css('display', 'flex');
-
-    // 취소 버튼 클릭 시 해당 모달창 비활성화
-    $('.closeModal').on('click', () => {
-        $('.cancelModal').hide();
-    });
-});
 
 // 임시 저장 문서 페이지에서 목록 버튼 클릭 시 임시 저장 문서함으로 이동
 $('.goSavaList').on('click', () => {
@@ -645,6 +618,32 @@ $('#file').on('change', function() {
                 $(this).parent().remove();
             });
          }
+    });
+});
+
+// 결재 or 전결 버튼 클릭 시 결재 코멘트 입력 모달창 활성화
+$('.apprBtn').on('click', () => {
+    $('.apprModal').css('display', 'flex');
+
+    // 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
+    $('.noApprBtn').on('click', () => {
+        $('.apprModal').hide();
+        $('.cancelModal').css('display', 'flex');
+    });
+
+    // 취소 버튼 클릭 시 해당 모달창 비활성화
+    $('.closeModal').on('click', () => {
+        $('.apprModal').hide();
+    });
+});
+
+// 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
+$('.returnBtn').on('click', () => {
+    $('.cancelModal').css('display', 'flex');
+
+    // 취소 버튼 클릭 시 해당 모달창 비활성화
+    $('.closeModal').on('click', () => {
+        $('.cancelModal').hide();
     });
 });
 

@@ -3050,6 +3050,10 @@ span.return {
 	border-radius: 8px;
 }
 
+.eApprWrite .document .docuCont .docuFiles label.diabled {
+	cursor: default;
+}
+
 .eApprWrite .document .docuCont .docuFiles .uploadFiles {
 	border: 1px solid #e7e7e7;
 	overflow-x: auto;
@@ -3087,8 +3091,7 @@ span.return {
 	padding-left: 5px;
 }
 
-.eApprWrite .document .docuCont .docuFiles .uploadFiles .delFileBtn:hover
-	{
+.eApprWrite .document .docuCont .docuFiles .uploadFiles .delFileBtn:hover {
 	cursor: pointer;
 }
 

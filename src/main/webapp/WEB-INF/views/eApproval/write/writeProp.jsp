@@ -122,9 +122,9 @@
 												<th>긴급</th>
 												<td>
 													<div>
-														<input type="checkbox" id="emerCheck" value="Y"
-															name="emer_yn"> <label for="emerCheck">긴급
-															문서</label>
+														<input type="hidden" id="emerChecked" name="emer_yn" value="N">
+														<input type="checkbox" id="emerCheck"> 
+														<label for="emerCheck">긴급 문서</label>
 													</div>
 												</td>
 											</tr>

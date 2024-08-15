@@ -39,6 +39,8 @@
 					<div class="document">
 						<div class="choiBox">
 							<%@ include file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
+							<%@ include file="/WEB-INF/views/eApproval/commons/apprModal.jsp"%>
+							<%@ include file="/WEB-INF/views/eApproval/commons/returnModal.jsp"%>
 							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">

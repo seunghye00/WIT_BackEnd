@@ -120,15 +120,14 @@
 												<td><input type="date" id="effDate" min="${today}"
 													value="${docuDetail.eff_date}" name="eff_date"></td>
 												<th>협조부서</th>
-												<td><input type="text" name="dept_title"
-													id="collaboDept" oninput='handleOnInput(this, 20)' value="${docuDetail.dept_title}"
+												<td><input type="text" name="dept_title" id="collaboDept" oninput='handleOnInput(this, 20)' value="${docuDetail.dept_title}"
 													data-label="협조 부서"></td>
 												<th>긴급</th>
 												<td>
 													<div>
-													<input type="hidden" id="emerChecked" name="emer_yn" value="N">
-														<input type="checkbox" id="emerCheck" <c:if test="${docuInfo.emer_yn eq 'Y'}">checked</c:if>> <label for="emerCheck">긴급
-															문서</label>
+														<input type="hidden" id="emerChecked" name="emer_yn" value="N">
+														<input type="checkbox" id="emerCheck" <c:if test="${docuInfo.emer_yn eq 'Y'}">checked</c:if>> 
+														<label for="emerCheck">긴급 문서</label>
 													</div>
 												</td>
 											</tr>
