@@ -83,7 +83,7 @@
 						</ul>
 					</div>
 					<div style="padding: 10px;"></div>
-					<a href="/attendance/attendance_vacation">
+					<a href="/annualLeave/attendance_vacation">
 						<h3 class="toggleTit">휴가 관리</h3>
 					</a>
 				</div>

@@ -27,12 +27,47 @@
 	<!-- 그리고 작성날짜가 최신순인게 맨위로 올라온다! -->
 	<!-- 조인 너무 어려워 밍쥬야... -->
 	<select id="list" resultType="com.wit.dto.BoardDTO">
-		SELECT b.board_seq, b.title,
+		select a.*
+		from
+		(SELECT
+		row_number() over(
+		  <choose>
+          <when test="sortTarget == 'board_seq'">
+            order by b.write_date desc
+          </when>
+          <when test="sortTarget == 'views'">
+            order by b.views desc
+          </when>
+          <otherwise>
+            order by b.board_seq desc
+          </otherwise>
+        </choose>
+		) as rown,
+		b.board_seq, b.title,
 		b.contents, b.write_date, b.views, e.nickname
 		AS emp_no
-		FROM board b
+		FROM
+		board b
 		JOIN employee e ON b.emp_no = e.emp_no
-		ORDER BY b.write_date DESC
+		<if test="searchTarget == 'title'">
+		where b.title like '%'||#{searchTxt}||'%'
+		</if>
+		<if test="searchTarget == 'contents'">
+		where REGEXP_REPLACE( b.contents, '&lt;[^>]+&gt;','') like '%'||#{searchTxt}||'%'
+		</if>
+		) a
+		where rown between ${start} and ${end}
+	</select>
+	
+	<!-- 게시글 개수  -->
+	<select id="boardCount" resultType="int">
+		select count(*) from board
+		<if test="searchTarget == 'title'">
+		where title like '%'||#{searchTxt}||'%'
+		</if>
+		<if test="searchTarget == 'contents'">
+		where REGEXP_REPLACE( contents, '&lt;[^>]+&gt;','') like '%'||#{searchTxt}||'%'
+		</if>
 	</select>
 
 	<!-- 게시물 상세 조회 -->
@@ -83,6 +118,7 @@
 
 	<!-- 게시물 수정 -->
 	<update id="update">
-		update board set title=#{title} , contents=#{contents}, write_date=sysdate where board_seq=${board_seq}
+		update board set title=#{title} ,
+		contents=#{contents}, write_date=sysdate where board_seq=${board_seq}
 	</update>
 </mapper>
