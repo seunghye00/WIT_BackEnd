@@ -13,6 +13,7 @@ import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
 import com.wit.dto.LeaveRequestDTO;
 import com.wit.dto.RefeLineDTO;
+import com.wit.commons.BoardConfig;
 import com.wit.dto.ApprLineDTO;
 import com.wit.dto.DocuDTO;
 import com.wit.dto.DocuInfoListDTO;
@@ -72,52 +73,113 @@ public class EApprovalDAO {
 		mybatis.insert("eApproval.insertLeave", dto);
 	}
 
-	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록을 조회하기 위한 메서드
-	public List<DocuInfoListDTO> selectListByType(String empNo, String status, String docuCode) {
-		Map<String, String> params = new HashMap<>();
+	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록의 총 갯수를 조회하기 위한 메서드
+	public int getCountListByType(String empNo, String status, String docuCode) {
+		Map<String, Object> params = new HashMap<>();
 		params.put("empNo", empNo);
 		params.put("status", status);
 		params.put("docuCode", docuCode);
+		return mybatis.selectOne("eApproval.getCountListByType", params);
+	}
+
+	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록을 조회하기 위한 메서드
+	public List<DocuInfoListDTO> selectListByType(String empNo, String status, String docuCode, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("status", status);
+		params.put("docuCode", docuCode);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
 		return mybatis.selectList("eApproval.selectListByType", params);
 	}
 
-	// 해당 사원이 기안한 문서 목록을 조회하기 위한 메서드
-	public List<DocuInfoListDTO> selectWriteList(String empNo, String docuCode) {
-		Map<String, String> params = new HashMap<>();
+	// 해당 사원이 기안한 문서 목록 총 갯수 조회하기 위한 메서드
+	public int getCountWriteList(String empNo, String docuCode) {
+		Map<String, Object> params = new HashMap<>();
 		params.put("empNo", empNo);
 		params.put("docuCode", docuCode);
+		return mybatis.selectOne("eApproval.getCountWriteList", params);
+	}
+
+	// 해당 사원이 기안한 문서 목록을 조회하기 위한 메서드
+	public List<DocuInfoListDTO> selectWriteList(String empNo, String docuCode, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
 		return mybatis.selectList("eApproval.selectWriteList", params);
 	}
 
-	// 해당 사원이 임시 저장한 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectSaveList(String empNo, String docuCode) {
-		Map<String, String> params = new HashMap<>();
+	// 해당 사원이 임시 저장한 문서 목록 총 갯수를 넘겨주기 위한 메서드
+	public int getCountSaveList(String empNo, String docuCode) {
+		Map<String, Object> params = new HashMap<>();
 		params.put("empNo", empNo);
 		params.put("docuCode", docuCode);
+		return mybatis.selectOne("eApproval.getCountSaveList", params);
+	}
+
+	// 해당 사원이 임시 저장한 문서 목록을 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> selectSaveList(String empNo, String docuCode, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
 		return mybatis.selectList("eApproval.selectSaveList", params);
 	}
 
-	// 해당 사원이 결재한 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectApprovedList(String empNo, String docuCode) {
-		Map<String, String> params = new HashMap<>();
+	// 해당 사원이 결재한 문서 목록 총 갯수를 넘겨주기 위한 메서드
+	public int getCountApprovedList(String empNo, String docuCode) {
+		Map<String, Object> params = new HashMap<>();
 		params.put("empNo", empNo);
 		params.put("docuCode", docuCode);
+		return mybatis.selectOne("eApproval.getCountApprovedList", params);
+	}
+
+	// 해당 사원이 결재한 문서 목록을 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> selectApprovedList(String empNo, String docuCode, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
 		return mybatis.selectList("eApproval.selectApprovedList", params);
 	}
 
 	// 해당 사원이 반려한 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectReturnList(String empNo, String docuCode) {
-		Map<String, String> params = new HashMap<>();
+	public int getCountReturnList(String empNo, String docuCode) {
+		Map<String, Object> params = new HashMap<>();
 		params.put("empNo", empNo);
 		params.put("docuCode", docuCode);
+		return mybatis.selectOne("eApproval.getCountReturnList", params);
+	}
+
+	// 해당 사원이 반려한 문서 목록을 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> selectReturnList(String empNo, String docuCode, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
 		return mybatis.selectList("eApproval.selectReturnList", params);
 	}
 
-	// 해당 사원이 참조자인 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectViewList(String empNo, String docuCode) {
-		Map<String, String> params = new HashMap<>();
+	// 해당 사원이 참조자인 문서 목록 총 갯수를 넘겨주기 위한 메서드
+	public int getCountViewList(String empNo, String docuCode) {
+		Map<String, Object> params = new HashMap<>();
 		params.put("empNo", empNo);
 		params.put("docuCode", docuCode);
+		return mybatis.selectOne("eApproval.getCountViewList", params);
+	}
+
+	// 해당 사원이 참조자인 문서 목록을 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> selectViewList(String empNo, String docuCode, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
 		return mybatis.selectList("eApproval.selectViewList", params);
 	}
 
@@ -175,7 +237,7 @@ public class EApprovalDAO {
 	public void updatePropDocu(WorkPropDTO dto) {
 		mybatis.update("eApproval.updatePropByDocuSeq", dto);
 	}
-	
+
 	// 해당 문서의 결재 라인 상태를 전부 변경하기 위한 메서드
 	public void updateApprLineAll(int docuSeq, int i) {
 		Map<String, Integer> params = new HashMap<>();

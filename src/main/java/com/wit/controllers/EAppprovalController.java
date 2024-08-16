@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.wit.commons.BoardConfig;
 import com.wit.dto.ApprLineDTO;
 import com.wit.dto.DocuDTO;
 import com.wit.dto.DocuFilesDTO;
@@ -128,7 +129,7 @@ public class EAppprovalController {
 	@Transactional
 	@RequestMapping("returnDocu")
 	public String returnDocu(int docuSeq, String comments) throws Exception {
-		
+
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
 		List<ApprLineDTO> list = serv.getApprLine(docuSeq);
@@ -158,11 +159,11 @@ public class EAppprovalController {
 
 		// 해당 문서의 결재 라인과 해당 사원의 결재 순서 조회 후 변수에 저장
 		int apprOrder = 0;
-		for(ApprLineDTO dto : serv.getApprLine(docuSeq)) {
-			if(empNo.equals(dto.getEmp_no())) {
+		for (ApprLineDTO dto : serv.getApprLine(docuSeq)) {
+			if (empNo.equals(dto.getEmp_no())) {
 				apprOrder = dto.getApproval_order();
 				break;
-			} 
+			}
 		}
 		// 해당 사원의 결재 순서에 따라 결재 라인 정보 업데이트
 		switch (apprOrder) {
@@ -210,24 +211,25 @@ public class EAppprovalController {
 		return "redirect:/eApproval/apprList?type=todo";
 	}
 
-	@ResponseBody
 	@Transactional
 	@RequestMapping(value = { "/reSaveDocu", "/update" })
-	public int reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO,
+	public String reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO,
 			HttpServletRequest request) throws Exception {
 
-		// 현재 요청된 URL을 확인
+		// 현재 요청된 URL을 확인 
 		String currentUrl = request.getRequestURI();
-
-		// 요청된 URL에 따라 문서 상태 변경
+		String type = null;
+		
+		// 요청된 URL에 따라 문서 상태 변경 및 이동 경로 설정
 		if (currentUrl.equals("/eApproval/reSaveDocu")) {
 			dto.setStatus("임시 저장");
+			type = "saved";
 		} else {
 			dto.setStatus("진행중");
 		}
 
 		// 문서 정보 업데이트 ( 작성일, 제목, 상태 )
-		int result = serv.updateDocu(dto);
+		serv.updateDocu(dto);
 
 		// 문서 양식에 따라 해당 문서의 세부 정보 업데이트
 		switch (dto.getDocu_code()) {
@@ -243,13 +245,12 @@ public class EAppprovalController {
 		default:
 			break;
 		}
-
-		return result;
+		return "redirect:/eApproval/readDocu?docuSeq=" + dto.getDocument_seq() + "&type=" + type;
 	}
 
 	// 브라우저에서 선택한 type에 따라 결재하기 페이지로 이동 시 해당 페이지에서 초기에 노출할 데이터를 담아서 전달하는 메서드
 	@RequestMapping("apprList")
-	public String apprList(String type, String docuCode, Model model) throws Exception {
+	public String apprList(String type, String docuCode, int cPage, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -258,10 +259,12 @@ public class EAppprovalController {
 		List<DocuInfoListDTO> list = null;
 		switch (type) {
 		case "todo":
-			list = serv.selectListByType(empNo, "결재 대기", docuCode);
+			list = serv.selectListByType(empNo, "결재 대기", docuCode, cPage);
+			model.addAttribute("totalCount", serv.getCountListByType(empNo, "결재 대기", docuCode));
 			break;
 		case "upcoming":
-			list = serv.selectListByType(empNo, "결재 예정", docuCode);
+			list = serv.selectListByType(empNo, "결재 예정", docuCode, cPage);
+			model.addAttribute("totalCount", serv.getCountListByType(empNo, "결재 예정", docuCode));
 			break;
 		default:
 			// 추후 에러 페이지로 변경
@@ -276,6 +279,9 @@ public class EAppprovalController {
 		model.addAttribute("docuCode", docuCode);
 		model.addAttribute("docuList", list);
 		model.addAttribute("type", type);
+		model.addAttribute("cPage", cPage);
+		model.addAttribute("recordCountPerPage", BoardConfig.recordCountPerPage);
+		model.addAttribute("naviCountPerPage", BoardConfig.naviCountPerPage);
 
 		// 해당 문서함 화면으로 이동
 		return "eApproval/list/" + type + "List";
@@ -283,7 +289,7 @@ public class EAppprovalController {
 
 	// 브라우저에서 선택한 type에 따라 개인 문서함 페이지로 이동 시 해당 페이지에서 초기에 노출할 데이터를 담아서 전달하는 메서드
 	@RequestMapping("privateList")
-	public String privateList(String type, String docuCode, Model model) throws Exception {
+	public String privateList(String type, String docuCode, int cPage, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -294,44 +300,52 @@ public class EAppprovalController {
 
 		switch (type) {
 		case "write":
-			list = serv.selectWriteList(empNo, docuCode);
+			list = serv.selectWriteList(empNo, docuCode, cPage);
 			// 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
 			for (DocuInfoListDTO dto : list) {
 				dto.setLast_appr_name(eServ.getName(dto.getLast_appr()));
 			}
 			model.addAttribute("docuList", list);
+			model.addAttribute("totalCount", serv.getCountWriteList(empNo, docuCode));
 			break;
 		case "save":
-			model.addAttribute("docuList", serv.selecSavetList(empNo, docuCode));
+			model.addAttribute("docuList", serv.selecSavetList(empNo, docuCode, cPage));
+			model.addAttribute("totalCount", serv.getCountSaveList(empNo, docuCode));
 			break;
 		case "approved":
-			list = serv.selectApprovedList(empNo, docuCode);
+			list = serv.selectApprovedList(empNo, docuCode, cPage);
 			// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
 			for (DocuInfoListDTO dto : list) {
 				dto.setWriter(eServ.getName(dto.getEmp_no()));
 			}
 			model.addAttribute("docuList", list);
+			model.addAttribute("totalCount", serv.getCountApprovedList(empNo, docuCode));
 			break;
 		case "return":
-			list = serv.selectApprovedList(empNo, docuCode);
+			list = serv.selectReturnList(empNo, docuCode, cPage);
 			// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
 			for (DocuInfoListDTO dto : list) {
 				dto.setWriter(eServ.getName(dto.getEmp_no()));
 			}
-			model.addAttribute("docuList", serv.selectReturnList(empNo, docuCode));
+			model.addAttribute("docuList", list);
+			model.addAttribute("totalCount", serv.getCountReturnList(empNo, docuCode));
 			break;
 		case "view":
-			list = serv.selectApprovedList(empNo, docuCode);
+			list = serv.selectViewList(empNo, docuCode, cPage);
 			// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
 			for (DocuInfoListDTO dto : list) {
 				dto.setWriter(eServ.getName(dto.getEmp_no()));
 			}
-			model.addAttribute("docuList", serv.selectViewList(empNo, docuCode));
+			model.addAttribute("docuList", list);
+			model.addAttribute("totalCount", serv.getCountViewList(empNo, docuCode));
 			break;
 		default:
 			// 추후 에러 페이지로 변경
 			return "redirect:/eApproval/home";
 		}
+		model.addAttribute("cPage", cPage);
+		model.addAttribute("recordCountPerPage", BoardConfig.recordCountPerPage);
+		model.addAttribute("naviCountPerPage", BoardConfig.naviCountPerPage);
 		model.addAttribute("docuCode", docuCode);
 
 		// 해당 문서함 화면으로 이동

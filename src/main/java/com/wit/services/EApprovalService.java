@@ -67,33 +67,33 @@ public class EApprovalService {
 	}
 
 	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록을 문서 종류에 따라 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectListByType(String empNo, String status, String docuCode) {
-		return dao.selectListByType(empNo, status, docuCode);
+	public List<DocuInfoListDTO> selectListByType(String empNo, String status, String docuCode, int cPage) {
+		return dao.selectListByType(empNo, status, docuCode, cPage);
 	}
 
 	// 해당 사원이 기안한 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectWriteList(String empNo, String docuCode) {
-		return dao.selectWriteList(empNo, docuCode);
+	public List<DocuInfoListDTO> selectWriteList(String empNo, String docuCode, int cPage) {
+		return dao.selectWriteList(empNo, docuCode, cPage);
 	}
 
 	// 해당 사원이 임시 저장한 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selecSavetList(String empNo, String docuCode) {
-		return dao.selectSaveList(empNo, docuCode);
+	public List<DocuInfoListDTO> selecSavetList(String empNo, String docuCode, int cPage) {
+		return dao.selectSaveList(empNo, docuCode, cPage);
 	}
 
 	// 해당 사원이 결재한 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectApprovedList(String empNo, String docuCode) {
-		return dao.selectApprovedList(empNo, docuCode);
+	public List<DocuInfoListDTO> selectApprovedList(String empNo, String docuCode, int cPage) {
+		return dao.selectApprovedList(empNo, docuCode, cPage);
 	}
 
 	// 해당 사원이 반려한 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectReturnList(String empNo, String docuCode) {
-		return dao.selectReturnList(empNo, docuCode);
+	public List<DocuInfoListDTO> selectReturnList(String empNo, String docuCode, int cPage) {
+		return dao.selectReturnList(empNo, docuCode, cPage);
 	}
 
 	// 해당 사원이 참조자인 문서 목록을 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> selectViewList(String empNo, String docuCode) {
-		return dao.selectViewList(empNo, docuCode);
+	public List<DocuInfoListDTO> selectViewList(String empNo, String docuCode, int cPage) {
+		return dao.selectViewList(empNo, docuCode, cPage);
 	}
 
 	// 해당 문서의 정보를 넘겨주기 위한 메서드
@@ -174,5 +174,29 @@ public class EApprovalService {
 	// 해당 결재 라인의 상태를 변경하기 위한 메서드
 	public void updateApprLine(int docuSeq, int i, String status) {
 		dao.updateApprLine(docuSeq, i, status);
+	}
+
+	public int getCountListByType(String empNo, String string, String docuCode) {
+		return dao.getCountListByType(empNo, string, docuCode);
+	}
+
+	public int getCountWriteList(String empNo, String docuCode) {
+		return dao.getCountWriteList(empNo, docuCode);
+	}
+
+	public int getCountSaveList(String empNo, String docuCode) {
+		return dao.getCountSaveList(empNo, docuCode);
+	}
+
+	public int getCountApprovedList(String empNo, String docuCode) {
+		return dao.getCountApprovedList(empNo, docuCode);
+	}
+
+	public int getCountReturnList(String empNo, String docuCode) {
+		return dao.getCountReturnList(empNo, docuCode);
+	}
+
+	public int getCountViewList(String empNo, String docuCode) {
+		return dao.getCountViewList(empNo, docuCode);
 	}
 }

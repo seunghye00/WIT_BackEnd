@@ -315,7 +315,7 @@ $('.closeModal').on('click', () => location.reload());
 // 임시 저장 문서 페이지에서 목록 버튼 클릭 시 임시 저장 문서함으로 이동
 $('.goSavaList').on('click', () => {
 	if(confirm('저장하지 않은 수정 사항은 기록되지 않습니다.')){
-		location.href = '/eApproval/privateList?type=save';
+		location.href = '/eApproval/privateList?type=save&cPage=1';
 	}
 });
 
@@ -365,8 +365,40 @@ $('.propWrite').on('click', () => {
 	sendFormData('write/Prop');
 });
 
-// 임시 저장된 업무 기안 문서 열람 페이지에서 결재 요청 버튼 클릭 시
+// 임시 저장된 업무 기안 문서 열람레이지에서 작성 페이지에서 결재 요청 버튼 클릭 시
 $('.propUpdate').on('click', () => {
+	// 문서에 대한 필수 입력 값을 입력 완료했는 지 확인
+	if($('#effDate').val() == ""){	
+		alert('시행일자를 입력해주세요');
+		$('#effDate').focus();
+		return;
+	}
+	if($('#collaboDept').val() == ""){	
+		alert('협조 부서를 입력해주세요');
+		$('#collaboDept').focus();
+		return;
+	}
+	if($('#writeDocuTitle').val() == ""){	
+		alert('문서 제목을 입력해주세요');
+		$('#writeDocuTitle').focus();
+		return;
+	}
+	if($('#writeDocuConts').val() == ""){	
+		alert('문서 내용을 입력해주세요');
+		$('#writeDocuConts').focus();
+		return;
+	}
+	
+	// 문서의 긴급 여부 체크	
+	if($('#emerCheck').is(':checked')){
+		$('#emerChecked').val('Y');
+	}
+	
+	$('#docuContForm').submit();
+});
+
+// 임시 저장된 휴가신청서 문서 열람 페이지에서 결재 요청 버튼 클릭 시
+$('.leaveUpdate').on('click', () => {
 	
 	// 문서에 대한 필수 입력 값을 입력 완료했는 지 확인
 	if($('#leaveType').val() == "") {
@@ -456,24 +488,12 @@ $('.latenessUpdate').on('click', () => {
 // 임시 저장된 문서 열람 페이지에서 임시 저장 버튼 클릭 시
 $('.reSaveDocu').on('click', () => {
 	if(confirm('현재까지 작성된 내용을 저장하시겠습니까 ?\n파일 목록은 저장되지 않습니다.')){
-		
 		// 문서의 긴급 여부 체크
 		if($('#emerCheck').is(':checked')){
 			$('#emerChecked').val('Y');
 		}
-		
-		// AJAX로 서버에 전송
-     	$.ajax({
-     		type: 'POST',
-        	url: '/eApproval/reSaveDocu',
-        	data: $("#docuContForm").serialize()
-     	}).done((resp) => {
-     		if(resp > 0){
-     			alert('저장되었습니다.');
-     		}
-     		// 페이지 새로 고침
-     		location.reload();
-     	});
+		$('#docuContForm').attr('action', '/eApproval/reSaveDocu');
+		$('#docuContForm').submit();
 	}
 });
 
@@ -545,9 +565,6 @@ $('.leaveWrite').on('click', () => {
 	if(!$('#endDayPM').is(':checked')){
 		$('#endDayPMChecked').val('N');
 	}
-
-    // 신청 연차 일수 문자열을 숫자로 변환 후 Form 전송
-    $('#applyLeaves').val(parseFloat($('#applyLeaves').val()));
 	sendFormData('write/Leave');
 });
 
@@ -707,6 +724,11 @@ function sendFormData(choiUrl) {
 		$('#emerChecked').val('Y');
 	}
 	
+	// 휴가 신청서 문서일 경우 신청 연차 일수 문자열을 숫자로 변환
+	if(choiUrl.includes('Leave')){
+    	$('#applyLeaves').val(parseFloat($('#applyLeaves').val()));
+	} 
+	
  	// 폼 데이터를 직렬화 후 변수에 저장
 	let formData = $("#docuContForm").serialize();
 
@@ -718,7 +740,7 @@ function sendFormData(choiUrl) {
      }).done(resp => {
      	// 임시 저장 시 임시 저장함 페이지로 이동
      	if(choiUrl.includes('temp')){
-     		location.href = '/eApproval/privateList?type=save'; 
+     		location.href = '/eApproval/privateList?type=save&cPage=1'; 
      	}
      	// 결재 요청 시 등록된 파일이 존재할 때만 데이터 전송
      	if(addedFiles.length > 0){
@@ -888,4 +910,80 @@ $('#applyLeaves').on('change', function () {
             }
         });
     }
+});
+
+$(function() {
+	// 현재 페이지의 URL 중 pathname 값만 변수에 저장
+	let pathName = window.location.pathname;
+
+	// 현재 페이지가 문서 보관함이 아니라면 페이지네이션 실행하지 않음.
+	if(!pathName.includes('List')){
+		return;
+	}
+
+	const cPage = $('#cPage').val();
+	const totalCount = $('#totalCount').val();
+	const recordCountPerPage = $('#recordCountPerPage').val();
+	const naviCountPerPage = $('#naviCountPerPage').val();
+	const docuCode = $('#docuCode').val();
+	const type = $('#type').val();
+	
+	
+	// 페이지네이션 초기 설정
+	let pageTotalCount = totalCount > 0 ? Math.ceil(totalCount / recordCountPerPage) : 1;
+	let startNavi = Math.floor((cPage - 1) / naviCountPerPage) * naviCountPerPage + 1;
+	let endNavi = startNavi + naviCountPerPage - 1;
+
+ 	if (endNavi > pageTotalCount) {
+   		endNavi = pageTotalCount;
+	}
+
+	let needNext = endNavi < pageTotalCount;
+	let needPrev = startNavi > 1;
+
+	// 페이지네이션 HTML 초기화
+	const pagination = $('.pagination');
+	pagination.empty();
+
+	// '이전' 버튼
+	const prevNaviBtn = $('<a>');
+	prevNaviBtn.addClass('prev');
+	const prevNaviIcon = $('<i>');
+	prevNaviIcon.addClass('bx bx-chevron-left');
+	prevNaviBtn.append(prevNaviIcon);
+	if (needPrev) {
+    	prevNaviBtn.attr('href', pathName + '?type=' + type + '&cPage=' + (startNavi - 1));
+	} else {
+    	prevNaviBtn.addClass('disabled');
+	}
+	pagination.append(prevNaviBtn);
+	
+	// 페이지 번호
+	for (let i = startNavi; i <= endNavi; i++) {
+    	const paginavi = $('<a>');
+    	
+    	if(docuCode == ""){
+    		paginavi.attr('href', pathName + '?type=' + type + '&cPage=' + i);
+    	} else {
+    		paginavi.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&cPage=' + i);
+    	}
+    	paginavi.text(i);
+    	if (cPage == i) {
+        	paginavi.addClass('active');
+    	}
+    	pagination.append(paginavi);
+	}
+
+	// '다음' 버튼
+	const nextNaviBtn = $('<a>');
+	nextNaviBtn.addClass('prev');
+	const nextNaviIcon = $('<i>');
+	nextNaviIcon.addClass('bx bx-chevron-right');
+	nextNaviBtn.append(nextNaviIcon);
+	if (needPrev) {
+    	nextNaviBtn.attr('href', pathName + '?type=' + type + '&cPage=' + (endNavi + 1));
+	} else {
+    	nextNaviBtn.addClass('disabled');
+	}
+	pagination.append(nextNaviBtn);
 });

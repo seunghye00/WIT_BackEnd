@@ -3457,6 +3457,10 @@ span.return {
 	align-items: center;
 }
 
+.eApproval .docuBox .pagination a.disabled {
+	cursor: default;
+}
+
 /* 전자 결재 문서 결재 & 반려 모달창 */
 .returnModal, .apprModal {
 	display: none;

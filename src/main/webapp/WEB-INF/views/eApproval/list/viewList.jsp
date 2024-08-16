@@ -106,14 +106,7 @@
 								</c:otherwise>
 							</c:choose>
 						</div>
-						<div class="pagination">
-							<a href="javascript:;" class="prev"><i
-								class='bx bx-chevron-left'></i></a> <a href="javascript:;"
-								class="active">1</a> <a href="javascript:;">2</a> <a
-								href="javascript:;">3</a> <a href="javascript:;">4</a> <a
-								href="javascript:;">5</a> <a href="javascript:;"
-								class="next active"><i class='bx bx-chevron-right'></i></a>
-						</div>
+						<%@ include file="/WEB-INF/views/eApproval/commons/pagination.jsp"%>
 					</div>
 				</div>
 			</div>

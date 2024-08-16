@@ -110,7 +110,7 @@
 							</div>
 							<div class="docuWrite docuLeave">
 								<form id="docuContForm" action="/eApproval/update" method="post">
-									<input type="hidden" name="docu_code" value="M1">
+									<input type="hidden" name="docu_code" value="M2">
 									<input type="hidden" name="document_seq" value="${docuInfo.document_seq}" id="docuSeq">
 									<table>
 										<thead>
@@ -129,9 +129,9 @@
 												<th>긴급</th>
 												<td>
 													<div>
-														<input type="checkbox" id="emerCheck" value="Y"
-															name="emer_yn" <c:if test="${docuInfo.emer_yn eq 'Y'}">checked</c:if>> <label for="emerCheck">긴급
-															문서</label>
+														<input type="hidden" id="emerChecked" name="emer_yn" value="N">
+														<input type="checkbox" id="emerCheck" <c:if test="${docuInfo.emer_yn eq 'Y'}">checked</c:if>> 
+														<label for="emerCheck">긴급 문서</label>
 													</div>
 												</td>
 											</tr>
