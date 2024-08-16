@@ -34,4 +34,9 @@ public class MeetingRoomService {
 	public List<RoomBookingDTO> getAllRoomBooking(int roomSeq) {
 		return dao.getAllRoomBooking(roomSeq);
 	}
+
+	// 회의실 예약 시간이 겹치는지 확인하기 위한 메서드
+	public int checkBooking(RoomBookingDTO dto) {
+		return dao.checkBooking(dto);
+	}
 }

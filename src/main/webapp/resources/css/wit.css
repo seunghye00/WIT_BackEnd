@@ -1088,15 +1088,15 @@
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 30px;
-    border: 3px solid #558BCF;
-    width: 50%;
-    border-radius: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+	background-color: #fefefe;
+	margin: 5% auto;
+	padding: 30px;
+	border: 3px solid #558BCF;
+	width: 50%;
+	border-radius: 25px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 }
 
 .modal-category {
@@ -1336,11 +1336,10 @@
 }
 
 .chatList .chatTitle {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
 }
-
 
 .notificationCount {
 	color: #fff;
@@ -1367,9 +1366,9 @@
 
 /* 채팅 콘텐츠  */
 .chatContainer {
-    background-color: #fff;
-    position: relative;
-    gap: 15px;
+	background-color: #fff;
+	position: relative;
+	gap: 15px;
 }
 
 .chatHeader {
@@ -1385,26 +1384,26 @@
 }
 
 .chatBody {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    background-color: rgb(220, 236, 252);
-    border-radius: 25px;
-    position: relative;
-    transition: padding-bottom 0.3s;
-    max-height: 100%;
+	flex: 1;
+	padding: 20px;
+	overflow-y: auto;
+	background-color: rgb(220, 236, 252);
+	border-radius: 25px;
+	position: relative;
+	transition: padding-bottom 0.3s;
+	max-height: 100%;
 }
 
 .message {
-    margin-bottom: 10px;
-    max-width: 70%;
-    padding: 10px;
-    border-radius: 10px;
-    position: relative;
-    clear: both;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+	margin-bottom: 10px;
+	max-width: 70%;
+	padding: 10px;
+	border-radius: 10px;
+	position: relative;
+	clear: both;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
 }
 
 .message.status {
@@ -1413,33 +1412,34 @@
 }
 
 .message.sent {
-    background-color: #558BCF;
-    color: white;
-    float: right;
-    text-align: right;
-    border-top-right-radius: 0;
-    display:flex;
-    flex-direction:column;
-    gap:5px;
-    position: relative;
+	background-color: #558BCF;
+	color: white;
+	float: right;
+	text-align: right;
+	border-top-right-radius: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	position: relative;
 }
 
 .message .sender, .message .text_box {
 	font-size: 18px;
 }
-.message .subBox{
-    font-size:12px;
-    position: absolute;
-    left: -40px;
-    bottom: 0;
-    color:#333;
+
+.message .subBox {
+	font-size: 12px;
+	position: absolute;
+	left: -40px;
+	bottom: 0;
+	color: #333;
 }
 
-.message.received .subBox{
-    left: unset;
-    right: -40px;
-    bottom: 0;
-    color:#333;
+.message.received .subBox {
+	left: unset;
+	right: -40px;
+	bottom: 0;
+	color: #333;
 }
 
 .message.sent a {
@@ -1797,41 +1797,50 @@
 
 /* 헤더 알림  */
 .aram_modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    right: 20px;
-    top: 90px;
-    width: fit-content;
-    height: 100%;
-    /* overflow: auto; */
-    /* background-color: rgb(0, 0, 0); */
-    /* background-color: rgba(0, 0, 0, 0.4); */
-    /* padding-top: 60px; */
+	display: none;
+	position: fixed;
+	z-index: 1;
+	right: 20px;
+	top: 90px;
+	width: fit-content;
+	height: 100%;
+	/* overflow: auto; */
+	/* background-color: rgb(0, 0, 0); */
+	/* background-color: rgba(0, 0, 0, 0.4); */
+	/* padding-top: 60px; */
 }
 
-.aram_modal .modal-content {background-color: #fefefe;margin: 0;padding: 20px;border: 3px solid #558BCF;width: 250px;border-radius: 25px;display: flex;flex-direction: column;gap: 20px;}
+.aram_modal .modal-content {
+	background-color: #fefefe;
+	margin: 0;
+	padding: 20px;
+	border: 3px solid #558BCF;
+	width: 250px;
+	border-radius: 25px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
 
 .aram_modal .modal-content .modal-header {
 	display: flex;
-    justify-content: space-between;
-    align-items: center;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .aram_modal .modal-content .modal-title {
-    font-size: 18px;
-    font-weight: bold;
+	font-size: 18px;
+	font-weight: bold;
 }
 
 .aram_modal .modal-content .modal-header button {
-    padding: 0;
-    background: none;
-    border: none;
-    color: #333;
-    font-size: 18px;
-    font-weight: bold;
+	padding: 0;
+	background: none;
+	border: none;
+	color: #333;
+	font-size: 18px;
+	font-weight: bold;
 }
-
 
 /* 경원 css end */
 
@@ -2711,8 +2720,8 @@ span.return {
 	max-height: 48px;
 }
 
-.eApproval .docuList .listBox.progList .rows.listHeader, 
-.eApproval .docuList .listBox.doneList .rows.listHeader {
+.eApproval .docuList .listBox.progList .rows.listHeader, .eApproval .docuList .listBox.doneList .rows.listHeader
+	{
 	max-height: 45px;
 }
 
@@ -3091,7 +3100,8 @@ span.return {
 	padding-left: 5px;
 }
 
-.eApprWrite .document .docuCont .docuFiles .uploadFiles .delFileBtn:hover {
+.eApprWrite .document .docuCont .docuFiles .uploadFiles .delFileBtn:hover
+	{
 	cursor: pointer;
 }
 
@@ -3486,22 +3496,20 @@ span.return {
 	font-size: 24px;
 }
 
-.returnModal .returnModalTitle span, 
-.apprModal .apprModalTitle span {
+.returnModal .returnModalTitle span, .apprModal .apprModalTitle span {
 	position: relative;
 	top: -18px;
-    right: -95px;
-    color: #999;
-    font-size: 18px;
-    font-weight: bold;
+	right: -95px;
+	color: #999;
+	font-size: 18px;
+	font-weight: bold;
 }
 
-.returnModal .returnModalTitle span:hover,
-.returnModal .returnModalTitle span:active,
-.apprModal .apprModalTitle span:hover,
-.apprModal .apprModalTitle span:active {
+.returnModal .returnModalTitle span:hover, .returnModal .returnModalTitle span:active,
+	.apprModal .apprModalTitle span:hover, .apprModal .apprModalTitle span:active
+	{
 	cursor: pointer;
-    color: #777;
+	color: #777;
 }
 
 .returnModal .returnComm, .apprModal .apprComm {
@@ -3954,10 +3962,10 @@ span.return {
 }
 
 .reservation .reservList .toolBar ul {
-	flex: 8;
-	display: flex;
+	border-bottom: unset;
 }
 
+}
 .reservation .reservList .toolBar ul a {
 	padding: 10px 0;
 	position: relative;
@@ -4277,4 +4285,8 @@ span.return {
 	background-color: #1268d4;
 }
 
+.fc-direction-ltr .fc-daygrid-event.fc-event-end, 
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+	cursor: pointer;
+}
 /* 승혜 & 원희 css end */
