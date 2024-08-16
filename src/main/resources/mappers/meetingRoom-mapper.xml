@@ -21,6 +21,20 @@
 	
 	<!-- 해당 회의실의 모든 예약 정보를 조회하기 위한 쿼리문 -->
 	<select id="selectAllBySeq" resultType="com.wit.dto.RoomBookingDTO">
-		select * from room_booking where room_seq = #{roomSeq}
+		select r.*, e.name emp_name, m.name room_name, m.location 
+		from room_booking r 
+		join meeting_room m on r.room_seq = m.room_seq
+		join employee e on r.emp_no = e.emp_no
+		where r.room_seq = #{roomSeq}
+	</select>
+	
+	<!-- 예약 시간이 겹치는 지 확인하기 위한 쿼리문 -->
+	<select id="checkBooking" resultType="int">
+		select count(*) from room_booking 
+		where 
+			room_seq = #{room_seq} and
+			( (start_date between #{start_date} and #{end_date}) or
+			 (end_date between #{start_date} and #{end_date}) or
+			 (start_date &lt;= #{start_date} and end_date >= #{end_date}) )
 	</select>
 </mapper>

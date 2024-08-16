@@ -88,7 +88,7 @@
 						</ul>
 					</div>
 					<div style="padding: 10px;"></div>
-					<a href="/attendance/attendance_vacation">
+					<a href="/annualLeave/attendance_vacation">
 						<h3 class="toggleTit">휴가 관리</h3>
 					</a>
 				</div>
@@ -97,7 +97,7 @@
 					<div class="Attendance_container">
 						<div class="Attendance_vacation">
 							<div class="vacation_container">
-								<h3>휴가 보유현황</h3>
+								<h3>휴가 보유 현황</h3>
 								<div class="vacation_row vacation_header">
 									<div class="vacation_col">
 										<span>총 휴가</span>
@@ -110,67 +110,40 @@
 									</div>
 								</div>
 								<div class="vacation_row">
-									<div class="vacation_col">15일</div>
-									<div class="vacation_col">5일</div>
-									<div class="vacation_col">10일</div>
+									<div class="vacation_col">${annualLeave.annual_leave_num}일</div>
+									<div class="vacation_col">${annualLeave.use_num}일</div>
+									<div class="vacation_col">${annualLeave.remaining_leaves}일</div>
 								</div>
 							</div>
 						</div>
+
 						<div style="padding: 5px;"></div>
+
 						<div class="vacation_status">
-							<h3>휴가 사용내역</h3>
+							<h3>휴가 사용 내역</h3>
 							<div class="vacation_row vacation_header">
 								<div class="vacation_col">
 									<span>번호</span>
 								</div>
 								<div class="vacation_col">
-									<span>신청자</span>
+									<span>휴가 종류</span>
 								</div>
 								<div class="vacation_col">
-									<span>휴가종류</span>
-								</div>
-								<div class="vacation_col">
-									<span>사용기간</span>
+									<span>사용 기간</span>
 								</div>
 								<div class="vacation_col">
 									<span>일수</span>
 								</div>
 							</div>
-							<div class="vacation_row">
-								<div class="week_col">1</div>
-								<div class="week_col">백민주</div>
-								<div class="week_col">연차</div>
-								<div class="week_col">2024-07-21 ~ 2024-07-21</div>
-								<div class="week_col">1일</div>
-							</div>
-							<div class="vacation_row">
-								<div class="week_col">2</div>
-								<div class="week_col">백민주</div>
-								<div class="week_col">연차</div>
-								<div class="week_col">2024-07-22 ~ 2024-07-22</div>
-								<div class="week_col">1일</div>
-							</div>
-							<div class="vacation_row">
-								<div class="week_col">3</div>
-								<div class="week_col">백민주</div>
-								<div class="week_col">연차</div>
-								<div class="week_col">2024-07-23 ~ 2024-07-23</div>
-								<div class="week_col">1일</div>
-							</div>
-							<div class="vacation_row">
-								<div class="week_col">4</div>
-								<div class="week_col">백민주</div>
-								<div class="week_col">연차</div>
-								<div class="week_col">2024-07-24 ~ 2024-07-24</div>
-								<div class="week_col">1일</div>
-							</div>
-							<div class="vacation_row">
-								<div class="week_col">5</div>
-								<div class="week_col">백민주</div>
-								<div class="week_col">연차</div>
-								<div class="week_col">2024-07-25 ~ 2024-07-25</div>
-								<div class="week_col">1일</div>
-							</div>
+							<c:forEach var="request" items="${leaveRequests}">
+								<div class="vacation_row">
+									<div class="vacation_col">${request.document_seq}</div>
+									<div class="vacation_col">${request.leave_type}</div>
+									<div class="vacation_col">${request.start_date}~
+										${request.end_date}</div>
+									<div class="vacation_col">${request.request_leave_days.intValue()}일</div>
+								</div>
+							</c:forEach>
 						</div>
 					</div>
 					<div class="pagination">
