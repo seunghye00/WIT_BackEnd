@@ -18,7 +18,6 @@ public class AnnualLeaveService {
 
     // 직원의 연차 정보를 가져옴
     public AnnualLeaveDTO getAnnualLeaveByEmpNo(String empNo) {
-        dao.insertOrUpdateAnnualLeave(empNo);
         return dao.getAnnualLeaveByEmpNo(empNo);
     }
 
