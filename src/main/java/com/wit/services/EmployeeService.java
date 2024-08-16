@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wit.commons.BoardConfig;
+import com.wit.dao.AnnualLeaveDAO;
 import com.wit.dao.EmployeeDAO;
 import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
@@ -21,6 +22,9 @@ public class EmployeeService {
 
 	@Autowired
 	private EmployeeDAO dao;
+	
+    @Autowired
+    private AnnualLeaveDAO adao;
 
 	// 모든 직급 정보 가져오기
 	public List<RoleDTO> AllRoles() {
@@ -71,10 +75,17 @@ public class EmployeeService {
 	}
 
 	// 추가 정보 업데이트
+	@Transactional
 	public int updateInfo(EmployeeDTO dto) {
 		dto.setPw(PWUtill.encryptPassword(dto.getPw()));
-		return dao.updateInfo(dto);
-	}
+        // 직원 정보 업데이트
+        int result = dao.updateInfo(dto);
+
+        // 연차 데이터 생성 (연차 15일 추가)
+        adao.insertOrUpdateAnnualLeave(dto.getEmp_no());
+        
+        return result;
+    }
 
 	// ID찾기
 	public String findID(String name, String ssn) {
