@@ -198,9 +198,9 @@
 
 		      var calendar = new FullCalendar.Calendar(calendarEl, {
 		        headerToolbar: {
-		          left: 'prev,next today',
+		          left: 'prev,next',
 		          center: 'title',
-		          right: 'dayGridMonth'
+		          right: 'today'
 		        },
 		        dayCellContent: function (e) {
 		          return e.dayNumberText.replace('일', '');

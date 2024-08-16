@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.wit.dto.EmployeeDTO;
 import com.wit.dto.VehicleBookingDTO;
 import com.wit.dto.VehiclesDTO;
 
@@ -26,7 +27,12 @@ public class VehicleBookingDAO {
 	}
 	
 	// 차량 예약 목록 조회
-	public List<VehicleBookingDTO> getAll(String vehicleSeq){
-		return mybatis.selectList("vehicleBooking.getAll", Integer.parseInt(vehicleSeq));
+	public List<VehicleBookingDTO> getAllVehicleBooking(String vehicleSeq){
+		return mybatis.selectList("vehicleBooking.getAllVehicleBooking", Integer.parseInt(vehicleSeq));
+	}
+	
+	// 직원 정보 조회 메소드 추가
+	public EmployeeDTO employeeInfo(String empNo) {
+		return mybatis.selectOne("vehicleBooking.employeeInfo", empNo);
 	}
 }

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wit.dao.CalendarDAO;
-import com.wit.dao.EmployeeDAO;
+import com.wit.dao.EventsDAO;
 import com.wit.dto.DepartmentCalendarDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.PersonalCalendarDTO;
@@ -16,6 +16,9 @@ public class CalendarService {
 
 	@Autowired
 	private CalendarDAO dao;
+	
+	@Autowired
+	private EventsDAO eDao;
 
 	// 개인캘린더 목록 출력
 	public List<PersonalCalendarDTO> perCalendarList(String empNo) {
@@ -38,13 +41,17 @@ public class CalendarService {
 	}
 
 	// 개인캘린더 삭제 
-	public int deletePerCalendar(int calendarSeq) {
-		return dao.deletePerCalendar(calendarSeq);
+	public boolean deletePerCalendar(int calendarSeq) {
+		int eventsDeleted = eDao.deleteEventsByCalendarSeq(calendarSeq);
+		int calendarDeleted = dao.deletePerCalendar(calendarSeq);
+		return calendarDeleted > 0 && eventsDeleted >= 0;
 	}
 
 	// 부서캘린더 삭제 (각 부서 부장만 가능)
-	public int deleteDepCalendar(int calendarSeq) {
-		return dao.deleteDepCalendar(calendarSeq);
+	public boolean deleteDepCalendar(int calendarSeq) {
+		int eventsDeleted = eDao.deleteEventsByCalendarSeq(calendarSeq);
+		int calendarDeleted = dao.deleteDepCalendar(calendarSeq);
+		return calendarDeleted > 0 && eventsDeleted >= 0;
 	}
 
 	// 직원 정보 조회
@@ -56,5 +63,15 @@ public class CalendarService {
 	public void insertPerDefaultCalendar(String empNo) {
 		// 해당 사번으로 사원 개인의 기본 캘린더 등록
 		dao.insertPerDefaultCalendar(empNo);
+	}
+
+	// 캘린더 타입 조회
+	public String getCalendarType(int calendarSeq) {
+		System.out.println(dao.selectPersonalByCalendarSeq(calendarSeq));
+		if(dao.selectPersonalByCalendarSeq(calendarSeq) > 0) {
+			return "personal";
+		} else {
+			return "dept";
+		}
 	}
 }

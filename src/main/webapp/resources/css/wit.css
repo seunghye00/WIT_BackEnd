@@ -3540,6 +3540,12 @@ span.return {
 	overflow: visible;
 }
 
+.subList.calendarList li {
+    position: relative;
+    justify-content: unset;
+    gap: 10px;
+}
+
 .sideCalendarAdd {
 	cursor: pointer;
 	display: inline-block;
@@ -3613,6 +3619,16 @@ span.return {
 	position: relative;
 }
 
+.sidePerSelectDel {
+    color: gray;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    right: 7px;
+    top: -3px;
+    cursor: pointer;
+}
+
 .deptCalendarPopup {
 	position: absolute;
 	display: none;
@@ -3664,36 +3680,17 @@ span.return {
 	background-color: #c51221;
 }
 
+.sideDepSelectDel {
+    color: gray;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    right: 7px;
+    top: -3px;
+    cursor: pointer;
+}
+
 /* 날짜 박스 눌렀을 시 */
-.modal {
-	display: none;
-	position: fixed;
-	z-index: 10000;
-	padding-top: 100px;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgb(0, 0, 0);
-	background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modalContent {
-	background-color: #fefefe;
-	margin: auto;
-	padding: 30px 35px;
-	border: 1px solid #fefefe;
-	width: 35%;
-	height: 81%;
-	display: flex;
-	border-radius: 25px;
-	flex-direction: column;
-	position: relative;
-	top: 2vh;
-	gap: 10px;
-}
-
 .modalClose {
 	color: gray;
 	float: right;
@@ -3763,49 +3760,49 @@ span.return {
 }
 
 .modal .eventCheck input:not(.dateInput) {
-	padding: 10px 15px;
-	margin-top: 7px;
-	width: 100%;
-	border-radius: 8px;
-	border: 1px solid #ccc;
-	font-size: 16px;
+    padding: 10px 15px;
+    margin-top: 7px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
 }
 
 .modal .eventCheck .dateInput {
-	margin-top: 7px;
-	padding: 15px 10px;
-	width: 23%;
-	height: 35px;
-	font-size: 14px;
-	border-radius: 8px;
-	border: 1px solid #ccc;
+    margin-top: 7px;
+    padding: 15px 10px;
+    width: 23%;
+    height: 35px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
 }
 
 .modal .eventCheck select {
-	margin-top: 7px;
-	padding: 5px;
-	height: 40px;
-	border-radius: 8px;
-	font-size: 16px;
-	border: 1px solid #ccc;
+    margin-top: 7px;
+    padding: 5px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
 }
 
-#eventText {
-	margin-top: 7px;
-	width: 100%;
-	height: 150px;
-	resize: none;
-	border-radius: 8px;
-	padding: 15px;
-	overflow-y: auto;
-	font-size: 16px;
-	border: 1px solid #ccc;
+.eventText {
+    margin-top: 7px;
+    width: 100%;
+    height: 150px;
+    resize: none;
+    border-radius: 8px;
+    padding: 15px;
+    overflow-y: auto;
+    font-size: 16px;
+    border: 1px solid #ccc;
 }
 
 .modal .eventCheck .btns {
-	display: flex;
-	justify-content: center;
-	gap: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }
 
 .cancelBtn {
@@ -3840,11 +3837,11 @@ span.return {
 }
 
 .deleteBtn {
-	/* padding: 10px 20px; */
-	/* border: 1px solid #c1c1c1; */
-	/* border-radius: 8px; */
-	/* background-color: #dc3545; */
-	color: #888;
+    padding: 10px 20px;
+    border: 1px solid #c1c1c1;
+    border-radius: 8px;
+    background-color: #dc3545;
+    color: #fff;
 }
 
 .deleteBtn:hover {
@@ -3907,30 +3904,40 @@ span.return {
 	background-color: #365c89;
 }
 
-.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active
-	{
-	background-color: #365c89;
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+    background-color: #365c89;
 }
 
-.fc .fc-button:focus, .fc-button-primary:focus, .fc-button-primary:not(:disabled).fc-button-active:focus,
-	.fc-button-primary:not(:disabled):active:focus {
-	box-shadow: unset !important;
+.fc .fc-button:focus,
+.fc-button-primary:focus,
+.fc-button-primary:not(:disabled).fc-button-active:focus,
+.fc-button-primary:not(:disabled):active:focus {
+    box-shadow: unset !important;
 }
 
 .fc-theme-standard .fc-popover {
-	border-radius: 20px;
+    border-radius: 20px;
 }
 
 .fc-theme-standard .fc-popover-header {
-	border-radius: 20px;
-	padding: 7px;
-	background-color: #558BCF;
-	color: #fff;
+    border-radius: 20px;
+    padding: 7px;
+    background-color: #558BCF;
+    color: #fff;
 }
 
 .fc-popover-close.fc-icon.fc-icon-x {
 	color: white;
 	opacity: 1;
+}
+
+.fc .fc-button-primary.fc-today-button {
+    background-color: #c058f0;
+}
+
+.fc .fc-button-primary.fc-today-button:hover {
+    background-color: #9733c5;
 }
 
 /* 원희 css end */
@@ -4167,7 +4174,7 @@ span.return {
 .modal {
 	display: none;
 	position: fixed;
-	z-index: 1;
+	z-index: 10000;
 	padding-top: 100px;
 	left: 0;
 	top: 0;
@@ -4184,12 +4191,12 @@ span.return {
 	padding: 30px 35px;
 	border: 1px solid #fefefe;
 	width: 35%;
-	height: 73%;
+	height: 84%;
 	display: flex;
 	border-radius: 25px;
 	flex-direction: column;
 	position: relative;
-	top: 6vh;
+	top: 2vh;
 	gap: 10px;
 }
 
