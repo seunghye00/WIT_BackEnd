@@ -920,70 +920,174 @@ $(function() {
 	if(!pathName.includes('List')){
 		return;
 	}
-
 	const cPage = $('#cPage').val();
 	const totalCount = $('#totalCount').val();
 	const recordCountPerPage = $('#recordCountPerPage').val();
 	const naviCountPerPage = $('#naviCountPerPage').val();
 	const docuCode = $('#docuCode').val();
-	const type = $('#type').val();
-	
+	const type = $('#type').val();	
+	const keyword = $('#keyword').val();
 	
 	// 페이지네이션 초기 설정
 	let pageTotalCount = totalCount > 0 ? Math.ceil(totalCount / recordCountPerPage) : 1;
 	let startNavi = Math.floor((cPage - 1) / naviCountPerPage) * naviCountPerPage + 1;
 	let endNavi = startNavi + naviCountPerPage - 1;
-
+	
  	if (endNavi > pageTotalCount) {
    		endNavi = pageTotalCount;
 	}
-
 	let needNext = endNavi < pageTotalCount;
 	let needPrev = startNavi > 1;
 
 	// 페이지네이션 HTML 초기화
 	const pagination = $('.pagination');
 	pagination.empty();
-
-	// '이전' 버튼
-	const prevNaviBtn = $('<a>');
-	prevNaviBtn.addClass('prev');
-	const prevNaviIcon = $('<i>');
-	prevNaviIcon.addClass('bx bx-chevron-left');
-	prevNaviBtn.append(prevNaviIcon);
-	if (needPrev) {
-    	prevNaviBtn.attr('href', pathName + '?type=' + type + '&cPage=' + (startNavi - 1));
-	} else {
-    	prevNaviBtn.addClass('disabled');
-	}
-	pagination.append(prevNaviBtn);
+		
+	// 검색 결과 페이지일 경우
+	if(pathName.includes('search')) {
+		
+		// '이전' 버튼
+		const prevNaviBtn = $('<a>');
+		prevNaviBtn.addClass('prev');
+		const prevNaviIcon = $('<i>');
+		prevNaviIcon.addClass('bx bx-chevron-left');
+		prevNaviBtn.append(prevNaviIcon);
+		if (needPrev) {
+			if(docuCode == ""){
+    			prevNaviBtn.attr('href', pathName + '?type=' + type + '&keyword=' + keyword + '&cPage=' + (startNavi - 1));
+    		} else {
+    			prevNaviBtn.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=' + (startNavi - 1));
+    		}
+		} else {
+    		prevNaviBtn.addClass('disabled');
+		}
+		pagination.append(prevNaviBtn);
 	
-	// 페이지 번호
-	for (let i = startNavi; i <= endNavi; i++) {
-    	const paginavi = $('<a>');
+		// 페이지 번호
+		for (let i = startNavi; i <= endNavi; i++) {
+    		const paginavi = $('<a>');
     	
-    	if(docuCode == ""){
-    		paginavi.attr('href', pathName + '?type=' + type + '&cPage=' + i);
-    	} else {
-    		paginavi.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&cPage=' + i);
-    	}
-    	paginavi.text(i);
-    	if (cPage == i) {
-        	paginavi.addClass('active');
-    	}
-    	pagination.append(paginavi);
-	}
+    		if(docuCode == ""){
+    			paginavi.attr('href', pathName + '?type=' + type + '&keyword=' + keyword + '&cPage=' + i);
+    		} else {
+    			paginavi.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=' + i);
+    		}
+    		paginavi.text(i);
+    		if (cPage == i) {
+        		paginavi.addClass('active');
+    		}
+    		pagination.append(paginavi);
+		}
 
-	// '다음' 버튼
-	const nextNaviBtn = $('<a>');
-	nextNaviBtn.addClass('prev');
-	const nextNaviIcon = $('<i>');
-	nextNaviIcon.addClass('bx bx-chevron-right');
-	nextNaviBtn.append(nextNaviIcon);
-	if (needPrev) {
-    	nextNaviBtn.attr('href', pathName + '?type=' + type + '&cPage=' + (endNavi + 1));
+		// '다음' 버튼
+		const nextNaviBtn = $('<a>');
+		nextNaviBtn.addClass('prev');
+		const nextNaviIcon = $('<i>');
+		nextNaviIcon.addClass('bx bx-chevron-right');
+		nextNaviBtn.append(nextNaviIcon);
+		if (needNext) {
+			if(docuCode == ""){
+    			nextNaviBtn.attr('href', pathName + '?type=' + type + '&keyword=' + keyword + '&cPage=' + (endNavi + 1));
+    		} else {
+    			nextNaviBtn.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=' + (endNavi + 1));
+    		}
+		} else {
+    		nextNaviBtn.addClass('disabled');
+		}
+		pagination.append(nextNaviBtn);
+		
+	// 검색을 하지 않은 상태의 보관함인 경우
 	} else {
-    	nextNaviBtn.addClass('disabled');
+
+		// '이전' 버튼
+		const prevNaviBtn = $('<a>');
+		prevNaviBtn.addClass('prev');
+		const prevNaviIcon = $('<i>');
+		prevNaviIcon.addClass('bx bx-chevron-left');
+		prevNaviBtn.append(prevNaviIcon);
+		if (needPrev) {
+    		if(docuCode == ""){
+    			prevNaviBtn.attr('href', pathName + '?type=' + type + '&cPage=' + (startNavi - 1));
+    		} else {
+    			prevNaviBtn.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&cPage=' + (startNavi - 1));
+    		}} else {
+    		prevNaviBtn.addClass('disabled');
+		}
+		pagination.append(prevNaviBtn);
+	
+		// 페이지 번호
+		for (let i = startNavi; i <= endNavi; i++) {
+    	
+    		const paginavi = $('<a>');
+    	
+    		if(docuCode == ""){
+    			paginavi.attr('href', pathName + '?type=' + type + '&cPage=' + i);
+    		} else {
+    			paginavi.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&cPage=' + i);
+    		}
+    		paginavi.text(i);
+    		
+    		if (cPage == i) {
+        		paginavi.addClass('active');
+    		}
+    		pagination.append(paginavi);
+		}
+
+		// '다음' 버튼
+		const nextNaviBtn = $('<a>');
+		nextNaviBtn.addClass('prev');
+		const nextNaviIcon = $('<i>');
+		nextNaviIcon.addClass('bx bx-chevron-right');
+		nextNaviBtn.append(nextNaviIcon);
+		if (needNext) {
+			if(docuCode == ""){
+    			nextNaviBtn.attr('href', pathName + '?type=' + type + '&cPage=' + (endNavi + 1));
+    		} else {
+    			nextNaviBtn.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&cPage=' + (endNavi + 1));
+    		}
+		} else {
+    		nextNaviBtn.addClass('disabled');
+		}
+		pagination.append(nextNaviBtn);
 	}
-	pagination.append(nextNaviBtn);
 });
+
+// 검색창 'Enter' 키 감지 시 검색을 수행할 함수 호출
+$('#searchTxt').on('keydown', function(e) {
+	if (e.keyCode === 13) {
+		const keyword = $(this).val().trim();
+		goToSearchList(keyword);
+    }
+});
+
+// 검색창 버튼 클릭 시 검색을 수행할 함수 호출  
+$('.searchBtn').on('click', function() {
+	const keyword = $('#searchTxt').val().trim();
+	goToSearchList(keyword);
+});
+
+function goToSearchList(keyword){
+	// 현재 페이지의 문서함 타입과 문서 코드를 변수에 저장
+	const docuCode = $('#docuCode').val();
+	const type = $('#listType').val();
+
+	// 현재 페이지의 URL 중 pathname 값 중 마지막 단어만 변수에 저장
+	const pathName = window.location.pathname;
+	const docuList = pathName.split('/').pop();
+	
+	if(keyword == ''){
+		if (docuCode == ''){
+			location.href = '/eApproval/' + docuList + '?type=' + type + '&cPage=1';
+			return;
+		}
+		location.href = '/eApproval/' + docuList + '?type=' + type + '&docuCode=' + docuCode + '&cPage=1';
+		return;
+	} 
+	
+	// 변수에 저장된 값을 서버에 전송
+	if (docuCode == ''){
+		location.href = '/eApproval/search/' + docuList + '?type=' + type + '&keyword=' + keyword + '&cPage=1';
+		return;
+	}
+	location.href = '/eApproval/search/' + docuList + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=1';
+}

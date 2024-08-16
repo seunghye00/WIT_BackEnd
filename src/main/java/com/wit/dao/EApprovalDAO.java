@@ -147,7 +147,7 @@ public class EApprovalDAO {
 		return mybatis.selectList("eApproval.selectApprovedList", params);
 	}
 
-	// 해당 사원이 반려한 문서 목록을 넘겨주기 위한 메서드
+	// 해당 사원이 반려한 문서 목록 총 갯수를 넘겨주기 위한 메서드
 	public int getCountReturnList(String empNo, String docuCode) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("empNo", empNo);
@@ -266,5 +266,127 @@ public class EApprovalDAO {
 		params.put("order", i);
 		params.put("status", status);
 		mybatis.update("eApproval.updateApprLine", params);
+	}
+
+	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록의 총 갯수를 검색 후 조회하기 위한 메서드
+	public int getCountSearchListByType(String empNo, String status, String docuCode, String keyword) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("status", status);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		return mybatis.selectOne("eApproval.getCountSearchListByType", params);
+	}
+
+	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록을 검색 후 조회하기 위한 메서드
+	public List<DocuInfoListDTO> searchListByType(String empNo, String status, String docuCode, String keyword, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("status", status);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
+		return mybatis.selectList("eApproval.searchListByType", params);
+	}
+
+	// 해당 사원이 기안한 문서 목록 총 갯수 검색 후 조회하기 위한 메서드
+	public int getCountSearchWriteList(String empNo, String docuCode, String keyword) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		return mybatis.selectOne("eApproval.getCountSearchWriteList", params);
+	}
+
+	// 해당 사원이 기안한 문서 목록을 검색 후 조회하기 위한 메서드
+	public List<DocuInfoListDTO> searchWriteList(String empNo, String docuCode, String keyword, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
+		return mybatis.selectList("eApproval.searchWriteList", params);
+	}
+
+	// 해당 사원이 임시 저장한 문서 목록 총 갯수를 검색 후 넘겨주기 위한 메서드
+	public int getCountSearchSaveList(String empNo, String docuCode, String keyword) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		return mybatis.selectOne("eApproval.getCountSearchSaveList", params);
+	}
+
+	// 해당 사원이 임시 저장한 문서 목록을 검색 후 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> searchSaveList(String empNo, String docuCode, String keyword, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
+		return mybatis.selectList("eApproval.searchSaveList", params);
+	}
+
+	// 해당 사원이 결재한 문서 목록 총 갯수를 검색 후 넘겨주기 위한 메서드
+	public int getCountSearchApprovedList(String empNo, String docuCode, String keyword) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		return mybatis.selectOne("eApproval.getCountSearchApprovedList", params);
+	}
+
+	// 해당 사원이 결재한 문서 목록을 검색 후 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> searchApprovedList(String empNo, String docuCode, String keyword, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
+		return mybatis.selectList("eApproval.searchApprovedList", params);
+	}
+
+	// 해당 사원이 반려한 문서 목록 총 갯수를 검색 후 넘겨주기 위한 메서드
+	public int getCountSearchReturnList(String empNo, String docuCode, String keyword) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		return mybatis.selectOne("eApproval.getCountSearchReturnList", params);
+	}
+
+	// 해당 사원이 반려한 문서 목록을 검색 후 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> searchReturnList(String empNo, String docuCode, String keyword, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
+		return mybatis.selectList("eApproval.searchReturnList", params);
+	}
+
+	// 해당 사원이 참조자인 문서 목록 총 갯수를 검색 후 넘겨주기 위한 메서드
+	public int getCountSearchViewList(String empNo, String docuCode, String keyword) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		return mybatis.selectOne("eApproval.getCountSearchViewList", params);
+	}
+
+	// 해당 사원이 참조자인 문서 목록을 검색 후 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> searchViewList(String empNo, String docuCode, String keyword, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuCode", docuCode);
+		params.put("keyword", keyword);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
+		return mybatis.selectList("eApproval.searchViewList", params);
 	}
 }

@@ -4,9 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -256,7 +257,7 @@ public class EAppprovalController {
 		String empNo = (String) session.getAttribute("loginID");
 
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장
-		List<DocuInfoListDTO> list = null;
+		List<DocuInfoListDTO> list = new ArrayList<>();
 		switch (type) {
 		case "todo":
 			list = serv.selectListByType(empNo, "결재 대기", docuCode, cPage);
@@ -568,6 +569,96 @@ public class EAppprovalController {
 			}
 		}
 		return dto.getDocument_seq();
+	}
+	
+	@RequestMapping("search/{pathVariable}")
+	public String getSearchData(@PathVariable("pathVariable") String pathVar, String type, String docuCode,
+			String keyword, int cPage, Model model) throws Exception {
+
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+
+		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장 후 model 객체로 전달
+		List<DocuInfoListDTO> list = new ArrayList<>();
+		model.addAttribute("type", type);
+		model.addAttribute("keyword", keyword);
+
+		switch (pathVar) {
+		case "apprList":
+			if(type.equals("todo")) {
+				list = serv.searchListByType(empNo, "결재 대기", docuCode, keyword, cPage);
+				model.addAttribute("totalCount", serv.getCountSearchListByType(empNo, "결재 대기", docuCode, keyword));
+			} else if (type.equals("upcoming")) {
+				list = serv.searchListByType(empNo, "결재 예정", docuCode, keyword, cPage);
+				model.addAttribute("totalCount", serv.getCountSearchListByType(empNo, "결재 예정", docuCode, keyword));
+			} else {
+				// 추후 에러 페이지로 변경
+				return "redirect:/eApproval/home";
+			}
+			// 작성자와 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 model 객체로 전달
+			for (DocuInfoListDTO dto : list) {
+				dto.setWriter(eServ.getName(dto.getEmp_no()));
+				dto.setLast_appr_name(eServ.getName(dto.getLast_appr()));
+			}
+			model.addAttribute("docuList", list);
+			break;
+		case "privateList":
+			if (type.equals("write")) {
+				list = serv.searchWriteList(empNo, docuCode, keyword, cPage);
+				// 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+				for (DocuInfoListDTO dto : list) {
+					dto.setLast_appr_name(eServ.getName(dto.getLast_appr()));
+				}
+				model.addAttribute("docuList", list);
+				model.addAttribute("totalCount", serv.getCountSearchWriteList(empNo, docuCode, keyword));
+				
+			} else if (type.equals("save")) {
+				model.addAttribute("docuList", serv.searchSavetList(empNo, docuCode, keyword, cPage));
+				model.addAttribute("totalCount", serv.getCountSearchSaveList(empNo, docuCode, keyword));
+				
+			} else if (type.equals("approved")) {
+				list = serv.searchApprovedList(empNo, docuCode, keyword, cPage);
+				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+				for (DocuInfoListDTO dto : list) {
+					dto.setWriter(eServ.getName(dto.getEmp_no()));
+				}
+				model.addAttribute("docuList", list);
+				model.addAttribute("totalCount", serv.getCountSearchApprovedList(empNo, docuCode, keyword));
+				
+			} else if (type.equals("return")) {
+				list = serv.searchReturnList(empNo, docuCode, keyword, cPage);
+				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+				for (DocuInfoListDTO dto : list) {
+					dto.setWriter(eServ.getName(dto.getEmp_no()));
+				}
+				model.addAttribute("docuList", list);
+				model.addAttribute("totalCount", serv.getCountSearchReturnList(empNo, docuCode, keyword));
+				
+			} else if (type.equals("view")) {
+				list = serv.searchViewList(empNo, docuCode, keyword, cPage);
+				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+				for (DocuInfoListDTO dto : list) {
+					dto.setWriter(eServ.getName(dto.getEmp_no()));
+				}
+				model.addAttribute("docuList", list);
+				model.addAttribute("totalCount", serv.getCountSearchViewList(empNo, docuCode, keyword));
+			} else {
+				// 추후 에러 페이지로 변경
+				return "redirect:/eApproval/home";
+			}
+			break;
+		default:
+			// 추후 에러 페이지로 변경
+			return "redirect:/eApproval/home";
+		}
+	
+		model.addAttribute("cPage", cPage);
+		model.addAttribute("recordCountPerPage", BoardConfig.recordCountPerPage);
+		model.addAttribute("naviCountPerPage", BoardConfig.naviCountPerPage);
+		model.addAttribute("docuCode", docuCode);
+
+		// 해당 문서함 화면으로 이동
+		return "eApproval/searchList/" + type + "List";
 	}
 
 	// 결재 문서 작성 완료 시 파일을 업로드 하기 위한 메서드

@@ -8,5 +8,6 @@
 	<input type="hidden" value="${naviCountPerPage}" id="naviCountPerPage">
 	<input type="hidden" value="${docuCode}" id="docuCode">
 	<input type="hidden" value="${type}" id="type">
+	<input type="hidden" value="${keyword}" id="keyword">
 </div>
 

@@ -150,20 +150,20 @@ public class EApprovalService {
 	public void updateLatenessDocu(LatenessDTO dto) {
 		dao.updateLatenessDocu(dto);
 	}
-	
+
 	// 휴가 신청서 문서를 업데이트 하기 위한 메서드
 	public void updateLeaveDocu(LeaveRequestDTO dto) {
 		dao.updateLeaveDocu(dto);
 	}
 
-	// 해당 문서의 결재 라인 상태를 반려 처리에 따라 변경하기 위한 메서드 
+	// 해당 문서의 결재 라인 상태를 반려 처리에 따라 변경하기 위한 메서드
 	public void updateApprLineAll(int docuSeq, int i) {
 		dao.updateApprLineAll(docuSeq, i);
 	}
 
 	// 해당 문서에 대한 코멘트를 입력하기 위한 메서드
 	public void insertComments(ApprLineDTO dto) {
-		dao.inserComments(dto);	
+		dao.inserComments(dto);
 	}
 
 	// 문서 상태를 업데이트 하기 위한 메서드
@@ -176,27 +176,93 @@ public class EApprovalService {
 		dao.updateApprLine(docuSeq, i, status);
 	}
 
+	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록의 총 갯수를 문서 종류에 따라 넘겨주기 위한 메서드
 	public int getCountListByType(String empNo, String string, String docuCode) {
 		return dao.getCountListByType(empNo, string, docuCode);
 	}
 
+	// 해당 사원이 기안한 문서 목록 총 갯수를 넘겨주기 위한 메서드
 	public int getCountWriteList(String empNo, String docuCode) {
 		return dao.getCountWriteList(empNo, docuCode);
 	}
 
+	// 해당 사원이 임시 저장한 문서 목록 총 갯수를 넘겨주기 위한 메서드
 	public int getCountSaveList(String empNo, String docuCode) {
 		return dao.getCountSaveList(empNo, docuCode);
 	}
 
+	// 해당 사원이 결재한 문서 목록 총 갯수를 넘겨주기 위한 메서드
 	public int getCountApprovedList(String empNo, String docuCode) {
 		return dao.getCountApprovedList(empNo, docuCode);
 	}
 
+	// 해당 사원이 반려한 문서 목록 총 갯수를 넘겨주기 위한 메서드
 	public int getCountReturnList(String empNo, String docuCode) {
 		return dao.getCountReturnList(empNo, docuCode);
 	}
 
+	// 해당 사원이 참조자인 문서 목록 총 갯수를 넘겨주기 위한 메서드
 	public int getCountViewList(String empNo, String docuCode) {
 		return dao.getCountViewList(empNo, docuCode);
+	}
+
+	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록을 검색 후 문서 종류에 따라 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> searchListByType(String empNo, String status, String docuCode, String keyword, int cPage) {
+		return dao.searchListByType(empNo, status, docuCode, keyword, cPage);
+	}
+
+	// 해당 사원이 기안한 문서 목록을 검색 후 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> searchWriteList(String empNo, String docuCode, String keyword, int cPage) {
+		return dao.searchWriteList(empNo, docuCode, keyword, cPage);
+	}
+
+	// 해당 사원이 임시 저장한 문서 목록을 검색 후 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> searchSavetList(String empNo, String docuCode, String keyword, int cPage) {
+		return dao.searchSaveList(empNo, docuCode, keyword, cPage);
+	}
+
+	// 해당 사원이 결재한 문서 목록을 검색 후 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> searchApprovedList(String empNo, String docuCode, String keyword, int cPage) {
+		return dao.searchApprovedList(empNo, docuCode, keyword, cPage);
+	}
+
+	// 해당 사원이 반려한 문서 목록을 검색 후 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> searchReturnList(String empNo, String docuCode, String keyword, int cPage) {
+		return dao.searchReturnList(empNo, docuCode, keyword, cPage);
+	}
+
+	// 해당 사원이 참조자인 문서 목록을 검색 후 넘겨주기 위한 메서드
+	public List<DocuInfoListDTO> searchViewList(String empNo, String docuCode, String keyword, int cPage) {
+		return dao.searchViewList(empNo, docuCode, keyword, cPage);
+	}
+
+	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록 중 검색 후의 총 갯수를 문서 종류에 따라 넘겨주기 위한 메서드
+	public int getCountSearchListByType(String empNo, String string, String docuCode, String keyword) {
+		return dao.getCountSearchListByType(empNo, string, docuCode, keyword);
+	}
+
+	// 해당 사원이 기안한 문서 목록 중 검색 후의 총 갯수를 넘겨주기 위한 메서드
+	public int getCountSearchWriteList(String empNo, String docuCode, String keyword) {
+		return dao.getCountSearchWriteList(empNo, docuCode, keyword);
+	}
+
+	// 해당 사원이 임시 저장한 문서 목록 중 검색 후의 총 갯수를 넘겨주기 위한 메서드
+	public int getCountSearchSaveList(String empNo, String docuCode, String keyword) {
+		return dao.getCountSearchSaveList(empNo, docuCode, keyword);
+	}
+
+	// 해당 사원이 결재한 문서 목록 중 검색 후의 총 갯수를 넘겨주기 위한 메서드
+	public int getCountSearchApprovedList(String empNo, String docuCode, String keyword) {
+		return dao.getCountSearchApprovedList(empNo, docuCode, keyword);
+	}
+
+	// 해당 사원이 반려한 문서 목록 중 검색 후의 총 갯수를 넘겨주기 위한 메서드
+	public int getCountSearchReturnList(String empNo, String docuCode, String keyword) {
+		return dao.getCountSearchReturnList(empNo, docuCode, keyword);
+	}
+
+	// 해당 사원이 참조자인 문서 목록 중 검색 후의 총 갯수를 넘겨주기 위한 메서드
+	public int getCountSearchViewList(String empNo, String docuCode, String keyword) {
+		return dao.getCountSearchViewList(empNo, docuCode, keyword);
 	}
 }

@@ -153,7 +153,7 @@
 		join
 			approvals_line a on d.document_seq = a.document_seq
 		where
-			a.approval_order = 3 and d.status in ('진행중', '완료', '반려') and d.emp_no = #{empNo}
+			a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
 		<if test="docuCode != null">
 			and d.docu_code = #{docuCode}
 		</if>
@@ -173,7 +173,7 @@
 			join
 				approvals_line a on d.document_seq = a.document_seq
 			where
-				a.approval_order = 3 and d.status in ('진행중', '완료', '반려') and d.emp_no = #{empNo}
+				a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -375,4 +375,256 @@
 		update documents set status = #{status}, done_date = sysdate where document_seq = #{docuSeq}
 	</update>
 	
+	<!-- 해당 사원의 기안 문서 목록 중 제목이 특정 키워드를 포함하고 있는 목록만 조회하는 쿼리문 -->
+	<select id="selectWriteListByKeyword" resultType="com.wit.dto.DocuInfoListDTO">
+		select
+			d.document_seq document_seq, write_date, name, emer_yn, title, d.status status,
+			a.emp_no last_appr, done_date
+		from
+			documents d
+		join
+			document_list dl on d.docu_code = dl.docu_code
+		join
+			approvals_line a on d.document_seq = a.document_seq
+		where
+			a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
+			and upper(title) like upper('%'||#{keyword}||'%') 
+		<if test="docuCode != null">
+			and d.docu_code = #{docuCode}
+		</if>
+	</select>
+	
+	<!-- 해당 사원의 결재 대기 or 결재 예정 문서 목록 총 갯수를 검색 후 조회하는 쿼리문 -->
+	<select id="getCountSearchListByType" resultType="int">
+		select
+			count(*)
+		from
+			documents d
+		join
+			document_list dl on d.docu_code = dl.docu_code
+		join
+			approvals_line a on d.document_seq = a.document_seq
+		where
+			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="docuCode != null">
+				and d.docu_code = #{docuCode}
+			</if>
+			d.status = '진행중' and
+			approval_order = 3 and
+			d.document_seq in (select document_seq from approvals_line where emp_no = #{empNo}
+			and status = #{status})
+	</select>
+
+	<!-- 해당 사원의 결재 대기 or 결재 예정 문서 목록을 검색 후 조회하는 쿼리문 -->
+	<select id="searchListByType" resultType="com.wit.dto.DocuInfoListDTO">
+		select * from (
+			select
+				d.document_seq document_seq, write_date, name, emer_yn, title, d.emp_no emp_no,
+				a.emp_no last_appr,
+				row_number() over (order by write_date desc, emer_yn desc) as rn 
+			from
+				documents d
+			join
+				document_list dl on d.docu_code = dl.docu_code
+			join
+				approvals_line a on d.document_seq = a.document_seq
+			where
+			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="docuCode != null">
+				and d.docu_code = #{docuCode}
+			</if>
+				d.status = '진행중' and
+				approval_order = 3 and
+				d.document_seq in (select document_seq from approvals_line where emp_no = #{empNo}
+				and status = #{status})
+		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
+
+	<!-- 해당 사원의 기안 문서 목록 총 갯수를 검색 후 조회하는 쿼리문 -->
+	<select id="getCountSearchWriteList" resultType="int">
+		select
+			count(*)
+		from
+			documents d
+		join
+			document_list dl on d.docu_code = dl.docu_code
+		join
+			approvals_line a on d.document_seq = a.document_seq
+		where
+			a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
+			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="docuCode != null">
+				and d.docu_code = #{docuCode}
+			</if>
+	</select>
+
+	<!-- 해당 사원의 기안 문서 목록을 검색 후 조회하는 쿼리문 -->
+	<select id="searchWriteList" resultType="com.wit.dto.DocuInfoListDTO">
+		select * from (
+			select
+				d.document_seq document_seq, write_date, name, emer_yn, title, d.status status,
+				a.emp_no last_appr, done_date,
+				row_number() over (order by write_date desc) as rn
+			from
+				documents d
+			join
+				document_list dl on d.docu_code = dl.docu_code
+			join
+				approvals_line a on d.document_seq = a.document_seq
+			where
+				a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
+				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="docuCode != null">
+					and d.docu_code = #{docuCode}
+				</if>
+			) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
+
+	<!-- 해당 사원의 임시 저장 문서 목록 총 갯수를 검색 후 조회하는 쿼리문 -->
+	<select id="getCountSearchSaveList" resultType="int">
+		select
+			count(*)
+		from
+			documents d
+		join document_list dl on d.docu_code = dl.docu_code
+		where
+			status = '임시 저장' and emp_no = #{empNo}
+			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="docuCode != null">
+				and d.docu_code = #{docuCode}
+			</if>
+	</select>
+	
+	<!-- 해당 사원의 임시 저장 문서 목록을 검색 후 조회하는 쿼리문 -->
+	<select id="searchSaveList" resultType="com.wit.dto.DocuInfoListDTO">
+		select * from (
+			select
+				document_seq, write_date, name, emer_yn, title,
+				row_number() over (order by write_date desc) as rn
+			from
+				documents d
+			join document_list dl on d.docu_code = dl.docu_code
+			where
+				status = '임시 저장' and emp_no = #{empNo}
+				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="docuCode != null">
+					and d.docu_code = #{docuCode}
+				</if>
+		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
+
+	<!-- 해당 사원이 결재한 문서 목록 총 갯수를 검색 후 조회하는 쿼리문 -->
+	<select id="getCountSearchApprovedList" resultType="int">
+		select
+			count(*)
+		from
+			documents d
+		join
+			document_list dl on d.docu_code = dl.docu_code
+		join
+			approvals_line a on d.document_seq = a.document_seq
+		where a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '완료'
+			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="docuCode != null">
+				and d.docu_code = #{docuCode}
+			</if>
+	</select>
+	
+	<!-- 해당 사원이 결재한 문서 목록을 검색 후 조회하는 쿼리문 -->
+	<select id="searchApprovedList" resultType="com.wit.dto.DocuInfoListDTO">
+		select * from (
+			select
+				d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
+				d.status status, done_date,
+				row_number() over (order by write_date desc) as rn
+			from
+				documents d
+			join
+				document_list dl on d.docu_code = dl.docu_code
+			join
+				approvals_line a on d.document_seq = a.document_seq
+			where a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '완료'
+				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="docuCode != null">
+					and d.docu_code = #{docuCode}
+				</if>
+		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
+
+	<!-- 해당 사원이 반려한 문서 목록 총 갯수를 검색 후 조회하는 쿼리문 -->
+	<select id="getCountSearchReturnList" resultType="int">
+		select
+			count(*)
+		from
+			documents d
+		join
+			document_list dl on d.docu_code = dl.docu_code
+		join
+			approvals_line a on d.document_seq = a.document_seq
+		where
+			a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '반려'
+			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="docuCode != null">
+				and d.docu_code = #{docuCode}
+			</if>
+	</select>
+
+	<!-- 해당 사원이 반려한 문서 목록을 검색 후 조회하는 쿼리문 -->
+	<select id="searchReturnList" resultType="com.wit.dto.DocuInfoListDTO">
+		select * from (
+			select
+				d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
+				done_date,
+				row_number() over (order by write_date desc) as rn
+			from
+				documents d
+			join
+				document_list dl on d.docu_code = dl.docu_code
+			join
+				approvals_line a on d.document_seq = a.document_seq
+			where
+				a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '반려'
+				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="docuCode != null">
+					and d.docu_code = #{docuCode}
+				</if>
+		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
+	
+	<!-- 해당 사원이 참조자인 문서 목록 총 갯수를 검색 후 조회하는 쿼리문 -->
+	<select id="getCountSearchViewList" resultType="int">
+		select
+			count(*)
+		from
+			documents d
+		join
+			document_list dl on d.docu_code = dl.docu_code
+		join
+			reference_line r on d.document_seq = r.document_seq
+			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="docuCode != null">
+				and d.docu_code = #{docuCode}
+			</if>
+	</select>
+
+	<!-- 해당 사원이 참조자인 문서 목록을 검색 후 조회하는 쿼리문 -->
+	<select id="searchViewList" resultType="com.wit.dto.DocuInfoListDTO">
+		select * from (
+			select
+				d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
+				d.status status, done_date,
+				row_number() over (order by emer_yn desc, write_date desc) as rn
+			from
+				documents d
+			join
+				document_list dl on d.docu_code = dl.docu_code
+			join
+				reference_line r on d.document_seq = r.document_seq
+			where r.emp_no = #{empNo}
+				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="docuCode != null">
+					and d.docu_code = #{docuCode}
+				</if>
+		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
 </mapper>

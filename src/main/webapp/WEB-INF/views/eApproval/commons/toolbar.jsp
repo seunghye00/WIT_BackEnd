@@ -88,7 +88,16 @@
 		</c:choose>
 	</ul>
 	<div class="searchBox">
-		<input type="text" placeholder="검색">
+		<input type="hidden" value="${type}" id="listType">
+		<input type="hidden" value="${docuCode}" id="docuCode">
+		<c:choose>
+			<c:when test="${keyword != null}">
+				<input type="text" placeholder="검색" id="searchTxt" value="${keyword}">
+			</c:when>
+			<c:otherwise>
+				<input type="text" placeholder="검색" id="searchTxt">
+			</c:otherwise>
+		</c:choose>	
 		<button class="searchBtn">
 			<i class="bx bx-search"></i>
 		</button>
