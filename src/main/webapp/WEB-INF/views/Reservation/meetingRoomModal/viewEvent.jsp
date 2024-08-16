@@ -11,29 +11,27 @@
 			<ul>
 				<li><span>회의실 명</span>
 					<div>
-						<input type="text" value="회의실 1" readonly>
+						<input type="text" id="roomName" readonly>
 					</div></li>
 				<li><span>예약자</span>
 					<div>
-						<input type="text" value="인사부" readonly>&nbsp;&nbsp;<input
-							type="text" value="이웡히" readonly>
+						<input type="text" id="dept" readonly>&nbsp;&nbsp;<input
+							type="text" id="empName" readonly>
 					</div></li>
 				<li><span>예약 기간</span>
 					<div>
-						<input type="date" id="startDate" class="startDate dateInput"
-							readonly>&nbsp;&nbsp;<input type="time" id="startTime"
-							class="startDate dateInput" readonly>&nbsp;&nbsp;~&nbsp;&nbsp;<input
-							type="date" id="endDate" class="endDate dateInput" readonly>&nbsp;&nbsp;<input
-							type="time" id="endTime" class="endDate dateInput" readonly>
+						<input type="date" id="eStartDate" class="startDate dateInput" readonly>&nbsp;&nbsp;
+						<input type="time" id="eStartTime" class="startDate dateInput" readonly>&nbsp;&nbsp;~&nbsp;&nbsp;
+						<input type="date" id="eEndDate" class="endDate dateInput" readonly>&nbsp;&nbsp;
+						<input type="time" id="eEndTime" class="endDate dateInput" readonly>
 					</div></li>
 				<li><span>장소</span>
 					<div>
-						<input type="text" class="eventLocation" value="신설동 12 5층 505호"
-							readonly>
+						<input type="text" class="eventLocation" id="roomLocation" readonly>
 					</div></li>
 				<li><span>예약 목적</span>
 					<div>
-						<textarea id="calendarText" readonly>그냥 ~~~~</textarea>
+						<textarea id="bookingPurpose" readonly></textarea>
 					</div></li>
 			</ul>
 		</div>

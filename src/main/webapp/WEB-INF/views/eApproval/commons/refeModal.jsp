@@ -9,11 +9,21 @@
 				<li>참조선 없음</li>
 			</c:when>
 			<c:otherwise>
-				<c:forEach items="${refeList}" var="i">
-					<c:set var="refeInfo" value="${fn:split(i, ' ')}" />
-					<li>${refeInfo[1]}${refeInfo[2]}</li>
-					<input type="hidden" name="refeList" value="${refeInfo[0]}">
-				</c:forEach>
+				<c:choose>
+					<c:when test="${empty docuInfo}">
+						<c:forEach items="${refeList}" var="i">
+							<c:set var="refeInfo" value="${fn:split(i, ' ')}" />
+							<li>${refeInfo[1]} ${refeInfo[2]}</li>
+							<input type="hidden" name="refeList" value="${refeInfo[0]}">
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<c:forEach items="${refeList}" var="i">
+							<li>${i}</li>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+				
 			</c:otherwise>
 		</c:choose>
 	</ul>
