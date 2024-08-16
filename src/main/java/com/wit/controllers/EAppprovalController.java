@@ -667,7 +667,7 @@ public class EAppprovalController {
 
 		// 파일을 저장할 서버 경로 설정 및 파일 업로드
 		String realPath = session.getServletContext().getRealPath("eApproval/upload");
-		// System.out.println(realPath);
+		System.out.println(realPath);
 		fServ.uploadDocuFile(docuSeq, realPath, file);
 
 		return "redirect:/eApproval/home";

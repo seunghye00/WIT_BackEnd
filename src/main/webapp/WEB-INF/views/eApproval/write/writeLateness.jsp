@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
 <script defer src="/js/hsh.js"></script>
+<script defer src="/js/file.js"></script>
 <script defer src="/js/wit.js"></script>
 </head>
 
@@ -142,11 +143,11 @@
 									</table>
 								</form>
 							</div>
-							<form id="fileInputForm" action="/eApproval/uploadFiles"
-								method="post" enctype="multipart/form-data">
+							<form id="fileInputForm" action="/eApproval/uploadFiles" method="post" enctype="multipart/form-data">
 								<div class="docuFiles">
-									<label for="file">🔗 파일 선택</label> <input type="file" id="file"
-										name="file" multiple> <span class="uploadFiles"></span>
+									<label for="file">🔗 파일 선택</label> 
+									<input type="file" id="file" name="file" multiple> 
+									<span class="uploadFiles"></span>
 								</div>
 							</form>
 						</div>
