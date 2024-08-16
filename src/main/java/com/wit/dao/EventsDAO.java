@@ -35,4 +35,9 @@ public class EventsDAO {
 		return mybatis.delete("events.delete", eventSeq);
 	}
 	
+	// 삭제한 calendar_seq를 가진 이벤트 삭제
+	public int deleteEventsByCalendarSeq(int calendarSeq) {
+		return mybatis.delete("events.deleteEventsByCalendarSeq", calendarSeq);
+	}
+	
 }

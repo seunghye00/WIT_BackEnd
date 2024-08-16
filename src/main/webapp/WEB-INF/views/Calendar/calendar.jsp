@@ -10,7 +10,7 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <link rel="stylesheet" href="/resources/css/style.main.css">
-<link rel="stylesheet" href="/resources/css/lwh.css">
+<link rel="stylesheet" href="/resources/css/wit.css">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -90,8 +90,9 @@
 											class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
 											<c:if test="${dto.default_yn == 'Y'}">checked</c:if>>
 											<label for="calendar_${dto.calendar_seq}">${dto.calendar_name}</label>
-											<!-- 회의 일정(기본)에는 삭제 버튼 없음 기본 생성자는 default='Y' --> <c:if
-												test="${employee.role_code eq 'R2'}">
+											<!-- 회의 일정(기본), 부서원 생일(기본)에는 삭제 버튼 없음 기본 생성자는 default='Y' -->
+											<c:if
+												test="${employee.role_code eq 'R2' and dto.default_yn ne 'Y'}">
 												<span class="sideDepSelectDel"
 													data-seq="${dto.calendar_seq}" id="sideDepSelectDel">&times;</span>
 											</c:if> <input type="hidden" id="${dto.calendar_seq}"
@@ -200,138 +201,85 @@
 			</div>
 		</div>
 		<!-- 개인 캘린더 event 클릭 시 모달 -->
-		<div id="personEventModal" class="modal">
-			<div class="modalContent">
-				<h1>
-					일정 내용<span class="modalClose" id="eventModalClose">&times;</span>
-				</h1>
-				<div class="eventCheck">
-					<form id="eventEditForm" action="/events/editEvent" method="post">
-						<input type="hidden" name="events_seq" id="eventSeq">
-						<ul>
-							<li><span>일정명</span>
-								<div>
-									<input type="text" class="eventName" name="title" disabled>
-								</div></li>
-							<li><span>일정기간</span>
-								<div>
-									<input type="date" id="eventStartDate"
-										class="startDate dateInput" name="editStartDate" disabled>
-									<input type="time" id="eventStartTime"
-										class="startDate dateInput" name="editStartTime" disabled>
-									~ <input type="date" id="eventEndDate"
-										class="endDate dateInput" name="editEndDate" disabled>
-									<input type="time" id="eventEndTime" class="endDate dateInput"
-										name="editEndTime" disabled>
-								</div></li>
-							<li><span>내 캘린더</span>
-								<div>
-									<select id="choiEvent" name="calendar_seq" disabled>
+		<%@ include file="/WEB-INF/views/Calendar/Modal.jsp"%>
+	</div>
+
+	<!-- 부서 캘린더 event 클릭 시 모달 -->
+	<div id="deptEventModal" class="modal">
+		<div class="modalContent">
+			<h1>
+				일정 내용<span class="modalClose" id="eventModalClose">&times;</span>
+			</h1>
+			<div class="eventCheck">
+				<form id="deptEventEditForm" action="/events/editEvent"
+					method="post">
+					<input type="hidden" name="events_seq" id="eventSeq">
+					<ul>
+						<li><span>일정명</span>
+							<div>
+								<input type="text" class="eventName" name="title" disabled>
+							</div></li>
+						<li><span>일정기간</span>
+							<div>
+								<input type="date" id="eventStartDate"
+									class="eventStartDate startDate dateInput" name="editStartDate"
+									disabled> <input type="time" id="eventStartTime"
+									class="eventStartTime startDate dateInput" name="editStartTime"
+									disabled> ~ <input type="date" id="eventEndDate"
+									class="eventEndDate endDate dateInput" name="editEndDate"
+									disabled> <input type="time" id="eventEndTime"
+									class="eventEndTime endDate dateInput" name="editEndTime"
+									disabled>
+							</div></li>
+						<li><span>부서 캘린더</span>
+							<div>
+								<select class="choiEvent" name="calendar_seq" disabled>
+									<!-- role_code가 'R2'인 경우 -->
+									<c:if test="${employee.role_code eq 'R2'}">
 										<c:forEach items="${plist}" var="dto">
 											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
 										</c:forEach>
-									</select>
-								</div></li>
-							<li><span>장소</span>
-								<div>
-									<input type="text" class="eventLocation" name="location"
-										disabled>
-								</div></li>
-							<li><span>내용</span>
-								<div>
-									<textarea id="eventText" name="content" disabled></textarea>
-								</div></li>
-							<li>
-										<div class="btns">
-											<button type="button" id="editBtn">수정</button>
-											<button type="submit" id="confirmBtn" class="okBtn">확인</button>
-											<button type="button" class="deleteBtn" id="eventDel">삭제</button>
-											<button type="button" class="cancelBtn editCancelBtn">취소</button>
-										</div>
-									</li>
-						</ul>
-						<input type="hidden" name="editStartAt" id="editStartAt">
-						<input type="hidden" name="editEndAt" id="editEndAt">
-					</form>
-				</div>
+										<c:forEach items="${dlist}" var="dto">
+											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+										</c:forEach>
+									</c:if>
+									<!-- role_code가 'R2'가 아닌 경우 -->
+									<c:if test="${employee.role_code ne 'R2'}">
+										<c:forEach items="${dlist}" var="dto">
+											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+										</c:forEach>
+									</c:if>
+								</select>
+							</div></li>
+						<li><span>장소</span>
+							<div>
+								<input type="text" class="eventLocation" name="location"
+									disabled>
+							</div></li>
+						<li><span>내용</span>
+							<div>
+								<textarea class="eventText" name="content" disabled></textarea>
+							</div></li>
+						<li><c:choose>
+								<c:when test="${employee.role_code eq 'R2'}">
+									<div class="btns">
+										<button type="button" id="editBtn">수정</button>
+										<button type="submit" id="confirmBtn" class="okBtn">확인</button>
+										<button type="button" class="deleteBtn" id="eventDel">삭제</button>
+										<button type="button" class="cancelBtn editCancelBtn">취소</button>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div class="btns"></div>
+								</c:otherwise>
+							</c:choose></li>
+					</ul>
+					<input type="hidden" name="editStartAt" class="editStartAt">
+					<input type="hidden" name="editEndAt" class="editEndAt">
+				</form>
 			</div>
 		</div>
 	</div>
-	
-	<!-- 부서 캘린더 event 클릭 시 모달 -->
-		<div id="deptEventModal" class="modal">
-			<div class="modalContent">
-				<h1>
-					일정 내용<span class="modalClose" id="eventModalClose">&times;</span>
-				</h1>
-				<div class="eventCheck">
-					<form id="deptEventEditForm" action="/events/editEvent" method="post">
-						<input type="hidden" name="events_seq" id="eventSeq">
-						<ul>
-							<li><span>일정명</span>
-								<div>
-									<input type="text" class="eventName" name="title" disabled>
-								</div></li>
-							<li><span>일정기간</span>
-								<div>
-									<input type="date" id="eventStartDate"
-										class="startDate dateInput" name="editStartDate" disabled>
-									<input type="time" id="eventStartTime"
-										class="startDate dateInput" name="editStartTime" disabled>
-									~ <input type="date" id="eventEndDate"
-										class="endDate dateInput" name="editEndDate" disabled>
-									<input type="time" id="eventEndTime" class="endDate dateInput"
-										name="editEndTime" disabled>
-								</div></li>
-							<li><span>부서 캘린더</span>
-								<div>
-									<select id="choiEvent" name="calendar_seq" disabled>
-										<!-- role_code가 'R2'인 경우 -->
-										<c:if test="${employee.role_code eq 'R2'}">
-											<c:forEach items="${plist}" var="dto">
-												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
-											</c:forEach>
-											<c:forEach items="${dlist}" var="dto">
-												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
-											</c:forEach>
-										</c:if>
-										<!-- role_code가 'R2'가 아닌 경우 -->
-										<c:if test="${employee.role_code ne 'R2'}">
-											<c:forEach items="${plist}" var="dto">
-												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
-											</c:forEach>
-										</c:if>
-									</select>
-								</div></li>
-							<li><span>장소</span>
-								<div>
-									<input type="text" class="eventLocation" name="location"
-										disabled>
-								</div></li>
-							<li><span>내용</span>
-								<div>
-									<textarea id="eventText" name="content" disabled></textarea>
-								</div></li>
-							<li><c:choose>
-									<c:when test="${employee.role_code eq 'R2'}">
-										<div class="btns">
-											<button type="button" id="editBtn">수정</button>
-											<button type="submit" id="confirmBtn" class="okBtn">확인</button>
-											<button type="button" class="deleteBtn" id="eventDel">삭제</button>
-											<button type="button" class="cancelBtn editCancelBtn">취소</button>
-										</div>
-									</c:when>
-									<c:otherwise>
-										<div class="btns"></div>
-									</c:otherwise>
-								</c:choose></li>
-						</ul>
-						<input type="hidden" name="editStartAt" id="editStartAt">
-						<input type="hidden" name="editEndAt" id="editEndAt">
-					</form>
-				</div>
-			</div>
-		</div>
 	</div>
 
 	<!-- sidebar 공통요소 script -->
@@ -377,35 +325,38 @@
         $('.myPopupClose').on('click', function () {
             $('.myCalendarPopup').hide();
         })
-        
-        
-        
-       	// 개인 캘린더 x 버튼
-        $(document).on('click', '.sidePerSelectDel', function() {
-    // 클릭된 버튼의 data-seq 속성 값을 가져오기
-    let calendarSeq = $(this).data('seq');
-    // 클릭된 버튼 자체를 저장
-    let $this = $(this);
-    
-    let deleteConfirm = confirm('정말로 이 캘린더를 삭제하시겠습니까?');
-    
-    if (deleteConfirm) {
-        // 사용자가 확인을 클릭한 경우 삭제 요청을 서버로 전송
-        $.ajax({
-            url: '/calendar/deletePerCalendar',
-            type: 'GET',
-            data: { calendarSeq: calendarSeq },
-            success: function(response) {
-                // 삭제가 성공했으면 해당 항목을 DOM에서 제거
-                $this.closest('li').remove();
-            },
-            error: function() {
-                alert('삭제 요청 중 오류가 발생했습니다.');
-            }
-        });
-    }
-});
+	
+	//개인 캘린더 x 버튼
+	$(document).on('click', '.sidePerSelectDel', function(){
+		// 클릭된 버튼의 data-seq 속성 값을 가져오기
+		let calendarSeq = $(this).data('seq');
+		// 클릭된 버튼 자체를 저장
+		let $this = $(this);
 		
+		let deleteConfirm = confirm('정말로 이 캘린더를 삭제하시겠습니까?');
+		
+		if(deleteConfirm){
+			// 사용자가 확인을 클릭한 경우 삭제 요청을 서버로 전송
+			$.ajax({
+				url: '/calendar/deletePerCalendar',
+				type:"POST",
+				data: {calendarSeq: calendarSeq},
+				sucess: function(response){
+					if(response.success){
+						$('#calendar').fullCalendar('refetchEvents');
+						// 삭제가 성공했으면 해당 항목을 DOM에서 제거
+						$this.closet('li').remove();
+					}else{
+						alert('삭제 실패');
+					}
+				},
+				error: function(){
+					alert('삭제 요청 중 오류 발생');
+				}
+			});
+		}
+	})
+	
         // 부서 캘린더 추가 버튼
         $('.deptCalendarAdd').on('click', function () {
             $('.deptCalendarPopup').show();
@@ -442,19 +393,23 @@
 	        // 사용자가 확인을 클릭한 경우 삭제 요청을 서버로 전송
 	        $.ajax({
 	            url: '/calendar/deleteDepCalendar',
-	            type: 'GET',
+	            type: 'POST',
 	            data: { calendarSeq: calendarSeq },
 	            success: function(response) {
-	                // 삭제가 성공했으면 해당 항목을 DOM에서 제거
-	                $this.closest('li').remove();
-	            },
-	            error: function() {
-	                alert('삭제 요청 중 오류가 발생했습니다.');
-	            }
-	        });
-	    }
-	});
-
+	            	if(response.success){
+						$('#calendar').fullCalendar('refetchEvents');
+						// 삭제가 성공했으면 해당 항목을 DOM에서 제거
+						$this.closet('li').remove();
+					}else{
+						alert('삭제 실패');
+					}
+				},
+				error: function(){
+					alert('삭제 요청 중 오류 발생');
+				}
+			});
+		}
+	})
         // 이벤트 클릭해서 수정 버튼 눌렀을 시
         $('#editBtn').on('click', function () {
             let $inputs = $('.eventCheck input, .eventCheck select, .eventCheck textarea');
@@ -483,13 +438,13 @@
             let dateTime = new Date(dateTimeLocal);
             let timestamp = dateTime.getTime(); // 밀리초 단위의 타임스탬프
             
-            $("#editStartAt").val(timestamp);
+            $(".editStartAt").val(timestamp);
             
             dateTimeLocal = endDate + 'T' + endTime;
             dateTime = new Date(dateTimeLocal);
             timestamp = dateTime.getTime(); // 밀리초 단위의 타임스탬프
             
-            $("#editEndAt").val(timestamp);
+            $(".editEndAt").val(timestamp);
 
         // 폼을 제출합니다.
         $('#eventEditForm').submit(); // 폼을 제출하여 서버로 데이터를 전송합니다.
@@ -523,7 +478,7 @@
     // 실제 구현에 따라 이벤트 리스너를 추가할 수 있습니다.
     $('#sideMyAdd').on('click', function() {
     	// 새로운 캘린더를 추가한 후 셀렉트 옵션 업데이트
-        updateSelectOptions('#choiEvent');
+        updateSelectOptions('.choiEvent');
         updateSelectOptions('#choiCalendar');
     });
 
@@ -670,39 +625,49 @@
                     
                     $('.eventName').val(eventTitle);
                     $('#eventSeq').val(eventSeq);
-                    $('#eventStartDate').val(eventStartDate);
-                    $('#eventStartTime').val(eventStartTime);
-                    $('#eventEndDate').val(eventEndDate);
-                    $('#eventEndTime').val(eventEndTime);
-                    $('#choiEvent').val(eventChoice);
+                    $('.eventStartDate').val(eventStartDate);
+                    $('.eventStartTime').val(eventStartTime);
+                    $('.eventEndDate').val(eventEndDate);
+                    $('.eventEndTime').val(eventEndTime);
+                    $('.choiEvent').val(eventChoice);
                     $('.eventLocation').val(eventLocation);
-                    $('#eventText').val(eventContent);
+                    $('.eventText').val(eventContent);
                      
-                    
+                    console.log(eventChoice);
                     $.ajax({
         	            url: '/calendar/getCalendarType',
         	            data: { 
         	            	calendarSeq: eventChoice 
         	            },
         	            dataType: 'json'
-        	        }).done((resp)=>{
-        	        	calendarType = resp;
-        	        	
+        	        }).done((resp)=>{  	        	
+        	        	if (resp.type == 'personal') {
+        	                $("#personEventModal").show();
+
+        	                $("#personEventModal .modalClose").off("click").on("click", function (event) {
+        	                    event.preventDefault();
+        	                    $("#personEventModal").find('input[type="text"], input[type="date"], input[type="time"], textarea').val('');
+        	                 	// 장소 필드만 초기화
+        	                    $(".eventLocation").val('');
+        	                    $("#personEventModal").hide();
+        	                });
+
+        	            } else {
+        	                $("#deptEventModal").show();
+
+        	                $("#deptEventModal .modalClose").off("click").on("click", function (event) {
+        	                    event.preventDefault();
+        	                    $("#deptEventModal").find('input[type="text"], input[type="date"], input[type="time"], textarea').val('');
+        	                    // 장소 필드 초기화
+        	                    $(".eventLocation").val('');
+        	                    $("#deptEventModal").hide();
+        	                });
+        	            }
         	        }).fail((jqXHR, textStatus, errorThrown) => {
         	            console.error('AJAX 요청 실패:', textStatus, errorThrown);
         	        });
                  
-                    if(calendarType == 'personal'){
-                		$("#personEventModal").show();
-                		$(".modalClose").on("click", function () {
-                            $("#personEventModal").hide();
-                        });
-                	} else {
-                		$("#deptEventModal").show();
-                		$(".modalClose").on("click", function () {
-                            $("#deptEventModal").hide();
-                        });
-                	}
+                    
                 }
             });
             
