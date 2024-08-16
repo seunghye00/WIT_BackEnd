@@ -58,14 +58,48 @@ $(document).ready(function() {
            today: '오늘'
         },
         dateClick: function (info) {
-           	// 날짜 클릭 시 발생할 이벤트
-            $('.startDate').val(info.dateStr);
-            $("#reservModal").show();
-            $(".modalClose").on("click", function () {
-               $("#reservModal").hide();
-            });
+        	// 클릭한 날짜 (Date 객체)
+           	const selectedDate = new Date(info.dateStr);
+    		// 오늘 날짜 (Date 객체)
+    		const today = new Date(); 
+    		// 오늘 날짜의 시간 부분을 00:00:00으로 설정
+    		today.setHours(0, 0, 0, 0); 
+	
+			// 현재 캘린더에 있는 모든 이벤트
+    		const events = calendar.getEvents(); 
+
+    		// 선택한 날짜가 오늘 이후인지 확인
+    		if (selectedDate <= today) {
+        		alert('이벤트는 오늘 이후 날짜에만 생성할 수 있습니다.');
+        		return;
+    		}
+
+    // 선택한 날짜가 다른 이벤트의 시작일과 종료일 사이에 있는지 확인
+    const isEventInRange = events.some(event => {
+        // 이벤트 시작 날짜 (Date 객체)
+        const eventStartDate = new Date(event.start.toISOString().split('T')[0]);
+        // 이벤트 종료 날짜 (Date 객체)
+        const eventEndDate = new Date(event.end ? event.end.toISOString().split('T')[0] : eventStartDate);
+
+        // 이벤트의 종료일이 없다면 시작 날짜만 체크, 있다면 종료일도 포함해서 체크
+        return selectedDate >= eventStartDate && selectedDate <= eventEndDate;
+    });
+
+    if (isEventInRange) {
+        alert('선택한 날짜에 이미 이벤트가 있거나 기간 내에 포함됩니다. 다른 날짜를 선택해주세요.');
+    } else {
+        // 선택한 날짜에 이벤트가 없고, 오늘 이후일 경우 예약 모달을 보여줌
+        $('.startDate').val(info.dateStr);
+        $("#reservModal").show();
+        $(".modalClose").on("click", function() {
+            $("#reservModal").hide();
+        });
+    }
         },
         eventClick: function (info) {
+        
+        console.log(info);
+    
            	// 이벤트 클릭 시 발생할 이벤트
             let eventTitle = info.event._def.title;
             // 이벤트 시작 날짜를 ISO 형식으로 변환
@@ -82,7 +116,11 @@ $(document).ready(function() {
             let eventStartTime = eventStartKST.toISOString().split('T')[1].substring(0, 5);
             let eventEndDate = eventEndKST.toISOString().split('T')[0];
             let eventEndTime = eventEndKST.toISOString().split('T')[1].substring(0, 5);
+            
+            let eventPassenger = info.event.extendedProps.passenger;
             let eventPurpose = info.event.extendedProps.purpose;
+            let eventDeptTitle = info.event.extendedProps.deptTitle;
+            let eventName = info.event.extendedProps.name;
 
             console.log(eventStartDate + ' : ' + eventStartTime);
             // console.log(new Date(info.event.start.getTime() - 9 - (info.event.start.getTimezoneOffset() * 60000)).toISOString().split('T')[1].substring(0, 5));
@@ -92,7 +130,10 @@ $(document).ready(function() {
             $('#eventVehicleStartTime').val(eventStartTime);
             $('#eventVehicleEndDate').val(eventEndDate);
             $('#eventVehicleEndTime').val(eventEndTime);
+            $('#eventPassenger').val(eventPassenger);
+            $('#eventDeptTitle').val(eventDeptTitle);
             $('#eventText').val(eventPurpose);
+            $('#eventName').val(eventName);
             $("#eventModal").show();
             $(".modalClose").on("click", function () {
                $("#eventModal").hide();
@@ -101,7 +142,7 @@ $(document).ready(function() {
         events: function (fetchInfo, successCallback, failureCallback) {
                     $.ajax({
                     	// 서버의 이벤트 데이터 엔드포인트
-                        url: '/reservation/vehicleEvent', 
+                        url: '/reservation/allVehicleBooking', 
                         method: 'GET',
                         dataType: 'json',
                         data:{
@@ -129,15 +170,16 @@ $(document).ready(function() {
                                 return isoString;
                             }                          
                             successCallback(data.map(event => ({
-                                title: event.emp_no,
+                                title: event.name,
                              	// 변환된 시작 날짜
                                 start: formatDate(event.start_date), 
                              	// 변환된 종료 날짜
                                 end: formatDate(event.end_date),     
-                                extendedProps: {
-                                	vehicle_booking_seq : event.vehicle,
-                                    driver: event.driver,
-                                    purpose: event.purpose
+                                extendedProps: {                      	
+                                    passenger: event.passenger,
+                                    purpose: event.purpose,
+                                    deptTitle: event.dept_title,
+                                    name: event.name
                                 }
                             })));
                         },
@@ -163,12 +205,13 @@ document.getElementById('vehicleForm').addEventListener('submit', function (even
             let startTime = $("#startTime").val().trim();
             let endDate = $("#endDate").val().trim();
             let endTime = $("#endTime").val().trim();
-            let driver = $("#driver").val().trim();
+            let passenger = $("#passenger").val().trim();
+            let deptTitle = $("#deptTitle").val().trim();
             let purpose = $("textarea[name='purpose']").val().trim();
             let vehicleSeq = $("#vehicleSeq").val().trim();
 
             // 필수 입력 필드가 비어 있는지 확인
-            if (!vehicleName || !startDate || !startTime || !endDate || !endTime || !driver || !purpose) {
+            if (!vehicleName || !startDate || !startTime || !endDate || !endTime || !passenger || !purpose) {
                 alert("모든 필드를 입력해주세요.");
                 return;
             }
