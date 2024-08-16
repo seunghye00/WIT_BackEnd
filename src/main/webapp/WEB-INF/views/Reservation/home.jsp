@@ -28,22 +28,7 @@
                     <div class="mainTitle">예약 관리 홈</div>
                     <div class="reservList">
                         <div class="subTitle">나의 예약 현황</div>
-                        <div class="toolBar">
-                            <ul>
-                                <li>
-                                    <a href="javascript:;" class="active">회의실</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">차량</a>
-                                </li>
-                            </ul>
-                            <div class="searchBox">
-                                <input type="text" placeholder="검색">
-                                <button class="searchBtn">
-                                    <i class="bx bx-search"></i>
-                                </button>
-                            </div>
-                        </div>
+                        <%@ include file="/WEB-INF/views/Reservation/commons/toolbar.jsp"%>
                         <div class="listBox">
                             <div class="rows listHeader">
                                 <div class="cols">

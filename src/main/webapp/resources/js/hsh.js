@@ -309,35 +309,28 @@ function getEmployeeList(dept) {
 	});
 }
 
-
 // 모달창에서 X 버튼 클릭 시 페이지 새로고침
 $('.closeModal').on('click', () => location.reload());
 
-// 결재 or 전결 버튼 클릭 시 결재 코멘트 입력 모달창 활성화
-$('.apprBtn').on('click', () => {
-    $('.apprModal').css('display', 'flex');
-
-    // 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
-    $('.noApprBtn').on('click', () => {
-        $('.apprModal').hide();
-        $('.cancelModal').css('display', 'flex');
-    });
-
-    // 취소 버튼 클릭 시 해당 모달창 비활성화
-    $('.closeModal').on('click', () => {
-        $('.apprModal').hide();
-    });
+// 임시 저장 문서 페이지에서 목록 버튼 클릭 시 임시 저장 문서함으로 이동
+$('.goSavaList').on('click', () => {
+	if(confirm('저장하지 않은 수정 사항은 기록되지 않습니다.')){
+		location.href = '/eApproval/privateList?type=save&cPage=1';
+	}
 });
 
-// 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
-$('.returnBtn').on('click', () => {
-    $('.cancelModal').css('display', 'flex');
-
-    // 취소 버튼 클릭 시 해당 모달창 비활성화
-    $('.closeModal').on('click', () => {
-        $('.cancelModal').hide();
-    });
+// 문서 열람 페이지에서 목록 버튼 클릭 시 바로 전 페이지로 이동
+$('.goBack').on('click', () => {
+	window.history.back();
 });
+
+// 임시 저장 문서 페이지에서 삭제 버튼 클릭 시 임시 저장 문서함으로 이동
+$('.delDocu').on('click', () => {
+	if(confirm('정말로 삭제하시겠습니까 ?')){
+		location.href = '/eApproval/delDocu?docuSeq=' + $('#docuSeq').val();
+	}
+});
+
 
 // 결재 문서 작성 페이지에서 취소 버튼 클릭 시 이전 페이지로 이동
 $('.cancelWrite').on('click', () => {
@@ -372,7 +365,7 @@ $('.propWrite').on('click', () => {
 	sendFormData('write/Prop');
 });
 
-// 임시 저장된 업무 기안 문서 열람 페이지에서 결재 요청 버튼 클릭 시
+// 임시 저장된 업무 기안 문서 열람레이지에서 작성 페이지에서 결재 요청 버튼 클릭 시
 $('.propUpdate').on('click', () => {
 	// 문서에 대한 필수 입력 값을 입력 완료했는 지 확인
 	if($('#effDate').val() == ""){	
@@ -395,8 +388,113 @@ $('.propUpdate').on('click', () => {
 		$('#writeDocuConts').focus();
 		return;
 	}
-	$('#docuUpdateForm').submit();
 	
+	// 문서의 긴급 여부 체크	
+	if($('#emerCheck').is(':checked')){
+		$('#emerChecked').val('Y');
+	}
+	
+	$('#docuContForm').submit();
+});
+
+// 임시 저장된 휴가신청서 문서 열람 페이지에서 결재 요청 버튼 클릭 시
+$('.leaveUpdate').on('click', () => {
+	
+	// 문서에 대한 필수 입력 값을 입력 완료했는 지 확인
+	if($('#leaveType').val() == "") {
+		alert('휴가 종류를 선택해주세요');
+		$('#leaveType').focus();
+		return;
+	}
+	if($('#startLeaveDay').val() == ""){	
+		alert('시작 일자를 선택해주세요');
+		$('#startLeaveDay').focus();
+		return;
+	}
+	if($('#endLeaveDay').val() == ""){	
+		alert('종료 일자를 선택해주세요');
+		$('#endLeaveDay').focus();
+		return;
+	}
+	if($('#writeDocuTitle').val() == ""){	
+		alert('문서 제목을 입력해주세요');
+		$('#writeDocuTitle').focus();
+		return;
+	}
+	if($('#reason').val() == ""){	
+		alert('휴가 사유를 입력해주세요');
+		$('#reason').focus();
+		return;
+	}
+
+	if(!$('#startDay').is(':checked')){
+		$('#startDayChecked').val('N');
+	}
+	if(!$('#startDayAM').is(':checked')){
+		$('#startDayAMChecked').val('N');
+	}
+	if(!$('#startDayPM').is(':checked')){
+		$('#startDayPMChecked').val('N');
+	}
+	if(!$('#endDay').is(':checked')){
+		$('#endDayChecked').val('N');
+	}
+	if(!$('#endDayAM').is(':checked')){
+		$('#endDayAMChecked').val('N');
+	}
+	if(!$('#endDayPM').is(':checked')){
+		$('#endDayPMChecked').val('N');
+	}
+
+    // 신청 연차 일수 문자열을 숫자로 변환 후 Form 전송
+    $('#applyLeaves').val(parseFloat($('#applyLeaves').val()));
+    
+	// 문서의 긴급 여부 체크
+	if($('#emerCheck').is(':checked')){
+		$('#emerChecked').val('Y');
+	}
+	
+	$('#docuContForm').submit();
+});
+
+// 임시 저장된 지각 사유서 문서 열람 페이지에서 결재 요청 버튼 클릭 시
+$('.latenessUpdate').on('click', () => {
+	
+	// 필수 입력값 검사 후 데이터 전송 
+	if($('#lateDay').val() == ""){	
+		alert('지각 일자를 입력해주세요');
+		$('#lateDay').focus();
+		return false;
+	}
+	if($('#writeDocuTitle').val() == ""){	
+		alert('문서 제목을 입력해주세요');
+		$('#writeDocuTitle').focus();
+		return false;
+	}
+	if($('#reason').val() == ""){	
+		alert('지각 사유를 입력해주세요');
+		$('#reason').focus();
+		return false; 
+	}
+	
+	// 문서의 긴급 여부 체크
+	if($('#emerCheck').is(':checked')){
+		$('#emerChecked').val('Y');
+	}
+	
+	$('#docuContForm').submit();
+});
+
+// 임시 저장된 문서 열람 페이지에서 임시 저장 버튼 클릭 시
+$('.reSaveDocu').on('click', () => {
+	if(confirm('현재까지 작성된 내용을 저장하시겠습니까 ?\n파일 목록은 저장되지 않습니다.')){
+		// 문서의 긴급 여부 체크
+		if($('#emerCheck').is(':checked')){
+			$('#emerChecked').val('Y');
+		}
+		$('#docuContForm').attr('action', '/eApproval/reSaveDocu');
+		$('#docuContForm').submit();
+	}
 });
 
 // 지각 사유서 문서 작성 페이지에서 결재 요청 버튼 클릭 시
@@ -467,9 +565,6 @@ $('.leaveWrite').on('click', () => {
 	if(!$('#endDayPM').is(':checked')){
 		$('#endDayPMChecked').val('N');
 	}
-
-    // 신청 연차 일수 문자열을 숫자로 변환 후 Form 전송
-    $('#applyLeaves').val(parseFloat($('#applyLeaves').val()));
 	sendFormData('write/Leave');
 });
 
@@ -488,8 +583,6 @@ $('.docuSaveBtn').on('click', function() {
 	}
 });
 
-// 
-
 // 참조 버튼 클릭 시 참조선 리스트 모달창 활성화
 $('.refeBtn').on('click', () => {
     $('.refeModal').toggle();
@@ -502,47 +595,81 @@ function handleOnInput(e, maxLength) {
         $(e).val($(e).val().substr(0, maxLength - 1));
     }
 }
-	
-// 이미 추가된 파일 이름을 저장하는 배열
-let addedFiles = [];
 
-// 문서 작성 페이지에서 파일 추가 시 동적으로 요소 생성
-$('#file').on('change', function() {
+// 결재 or 전결 버튼 클릭 시 결재 코멘트 입력 모달창 활성화
+$('.apprBtn').on('click', () => {
+    $('.apprModal').css('display', 'flex');
 
-	// 선택된 파일들에 대한 파일 객체를 가져와서 저장
-    const files = $(this).prop('files');
-                
-   	if(files.length + addedFiles.length > 3){
-   		alert('파일은 최대 3개까지만 추가 가능합니다.');
-		return;
-   	}
-                
-    $.each(files, function(index, file) {
-        
-        // 파일 이름이 이미 배열에 있는지 확인
-        if (!addedFiles.includes(file.name)) {
-        	// 파일 이름이 배열에 없으면 추가
-            addedFiles.push(file.name);
+    // 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
+    $('.returnBtn').on('click', () => {
+        $('.apprModal').hide();
+        $('.returnModal').css('display', 'flex');
+    });
 
-            const span = $('<span>');
-            span.text(file.name);
-            const delBtn = $('<span>', {
-            	class: 'delFileBtn'
-            });
-            delBtn.text('X');
-            span.append(delBtn);
-            $('.uploadFiles').append(span);
-
-            // 삭제 버튼 클릭 이벤트
-            delBtn.on('click', function() {
-            	const fileName = $(this).parent().text().slice(0, -1); // 'X' 제거
-                // 배열에서 파일 이름 제거
-                addedFiles = addedFiles.filter(name => name !== fileName);
-                $(this).parent().remove();
-            });
-         }
+    // 취소 버튼 클릭 시 현재 모달창 비활성화
+    $('.closeModal').on('click', () => {
+        $('.apprModal').hide();
+    });
+    
+    // 새 결재 진행 버튼 클릭 시 현재 모달창 비활성화
+    $('#startApprBtn').on('click', () => {
+    	$('.apprModal').hide();
     });
 });
+
+// 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
+$('.returnBtn').on('click', () => {
+    $('.returnModal').css('display', 'flex');
+
+    // 취소 버튼 클릭 시 현재 모달창 비활성화
+    $('.closeModal').on('click', () => {
+        $('.returnModal').hide();
+    });
+    
+    // 결재 버튼 클릭 시 결재 모달창 활성화
+    $('.apprBtn').on('click', () => {
+    	$('.returnModal').hide();
+    	$('.apprModal').css('display', 'flex');
+    });
+    
+    // 새 결재 진행 버튼 클릭 시 현재 모달창 비활성화
+    $('#startApprBtn').on('click', () => {
+    	$('.returnModal').hide();
+    });
+});
+
+// 반려 코멘트 모달창에서 완료 버튼 클릭 시
+$('.docuReturn').on('click', () => {
+	if($('#returnComm').val().trim() == ""){
+		alert('코멘트를 입력해주세요');
+		$('#returnComm').focus();
+		return;
+	}
+	$('#returnComm').val($('#returnComm').val().trim());
+	location.href="/eApproval/returnDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#returnComm').val();
+}); 
+
+// 결재 코멘트 모달창에서 결재 버튼 클릭 시
+$('.docuAppr').on('click', () => {
+	if($('#apprComm').val().trim() == ""){
+		alert('코멘트를 입력해주세요');
+		$('#apprComm').focus();
+		return;
+	}
+	$('#apprComm').val($('#apprComm').val().trim());
+	location.href="/eApproval/apprDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#returnComm').val();
+}); 
+
+// 결재 코멘트 모달창에서 전결 버튼 클릭 시
+$('.docuAllAppr').on('click', () => {
+	if($('#apprComm').val().trim() == ""){
+		alert('코멘트를 입력해주세요');
+		$('#apprComm').focus();
+		return;
+	}
+	$('#apprComm').val($('#apprComm').val().trim());
+	location.href="/eApproval/apprAllDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#returnComm').val();
+}); 
 
 // AJAX로 서버에 해당 문서의 데이터를 보내고 문서 번호를 받아오는 메서드
 function sendFormData(choiUrl) {
@@ -550,6 +677,16 @@ function sendFormData(choiUrl) {
 	// 결재 라인 & 참조 라인 정보를 form 태그 내부에 추가
 	$(".apprTable input").appendTo("#docuContForm");
 	$(".refeModal input").appendTo("#docuContForm");
+	
+	// 문서의 긴급 여부 체크
+	if($('#emerCheck').is(':checked')){
+		$('#emerChecked').val('Y');
+	}
+	
+	// 휴가 신청서 문서일 경우 신청 연차 일수 문자열을 숫자로 변환
+	if(choiUrl.includes('Leave')){
+    	$('#applyLeaves').val(parseFloat($('#applyLeaves').val()));
+	} 
 	
  	// 폼 데이터를 직렬화 후 변수에 저장
 	let formData = $("#docuContForm").serialize();
@@ -562,7 +699,7 @@ function sendFormData(choiUrl) {
      }).done(resp => {
      	// 임시 저장 시 임시 저장함 페이지로 이동
      	if(choiUrl.includes('temp')){
-     		location.href = '/eApproval/privateList?type=save'; 
+     		location.href = '/eApproval/privateList?type=save&cPage=1'; 
      	}
      	// 결재 요청 시 등록된 파일이 존재할 때만 데이터 전송
      	if(addedFiles.length > 0){
@@ -733,3 +870,183 @@ $('#applyLeaves').on('change', function () {
         });
     }
 });
+
+$(function() {
+	// 현재 페이지의 URL 중 pathname 값만 변수에 저장
+	let pathName = window.location.pathname;
+
+	// 현재 페이지가 문서 보관함이 아니라면 페이지네이션 실행하지 않음.
+	if(!pathName.includes('List')){
+		return;
+	}
+	const cPage = $('#cPage').val();
+	const totalCount = $('#totalCount').val();
+	const recordCountPerPage = $('#recordCountPerPage').val();
+	const naviCountPerPage = $('#naviCountPerPage').val();
+	const docuCode = $('#docuCode').val();
+	const type = $('#type').val();	
+	const keyword = $('#keyword').val();
+	
+	// 페이지네이션 초기 설정
+	let pageTotalCount = totalCount > 0 ? Math.ceil(totalCount / recordCountPerPage) : 1;
+	let startNavi = Math.floor((cPage - 1) / naviCountPerPage) * naviCountPerPage + 1;
+	let endNavi = startNavi + naviCountPerPage - 1;
+	
+ 	if (endNavi > pageTotalCount) {
+   		endNavi = pageTotalCount;
+	}
+	let needNext = endNavi < pageTotalCount;
+	let needPrev = startNavi > 1;
+
+	// 페이지네이션 HTML 초기화
+	const pagination = $('.pagination');
+	pagination.empty();
+		
+	// 검색 결과 페이지일 경우
+	if(pathName.includes('search')) {
+		
+		// '이전' 버튼
+		const prevNaviBtn = $('<a>');
+		prevNaviBtn.addClass('prev');
+		const prevNaviIcon = $('<i>');
+		prevNaviIcon.addClass('bx bx-chevron-left');
+		prevNaviBtn.append(prevNaviIcon);
+		if (needPrev) {
+			if(docuCode == ""){
+    			prevNaviBtn.attr('href', pathName + '?type=' + type + '&keyword=' + keyword + '&cPage=' + (startNavi - 1));
+    		} else {
+    			prevNaviBtn.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=' + (startNavi - 1));
+    		}
+		} else {
+    		prevNaviBtn.addClass('disabled');
+		}
+		pagination.append(prevNaviBtn);
+	
+		// 페이지 번호
+		for (let i = startNavi; i <= endNavi; i++) {
+    		const paginavi = $('<a>');
+    	
+    		if(docuCode == ""){
+    			paginavi.attr('href', pathName + '?type=' + type + '&keyword=' + keyword + '&cPage=' + i);
+    		} else {
+    			paginavi.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=' + i);
+    		}
+    		paginavi.text(i);
+    		if (cPage == i) {
+        		paginavi.addClass('active');
+    		}
+    		pagination.append(paginavi);
+		}
+
+		// '다음' 버튼
+		const nextNaviBtn = $('<a>');
+		nextNaviBtn.addClass('prev');
+		const nextNaviIcon = $('<i>');
+		nextNaviIcon.addClass('bx bx-chevron-right');
+		nextNaviBtn.append(nextNaviIcon);
+		if (needNext) {
+			if(docuCode == ""){
+    			nextNaviBtn.attr('href', pathName + '?type=' + type + '&keyword=' + keyword + '&cPage=' + (endNavi + 1));
+    		} else {
+    			nextNaviBtn.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=' + (endNavi + 1));
+    		}
+		} else {
+    		nextNaviBtn.addClass('disabled');
+		}
+		pagination.append(nextNaviBtn);
+		
+	// 검색을 하지 않은 상태의 보관함인 경우
+	} else {
+
+		// '이전' 버튼
+		const prevNaviBtn = $('<a>');
+		prevNaviBtn.addClass('prev');
+		const prevNaviIcon = $('<i>');
+		prevNaviIcon.addClass('bx bx-chevron-left');
+		prevNaviBtn.append(prevNaviIcon);
+		if (needPrev) {
+    		if(docuCode == ""){
+    			prevNaviBtn.attr('href', pathName + '?type=' + type + '&cPage=' + (startNavi - 1));
+    		} else {
+    			prevNaviBtn.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&cPage=' + (startNavi - 1));
+    		}} else {
+    		prevNaviBtn.addClass('disabled');
+		}
+		pagination.append(prevNaviBtn);
+	
+		// 페이지 번호
+		for (let i = startNavi; i <= endNavi; i++) {
+    	
+    		const paginavi = $('<a>');
+    	
+    		if(docuCode == ""){
+    			paginavi.attr('href', pathName + '?type=' + type + '&cPage=' + i);
+    		} else {
+    			paginavi.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&cPage=' + i);
+    		}
+    		paginavi.text(i);
+    		
+    		if (cPage == i) {
+        		paginavi.addClass('active');
+    		}
+    		pagination.append(paginavi);
+		}
+
+		// '다음' 버튼
+		const nextNaviBtn = $('<a>');
+		nextNaviBtn.addClass('prev');
+		const nextNaviIcon = $('<i>');
+		nextNaviIcon.addClass('bx bx-chevron-right');
+		nextNaviBtn.append(nextNaviIcon);
+		if (needNext) {
+			if(docuCode == ""){
+    			nextNaviBtn.attr('href', pathName + '?type=' + type + '&cPage=' + (endNavi + 1));
+    		} else {
+    			nextNaviBtn.attr('href', pathName + '?type=' + type + '&docuCode=' + docuCode + '&cPage=' + (endNavi + 1));
+    		}
+		} else {
+    		nextNaviBtn.addClass('disabled');
+		}
+		pagination.append(nextNaviBtn);
+	}
+});
+
+// 검색창 'Enter' 키 감지 시 검색을 수행할 함수 호출
+$('#searchTxt').on('keydown', function(e) {
+	if (e.keyCode === 13) {
+		const keyword = $(this).val().trim();
+		goToSearchList(keyword);
+    }
+});
+
+// 검색창 버튼 클릭 시 검색을 수행할 함수 호출  
+$('.searchBtn').on('click', function() {
+	const keyword = $('#searchTxt').val().trim();
+	goToSearchList(keyword);
+});
+
+function goToSearchList(keyword){
+	// 현재 페이지의 문서함 타입과 문서 코드를 변수에 저장
+	const docuCode = $('#docuCode').val();
+	const type = $('#listType').val();
+
+	// 현재 페이지의 URL 중 pathname 값 중 마지막 단어만 변수에 저장
+	const pathName = window.location.pathname;
+	const docuList = pathName.split('/').pop();
+	
+	if(keyword == ''){
+		if (docuCode == ''){
+			location.href = '/eApproval/' + docuList + '?type=' + type + '&cPage=1';
+			return;
+		}
+		location.href = '/eApproval/' + docuList + '?type=' + type + '&docuCode=' + docuCode + '&cPage=1';
+		return;
+	} 
+	
+	// 변수에 저장된 값을 서버에 전송
+	if (docuCode == ''){
+		location.href = '/eApproval/search/' + docuList + '?type=' + type + '&keyword=' + keyword + '&cPage=1';
+		return;
+	}
+	location.href = '/eApproval/search/' + docuList + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=1';
+}

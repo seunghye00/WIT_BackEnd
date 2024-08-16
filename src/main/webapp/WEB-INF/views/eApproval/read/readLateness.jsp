@@ -31,8 +31,9 @@
 						</a>
 					</div>
 					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn disabled">새 결재 진행</button>
-						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp" %>
+						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
+						<%@ include
+							file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp"%>
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
@@ -40,7 +41,8 @@
 					<div class="mainTitle">문서 열람 ( 지각 사유서 )</div>
 					<div class="document">
 						<div class="choiBox">
-							<%@ include file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
+							<%@ include
+								file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
 							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">
@@ -58,9 +60,8 @@
 											</tr>
 											<tr>
 												<th>기안일</th>
-												<td>
-													<fmt:formatDate value="${docuInfo.write_date}" pattern="yyyy-MM-dd HH:mm" />
-												</td>
+												<td><fmt:formatDate value="${docuInfo.write_date}"
+														pattern="yyyy-MM-dd HH:mm" /></td>
 											</tr>
 											<tr>
 												<th>문서번호</th>
@@ -89,20 +90,17 @@
 											<tr>
 												<th>결재자</th>
 												<c:forEach items="${apprList}" var="i">
-													<td>
-														<c:if test="${i.status eq '결재 완료'}">
-															<img src="/img/icon/stamp.png" alt="approvedStamp"><br>
-														</c:if>
-														${i.name}
-													</td>
+													<td><c:if test="${i.status eq '결재 완료'}">
+															<img src="/img/icon/stamp.png" alt="approvedStamp">
+															<br>
+														</c:if> ${i.name}</td>
 												</c:forEach>
 											</tr>
 											<tr>
 												<th>결재일</th>
 												<c:forEach items="${apprList}" var="i">
-													<td>
-														<fmt:formatDate value="${i.approved_date}" pattern="yyyy-MM-dd HH:mm" />
-													</td>
+													<td><fmt:formatDate value="${i.approved_date}"
+															pattern="yyyy-MM-dd HH:mm" /></td>
 												</c:forEach>
 											</tr>
 										</tbody>
@@ -110,39 +108,41 @@
 								</div>
 							</div>
 							<div class="docuWrite docuRead docuLateness">
-								<form id="docuContForm">
-									<table>
-										<thead>
-											<tr>
-												<th>지각 일자</th>
-												<td><input type="date" value="${docuDetail.late_date}" readonly></td>
-												<th>긴급</th>
-												<td>
-													<div>
-														<input type="checkbox" <c:if test="${docuInfo.emer_yn eq 'Y'}">checked</c:if> disabled> <label for="emerCheck">긴급 문서</label>
-													</div>
-												</td>
-											</tr>
-											<tr>
-												<th>제목</th>
-												<td colspan="3"><input type="text" value="${docuInfo.title}" readonly></td>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th>지각 사유</th>
-												<td colspan="3"><textarea readonly>${docuDetail.reason}</textarea></td>
-											</tr>
-										</tbody>
-									</table>
-								</form>
+								<table>
+									<thead>
+										<tr>
+											<th>지각 일자</th>
+											<td><input type="date" value="${docuDetail.late_date}"
+												readonly></td>
+											<th>긴급</th>
+											<td>
+												<div>
+													<input type="checkbox"
+														<c:if test="${docuInfo.emer_yn eq 'Y'}">checked</c:if>
+														disabled> <label for="emerCheck">긴급 문서</label>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<th>제목</th>
+											<td colspan="3"><input type="text"
+												value="${docuInfo.title}" readonly></td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th>지각 사유</th>
+											<td colspan="3"><textarea readonly>${docuDetail.reason}</textarea></td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
 							<div class="docuFiles">
-									<label>🔗 파일 목록</label> <span class="uploadFiles"></span>
-								</div>
+								<label class="disabled">🔗 파일 목록</label> <span
+									class="uploadFiles"></span>
+							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>

@@ -169,15 +169,20 @@ public class EmployeeDAO {
 	public EmployeeInfoDTO getNameNDept(String empNo) {
 		return mybatis.selectOne("employee.selectByEmpNo", empNo);
 	}
-	
+
 	// 메신저 emp_no 이름으로 변경
 	public String getEmployeeName(String emp_no) {
-	    return mybatis.selectOne("employee.getEmployeeName", emp_no);
+		return mybatis.selectOne("employee.getEmployeeName", emp_no);
 	}
 
 	// 해당 사번을 지닌 직원의 이름 조회
 	public String getName(String empNo) {
 		return mybatis.selectOne("employee.getName", empNo);
+	}
+
+	// 해당 사번을 지닌 직원의 직급 조회
+	public String getRole(String empNo) {
+		return mybatis.selectOne("employee.getRole", empNo);
 	}
 
 	// 해당 사번을 지닌 직원의 부서명 조회
