@@ -139,8 +139,16 @@
 								</table>
 							</div>
 							<div class="docuFiles">
-								<label class="disabled">🔗 파일 목록</label> <span
-									class="uploadFiles"></span>
+								<label class="disabled">🔗 파일 목록</label> 
+								<span class="uploadFiles">
+								<c:if test="${!empty files}">
+									<c:forEach items="${files}" var="i">
+										<a href="/eApproval/downloadFiles?sysname=${i.sysname}&oriname=${i.oriname}">
+											<span>${i.oriname}</span>
+										</a>
+									</c:forEach>
+								</c:if>
+								</span>
 							</div>
 						</div>
 					</div>

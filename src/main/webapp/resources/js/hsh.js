@@ -319,9 +319,22 @@ $('.goSavaList').on('click', () => {
 	}
 });
 
+// 결재 문서 페이지에서 목록 버튼 클릭 시 결재 대기 문서함으로 이동
+$('.goToDoList').on('click', () => {
+	if(confirm('결재를 보류하시겠습니까 ?')){
+		location.href = '/eApproval/apprList?type=todo&cPage=1';
+	}
+});
+
 // 문서 열람 페이지에서 목록 버튼 클릭 시 바로 전 페이지로 이동
 $('.goBack').on('click', () => {
-	window.history.back();
+	// 이전 페이지의 url을 변수에 저장
+	const prevUrl = document.referrer;
+	if(prevUrl.includes('writeProc')){
+		location.href = '/eApproval/apprList?type=write&cPage=1';
+	} else {
+		window.history.back();
+	}
 });
 
 // 임시 저장 문서 페이지에서 삭제 버튼 클릭 시 임시 저장 문서함으로 이동
@@ -705,7 +718,7 @@ function sendFormData(choiUrl) {
      	if(addedFiles.length > 0){
      	 	insertFiles(resp, '/eApproval/uploadFiles');
      	} else {
-     		location.href = "/eApproval/home";
+     		location.href = "/eApproval/readDocu?docuSeq=" + resp;
      	}
      });	
 }

@@ -49,7 +49,9 @@ function insertFiles(parentSeq, goToUrl) {
     	processData: false,  // FormData를 사용하기 때문에 기본적으로 jQuery가 데이터를 처리하지 않도록 설정
     	contentType: false  // 기본 콘텐츠 타입을 설정하지 않도록 설정
     }).done(resp => {
-    	console.log(resp);
+		// 해당 문서 열람 페이지로 이동
+		location.href = resp.hrefUrl;    	
+
     }).fail((jqXHR, textStatus, errorThrown) => {
     	console.error('AJAX request failed:', textStatus, errorThrown);  // 오류 로그 출력
 	});
