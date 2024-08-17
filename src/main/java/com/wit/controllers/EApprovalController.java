@@ -7,7 +7,9 @@ import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,7 +43,7 @@ import com.wit.services.FileService;
 
 @Controller
 @RequestMapping("/eApproval/")
-public class EAppprovalController {
+public class EApprovalController {
 
 	@Autowired
 	private EApprovalService serv;
@@ -87,11 +89,25 @@ public class EAppprovalController {
 		model.addAttribute("apprList", serv.getApprLine(docuSeq));
 		model.addAttribute("refeList", serv.getRefeLine(docuSeq));
 		model.addAttribute("type", type);
+		
+		if (type == null) {
+			type = "read";
+		}
+
+		// 임시 저장 페이지가 아닌 경우에만 해당 게시물에 등록된 파일 목록을 조회 후 존재한다면 model 객체에 담아서 상세 페이지로 이동
+		if(!type.equals("saved")) {
+			List<DocuFilesDTO> fileList = fServ.getList(docuSeq);
+			if (fileList.size() > 0) {
+				model.addAttribute("files", fileList);
+			}
+		}
+
+		// 문서 양식에 따라 각 문서의 세부 정보를 받아오는 메서드 호출
 		switch (dto.getDocu_code()) {
 		case "M1":
 			model.addAttribute("docuDetail", serv.getPropDetail(docuSeq));
 			// 해당 문서를 열람하려는 목적에 따라 경로 설정
-			if (type == null) {
+			if (type.equals("read")) {
 				return "eApproval/read/readProp";
 			} else if (type.equals("saved")) {
 				return "eApproval/save/saveProp";
@@ -103,7 +119,7 @@ public class EAppprovalController {
 			// 해당 사원의 잔여 연차 갯수 조회 후 전달
 			// model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
 			// 해당 문서를 열람하려는 목적에 따라 경로 설정
-			if (type == null) {
+			if (type.equals("read")) {
 				return "eApproval/read/readLeave";
 			} else if (type.equals("saved")) {
 				return "eApproval/save/saveLeave";
@@ -113,7 +129,7 @@ public class EAppprovalController {
 		case "M3":
 			model.addAttribute("docuDetail", serv.getLatenessDetail(docuSeq));
 			// 해당 문서를 열람하려는 목적에 따라 경로 설정
-			if (type == null) {
+			if (type.equals("read")) {
 				return "eApproval/read/readLateness";
 			} else if (type.equals("saved")) {
 				return "eApproval/save/saveLateness";
@@ -217,10 +233,10 @@ public class EAppprovalController {
 	public String reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO,
 			HttpServletRequest request) throws Exception {
 
-		// 현재 요청된 URL을 확인 
+		// 현재 요청된 URL을 확인
 		String currentUrl = request.getRequestURI();
 		String type = null;
-		
+
 		// 요청된 URL에 따라 문서 상태 변경 및 이동 경로 설정
 		if (currentUrl.equals("/eApproval/reSaveDocu")) {
 			dto.setStatus("임시 저장");
@@ -570,7 +586,7 @@ public class EAppprovalController {
 		}
 		return dto.getDocument_seq();
 	}
-	
+
 	@RequestMapping("search/{pathVariable}")
 	public String getSearchData(@PathVariable("pathVariable") String pathVar, String type, String docuCode,
 			String keyword, int cPage, Model model) throws Exception {
@@ -585,7 +601,7 @@ public class EAppprovalController {
 
 		switch (pathVar) {
 		case "apprList":
-			if(type.equals("todo")) {
+			if (type.equals("todo")) {
 				list = serv.searchListByType(empNo, "결재 대기", docuCode, keyword, cPage);
 				model.addAttribute("totalCount", serv.getCountSearchListByType(empNo, "결재 대기", docuCode, keyword));
 			} else if (type.equals("upcoming")) {
@@ -611,11 +627,11 @@ public class EAppprovalController {
 				}
 				model.addAttribute("docuList", list);
 				model.addAttribute("totalCount", serv.getCountSearchWriteList(empNo, docuCode, keyword));
-				
+
 			} else if (type.equals("save")) {
 				model.addAttribute("docuList", serv.searchSavetList(empNo, docuCode, keyword, cPage));
 				model.addAttribute("totalCount", serv.getCountSearchSaveList(empNo, docuCode, keyword));
-				
+
 			} else if (type.equals("approved")) {
 				list = serv.searchApprovedList(empNo, docuCode, keyword, cPage);
 				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
@@ -624,7 +640,7 @@ public class EAppprovalController {
 				}
 				model.addAttribute("docuList", list);
 				model.addAttribute("totalCount", serv.getCountSearchApprovedList(empNo, docuCode, keyword));
-				
+
 			} else if (type.equals("return")) {
 				list = serv.searchReturnList(empNo, docuCode, keyword, cPage);
 				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
@@ -633,7 +649,7 @@ public class EAppprovalController {
 				}
 				model.addAttribute("docuList", list);
 				model.addAttribute("totalCount", serv.getCountSearchReturnList(empNo, docuCode, keyword));
-				
+
 			} else if (type.equals("view")) {
 				list = serv.searchViewList(empNo, docuCode, keyword, cPage);
 				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
@@ -651,7 +667,7 @@ public class EAppprovalController {
 			// 추후 에러 페이지로 변경
 			return "redirect:/eApproval/home";
 		}
-	
+
 		model.addAttribute("cPage", cPage);
 		model.addAttribute("recordCountPerPage", BoardConfig.recordCountPerPage);
 		model.addAttribute("naviCountPerPage", BoardConfig.naviCountPerPage);
@@ -662,21 +678,26 @@ public class EAppprovalController {
 	}
 
 	// 결재 문서 작성 완료 시 파일을 업로드 하기 위한 메서드
+	@ResponseBody
 	@RequestMapping("uploadFiles")
-	public String upload(int docuSeq, MultipartFile[] file) throws Exception {
+	public Map<String, String> upload(int docuSeq, MultipartFile[] file) throws Exception {
 
 		// 파일을 저장할 서버 경로 설정 및 파일 업로드
 		String realPath = session.getServletContext().getRealPath("eApproval/upload");
 		System.out.println(realPath);
+
 		fServ.uploadDocuFile(docuSeq, realPath, file);
 
-		return "redirect:/eApproval/home";
+		Map<String, String> result = new HashMap<>();
+		result.put("hrefUrl", "/eApproval/readDocu?docuSeq=" + docuSeq);
+
+		return result;
 	}
 
 	@RequestMapping("downloadFiles")
 	public void download(String oriname, String sysname, HttpServletResponse response) throws Exception {
 
-		String realPath = session.getServletContext().getRealPath("upload");
+		String realPath = session.getServletContext().getRealPath("eApproval/upload");
 		File target = new File(realPath + "/" + sysname);
 
 		oriname = new String(oriname.getBytes(), "ISO-8859-1");
@@ -690,12 +711,6 @@ public class EAppprovalController {
 			dos.write(fileContents);
 			dos.flush();
 		}
-	}
-
-	@ResponseBody
-	@RequestMapping("list")
-	public List<DocuFilesDTO> list(int docuSeq) throws Exception {
-		return fServ.getList(docuSeq);
 	}
 
 	@ExceptionHandler(Exception.class)

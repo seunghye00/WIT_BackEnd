@@ -22,4 +22,14 @@ public class ReportService {
 		
 		dao.insert(dto);
 	}
+	
+	public String check(String empNo, int boardSeq) throws Exception{
+		int result = dao.check(empNo, boardSeq);
+		if(result > 0) {
+			return "false";
+		} else {
+			
+			return "true";
+		}
+	}
 }

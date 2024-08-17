@@ -11,7 +11,7 @@
 	<c:when test="${type eq 'toAppr'}">
 		<button class="apprBtn" type="button">결재</button>
 		<button class="red returnBtn" type="button">반려</button>
-		<button class="grey" type="button">목록</button>
+		<button class="grey goToDoList" type="button">목록</button>
 		<button class="purple refeBtn" type="button">참조선</button>
 	</c:when>
 	<c:otherwise>
