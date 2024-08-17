@@ -233,7 +233,7 @@ public class EAppprovalController {
 			return "eApproval/write/writeProp";
 		case "M2":
 			// 해당 사원의 잔여 연차 갯수 조회 후 전달
-			model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
+			//model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
 			return "eApproval/write/writeLeave";
 		case "M3":
 			return "eApproval/write/writeLateness";

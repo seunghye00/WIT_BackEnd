@@ -29,7 +29,10 @@ public class ChatRoomDAO {
     }
 
     // 개인 채팅방 존재 여부 확인
-    public int isPrivateChatRoomExists(Map<String, Object> params) {
+    public int isPrivateChatRoomExists(String emp_no1, String emp_no2) {
+    	Map<String, Object> params = new HashMap<>();
+	    params.put("emp_no1", emp_no1);
+	    params.put("emp_no2", emp_no2);
         return mybatis.selectOne("chatRoom.isPrivateChatRoomExists", params);
     }
 
@@ -61,6 +64,16 @@ public class ChatRoomDAO {
     // 채팅방 삭제
     public void deleteChatRoom(int chatRoomSeq) {
         mybatis.delete("chatRoom.deleteChatRoom", chatRoomSeq);
+    }
+    
+    // 채팅방 멤버 조회
+    public int getChatRoomMemberCount(int chatRoomSeq) {
+    	return mybatis.selectOne("chatRoom.getChatRoomMemberCount", chatRoomSeq);
+    }
+    
+    // 채팅방 마지막 멤버 조회
+    public String getLastRemainingMember(int chatRoomSeq) {
+    	return mybatis.selectOne("chatRoom.getLastRemainingMember", chatRoomSeq);
     }
 
     // 채팅방 멤버 삭제

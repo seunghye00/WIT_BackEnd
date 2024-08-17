@@ -91,5 +91,22 @@
     <delete id="deleteChatRoomMember">
         DELETE FROM chat_room_member WHERE chat_room_seq = #{chatRoomSeq} AND emp_no = #{empNo}
     </delete>
+
+    <!-- 채팅방 멤버 수 확인 -->
+    <select id="getChatRoomMemberCount" resultType="int">
+        SELECT COUNT(*) 
+        FROM chat_room_member 
+        WHERE chat_room_seq = #{chatRoomSeq}
+    </select>
     
+    <!-- 마지막 남은 멤버 가져오기 -->
+    <select id="getLastRemainingMember" resultType="String">
+        SELECT emp_no 
+        FROM (
+            SELECT emp_no 
+            FROM chat_room_member 
+            WHERE chat_room_seq = #{chatRoomSeq}
+            AND ROWNUM = 1
+        )
+    </select>
 </mapper>
