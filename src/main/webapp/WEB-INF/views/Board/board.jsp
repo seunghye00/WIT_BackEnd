@@ -75,31 +75,97 @@
 									<h2 class="sideTit">게시판</h2>
 								</div>
 								<div class="sideBtnBox">
-									<button id="writeBtn" class="plusBtn sideBtn">글 작성</button>
+									<button id="writeBtn" class="plusBtn sideBtn">자유 게시판 글 작성</button>
 								</div>
-								<div class="addressListPrivate">
-									<ul class="privateList">
-										<li class="toggleItem">
-											<h3 class="toggle">
-												<a href="board.html">공지사항</a>
-											</h3>
 
-										</li>
-									</ul>
-								</div>
 								<div class="addressListGroup">
 									<ul class="GroupList">
 										<li class="toggleItem">
-											<h3 class="toggle">
-												<a href="free_board.html">자유 게시판</a>
+											<h3 class="toggleTit">
+												자유 게시판
+											</h3>
+											<ul class="subList">
+												<li><a href="/board/list?bookmark=true">북마크한 게시물</a></li>
+												<li><a href="/board/list?report=true">신고한 게시물</a></li>
+												<li><a href="/board/list">자유 게시판으로 이동</a></li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+
+								<div class="addressListGroup">
+									<ul class="GroupList">
+										<li class="toggleItem">
+											<h3 class="toggleTit">
+												공지 사항
+											</h3>
+											<ul class="subList">
+												<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a></li>
+												<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+
+								<!-- <div class="addressListPrivate">
+									<ul class="privateList">
+										<li class="toggleItem">
+											<h3 class="toggleTit active">
+												<a href="/board/list">
+													<h3 class="sideTit">
+														자유 게시판
+													</h3>
+												</a>
+												<ul class="subList actice">
+													<li class="newList"><a href="/board/list?boardCode=2">공지 사항</a></li>
+												</ul>
 											</h3>
 
 										</li>
 									</ul>
-								</div>
+								</div> -->
+
+								<!-- <div class="addressListGroup">
+									<ul class="GroupList">
+										<li class="toggleItem">
+											<h3 class="toggle">
+												<a href="/board/list?bookmark=true">북마크한 게시물</a>
+											</h3>
+										</li>
+									</ul>
+								</div> -->
+								<!-- <div class="addressListGroup">
+									<ul class="GroupList">
+										<li class="toggleItem">
+											<h3 class="toggle">
+												<a href="/board/list?report=true">신고한 게시물</a>
+											</h3>
+										</li>
+									</ul>
+								</div> -->
 							</div>
+
 							<div class="sideContents board">
-								<div class="mainTitle">자유 게시판 홈</div>
+								<c:choose>
+									<c:when test="${board_code=='1'}">
+										<c:choose>
+											<c:when test="${report=='true'}">
+												<div class="mainTitle">신고글 홈</div>
+											</c:when>
+											<c:when test="${bookmark=='false'}">
+												<div class="mainTitle">자유 게시판 홈</div>
+											</c:when>
+											<c:when test="${bookmark=='true'}">
+												<div class="mainTitle">북마크 홈</div>
+											</c:when>
+										</c:choose>
+									</c:when>
+									<c:when test="${board_code=='2'}">
+										<div class="mainTitle">공지 사항 홈</div>
+									</c:when>
+
+								</c:choose>
+
 								<div class="boardList">
 									<div class="controls">
 										<div class="search">
@@ -108,6 +174,9 @@
 												<input type="hidden" name="sortTarget" class="hiddenInput">
 												<input type="text" name="searchTxt" placeholder="검색"
 													class="hiddenInput">
+												<input type="text" name="bookmark" id="bookmark">
+												<input type="text" name="boardCode" id="board_code" value="1">
+												<input type="text" name="report" id="report" value="false">
 											</form>
 											<select class="form-select" aria-label="Default select example"
 												id="searchTarget">
@@ -147,7 +216,15 @@
 											<div class="cols boardDate">
 												<span>날짜</span>
 											</div>
-											<div class="cols boardView">조회수</div>
+											<c:choose>
+												<c:when test="${report=='true'}">
+													<div class="cols boardView">신고유형</div>
+												</c:when>
+												<c:otherwise>
+													<div class="cols boardView">조회수</div>
+												</c:otherwise>
+											</c:choose>
+
 										</div>
 
 										<!-- 게시물 목록 출력 -->
@@ -167,19 +244,40 @@
 													<!-- 여기서 조인해서 emp_no 자리에 닉네임이 나오게끔 했어! -->
 													<span>${board.emp_no}</span>
 												</div>
-												<div class="cols boardDate">
-													<fmt:formatDate value="${board.write_date}" pattern="yyyy-MM-dd" />
-												</div>
-												<div class="cols boardView">
-													<span>${board.views}</span>
-												</div>
+												<c:choose>
+													<c:when test="${report=='true'}">
+														<div class="cols boardDate">
+															<fmt:formatDate value="${board.report_date}"
+																pattern="yyyy-MM-dd" />
+														</div>
+													</c:when>
+													<c:otherwise>
+														<div class="cols boardDate">
+															<fmt:formatDate value="${board.write_date}"
+																pattern="yyyy-MM-dd" />
+														</div>
+													</c:otherwise>
+												</c:choose>
+
+												<c:choose>
+													<c:when test="${report=='true'}">
+														<div class="cols boardView">
+															<span>${board.report_type}</span>
+														</div>
+													</c:when>
+													<c:otherwise>
+														<div class="cols boardView">
+															<span>${board.views}</span>
+														</div>
+													</c:otherwise>
+												</c:choose>
+
 											</div>
 										</c:forEach>
 									</div>
 
 
-									<div class="pagination">
-
+									<div class="pagination" id="pagination">
 									</div>
 								</div>
 							</div>
@@ -192,12 +290,23 @@
 						document.getElementById('searchTarget').value = "${ searchTarget }";
 					}
 
-					// 처음에 서버에서 값을 보내줄 때 빈 문자열이 아니면 서버에서 보내준 값으로 설정
 					if (${ sortTarget != "" }) {
 						document.getElementById('sortTarget').value = "${ sortTarget }";
 					}
 
+					if (${ bookmark != "false" }) {
+						document.getElementById('bookmark').value = "${ bookmark }";
+					}
 
+					if (${ board_code != "1" }) {
+						document.getElementById('board_code').value = "${ board_code }";
+					}
+
+					if (${ report != "false" }) {
+						document.getElementById('report').value = "${ report }";
+					}
+
+					// 글작성 버튼 누르면 글 작성 페이지로 이동
 					document.getElementById('writeBtn').addEventListener('click',
 						function () {
 							window.location.href = '/board/write';
@@ -210,7 +319,7 @@
 							}
 
 						}).done(function (response) {
-							window.location.href = "${pageContext.request.contextPath}/board/detail?board_seq=" + $(e).data("seq")
+							window.location.href = "${pageContext.request.contextPath}/board/detail?boardCode=${board_code}&board_seq=" + $(e).data("seq")
 						})
 
 					}
@@ -263,17 +372,39 @@
 						needNext = false;
 					}
 
+
+
 					if (needPrev)
-						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&cpage=" + (startNavi - 1) + "' class='prev " + (needPrev ? "active" : "disabled") + "'><i class='bx bx-chevron-left'></i></a>");
+						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&cpage=" + (startNavi - 1) + "' class='prev " + (needPrev ? "active" : "disabled") + "'><i class='bx bx-chevron-left'></i></a>");
 
 					for (let i = startNavi; i <= endNavi; i++) {
-						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&cpage=" + i + "'>" + i + "</a> ");
+						let page = $("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&cpage=" + i + "'>" + i + "</a> ");
+						pageNation.append(page);
+						if (i == cpage) {
+							page.css({
+								backgroundColor: '#558BCF',
+								color: 'white',
+								'border-radius': '100%',
+								width: '40px',
+								'text-align': 'center'
+							})
+						}
 					}
 					if (needNext)
-						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&cpage=" + (endNavi + 1) + "' class='next " + (needNext ? "active" : "disabled") + "' data-page='" + (endNavi + 1) + "'><i class='bx bx-chevron-right'></i></a>");
+						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&cpage=" + (endNavi + 1) + "' class='next " + (needNext ? "active" : "disabled") + "' data-page='" + (endNavi + 1) + "'><i class='bx bx-chevron-right'></i></a>");
 
 
+					// 주소록 토글 이벤트 설정
+					const toggleItems = document.querySelectorAll('.toggleItem')
+					toggleItems.forEach(function (toggleItem) {
+						const toggleTit = toggleItem.querySelector('.toggleTit')
+						const subList = toggleItem.querySelector('.subList')
 
+						$(toggleTit).on('click', function () {
+							subList.classList.toggle('active')
+							toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
+						})
+					})
 				</script>
 			</body>
 
