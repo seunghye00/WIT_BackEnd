@@ -6,14 +6,14 @@ $(function() {
 	// 쿼리 문자열을 URLSearchParams 객체로 변환
 	const params = new URLSearchParams(search);
 
-	// keyword의 값을 가져오기
+	// keyword & type의 값을 가져오기
 	const keyword = params.get("keyword");
+	const type = params.get("type");
 
 	const cPage = $('#cPage').val();
 	const totalCount = $('#totalCount').val();
 	const recordCountPerPage = $('#recordCountPerPage').val();
 	const naviCountPerPage = $('#naviCountPerPage').val();
-	const type = $('#type').val();	
 	
 	// 페이지네이션 초기 설정
 	let pageTotalCount = totalCount > 0 ? Math.ceil(totalCount / recordCountPerPage) : 1;

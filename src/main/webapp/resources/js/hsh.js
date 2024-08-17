@@ -596,6 +596,11 @@ $('.docuSaveBtn').on('click', function() {
 	}
 });
 
+// 코멘트 버튼 클릭 시 코멘트 리스트 모달창 활성화
+$('.viewComm').on('click', () => {
+   $('.commModal').toggleClass('flex');
+});
+
 // 참조 버튼 클릭 시 참조선 리스트 모달창 활성화
 $('.refeBtn').on('click', () => {
     $('.refeModal').toggle();
