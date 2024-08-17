@@ -28,7 +28,7 @@
 	<!-- 조인 너무 어려워 밍쥬야... -->
 	<select id="list" resultType="com.wit.dto.BoardReportDTO">
 		select a.*
-		from
+		from 
 		(SELECT
 		row_number() over(
 		<choose>

@@ -10,4 +10,4 @@
   <select id="check" resultType="int">
   	select count(*) from report where board_seq = ${boardSeq} and emp_no = #{empNo}
   </select>
-</mapper>
+</mapper> 
