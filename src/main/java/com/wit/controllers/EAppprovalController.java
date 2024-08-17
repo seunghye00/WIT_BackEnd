@@ -7,7 +7,9 @@ import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -662,15 +664,20 @@ public class EAppprovalController {
 	}
 
 	// 결재 문서 작성 완료 시 파일을 업로드 하기 위한 메서드
+	@ResponseBody
 	@RequestMapping("uploadFiles")
 	public String upload(int docuSeq, MultipartFile[] file) throws Exception {
-
+		System.out.println(docuSeq);
 		// 파일을 저장할 서버 경로 설정 및 파일 업로드
 		String realPath = session.getServletContext().getRealPath("eApproval/upload");
 		System.out.println(realPath);
-		fServ.uploadDocuFile(docuSeq, realPath, file);
-
-		return "redirect:/eApproval/home";
+		
+		// int fServ.uploadDocuFile(docuSeq, realPath, file);
+		
+		Map<String, String> result = new HashMap<>();
+		result.put("hrefUrl", "/eApproval/readDocu?docuSeq=" + docuSeq);
+		
+		return "home";
 	}
 
 	@RequestMapping("downloadFiles")

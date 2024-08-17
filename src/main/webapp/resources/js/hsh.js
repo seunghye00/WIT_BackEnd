@@ -703,13 +703,7 @@ function sendFormData(choiUrl) {
      	}
      	// 결재 요청 시 등록된 파일이 존재할 때만 데이터 전송
      	if(addedFiles.length > 0){
-     		const docuSeq = $('<input>', {
-     	 		type: 'hidden',
-     	 		value: resp,
-     	 		name: 'docuSeq'
-     	 	});
-     	 	$('#fileInputForm').append(docuSeq);
-     	 	$('#fileInputForm').submit();
+     	 	insertFiles(resp, '/eApproval/uploadFiles');
      	} else {
      		location.href = "/eApproval/home";
      	}
