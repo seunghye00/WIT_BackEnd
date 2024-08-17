@@ -214,7 +214,7 @@ $(document).ready(function() {
             },
             dataType: "json",
             success: function(data) {
-            	console.log(data)
+            	// console.log(data)
             
               	// 서버에서 받은 데이터를 FullCalendar 형식으로 변환
               	const events = data.map(event => {
@@ -226,12 +226,27 @@ $(document).ready(function() {
                 // 날짜 객체를 ISO 8601 문자열로 변환
                 const start = startDateUTC.toISOString();
                 const end = endDateUTC.toISOString();
-
+				
+				let color = '#3788D8';
+				
+				if(event.dept_title == '인사부'){
+					color = '#81DAC6';
+				} else if(event.dept_title == '영업부'){
+					color = '#C8DD9F';
+				}  else if(event.dept_title == 'IT부'){
+					color = '#F5D48F';
+				}  else if(event.dept_title == '마케팅부'){
+					color = '#F28376';
+				}  else if(event.dept_title == '기술지원부'){
+					color = '#C4A4D1';
+				}
+				
                 return {
                   	id: event.room_booking_seq,  
                   	title: event.dept_title,     
                   	start: start,                
                   	end: end,
+                  	color: color,
                   	extendedProps: {
                   		empName: event.emp_name,
                   		roomName: event.room_name,
