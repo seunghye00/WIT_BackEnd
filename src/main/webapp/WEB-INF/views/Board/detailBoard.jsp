@@ -145,7 +145,7 @@
 															onclick="deleteBoard(${board.board_seq})">삭제</button>
 													</c:if>
 													<button type="button" class="btn btn-outline-primary"
-														onclick="location.href='/board/list'">목록으로</button>
+														onclick="location.href='/board/list?boardCode=${board_code}'">목록으로</button>
 												</div>
 											</div>
 
