@@ -2,6 +2,7 @@ package com.wit.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wit.dao.AnnualLeaveDAO;
 import com.wit.dto.AnnualLeaveDTO;
@@ -30,4 +31,20 @@ public class AnnualLeaveService {
     public EmployeeDTO employeeInfo(String empNo) {
         return dao.employeeInfo(empNo);
     }
+    
+    // 해당 직원의 남은 연차 갯수 조회
+    public int getRemainingLeavesByEmpNo(String empNo) {
+        return dao.getRemainingLeavesByEmpNo(empNo);
+    }
+
+    // 해당 직원의 연차 정보 업데이트
+	@Transactional
+    public void updateAnnualLeave(String empNo, float useNum) {
+		dao.updateByAnnualLeave(empNo, useNum);
+	}
+	
+	// 연차 사용 정보 기록
+	public void insertAnnualLeaveLog(String empNo, int docuSeq) {
+		dao.insertAnnualLeaveLog(empNo, docuSeq);
+	}
 }

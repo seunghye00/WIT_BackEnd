@@ -81,7 +81,7 @@ public class EApprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-
+		
 		// 해당 문서의 내용, 결재 라인, 참조 라인을 model 객체에 담아서 상세 페이지로 이동
 		DocuDTO dto = serv.getDocuInfo(docuSeq);
 		model.addAttribute("docuInfo", dto);
@@ -93,7 +93,6 @@ public class EApprovalController {
 		if (type == null) {
 			type = "read";
 		}
-
 		// 임시 저장 페이지가 아닌 경우에만 해당 게시물에 등록된 파일 목록을 조회 후 존재한다면 model 객체에 담아서 상세 페이지로 이동
 		if(!type.equals("saved")) {
 			List<DocuFilesDTO> fileList = fServ.getList(docuSeq);
@@ -101,7 +100,6 @@ public class EApprovalController {
 				model.addAttribute("files", fileList);
 			}
 		}
-
 		// 문서 양식에 따라 각 문서의 세부 정보를 받아오는 메서드 호출
 		switch (dto.getDocu_code()) {
 		case "M1":
@@ -117,7 +115,7 @@ public class EApprovalController {
 		case "M2":
 			model.addAttribute("docuDetail", serv.getLeaveDetail(docuSeq));
 			// 해당 사원의 잔여 연차 갯수 조회 후 전달
-			// model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
+			model.addAttribute("remaingLeaves", aServ.getRemainingLeavesByEmpNo(empNo));
 			// 해당 문서를 열람하려는 목적에 따라 경로 설정
 			if (type.equals("read")) {
 				return "eApproval/read/readLeave";
@@ -163,13 +161,13 @@ public class EApprovalController {
 				break;
 			}
 		}
-		return "redirect:/eApproval/apprList?type=todo";
+		return "redirect:/eApproval/apprList?type=todo&cPage=1";
 	}
 
 	// 해당 문서를 결재 처리하기 위한 메서드
 	@Transactional
 	@RequestMapping("apprDocu")
-	public String apprDocu(int docuSeq, String comments) throws Exception {
+	public String apprDocu(int docuSeq, String comments, @RequestParam(required = false) String applyLeaves) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -196,23 +194,28 @@ public class EApprovalController {
 		case 3:
 			serv.updateApprLine(docuSeq, 3, "결재 완료");
 			serv.updateDocuStatus(docuSeq, "완료");
+			if(applyLeaves != null) {
+				float useNum = Float.parseFloat(applyLeaves);
+				aServ.updateAnnualLeave(empNo, useNum);
+				aServ.insertAnnualLeaveLog(empNo, docuSeq);
+			}
 			break;
 		default:
 			// 추후 에러 페이지로 변경
 			return "redirect:/eApproval/home";
 		}
-		return "redirect:/eApproval/apprList?type=todo";
+		return "redirect:/eApproval/apprList?type=todo&cPage=1";
 	}
 
 	// 해당 문서를 전결 처리하기 위한 메서드
 	@Transactional
 	@RequestMapping("apprAllDocu")
-	public String apprAllDocu(int docuSeq, String comments) throws Exception {
+	public String apprAllDocu(int docuSeq, String comments, @RequestParam(required = false) String applyLeaves) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
 		List<ApprLineDTO> list = serv.getApprLine(docuSeq);
-
+		
 		// 해당 사원의 결재 순서에 따라 결재 라인 정보 업데이트
 		for (int i = 0; i < 3; i++) {
 			ApprLineDTO dto = list.get(i);
@@ -222,12 +225,18 @@ public class EApprovalController {
 				serv.updateApprLineAll(docuSeq, i + 1);
 				// 문서 상태 업데이트
 				serv.updateDocuStatus(docuSeq, "완료");
+				if(applyLeaves != null) {
+					float useNum = Float.parseFloat(applyLeaves);
+					aServ.updateAnnualLeave(empNo, useNum);
+					aServ.insertAnnualLeaveLog(empNo, docuSeq);
+				}
 				break;
 			}
 		}
-		return "redirect:/eApproval/apprList?type=todo";
+		return "redirect:/eApproval/apprList?type=todo&cPage=1";
 	}
 
+	// 임시 저장 페이지에서 다시 임시 저장을 하거나 결재 요청을 했을 시 처리하기 위한 메서드
 	@Transactional
 	@RequestMapping(value = { "/reSaveDocu", "/update" })
 	public String reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO,
@@ -244,7 +253,6 @@ public class EApprovalController {
 		} else {
 			dto.setStatus("진행중");
 		}
-
 		// 문서 정보 업데이트 ( 작성일, 제목, 상태 )
 		serv.updateDocu(dto);
 
@@ -287,7 +295,6 @@ public class EApprovalController {
 			// 추후 에러 페이지로 변경
 			// return "redirect:/";
 		}
-
 		// 작성자와 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 model 객체로 전달
 		for (DocuInfoListDTO dto : list) {
 			dto.setWriter(eServ.getName(dto.getEmp_no()));
@@ -404,14 +411,13 @@ public class EApprovalController {
 		if (refeList != null) {
 			model.addAttribute("refeList", refeList);
 		}
-
 		// 선택한 문서에 따라 해당 전자 결재 작성 화면으로 이동
 		switch (docuCode) {
 		case "M1":
 			return "eApproval/write/writeProp";
 		case "M2":
 			// 해당 사원의 잔여 연차 갯수 조회 후 전달
-			// model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
+			model.addAttribute("remaingLeaves", aServ.getRemainingLeavesByEmpNo(empNo));
 			return "eApproval/write/writeLeave";
 		case "M3":
 			return "eApproval/write/writeLateness";
@@ -421,7 +427,7 @@ public class EApprovalController {
 		}
 	}
 
-	// 업무 기안 문서를 작성 완료했을 경우 문서 정보 & 결재 라인 & 참조 라인을 저장하기 위한 메서드
+	// 업무 기안 문서를 작성 완료 or 임시 저장했을 경우 정보를 저장하기 위한 메서드
 	@ResponseBody
 	@RequestMapping(value = { "/write/Prop", "/write/tempProp" }, produces = "application/json;charset=utf8")
 	public int writeProp(@RequestParam("apprList") String[] apprList,
@@ -462,7 +468,6 @@ public class EApprovalController {
 				serv.setApprLine(new ApprLineDTO(docuSeq, apprList[i], "임시 라인", (i + 1)));
 			}
 		}
-
 		// 문서의 세부 정보 입력
 		subDTO.setDocument_seq(dto.getDocument_seq());
 		serv.insertPropDocu(subDTO);
@@ -477,7 +482,7 @@ public class EApprovalController {
 		return dto.getDocument_seq();
 	}
 
-	// 지각 사유서 문서를 작성 완료했을 경우 문서 정보 & 결재 라인 & 참조 라인을 저장하기 위한 메서드
+	// 지각 사유서 문서를 작성 완료 or 임시 저장했을 경우 정보를 저장하기 위한 메서드
 	@ResponseBody
 	@RequestMapping(value = { "/write/Lateness", "/write/tempLateness" }, produces = "application/json;charset=utf8")
 	public int writeLateness(@RequestParam("apprList") String[] apprList,
@@ -573,7 +578,6 @@ public class EApprovalController {
 				serv.setApprLine(new ApprLineDTO(docuSeq, apprList[i], "임시 라인", (i + 1)));
 			}
 		}
-
 		// 문서의 세부 정보 입력
 		subDTO.setDocument_seq(dto.getDocument_seq());
 		serv.insertLeaveDocu(subDTO);
@@ -587,10 +591,11 @@ public class EApprovalController {
 		return dto.getDocument_seq();
 	}
 
+	// 문서함 내에서 검색을 수행하기 위한 메서드 
 	@RequestMapping("search/{pathVariable}")
 	public String getSearchData(@PathVariable("pathVariable") String pathVar, String type, String docuCode,
 			String keyword, int cPage, Model model) throws Exception {
-
+		
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
 
@@ -694,6 +699,7 @@ public class EApprovalController {
 		return result;
 	}
 
+	// 해당 파일을 다운로드하기 위한 메서드
 	@RequestMapping("downloadFiles")
 	public void download(String oriname, String sysname, HttpServletResponse response) throws Exception {
 

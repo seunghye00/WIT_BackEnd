@@ -331,7 +331,7 @@ $('.goBack').on('click', () => {
 	// 이전 페이지의 url을 변수에 저장
 	const prevUrl = document.referrer;
 	if(prevUrl.includes('writeProc')){
-		location.href = '/eApproval/apprList?type=write&cPage=1';
+		location.href = '/eApproval/privateList?type=write&cPage=1';
 	} else {
 		window.history.back();
 	}
@@ -670,7 +670,10 @@ $('.docuAppr').on('click', () => {
 		return;
 	}
 	$('#apprComm').val($('#apprComm').val().trim());
-	location.href="/eApproval/apprDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#returnComm').val();
+	if($('.docuWrite').hasClass('docuLeave')){
+		location.href="/eApproval/apprDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#apprComm').val() + '&applyLeaves=' + $('#applyLeaves').val();
+	}
+	location.href="/eApproval/apprDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#apprComm').val();
 }); 
 
 // 결재 코멘트 모달창에서 전결 버튼 클릭 시
@@ -681,7 +684,10 @@ $('.docuAllAppr').on('click', () => {
 		return;
 	}
 	$('#apprComm').val($('#apprComm').val().trim());
-	location.href="/eApproval/apprAllDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#returnComm').val();
+	if($('.docuWrite').hasClass('docuLeave')){
+		location.href="/eApproval/apprAllDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#apprComm').val() + '&applyLeaves=' + $('#applyLeaves').val();
+	}
+	location.href="/eApproval/apprAllDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#apprComm').val();
 }); 
 
 // AJAX로 서버에 해당 문서의 데이터를 보내고 문서 번호를 받아오는 메서드
@@ -750,7 +756,6 @@ $('#endLeaveDay').on('change', function () {
         $(this).val('');
         return;
     }
-
     // 시작일과 종료일을 Date객체로 변환
     const start = new Date($('#startLeaveDay').val());
     const end = new Date($('#endLeaveDay').val());
@@ -766,14 +771,19 @@ $('#endLeaveDay').on('change', function () {
         alert('잔여 연차를 확인해주세요.');
         $('#endLeaveDay').val($('#startLeaveDay').val());
         $('#applyLeaves').val(1).trigger('change');
+        $('#startDay, #startDayAM, #startDayPM').prop('checked', true);
+        $('#endDay, #endDayAM, #endDayPM').prop('checked', false);
+        $('#endDay, #endDayAM, #endDayPM').prop('disabled', true);
         return;
     }
     if (day == 1) {
         // 신청 연차가 1일인 경우 체크박스 종료일 체크박스 비활성화
+        $('#startDay, #startDayAM, #startDayPM').prop('checked', true);
         $('#endDay, #endDayAM, #endDayPM').prop('checked', false);
         $('#endDay, #endDayAM, #endDayPM').prop('disabled', true);
     } else {
         // 신청 연차가 2일 이상일 경우 종료일 체크박스 활성화
+        $('#startDay, #startDayAM, #startDayPM').prop('checked', true);
         $('#endDay, #endDayAM, #endDayPM').prop('checked', true);
         $('#endDay, #endDayAM, #endDayPM').prop('disabled', false);
     }

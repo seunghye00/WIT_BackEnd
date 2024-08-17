@@ -2816,7 +2816,7 @@ span.return {
 	height: 28px;
 }
 
-.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList) .rows:not(.listHeader) .cols:last-child span {
+.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList, .returnList) .rows:not(.listHeader) .cols:last-child span {
 	border-radius: 5px;
 	color: #fff;
 	padding: 5px;

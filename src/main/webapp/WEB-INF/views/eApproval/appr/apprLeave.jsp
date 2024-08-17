@@ -106,7 +106,7 @@
 									</table>
 								</div>
 							</div>
-							<div class="docuWrite docuLeave">
+							<div class="docuWrite docuRead docuLeave">
 								<table>
 									<thead>
 										<tr>
