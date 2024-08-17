@@ -80,23 +80,34 @@
 									<h2 class="sideTit">게시판</h2>
 								</div>
 								<div class="sideBtnBox">
-									<button class="plusBtn sideBtn">글 작성</button>
+									<button id="writeBtn" class="plusBtn sideBtn">자유 게시판 글 작성</button>
 								</div>
-								<div class="addressListPrivate">
-									<ul class="privateList">
-										<li class="toggleItem">
-											<h3 class="toggle">
-												<a href="board.html">공지사항</a>
-											</h3>
-										</li>
-									</ul>
-								</div>
+
 								<div class="addressListGroup">
 									<ul class="GroupList">
 										<li class="toggleItem">
-											<h3 class="toggle">
-												<a href="free_board.html">자유 게시판</a>
+											<h3 class="toggleTit">
+												자유 게시판
 											</h3>
+											<ul class="subList">
+												<li><a href="/board/list?bookmark=true">북마크한 게시물</a></li>
+												<li><a href="/board/list?report=true">신고한 게시물</a></li>
+												<li><a href="/board/list">자유 게시판으로 이동</a></li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+
+								<div class="addressListGroup">
+									<ul class="GroupList">
+										<li class="toggleItem">
+											<h3 class="toggleTit">
+												공지 사항
+											</h3>
+											<ul class="subList">
+												<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a></li>
+												<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+											</ul>
 										</li>
 									</ul>
 								</div>
@@ -111,7 +122,15 @@
 									<input type="hidden" name="board_seq" value="${board.board_seq}">
 									<input type="file" id="file" multiple name="files">
 								</form>
-								<div class="mainTitle">자유게시판 상세</div>
+								<c:choose>
+									<c:when test="${board_code=='1'}">
+										<div class="mainTitle">자유게시판 상세</div>
+									</c:when>
+									<c:when test="${board_code=='2'}">
+										<div class="mainTitle">공지게시판 상세</div>
+									</c:when>
+								</c:choose>
+
 								<div class="boardDetail">
 									<div class="detail">
 										<div class="detailTop">
@@ -135,15 +154,20 @@
 												</div>
 
 												<!-- 신고하기 버튼 -->
-												<div class="writeReport">
-													<button id="reportBtn">
-														<i class='bx bx-message-alt-error'></i> 신고하기
-													</button>
-												</div>
+												<c:choose>
+													<c:when test="${board_code=='1'}">
+														<div class="writeReport">
+															<button id="reportBtn">
+																<i class='bx bx-message-alt-error'></i> 신고하기
+															</button>
+														</div>
+													</c:when>
+												</c:choose>
 											</div>
 										</div>
 
-										<div class="detailCen" contenteditable="false">${board.contents}</div>
+										<div class="detailCen" contenteditable="false">${board.contents}
+										</div>
 										<div class="docuFiles" style="display: none;">
 											<label for="file">🔗 파일 선택</label>
 											`
@@ -314,6 +338,7 @@
 
 
 				<script>
+
 					// JSP에서 계산된 파일의 길이를 JavaScript로 전달합니다.
 					let defaultFileLength = ${ filesSize };
 					var filesLength = ${ filesSize };
@@ -362,7 +387,6 @@
 
 							// 제목 내용 수정 가능하게 속성 지정
 							$(".topTitle").attr("contenteditable", true);
-							$(".detailCen").summernote('enable');
 
 							// 썸머노트 활성화
 							$('.detailCen').summernote({
@@ -520,8 +544,35 @@
 								fileModal.hide();
 							}
 						});
-					});
 
+						// 주소록 토글 이벤트 설정
+						const toggleItems = document.querySelectorAll('.toggleItem')
+						toggleItems.forEach(function (toggleItem) {
+							const toggleTit = toggleItem.querySelector('.toggleTit')
+							const subList = toggleItem.querySelector('.subList')
+
+							$(toggleTit).on('click', function () {
+								subList.classList.toggle('active')
+								toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
+							})
+						})
+					});
+					// 신고하기 제한
+					$('#reportInsert').on('click', function () {
+						$.ajax({
+							url: '/report/check',
+							data: {
+								boardSeq: '${board.board_seq}',
+							},
+							type: 'post',
+						}).done(function (resp) {
+							if (resp == 'true') {
+								$('#reportForm').submit()
+							} else {
+								alert('이미 신고된 게시물 입니다.')
+							}
+						})
+					})
 				</script>
 			</body>
 
