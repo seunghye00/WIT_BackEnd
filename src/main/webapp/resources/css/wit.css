@@ -1363,7 +1363,6 @@
 	gap: 5px;
 }
 
-
 .notificationCount {
 	color: #fff;
 	border-radius: 100%;
@@ -1866,7 +1865,6 @@
 	font-size: 18px;
 	font-weight: bold;
 }
-
 
 /* 경원 css end */
 
@@ -3108,6 +3106,10 @@ td {
 	border-radius: 8px;
 }
 
+.eApprWrite .document .docuCont .docuFiles label.diabled {
+	cursor: default;
+}
+
 .eApprWrite .document .docuCont .docuFiles .uploadFiles {
 	border: 1px solid #e7e7e7;
 	overflow-x: auto;
@@ -3506,8 +3508,8 @@ button:nth-child(4) img {
 	border-radius: 10px;
 	font-size: 18px;
 	position: absolute;
-	top: 32vh;
-	left: 45vw;
+	top: 13vh;
+	left: 22vw;
 	width: 400px;
 	height: 260px;
 	padding: 30px 25px;
@@ -3552,6 +3554,12 @@ button:nth-child(4) img {
 /* 내 캘린더 부서 캘린더 추가 공통 */
 .subList.calendarList {
 	overflow: visible;
+}
+
+.subList.calendarList li {
+	position: relative;
+	justify-content: unset;
+	gap: 10px;
 }
 
 .sideCalendarAdd {
@@ -3627,6 +3635,16 @@ button:nth-child(4) img {
 	position: relative;
 }
 
+.sidePerSelectDel {
+	color: gray;
+	font-size: 20px;
+	font-weight: bold;
+	position: absolute;
+	right: 7px;
+	top: -3px;
+	cursor: pointer;
+}
+
 .deptCalendarPopup {
 	position: absolute;
 	display: none;
@@ -3678,36 +3696,17 @@ button:nth-child(4) img {
 	background-color: #c51221;
 }
 
+.sideDepSelectDel {
+	color: gray;
+	font-size: 20px;
+	font-weight: bold;
+	position: absolute;
+	right: 7px;
+	top: -3px;
+	cursor: pointer;
+}
+
 /* 날짜 박스 눌렀을 시 */
-.modal {
-	display: none;
-	position: fixed;
-	z-index: 10000;
-	padding-top: 100px;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgb(0, 0, 0);
-	background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modalContent {
-	background-color: #fefefe;
-	margin: auto;
-	padding: 30px 35px;
-	border: 1px solid #fefefe;
-	width: 35%;
-	height: 81%;
-	display: flex;
-	border-radius: 25px;
-	flex-direction: column;
-	position: relative;
-	top: 2vh;
-	gap: 10px;
-}
-
 .modalClose {
 	color: gray;
 	float: right;
@@ -3805,7 +3804,7 @@ button:nth-child(4) img {
 	border: 1px solid #ccc;
 }
 
-#eventText {
+.eventText {
 	margin-top: 7px;
 	width: 100%;
 	height: 150px;
@@ -3855,11 +3854,11 @@ button:nth-child(4) img {
 }
 
 .deleteBtn {
-	/* padding: 10px 20px; */
-	/* border: 1px solid #c1c1c1; */
-	/* border-radius: 8px; */
-	/* background-color: #dc3545; */
-	color: #888;
+	padding: 10px 20px;
+	border: 1px solid #c1c1c1;
+	border-radius: 8px;
+	background-color: #dc3545;
+	color: #fff;
 }
 
 .deleteBtn:hover {
@@ -3950,6 +3949,14 @@ button:nth-child(4) img {
 	opacity: 1;
 }
 
+.fc .fc-button-primary.fc-today-button {
+	background-color: #c058f0;
+}
+
+.fc .fc-button-primary.fc-today-button:hover {
+	background-color: #9733c5;
+}
+
 /* 원희 css end */
 
 /* 승혜 & 원희 css start */
@@ -3979,8 +3986,9 @@ button:nth-child(4) img {
 }
 
 .reservation .reservList .toolBar ul {
-	flex: 8;
-	display: flex;
+	border-bottom: unset;
+}
+
 }
 
 .reservation .reservList .toolBar ul a {
@@ -4186,7 +4194,7 @@ button:nth-child(4) img {
 .modal {
 	display: none;
 	position: fixed;
-	z-index: 1;
+	z-index: 10000;
 	padding-top: 100px;
 	left: 0;
 	top: 0;
@@ -4203,12 +4211,12 @@ button:nth-child(4) img {
 	padding: 30px 35px;
 	border: 1px solid #fefefe;
 	width: 35%;
-	height: 73%;
+	height: 84%;
 	display: flex;
 	border-radius: 25px;
 	flex-direction: column;
 	position: relative;
-	top: 6vh;
+	top: 2vh;
 	gap: 10px;
 }
 
@@ -4303,6 +4311,11 @@ button:nth-child(4) img {
 .okBtn:hover {
 	cursor: pointer;
 	background-color: #1268d4;
+}
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+	cursor: pointer;
 }
 
 /* 승혜 & 원희 css end */
