@@ -1,11 +1,5 @@
 /* 민주 css start */
 /* 공통css 수정부분 */
-.form-select {
-	border: none;
-	font-weight: bold;
-	font-size: 16px;
-}
-
 .board .writeWrapper .docuFiles {
 	flex: 1;
 	display: flex;
@@ -283,7 +277,6 @@
 	/* background-color: aquamarine; */
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
 }
 
 .boardDetail .detail .detailTop {
@@ -293,7 +286,6 @@
 	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
-	/* max-height: 100px; */
 }
 
 .boardDetail .detail .detailTop .top {
@@ -609,7 +601,7 @@
 /* detail page reply css start */
 .replyWrapper {
 	display: flex;
-	flex: 3;
+	/*flex: 3; */
 	max-width: 400px;
 	height: calc(100% - 60px);
 	overflow: hidden;
@@ -3498,8 +3490,12 @@ button:nth-child(4) img {
 	align-items: center;
 }
 
-/* 전자 결재 반려 모달창 */
-.cancelModal,
+.eApproval .docuBox .pagination a.disabled {
+	cursor: default;
+}
+
+/* 전자 결재 문서 결재 & 반려 모달창 */
+.returnModal,
 .apprModal {
 	display: none;
 	border: 1px solid black;
@@ -3519,19 +3515,37 @@ button:nth-child(4) img {
 	gap: 15px;
 }
 
-.cancelModal .cancelModalTitle,
+.returnModal .returnModalTitle,
 .apprModal .apprModalTitle {
 	flex: 1;
 	font-size: 24px;
 }
 
-.cancelModal .cancelComm,
+.returnModal .returnModalTitle span,
+.apprModal .apprModalTitle span {
+	position: relative;
+	top: -18px;
+	right: -95px;
+	color: #999;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.returnModal .returnModalTitle span:hover,
+.returnModal .returnModalTitle span:active,
+.apprModal .apprModalTitle span:hover,
+.apprModal .apprModalTitle span:active {
+	cursor: pointer;
+	color: #777;
+}
+
+.returnModal .returnComm,
 .apprModal .apprComm {
 	flex: 4;
 	width: 100%;
 }
 
-.cancelModal .cancelComm textarea,
+.returnModal .returnComm textarea,
 .apprModal .apprComm textarea {
 	width: 100%;
 	height: 100%;
@@ -3540,7 +3554,7 @@ button:nth-child(4) img {
 	border-radius: 8px;
 }
 
-.cancelModal .modalBtnBox,
+.returnModal .modalBtnBox,
 .apprModal .modalBtnBox {
 	flex: 1;
 	display: flex;
