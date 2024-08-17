@@ -140,11 +140,11 @@ public class ChatEndpoint {
         try {
             int chatRoomSeqInt = Integer.parseInt(chatRoomSeq);
             List<Map<String, Object>> unreadUsers = cServ.getUnreadUsers(chatRoomSeqInt);
-
+            
             for (Map<String, Object> user : unreadUsers) {
-                String receiverName = (String) user.get("receiverName");
-                String senderName = (String) user.get("senderName");
-
+                String receiverName = (String) user.get("RECEIVER");
+                String senderName = (String) user.get("SENDER");
+                System.out.println(user);
                 if (!sender.equals(receiverName)) { // 보낸 사람을 제외하고
                     GlobalChatEndpoint.notifyUnreadMessage(receiverName, senderName + "님이 새 메시지를 보냈습니다.");
                 }

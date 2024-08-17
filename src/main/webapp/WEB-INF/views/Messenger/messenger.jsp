@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/resources/css/style.main.css">
 <link rel="stylesheet" href="/resources/css/wit.css">
 <script defer src="/resources/js/mky.js"></script>
+<script defer src="/resources/js/header.js"></script>
 </head>
 <body>
 <!-- 공통영역 -->
@@ -129,14 +130,6 @@
 	</div>
 	<!-- sidebar 공통요소 script -->
 	<script>
-	    let btn = document.querySelector("#btn")
-	    let sideBar = document.querySelector(".sideBar")
-
-	    
-	    btn.onclick = function () {
-	        sideBar.classList.toggle("active")
-	    };
-	
 	    $(document).ready(function() {
 	        loadEmployeeList();
 	        loadChatList();

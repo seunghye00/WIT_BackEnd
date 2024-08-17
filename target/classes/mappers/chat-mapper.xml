@@ -35,6 +35,6 @@
 		JOIN employee emp ON crm.emp_no = emp.emp_no 
 		WHERE c.read_count = 1 
 		  AND c.name != crm.emp_no
-		  AND c.chat_room_seq = #{chat_room_seq};    
+		  AND c.chat_room_seq = #{chat_room_seq}    
   </select>
 </mapper>

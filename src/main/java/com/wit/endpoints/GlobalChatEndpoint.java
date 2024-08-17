@@ -82,13 +82,38 @@ public class GlobalChatEndpoint {
     }
 
     // 특정 사용자에게 알림을 전송하는 메서드
+//    public static void notifyUnreadMessage(String loginID, String notificationMessage) {
+//        System.out.println("Attempting to notify user: " + loginID);
+//        synchronized (sessions) {
+//            sessions.forEach(session -> {
+//                String sessionLoginID = sessionUserMap.get(session);
+//                System.out.println("Checking session for loginID: " + sessionLoginID);
+//                if (loginID.equals(sessionLoginID)) {
+//                    try {
+//                        JsonObject notification = new JsonObject();
+//                        notification.addProperty("type", "notification");
+//                        notification.addProperty("message", notificationMessage);
+//                        System.out.println("Sending notification to " + loginID + ": " + notificationMessage);
+//                        session.getBasicRemote().sendText(notification.toString());
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
+//        }
+//    }
     public static void notifyUnreadMessage(String loginID, String notificationMessage) {
+        if (loginID == null) {
+            System.out.println("Error: loginID is null, cannot send notification.");
+            return;  // loginID가 null이면 알림을 보내지 않음
+        }
+
         System.out.println("Attempting to notify user: " + loginID);
         synchronized (sessions) {
             sessions.forEach(session -> {
                 String sessionLoginID = sessionUserMap.get(session);
                 System.out.println("Checking session for loginID: " + sessionLoginID);
-                if (loginID.equals(sessionLoginID)) {
+                if (sessionLoginID != null && loginID.equals(sessionLoginID)) {
                     try {
                         JsonObject notification = new JsonObject();
                         notification.addProperty("type", "notification");
