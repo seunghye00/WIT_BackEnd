@@ -44,8 +44,16 @@ public class BoardService {
 		maps.put("bookmark", bookmark);
 		maps.put("board_code", board_code);
 		maps.put("report", report);
-		maps.put("start", cpage*BoardConfig.recordCountPerPage-(BoardConfig.recordCountPerPage-1));
-		maps.put("end", cpage*BoardConfig.recordCountPerPage);
+		
+		if(cpage==0) {
+			maps.put("start", 1);
+			maps.put("end", 5);
+		}
+		else {
+			maps.put("start", cpage*BoardConfig.recordCountPerPage-(BoardConfig.recordCountPerPage-1));
+			maps.put("end", cpage*BoardConfig.recordCountPerPage);
+		}
+		
 		
 		
 		return bdao.list(maps);
