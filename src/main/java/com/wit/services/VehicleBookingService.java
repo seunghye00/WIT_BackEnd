@@ -34,4 +34,29 @@ public class VehicleBookingService {
 	public EmployeeDTO employeeInfo(String empNo) {
 		return dao.employeeInfo(empNo);
 	}
+
+	// 예약 가능한 차량 목록 조회
+	public List<VehiclesDTO> getVehicleList(String status) {
+		return dao.getVehicleList(status);
+	}
+
+	// 해당 사원의 모든 차량 예약 정보 목록 조회
+	public List<VehicleBookingDTO> getAllVehicleBookingByEmpNo(String empNo, int cPage) {
+		return dao.getAllVehicleBookingByEmpNo(empNo, cPage);
+	}
+
+	// 해당 사원의 모든 차량 예약 정보 목록 총 갯수 조회
+	public int getCountVehicleList(String empNo) {
+		return dao.getCountVehicleList(empNo);
+	}
+
+	// 해당 사원의 검색한 차량 예약 정보 목록 조회
+	public List<VehiclesDTO> getSearchVehicleBookingByEmpNo(String empNo, String keyword, int cPage) {
+		return dao.getSearchVehicleBookingByEmpNo(empNo, keyword, cPage);
+	}
+	
+	// 해당 사원의 검색한 차량 예약 정보 목록 총 갯수 조회
+	public int getCountSearchVehicleList(String empNo, String keyword) {
+		return dao.getCountSearchVehicleList(empNo, keyword);
+	}
 }

@@ -3998,17 +3998,14 @@ button:nth-child(4) img {
 
 .reservation .reservList .toolBar {
 	flex: .5;
-	padding-bottom: 10px;
 	display: flex;
 	width: 100%;
-	align-items: center;
+	align-items: end;
 	border-bottom: 2px solid #c1c1c1;
 }
 
 .reservation .reservList .toolBar ul {
 	border-bottom: unset;
-}
-
 }
 
 .reservation .reservList .toolBar ul a {
@@ -4073,21 +4070,26 @@ button:nth-child(4) img {
 
 .reservation .reservList .listBox {
 	flex: 9;
-	/* height: 85%; */
-	width: 100%;
-	display: flex;
-	flex-direction: column;
 	font-size: 16px;
+	border-bottom: 2px solid #888888;
 }
 
 .reservation .reservList .listBox .rows {
 	flex: 1;
 	display: flex;
 	border-bottom: 1px solid #c1c1c1;
+	cursor: default;
 }
 
-.reservation .reservList .listBox .rows:last-child {
-	border-bottom: 2px solid #888888;
+.reservation .reservList .listBox .emptyReservList {
+	flex: 1;
+	max-height: unset;
+	justify-content: center;
+    align-items: center;
+}
+
+.reservation .reservList .listBox .rows:hover {
+	background-color: #fff;
 }
 
 .reservation .reservList .listBox .rows.listHeader {
@@ -4098,8 +4100,6 @@ button:nth-child(4) img {
 
 .reservation .reservList .listBox .rows .cols {
 	padding: 7px 0;
-	display: flex;
-	justify-content: center;
 }
 
 .reservation .reservList .listBox .rows .cols:nth-child(1),

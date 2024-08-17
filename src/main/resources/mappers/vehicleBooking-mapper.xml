@@ -36,4 +36,51 @@
 		FROM Employee
 		WHERE emp_no = #{empNo}
 	</select>
+	
+	<!-- 예약 가능한 차량 목록 조회 -->
+	<select id="selectAllVehicleList" resultType="com.wit.dto.VehiclesDTO">
+		select * from vehicles where status = #{status}
+	</select>
+	
+	<!-- 해당 사원의 차량 예약 정보 목록 조회 -->
+	<select id="selectAllByEmpNo" resultType="com.wit.dto.VehicleBookingDTO">
+		select * from (
+			select 
+				vb.*, v.name, v.license_plate,
+				row_number() over (order by start_date desc) as rn
+			from 
+				vehicle_booking vb
+			join vehicles v on vb.vehicle_seq = v.vehicle_seq	 
+			where vb.emp_no = #{empNo}
+		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
+	
+	<!-- 해당 사원의 모든 회의실 예약 갯수를 조회하기 위한 쿼리문 -->
+	<select id="getCountBookingList" resultType="int">
+		select count(*) 
+		from vehicle_booking
+		where emp_no = #{empNo}
+	</select>
+	
+	<!-- 해당 사원의 차량 예약 정보 목록 조회 -->
+	<select id="selectSearchListByEmpNo" resultType="com.wit.dto.VehicleBookingDTO">
+		select * from (
+			select 
+				vb.*, v.name, v.license_plate,
+				row_number() over (order by start_date desc) as rn
+			from 
+				vehicle_booking vb
+			join vehicles v on vb.vehicle_seq = v.vehicle_seq	 
+			where vb.emp_no = #{empNo}
+			and upper(purpose) like upper('%'||#{keyword}||'%') 
+		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
+	
+	<!-- 해당 사원의 모든 회의실 예약 갯수를 조회하기 위한 쿼리문 -->
+	<select id="getCountSearchBookingList" resultType="int">
+		select count(*) 
+		from vehicle_booking
+		where emp_no = #{empNo}
+		and upper(purpose) like upper('%'||#{keyword}||'%') 
+	</select>
 </mapper>

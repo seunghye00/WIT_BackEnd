@@ -1047,7 +1047,7 @@ function goToSearchList(keyword){
 	const docuCode = $('#docuCode').val();
 	const type = $('#listType').val();
 
-	// 현재 페이지의 URL 중 pathname 값 중 마지막 단어만 변수에 저장
+	// 현재 페이지의 URL pathname 값 중 마지막 단어만 변수에 저장
 	const pathName = window.location.pathname;
 	const docuList = pathName.split('/').pop();
 	

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wit.commons.BoardConfig;
 import com.wit.dto.EmployeeInfoDTO;
 import com.wit.dto.RoomBookingDTO;
 import com.wit.dto.VehicleBookingDTO;
@@ -40,9 +41,41 @@ public class ReservController {
 
 	// 예약 메인페이지로 이동
 	@RequestMapping("home")
-	public String home(Model model) throws Exception {
-		// 회의실 목록을 조회해서 model 객체에 담아 JSP로 전달
-		model.addAttribute("meetingRooms", mServ.getMeetingRoomList());
+	public String home(String type, @RequestParam(required = false) String keyword, int cPage, Model model) throws Exception {
+		
+		// 세션에 저장된 사번을 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+		
+		// 회의실 및 차량 목록을 조회해서 model 객체에 담아 JSP로 전달
+		model.addAttribute("meetingRooms", mServ.getMeetingRoomList("예약 가능"));
+		model.addAttribute("vehicles", vService.getVehicleList("예약 가능"));
+		model.addAttribute("type", type);
+		
+		if (type.equals("meetingRoom")) {
+			if(keyword == null) {
+				model.addAttribute("listType", "all");
+				model.addAttribute("list", mServ.getAllRoomBookingByEmpNo(empNo, cPage));
+				model.addAttribute("totalCount", mServ.getCountRoomBookingList(empNo));
+			} else {
+				model.addAttribute("listType", "search");
+				model.addAttribute("list", mServ.getSearchRoomBookingByEmpNo(empNo, keyword, cPage));
+				model.addAttribute("totalCount", mServ.getCountSearchRoomBookingList(empNo, keyword));
+			}
+		} else if (type.equals("vehicle")) {
+			if(keyword == null) {
+				model.addAttribute("listType", "all");
+				model.addAttribute("list", vService.getAllVehicleBookingByEmpNo(empNo, cPage));
+				model.addAttribute("totalCount", vService.getCountVehicleList(empNo));
+			} else {
+				model.addAttribute("listType", "search");
+				model.addAttribute("list", vService.getSearchVehicleBookingByEmpNo(empNo, keyword, cPage));
+				model.addAttribute("totalCount", vService.getCountSearchVehicleList(empNo, keyword));
+			}
+			model.addAttribute("totalCount", vService.getCountVehicleList(empNo));
+		}
+		model.addAttribute("cPage", cPage);
+		model.addAttribute("recordCountPerPage", BoardConfig.recordCountPerPage);
+		model.addAttribute("naviCountPerPage", BoardConfig.naviCountPerPage);
 		return "Reservation/home";
 	}
 
@@ -50,7 +83,8 @@ public class ReservController {
 	@RequestMapping("meetingRoom")
 	public String reservMeetingRoom(int roomSeq, Model model) throws Exception {
 		// 회의실 목록 및 선택한 회의실의 정보를 조회해서 model 객체에 담아 JSP로 전달
-		model.addAttribute("meetingRooms", mServ.getMeetingRoomList());
+		model.addAttribute("meetingRooms", mServ.getMeetingRoomList("예약 가능"));
+		model.addAttribute("vehicles", vService.getVehicleList("예약 가능"));
 		model.addAttribute("meetingRoomInfo", mServ.getMeetingRoomInfo(roomSeq));
 		return "Reservation/meetingRoom";
 	}
@@ -77,7 +111,6 @@ public class ReservController {
 			resp.put("result", "불가능");
 			return resp;
 		}
-		
 		// 클라이언트에서 받아온 정보와 위에서 설정한 정보들을 DB에 저장
 		mServ.addMeetingRoomEvent(dto);
 		resp.put("result", "등록 완료");
@@ -95,8 +128,9 @@ public class ReservController {
 	// 차량 예약 페이지로 이동
 	@RequestMapping("vehicle")
 	public String reservVehicle(int vehicleSeq, Model model) throws Exception {
+		model.addAttribute("meetingRooms", mServ.getMeetingRoomList("예약 가능"));
+		model.addAttribute("vehicles", vService.getVehicleList("예약 가능"));
 		model.addAttribute("vehicle", vService.reservVehicle(vehicleSeq));
-		
 		return "Reservation/vehicle";
 	}
 
