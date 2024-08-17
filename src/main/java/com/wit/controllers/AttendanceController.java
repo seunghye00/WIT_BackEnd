@@ -115,18 +115,6 @@ public class AttendanceController {
 		return "Attendance/attendanceMonth";
 	}
 
-	// 휴가관리 페이지로 이동
-	@RequestMapping("/attendance_vacation")
-	public String attendance_vacation(Model model) {
-		String empNo = (String) session.getAttribute("loginID");
-
-		EmployeeDTO employee = service.employeeInfo(empNo);
-
-		model.addAttribute("employee", employee);
-
-		return "Attendance/attendanceVacation";
-	}
-
 	// 출근 및 퇴근 시간 조회(메인 페이지)
 	@RequestMapping(value = "/times", produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -147,4 +135,5 @@ public class AttendanceController {
 
 		return response;
 	}
+	
 }

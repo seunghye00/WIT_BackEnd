@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
 <script defer src="/js/hsh.js"></script>
+<script defer src="/js/file.js"></script>
 <script defer src="/js/wit.js"></script>
 </head>
 
@@ -126,9 +127,9 @@
 												<th>긴급</th>
 												<td>
 													<div>
-														<input type="checkbox" id="emerCheck" value="Y"
-															name="emer_yn"> <label for="emerCheck">긴급
-															문서</label>
+														<input type="hidden" id="emerChecked" name="emer_yn" value="N">
+														<input type="checkbox" id="emerCheck"> 
+														<label for="emerCheck">긴급 문서</label>
 													</div>
 												</td>
 											</tr>

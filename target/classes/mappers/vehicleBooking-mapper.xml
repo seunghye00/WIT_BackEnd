@@ -10,9 +10,12 @@
 		values (
 		vehicle_booking_seq.nextval,
 		#{emp_no},
+		#{dept_title},
+		#{name},	
 		#{vehicle_seq},
 		#{start_date},
 		#{end_date},
+		#{passenger},
 		#{purpose}
 		)
 	</insert>
@@ -21,9 +24,16 @@
 	<select id="reservVehicle" resultType="com.wit.dto.VehiclesDTO">
 		select * from vehicles where vehicle_seq = #{vehicle_seq}
 	</select>
-	
-	<!-- 차량별 예약 이벤트 조회 -->
-	<select id="getAll" resultType="com.wit.dto.VehicleBookingDTO">
-		select * from vehicle_booking where vehicle_seq = #{vehicleSeq}
+		
+	<!-- 해당 차량의 모든 예약 정보를 조회 -->
+	<select id="getAllVehicleBooking" resultType="com.wit.dto.VehicleBookingDTO">
+    select * from vehicle_booking where vehicle_seq = #{vehicle_seq}
+	</select>
+
+	<!-- 직원 정보 조회 -->
+	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
+		SELECT name
+		FROM Employee
+		WHERE emp_no = #{empNo}
 	</select>
 </mapper>

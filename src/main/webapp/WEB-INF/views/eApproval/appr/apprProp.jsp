@@ -30,7 +30,8 @@
 						</a>
 					</div>
 					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn">새 결재 진행</button>
+						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
+						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp" %>
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
@@ -39,6 +40,8 @@
 					<div class="document">
 						<div class="choiBox">
 							<%@ include file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
+							<%@ include file="/WEB-INF/views/eApproval/commons/apprModal.jsp"%>
+							<%@ include file="/WEB-INF/views/eApproval/commons/returnModal.jsp"%>
 							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">

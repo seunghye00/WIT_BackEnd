@@ -73,6 +73,7 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="${docuList}" var="i">
+										<a href="/eApproval/readDocu?docuSeq=${i.document_seq}">
 										<div class="rows">
 											<div class="cols">
 												<span><fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" /></span>
@@ -91,7 +92,7 @@
 												<span>${i.title}</span>
 											</div>
 											<div class="cols">
-												<span>${i.emp_name}</span>
+												<span>${i.writer}</span>
 											</div>
 											<div class="cols">
 												<span><fmt:formatDate value="${i.done_date}" pattern="yyyy-MM-dd" /></span>
@@ -100,18 +101,12 @@
 												<span>${i.status}</span>
 											</div>
 										</div>
+										</a>
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>
 						</div>
-						<div class="pagination">
-							<a href="javascript:;" class="prev"><i
-								class='bx bx-chevron-left'></i></a> <a href="javascript:;"
-								class="active">1</a> <a href="javascript:;">2</a> <a
-								href="javascript:;">3</a> <a href="javascript:;">4</a> <a
-								href="javascript:;">5</a> <a href="javascript:;"
-								class="next active"><i class='bx bx-chevron-right'></i></a>
-						</div>
+						<%@ include file="/WEB-INF/views/eApproval/commons/pagination.jsp"%>
 					</div>
 				</div>
 			</div>
