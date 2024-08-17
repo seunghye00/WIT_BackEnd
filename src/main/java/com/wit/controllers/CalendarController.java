@@ -1,13 +1,18 @@
 package com.wit.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wit.dto.DepartmentCalendarDTO;
 import com.wit.dto.EmployeeDTO;
@@ -31,6 +36,7 @@ public class CalendarController {
 		List<PersonalCalendarDTO> plist = service.perCalendarList(empNo);
 		List<DepartmentCalendarDTO> dlist = service.depCalendarList(empNo);
 		EmployeeDTO employee = service.employeeInfo(empNo);
+		employee.setEmp_no(empNo);
 
 		model.addAttribute("plist", plist);
 		model.addAttribute("dlist", dlist);
@@ -47,11 +53,22 @@ public class CalendarController {
 		return "redirect:/calendar/calendar";
 	}
 
+	
 	// 개인 캘린더 삭제
-	@RequestMapping("/deletePerCalendar")
-	public String deletePerCalendar(String calendarSeq) {
-		service.deletePerCalendar(Integer.parseInt(calendarSeq));
-		return "redirect:/calendar/calendar";
+	@PostMapping("/deletePerCalendar")
+    @ResponseBody
+    public Map<String, Object> deletePerCalendar(@RequestParam("calendarSeq") String calendarSeq) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            boolean success = service.deletePerCalendar(Integer.parseInt(calendarSeq));
+            response.put("success", success);
+            response.put("message", success ? "삭제 성공" : "삭제 실패");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "삭제 요청 중 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        return response;
 	}
 
 	// 부서 캘린더 추가(각 부서 부장만 가능)
@@ -62,9 +79,28 @@ public class CalendarController {
 	}
 
 	// 부서 캘린더 삭제(각 부서 부장만 가능)
-	@RequestMapping("/deleteDepCalendar")
-	public String deleteDepCalendar(String calendarSeq) {
-		service.deleteDepCalendar(Integer.parseInt(calendarSeq));
-		return "redirect:/calendar/calendar";
+	@PostMapping("/deleteDepCalendar")
+    @ResponseBody
+    public Map<String, Object> deleteDepCalendar(@RequestParam("calendarSeq") String calendarSeq) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            boolean success = service.deleteDepCalendar(Integer.parseInt(calendarSeq));
+            response.put("success", success);
+            response.put("message", success ? "삭제 성공" : "삭제 실패");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "삭제 요청 중 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        return response;
+	}
+
+	// 캘린더 타입 조회
+	@ResponseBody
+	@RequestMapping(value = "/getCalendarType", produces = "application/json;charset=utf8")
+	public String getCalendarType(int calendarSeq) {
+		String calendarType = service.getCalendarType(calendarSeq);
+		String jsonResponse = "{\"type\": \"" + calendarType + "\"}";
+		return jsonResponse;
 	}
 }

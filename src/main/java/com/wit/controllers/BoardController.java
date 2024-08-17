@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.wit.commons.BoardConfig;
 import com.wit.dto.BoardDTO;
 import com.wit.dto.BoardFilesDTO;
+import com.wit.dto.BoardReportDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.ReplyDTO;
 import com.wit.services.BoardService;
@@ -54,21 +55,26 @@ public class BoardController {
 	public String list(Model model,@RequestParam(defaultValue = "") String searchTarget,
 			@RequestParam(defaultValue = "") String sortTarget,
 			@RequestParam(defaultValue = "") String searchTxt,
-			@RequestParam(defaultValue = "1") int cpage) throws Exception {
+			@RequestParam(defaultValue = "1") int cpage,
+			@RequestParam(defaultValue = "false") String bookmark,
+			@RequestParam(defaultValue = "1") int boardCode,
+			@RequestParam(defaultValue = "false") String report) throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
-		List<BoardDTO> boardList = bserv.list(searchTxt, searchTarget, sortTarget, cpage);
+		List<BoardReportDTO> boardList = bserv.list(searchTxt, searchTarget, sortTarget, cpage,empNo,bookmark,boardCode,report);
 
 		EmployeeDTO employee = bserv.employeeInfo(empNo);
-		
+		model.addAttribute("board_code",boardCode);
+		model.addAttribute("report",report);
 		model.addAttribute("searchTarget",searchTarget);
 		model.addAttribute("sortTarget",sortTarget);
 		model.addAttribute("searchTxt",searchTxt);
+		model.addAttribute("bookmark",bookmark); 
 		model.addAttribute("cpage",cpage);
 		model.addAttribute("list", boardList);
 		model.addAttribute("employee", employee);
 		
 		// 검색포함 전체 게시글 개수
-		model.addAttribute("record_total_count",bserv.boardCount(searchTxt, searchTarget) );
+		model.addAttribute("record_total_count",bserv.boardCount(searchTxt, searchTarget, empNo,bookmark,boardCode,report) );
 		// 한 페이지에 보여줄 게시글 개수
 		model.addAttribute("record_count_per_page",BoardConfig.recordCountPerPage);
 		// navi 개수
@@ -83,7 +89,7 @@ public class BoardController {
 
 		EmployeeDTO employee = bserv.employeeInfo(empNo);
 
-		model.addAttribute("emploㄹyee", employee);
+		model.addAttribute("employee", employee);
 		// 처음 작성할 때는 파일 사이즈가 0으로 설정
 		model.addAttribute("filesSize", 0);
 
@@ -92,10 +98,10 @@ public class BoardController {
 
 	// 게시물 등록
 	@RequestMapping("writeProc")
-	public String writeProc(BoardDTO dto, MultipartFile[] files) throws Exception {
+	public String writeProc(BoardDTO dto, MultipartFile[] files,@RequestParam(defaultValue = "1") int boardCode) throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
-		
+		dto.setBoard_code(boardCode);
 		// 파일 등록
 		String realPath = session.getServletContext().getRealPath("/uploads");
 		fserv.upload(dto,realPath, files);
@@ -104,7 +110,8 @@ public class BoardController {
 
 	// 게시물 상세 조회
 	@RequestMapping("detail")
-	public String detail(int board_seq, Model model) throws Exception {
+	public String detail(int board_seq, Model model,
+			@RequestParam(defaultValue = "1") int boardCode) throws Exception {
 
 		BoardDTO board = bserv.detailBoard(board_seq);
 		List<BoardFilesDTO> files = fserv.detailFile(board_seq);
@@ -124,6 +131,7 @@ public class BoardController {
 		model.addAttribute("empNo", empNo);
 		model.addAttribute("Nickname", Nickname);
 		model.addAttribute("employee", employee);
+		model.addAttribute("board_code",boardCode);
 		// 여기에다 북마크로 쿼리문을 보내서 사원번호랑, 보드 시퀀스 맞는 항목이 있으면 true,false 해서
 		// model 에 추가
 		model.addAttribute("bookmark",bmserv.isBookmarked(board_seq, empNo));
