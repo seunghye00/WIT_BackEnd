@@ -181,6 +181,7 @@ function loadChatList() {
                 $link.append($chatTitle);
                 $listItem.append($link);
                 chatList.append($listItem);
+                
             });
         },
         error: function(error) {
