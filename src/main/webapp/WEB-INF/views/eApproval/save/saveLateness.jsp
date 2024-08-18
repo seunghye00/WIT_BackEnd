@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
 <script defer src="/js/hsh.js"></script>
+<script defer src="/js/file.js"></script>
 <script defer src="/js/wit.js"></script>
 </head>
 
@@ -31,7 +32,7 @@
 						</a>
 					</div>
 					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn disabled">새 결재 진행</button>
+						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
 						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp" %>
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
@@ -58,7 +59,7 @@
 												<td>${writerInfo.dept_title}</td>
 											</tr>
 											<tr>
-												<th>기안일</th>
+												<th>작성일</th>
 												<td>
 													<fmt:formatDate value="${docuInfo.write_date}" pattern="yyyy-MM-dd HH:mm" />
 												</td>
@@ -111,8 +112,9 @@
 								</div>
 							</div>
 							<div class="docuWrite docuLateness">
-								<form id="docuContForm">
+								<form id="docuContForm" action="/eApproval/update" method="post">
 									<input type="hidden" name="docu_code" value="M3">
+									<input type="hidden" name="document_seq" value="${docuInfo.document_seq}" id="docuSeq">
 									<table>
 										<thead>
 											<tr>
@@ -121,8 +123,9 @@
 												<th>긴급</th>
 												<td>
 													<div>
-														<input type="checkbox" id="emerCheck" value="Y"
-															name="emer_yn" <c:if test="${docuInfo.emer_yn eq 'Y'}">checked</c:if>> <label for="emerCheck">긴급 문서</label>
+														<input type="hidden" id="emerChecked" name="emer_yn" value="N">
+														<input type="checkbox" id="emerCheck" <c:if test="${docuInfo.emer_yn eq 'Y'}">checked</c:if>> 
+														<label for="emerCheck">긴급 문서</label>
 													</div>
 												</td>
 											</tr>

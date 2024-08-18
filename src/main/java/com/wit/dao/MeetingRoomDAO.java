@@ -34,4 +34,9 @@ public class MeetingRoomDAO {
 	public List<RoomBookingDTO> getAllRoomBooking(int roomSeq) {
 		return mybatis.selectList("meetingRoom.selectAllBySeq", roomSeq);
 	}
+
+	// 회의실 예약 시간이 겹치는 지 확인하는 메서드
+	public int checkBooking(RoomBookingDTO dto) {
+		return mybatis.selectOne("meetingRoom.checkBooking", dto);
+	}
 }

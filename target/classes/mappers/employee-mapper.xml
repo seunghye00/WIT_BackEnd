@@ -189,6 +189,15 @@
 		select name from employee where emp_no = #{empNo}
 	</select>
 	
+	<!-- 사원 직급명 조회 -->
+	<select id="getRole" resultType="String">
+		select role_title
+		from employee e
+		join role d on
+		e.role_code = d.role_code
+		where emp_no = #{empNo}
+	</select>
+	
 	<!-- 사원 부서명 조회 -->
 	<select id="getDept" resultType="String">
 		select dept_title

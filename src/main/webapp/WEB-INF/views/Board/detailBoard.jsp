@@ -24,296 +24,282 @@
 
 			<body>
 				<div id="container">
-					<div class="sideBar">
-						<div class="top">
-							<i class="bx bx-menu" id="btn"></i>
-						</div>
-						<div class="user">
-							<img src="/resources/img/WIT_logo1.png" alt="로고" class="userImg">
-							<div class="nickName">
-								<p class="bold">Wit Works</p>
-							</div>
-						</div>
+					<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>
 
-						<ul>
-							<li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span class="navItem">홈</span></a>
-								<span class="toolTip">홈</span>
-							</li>
-							<li><a href="#"> <i class='bx bx-paperclip'></i> <span class="navItem">주소록</span></a>
-								<span class="toolTip">주소록</span>
-							</li>
-							<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i>
-									<span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
-							<li><a href="#"> <i class='bx bx-calendar-alt'></i> <span class="navItem">캘린더</span></a>
-								<span class="toolTip">캘린더</span>
-							</li>
-							<li><a href="#"> <i class='bx bxs-message-dots'></i> <span class="navItem">메신저</span></a>
-								<span class="toolTip">메신저</span>
-							</li>
-							<li><a href="#"> <i class='bx bx-clipboard'></i> <span class="navItem">전자결재</span></a>
-								<span class="toolTip">전자결재</span>
-							</li>
-							<li><a href="/attendance/attendance"> <i class='bx bxs-briefcase-alt-2'></i> <span
-										class="navItem">근태관리</span></a>
-								<span class="toolTip">근태관리</span>
-							</li>
-							<li><a href="#"> <i class='bx bxs-check-square'></i> <span class="navItem">예약</span></a>
-								<span class="toolTip">예약</span>
-							</li>
-							<li><a href="#"> <i class='bx bx-sitemap'></i> <span class="navItem">조직도</span></a>
-								<span class="toolTip">조직도</span>
-							</li>
-						</ul>
-					</div>
-
-					<div class="main-content">
-						<div class="header">
-							<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
-							<span class="myName"><img src="/resources/img/푸바오.png" alt="프로필 사진" class="userImg"> <a
-									href="/employee/mypage">${employee.name}
-									${employee.role_code}</a></span> <span class="logOut"><a
-									href="/employee/logout">LogOut</a></span>
-						</div>
-						<div class="contents">
-							<div class="sideAbout">
-								<div class="sideTxt">
-									<h2 class="sideTit">게시판</h2>
-								</div>
-								<div class="sideBtnBox">
-									<button class="plusBtn sideBtn">글 작성</button>
-								</div>
-								<div class="addressListPrivate">
-									<ul class="privateList">
-										<li class="toggleItem">
-											<h3 class="toggle">
-												<a href="board.html">공지사항</a>
-											</h3>
-										</li>
-									</ul>
-								</div>
-								<div class="addressListGroup">
-									<ul class="GroupList">
-										<li class="toggleItem">
-											<h3 class="toggle">
-												<a href="free_board.html">자유 게시판</a>
-											</h3>
-										</li>
-									</ul>
-								</div>
-							</div>
-
-							<!--자유게시판 영역-->
-							<div class="sideContents board">
-								<form action="/board/update" method="post" id="fboardUpdate"
-									enctype="multipart/form-data" style="display:none">
-									<input type="hidden" id="hiddenT" name="title" value="${board.title}">
-									<input type="hidden" id="hiddenC" name="contents" value="${board.contents}">
-									<input type="hidden" name="board_seq" value="${board.board_seq}">
-									<input type="file" id="file" multiple name="files">
-								</form>
-								<div class="mainTitle">자유게시판 상세</div>
-								<div class="boardDetail">
-									<div class="detail">
-										<div class="detailTop">
-											<div class="top">
-												<div class="topTitle" contenteditable="false">${board.title}</div>
-												<div class="topFile">
-													<!-- data 속성으로 게시글과 사용자 정보를 저장함. -->
-													<i class='bx bx-star' id="starIcon"
-														data-board-seq="${board.board_seq}"
-														data-emp-no="${employee.emp_no }"></i><i
-														class='bx bx-file-blank' id="fileIcon"></i>
-												</div>
-											</div>
-											<div class="top">
-												<div class="writeAbout">
-													<span>${board.emp_no}</span> <span>
-														<fmt:formatDate value="${board.write_date}"
-															pattern="yyyy-MM-dd" />
-													</span> <span><i class="fa-regular fa-eye"></i>
-														${board.views}</span>
-												</div>
-
-												<!-- 신고하기 버튼 -->
-												<div class="writeReport">
-													<button id="reportBtn">
-														<i class='bx bx-message-alt-error'></i> 신고하기
-													</button>
-												</div>
-											</div>
+						<div class="main-content">
+							<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
+								<div class="contents">
+									<div class="sideAbout">
+										<div class="sideTxt">
+											<h2 class="sideTit">게시판</h2>
+										</div>
+										<div class="sideBtnBox">
+											<button id="writeBtn" class="plusBtn sideBtn">자유 게시판 글 작성</button>
 										</div>
 
-										<div class="detailCen" contenteditable="false">${board.contents}</div>
-										<div class="docuFiles" style="display: none;">
-											<label for="file">🔗 파일 선택</label>
-											`
-											<span class="uploadFiles"></span>
-
+										<div class="addressListGroup">
+											<ul class="GroupList">
+												<li class="toggleItem">
+													<h3 class="toggleTit">
+														자유 게시판
+													</h3>
+													<ul class="subList">
+														<li><a href="/board/list?bookmark=true">북마크한 게시물</a></li>
+														<li><a href="/board/list?report=true">신고한 게시물</a></li>
+														<li><a href="/board/list">자유 게시판으로 이동</a></li>
+													</ul>
+												</li>
+											</ul>
 										</div>
 
-										<div class="detailBott">
-											<!-- 수정 및 삭제버튼 jstl 사용! -->
-											<c:if test="${board.emp_no eq Nickname}">
-												<button type="button" class="btn btn-outline-success" id="fboardCom"
-													style="display:none">완료</button>
-												<button type="button" class="btn btn-ouline-success" id="fboardCan"
-													style="display:none">취소</button>
-												<button type="button" class="btn btn-outline-success"
-													id="fboardUpd">수정</button>
-												<button type="button" class="btn btn-outline-success" id="fboardDel"
-													onclick="deleteBoard(${board.board_seq})">삭제</button>
-											</c:if>
-											<button type="button" class="btn btn-outline-primary"
-												onclick="location.href='/board/list'">목록으로</button>
+										<div class="addressListGroup">
+											<ul class="GroupList">
+												<li class="toggleItem">
+													<h3 class="toggleTit">
+														공지 사항
+													</h3>
+													<ul class="subList">
+														<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
+														</li>
+														<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+													</ul>
+												</li>
+											</ul>
 										</div>
 									</div>
 
-									<!-- 파일 리스트 모달 -->
-									<div class="files" id="fileModal">
-										<h4>첨부 파일</h4>
-										<div id="fileList">
-											<c:forEach var="file" items="${files}">
-												<div class="fileItem">
-													<a
-														href="/board/download?sysname=${file.sysname}&oriName=${file.oriname}">
-														${file.oriname}
-													</a>
+									<!--자유게시판 영역-->
+									<div class="sideContents board">
+										<form action="/board/update" method="post" id="fboardUpdate"
+											enctype="multipart/form-data" style="display:none">
+											<input type="hidden" id="hiddenT" name="title" value="${board.title}">
+											<input type="hidden" id="hiddenC" name="contents" value="${board.contents}">
+											<input type="hidden" name="board_seq" value="${board.board_seq}">
+											<input type="file" id="file" multiple name="files">
+										</form>
+										<c:choose>
+											<c:when test="${board_code=='1'}">
+												<div class="mainTitle">자유게시판 상세</div>
+											</c:when>
+											<c:when test="${board_code=='2'}">
+												<div class="mainTitle">공지게시판 상세</div>
+											</c:when>
+										</c:choose>
 
-													<!-- 
+										<div class="boardDetail">
+											<div class="detail">
+												<div class="detailTop">
+													<div class="top">
+														<div class="topTitle" contenteditable="false">${board.title}
+														</div>
+														<div class="topFile">
+															<!-- data 속성으로 게시글과 사용자 정보를 저장함. -->
+															<i class='bx bx-star' id="starIcon"
+																data-board-seq="${board.board_seq}"
+																data-emp-no="${employee.emp_no }"></i><i
+																class='bx bx-file-blank' id="fileIcon"></i>
+														</div>
+													</div>
+													<div class="top">
+														<div class="writeAbout">
+															<span>${board.emp_no}</span> <span>
+																<fmt:formatDate value="${board.write_date}"
+																	pattern="yyyy-MM-dd" />
+															</span> <span><i class="fa-regular fa-eye"></i>
+																${board.views}</span>
+														</div>
+
+														<!-- 신고하기 버튼 -->
+														<c:choose>
+															<c:when test="${board_code=='1'}">
+																<div class="writeReport">
+																	<button id="reportBtn">
+																		<i class='bx bx-message-alt-error'></i> 신고하기
+																	</button>
+																</div>
+															</c:when>
+														</c:choose>
+													</div>
+												</div>
+
+												<div class="detailCen" contenteditable="false">${board.contents}
+												</div>
+												<div class="docuFiles" style="display: none;">
+													<label for="file">🔗 파일 선택</label>
+													`
+													<span class="uploadFiles"></span>
+
+												</div>
+
+												<div class="detailBott">
+													<!-- 수정 및 삭제버튼 jstl 사용! -->
+													<c:if test="${board.emp_no eq Nickname}">
+														<button type="button" class="btn btn-outline-success"
+															id="fboardCom" style="display:none">완료</button>
+														<button type="button" class="btn btn-ouline-success"
+															id="fboardCan" style="display:none">취소</button>
+														<button type="button" class="btn btn-outline-success"
+															id="fboardUpd">수정</button>
+														<button type="button" class="btn btn-outline-success"
+															id="fboardDel"
+															onclick="deleteBoard(${board.board_seq})">삭제</button>
+													</c:if>
+													<button type="button" class="btn btn-outline-primary"
+														onclick="location.href='/board/list?boardCode=${board_code}'">목록으로</button>
+												</div>
+											</div>
+
+											<!-- 파일 리스트 모달 -->
+											<div class="files" id="fileModal">
+												<h4>첨부 파일</h4>
+												<div id="fileList">
+													<c:forEach var="file" items="${files}">
+														<div class="fileItem">
+															<a
+																href="/board/download?sysname=${file.sysname}&oriName=${file.oriname}">
+																${file.oriname}
+															</a>
+
+															<!-- 
 														1. 화면상 파일 삭제하기
 														2. 수정 완료 버튼 누르면 파일 시퀀스 보내주기
 													 -->
 
-													<button class="fileDel" style="display: none;"
-														data-seq="${file.board_files_seq}">x</button>
-												</div>
-											</c:forEach>
-										</div>
-									</div>
-
-									<!-- reply 영역 -->
-									<div class="replyWrapper">
-										<span class="replyTxt"><i class='bx bx-message-alt-dots'></i>
-											댓글 달기</span>
-
-										<!-- 댓글 작성 폼 -->
-										<div class="reply">
-											<form action="/reply/registProc" method="post">
-												<div class="replyCont">
-													<textarea class="writeRly" contenteditable="true" name="contents"
-														placeholder="입력할 수 있는 글자 수는 최대 900자입니다."></textarea>
-													<input type="hidden" name="board_seq" value="${board.board_seq}">
-												</div>
-												<div class="replyBtn">
-													<button type="submit" class="btn btn-outline-secondary"
-														id="replyInst">작성하기</button>
-												</div>
-											</form>
-										</div>
-										<!-- 댓글 수 -->
-										<div class="replyCount">
-											<span>댓글 수 : </span><span>${replyList.size()}</span>
-										</div>
-
-										<!-- 댓글 리스트 -->
-										<div class="replyLists">
-											<c:forEach var="reply" items="${replyList}">
-												<div class="replyList">
-													<div class="replyTxt">
-														<!--임시로 푸바오 사진 넣어놈~! -->
-														<img src="/resources/img/푸바오.png" alt="">
-														<span>${reply.emp_no}</span>
-														<div class="replyDate">
-															<fmt:formatDate value="${reply.write_date}"
-																pattern="yyyy-MM-dd HH:mm" />
+															<button class="fileDel" style="display: none;"
+																data-seq="${file.board_files_seq}">x</button>
 														</div>
-													</div>
-													<div class="reply">
-														<div class="replyPrint" contenteditable="false">
-															${reply.contents}
-														</div>
-
-														<div class="replyBtn">
-															<c:if test="${reply.emp_no eq Nickname}">
-																<!-- 수정 아이콘-->
-																<img src="/resources/img/pen-to-square-solid.svg"
-																	class="updateReply">
-
-																<!-- 수정 완료 아이콘-->
-																<i class='bx bx-check updateRly' style="display: none;"
-																	data-seq="${reply.reply_seq}"> </i>
-																<!-- 수정 취소 아이콘-->
-																<i class='bx bx-x canRly' style="display: none;"
-																	data-seq="${reply.reply_seq}"></i>
-
-																<!-- 댓글 삭제 기능 -->
-																<!--삭제 버튼 이미지 -->
-																<img src="/resources/img/trash-solid.svg" alt="Delete"
-																	style="cursor:pointer;"
-																	onclick="submitDeleteForm(${reply.reply_seq});"
-																	class="delRly">
-																<button style="display: none;"
-																	class="replyDelBtn"></button>
-															</c:if>
-														</div>
-													</div>
+													</c:forEach>
 												</div>
-											</c:forEach>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<!--신고하기 모달창-->
-							<div id="modal" class="dialog">
-								<div class="tb">
-									<div class="inner">
-										<div class=" top">
-											<div class="title">신고하기</div>
-										</div>
-										<div class="ct">
-											<div class="reporter">
-												<div class="reportNick">신고자 닉네임</div>
-												<input class="reportInput" value="${board.emp_no}" readonly></input>
 											</div>
-											<div class="reportSort">
-												<div class="sort">신고 사유</div>
-												<div class="selectSort">
-													<form action="/report/insert" id="reportForm">
-														<select class="form-select form-select-sm"
-															aria-label="Small select example" name="target">
-															<option value="1" selected>욕설 및 비방</option>
-															<option value="2">스팸 및 광고</option>
-															<option value="3">음란물 및 부적절한 콘텐츠
-															</option>
-														</select>
-														<input type="hidden" name="board_seq"
-															value="${board.board_seq}">
 
+											<!-- reply 영역 -->
+											<div class="replyWrapper">
+												<span class="replyTxt"><i class='bx bx-message-alt-dots'></i>
+													댓글 달기</span>
+
+												<!-- 댓글 작성 폼 -->
+												<div class="reply">
+													<form action="/reply/registProc" method="post">
+														<div class="replyCont">
+															<textarea class="writeRly" contenteditable="true"
+																name="contents"
+																placeholder="입력할 수 있는 글자 수는 최대 900자입니다."></textarea>
+															<input type="hidden" name="board_seq"
+																value="${board.board_seq}">
+														</div>
+														<div class="replyBtn">
+															<button type="submit" class="btn btn-outline-secondary"
+																id="replyInst">작성하기</button>
+														</div>
 													</form>
 												</div>
+												<!-- 댓글 수 -->
+												<div class="replyCount">
+													<span>댓글 수 : </span><span>${replyList.size()}</span>
+												</div>
+
+												<!-- 댓글 리스트 -->
+												<div class="replyLists">
+													<c:forEach var="reply" items="${replyList}">
+														<div class="replyList">
+															<div class="replyTxt">
+																<!--임시로 푸바오 사진 넣어놈~! -->
+																<img src="/resources/img/푸바오.png" alt="">
+																<span>${reply.emp_no}</span>
+																<div class="replyDate">
+																	<fmt:formatDate value="${reply.write_date}"
+																		pattern="yyyy-MM-dd HH:mm" />
+																</div>
+															</div>
+															<div class="reply">
+																<div class="replyPrint" contenteditable="false">
+																	${reply.contents}
+																</div>
+
+																<div class="replyBtn">
+																	<c:if test="${reply.emp_no eq Nickname}">
+																		<!-- 수정 아이콘-->
+																		<img src="/resources/img/pen-to-square-solid.svg"
+																			class="updateReply">
+
+																		<!-- 수정 완료 아이콘-->
+																		<i class='bx bx-check updateRly'
+																			style="display: none;"
+																			data-seq="${reply.reply_seq}"> </i>
+																		<!-- 수정 취소 아이콘-->
+																		<i class='bx bx-x canRly' style="display: none;"
+																			data-seq="${reply.reply_seq}"></i>
+
+																		<!-- 댓글 삭제 기능 -->
+																		<!--삭제 버튼 이미지 -->
+																		<img src="/resources/img/trash-solid.svg"
+																			alt="Delete" style="cursor:pointer;"
+																			onclick="submitDeleteForm(${reply.reply_seq});"
+																			class="delRly">
+																		<button style="display: none;"
+																			class="replyDelBtn"></button>
+																	</c:if>
+																</div>
+															</div>
+														</div>
+													</c:forEach>
+												</div>
 											</div>
 										</div>
-										<div class="reportControls">
-											<a href="#" class="rClose">
-												<button type="button" class="btn btn-primary"
-													id="reportClose">닫기</button>
-											</a> <a href="#">
-												<button type="button" class="btn btn-danger"
-													id="reportInsert">신고하기</button>
-											</a>
+									</div>
+
+									<!--신고하기 모달창-->
+									<div id="modal" class="dialog">
+										<div class="tb">
+											<div class="inner">
+												<div class=" top">
+													<div class="title">신고하기</div>
+												</div>
+												<div class="ct">
+													<div class="reporter">
+														<div class="reportNick">신고자 닉네임</div>
+														<input class="reportInput" value="${board.emp_no}"
+															readonly></input>
+													</div>
+													<div class="reportSort">
+														<div class="sort">신고 사유</div>
+														<div class="selectSort">
+															<form action="/report/insert" id="reportForm">
+																<select class="form-select form-select-sm"
+																	aria-label="Small select example" name="target">
+																	<option value="1" selected>욕설 및 비방</option>
+																	<option value="2">스팸 및 광고</option>
+																	<option value="3">음란물 및 부적절한 콘텐츠
+																	</option>
+																</select>
+																<input type="hidden" name="board_seq"
+																	value="${board.board_seq}">
+
+															</form>
+														</div>
+													</div>
+												</div>
+												<div class="reportControls">
+													<a href="#" class="rClose">
+														<button type="button" class="btn btn-primary"
+															id="reportClose">닫기</button>
+													</a> <a href="#">
+														<button type="button" class="btn btn-danger"
+															id="reportInsert">신고하기</button>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
 						</div>
-					</div>
 				</div>
 
 
 
 
 				<script>
+
 					// JSP에서 계산된 파일의 길이를 JavaScript로 전달합니다.
 					let defaultFileLength = ${ filesSize };
 					var filesLength = ${ filesSize };
@@ -362,7 +348,6 @@
 
 							// 제목 내용 수정 가능하게 속성 지정
 							$(".topTitle").attr("contenteditable", true);
-							$(".detailCen").summernote('enable');
 
 							// 썸머노트 활성화
 							$('.detailCen').summernote({
@@ -520,8 +505,35 @@
 								fileModal.hide();
 							}
 						});
-					});
 
+						// 주소록 토글 이벤트 설정
+						const toggleItems = document.querySelectorAll('.toggleItem')
+						toggleItems.forEach(function (toggleItem) {
+							const toggleTit = toggleItem.querySelector('.toggleTit')
+							const subList = toggleItem.querySelector('.subList')
+
+							$(toggleTit).on('click', function () {
+								subList.classList.toggle('active')
+								toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
+							})
+						})
+					});
+					// 신고하기 제한
+					$('#reportInsert').on('click', function () {
+						$.ajax({
+							url: '/report/check',
+							data: {
+								boardSeq: '${board.board_seq}',
+							},
+							type: 'post',
+						}).done(function (resp) {
+							if (resp == 'true') {
+								$('#reportForm').submit()
+							} else {
+								alert('이미 신고된 게시물 입니다.')
+							}
+						})
+					})
 				</script>
 			</body>
 

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,14 +15,17 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.wit.commons.BoardConfig;
 import com.wit.dto.ApprLineDTO;
 import com.wit.dto.DocuDTO;
 import com.wit.dto.DocuFilesDTO;
@@ -71,7 +75,7 @@ public class EAppprovalController {
 
 	// 해당 문서의 상세 정보를 열람하는데 필요한 정보들을 담아서 전달하는 메서드
 	@RequestMapping("readDocu")
-	public String readDocu(int docuSeq, @RequestParam(required = false)String type, Model model) throws Exception {
+	public String readDocu(int docuSeq, @RequestParam(required = false) String type, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -86,34 +90,34 @@ public class EAppprovalController {
 		switch (dto.getDocu_code()) {
 		case "M1":
 			model.addAttribute("docuDetail", serv.getPropDetail(docuSeq));
-			//해당 문서를 열람하려는 목적에 따라 경로 설정
-			if(type == null) {
+			// 해당 문서를 열람하려는 목적에 따라 경로 설정
+			if (type == null) {
 				return "eApproval/read/readProp";
-			} else if(type.equals("saved")) {
+			} else if (type.equals("saved")) {
 				return "eApproval/save/saveProp";
-			} else if(type.equals("toAppr")) {
+			} else if (type.equals("toAppr")) {
 				return "eApproval/appr/apprProp";
 			}
 		case "M2":
 			model.addAttribute("docuDetail", serv.getLeaveDetail(docuSeq));
 			// 해당 사원의 잔여 연차 갯수 조회 후 전달
-			model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
-			//해당 문서를 열람하려는 목적에 따라 경로 설정
-			if(type == null) {
+			// model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
+			// 해당 문서를 열람하려는 목적에 따라 경로 설정
+			if (type == null) {
 				return "eApproval/read/readLeave";
-			} else if(type.equals("saved")) {
+			} else if (type.equals("saved")) {
 				return "eApproval/save/saveLeave";
-			} else if(type.equals("toAppr")) {
+			} else if (type.equals("toAppr")) {
 				return "eApproval/appr/apprLeave";
-			}	
+			}
 		case "M3":
 			model.addAttribute("docuDetail", serv.getLatenessDetail(docuSeq));
-			//해당 문서를 열람하려는 목적에 따라 경로 설정
-			if(type == null) {
+			// 해당 문서를 열람하려는 목적에 따라 경로 설정
+			if (type == null) {
 				return "eApproval/read/readLateness";
-			} else if(type.equals("saved")) {
+			} else if (type.equals("saved")) {
 				return "eApproval/save/saveLateness";
-			} else if(type.equals("toAppr")) {
+			} else if (type.equals("toAppr")) {
 				return "eApproval/appr/apprLateness";
 			}
 		default:
@@ -122,21 +126,146 @@ public class EAppprovalController {
 		}
 	}
 
+	// 해당 문서를 반려 처리하기 위한 메서드
+	@Transactional
+	@RequestMapping("returnDocu")
+	public String returnDocu(int docuSeq, String comments) throws Exception {
+
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+		List<ApprLineDTO> list = serv.getApprLine(docuSeq);
+
+		// 해당 사원의 결재 순서에 따라 결재 라인 정보 업데이트
+		for (int i = 0; i < 3; i++) {
+			ApprLineDTO dto = list.get(i);
+			if (dto.getEmp_no().equals(empNo)) {
+				dto.setComments(comments);
+				serv.insertComments(dto);
+				serv.updateApprLineAll(docuSeq, i + 1);
+				// 문서 상태 업데이트
+				serv.updateDocuStatus(docuSeq, "반려");
+				break;
+			}
+		}
+		return "redirect:/eApproval/apprList?type=todo";
+	}
+
+	// 해당 문서를 결재 처리하기 위한 메서드
+	@Transactional
+	@RequestMapping("apprDocu")
+	public String apprDocu(int docuSeq, String comments) throws Exception {
+
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+
+		// 해당 문서의 결재 라인과 해당 사원의 결재 순서 조회 후 변수에 저장
+		int apprOrder = 0;
+		for (ApprLineDTO dto : serv.getApprLine(docuSeq)) {
+			if (empNo.equals(dto.getEmp_no())) {
+				apprOrder = dto.getApproval_order();
+				break;
+			}
+		}
+		// 해당 사원의 결재 순서에 따라 결재 라인 정보 업데이트
+		switch (apprOrder) {
+		case 1:
+			serv.updateApprLine(docuSeq, 1, "결재 완료");
+			serv.updateApprLine(docuSeq, 2, "결재 대기");
+			serv.updateApprLine(docuSeq, 3, "결재 예정");
+			break;
+		case 2:
+			serv.updateApprLine(docuSeq, 2, "결재 완료");
+			serv.updateApprLine(docuSeq, 3, "결재 대기");
+			break;
+		case 3:
+			serv.updateApprLine(docuSeq, 3, "결재 완료");
+			serv.updateDocuStatus(docuSeq, "완료");
+			break;
+		default:
+			// 추후 에러 페이지로 변경
+			return "redirect:/eApproval/home";
+		}
+		return "redirect:/eApproval/apprList?type=todo";
+	}
+
+	// 해당 문서를 전결 처리하기 위한 메서드
+	@Transactional
+	@RequestMapping("apprAllDocu")
+	public String apprAllDocu(int docuSeq, String comments) throws Exception {
+
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+		List<ApprLineDTO> list = serv.getApprLine(docuSeq);
+
+		// 해당 사원의 결재 순서에 따라 결재 라인 정보 업데이트
+		for (int i = 0; i < 3; i++) {
+			ApprLineDTO dto = list.get(i);
+			if (dto.getEmp_no().equals(empNo)) {
+				dto.setComments(comments);
+				serv.insertComments(dto);
+				serv.updateApprLineAll(docuSeq, i + 1);
+				// 문서 상태 업데이트
+				serv.updateDocuStatus(docuSeq, "완료");
+				break;
+			}
+		}
+		return "redirect:/eApproval/apprList?type=todo";
+	}
+
+	@Transactional
+	@RequestMapping(value = { "/reSaveDocu", "/update" })
+	public String reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO,
+			HttpServletRequest request) throws Exception {
+
+		// 현재 요청된 URL을 확인 
+		String currentUrl = request.getRequestURI();
+		String type = null;
+		
+		// 요청된 URL에 따라 문서 상태 변경 및 이동 경로 설정
+		if (currentUrl.equals("/eApproval/reSaveDocu")) {
+			dto.setStatus("임시 저장");
+			type = "saved";
+		} else {
+			dto.setStatus("진행중");
+		}
+
+		// 문서 정보 업데이트 ( 작성일, 제목, 상태 )
+		serv.updateDocu(dto);
+
+		// 문서 양식에 따라 해당 문서의 세부 정보 업데이트
+		switch (dto.getDocu_code()) {
+		case "M1":
+			serv.updatePropDocu(wDTO);
+			break;
+		case "M2":
+			serv.updateLeaveDocu(lrDTO);
+			break;
+		case "M3":
+			serv.updateLatenessDocu(lnDTO);
+			break;
+		default:
+			break;
+		}
+		return "redirect:/eApproval/readDocu?docuSeq=" + dto.getDocument_seq() + "&type=" + type;
+	}
+
 	// 브라우저에서 선택한 type에 따라 결재하기 페이지로 이동 시 해당 페이지에서 초기에 노출할 데이터를 담아서 전달하는 메서드
 	@RequestMapping("apprList")
-	public String apprList(String type, String docuCode, Model model) throws Exception {
+	public String apprList(String type, String docuCode, int cPage, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
 
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장
-		List<DocuInfoListDTO> list = null;
+		List<DocuInfoListDTO> list = new ArrayList<>();
 		switch (type) {
 		case "todo":
-			list = serv.selectListByType(empNo, "결재 대기", docuCode);
+			list = serv.selectListByType(empNo, "결재 대기", docuCode, cPage);
+			model.addAttribute("totalCount", serv.getCountListByType(empNo, "결재 대기", docuCode));
 			break;
 		case "upcoming":
-			list = serv.selectListByType(empNo, "결재 예정", docuCode);
+			list = serv.selectListByType(empNo, "결재 예정", docuCode, cPage);
+			model.addAttribute("totalCount", serv.getCountListByType(empNo, "결재 예정", docuCode));
 			break;
 		default:
 			// 추후 에러 페이지로 변경
@@ -151,6 +280,9 @@ public class EAppprovalController {
 		model.addAttribute("docuCode", docuCode);
 		model.addAttribute("docuList", list);
 		model.addAttribute("type", type);
+		model.addAttribute("cPage", cPage);
+		model.addAttribute("recordCountPerPage", BoardConfig.recordCountPerPage);
+		model.addAttribute("naviCountPerPage", BoardConfig.naviCountPerPage);
 
 		// 해당 문서함 화면으로 이동
 		return "eApproval/list/" + type + "List";
@@ -158,7 +290,7 @@ public class EAppprovalController {
 
 	// 브라우저에서 선택한 type에 따라 개인 문서함 페이지로 이동 시 해당 페이지에서 초기에 노출할 데이터를 담아서 전달하는 메서드
 	@RequestMapping("privateList")
-	public String privateList(String type, String docuCode, Model model) throws Exception {
+	public String privateList(String type, String docuCode, int cPage, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -169,29 +301,52 @@ public class EAppprovalController {
 
 		switch (type) {
 		case "write":
-			list = serv.selectWriteList(empNo, docuCode);
+			list = serv.selectWriteList(empNo, docuCode, cPage);
 			// 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
 			for (DocuInfoListDTO dto : list) {
 				dto.setLast_appr_name(eServ.getName(dto.getLast_appr()));
 			}
 			model.addAttribute("docuList", list);
+			model.addAttribute("totalCount", serv.getCountWriteList(empNo, docuCode));
 			break;
 		case "save":
-			model.addAttribute("docuList", serv.selecSavetList(empNo, docuCode));
+			model.addAttribute("docuList", serv.selecSavetList(empNo, docuCode, cPage));
+			model.addAttribute("totalCount", serv.getCountSaveList(empNo, docuCode));
 			break;
 		case "approved":
-			model.addAttribute("docuList", serv.selectApprovedList(empNo, docuCode));
+			list = serv.selectApprovedList(empNo, docuCode, cPage);
+			// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+			for (DocuInfoListDTO dto : list) {
+				dto.setWriter(eServ.getName(dto.getEmp_no()));
+			}
+			model.addAttribute("docuList", list);
+			model.addAttribute("totalCount", serv.getCountApprovedList(empNo, docuCode));
 			break;
 		case "return":
-			model.addAttribute("docuList", serv.selectReturnList(empNo, docuCode));
+			list = serv.selectReturnList(empNo, docuCode, cPage);
+			// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+			for (DocuInfoListDTO dto : list) {
+				dto.setWriter(eServ.getName(dto.getEmp_no()));
+			}
+			model.addAttribute("docuList", list);
+			model.addAttribute("totalCount", serv.getCountReturnList(empNo, docuCode));
 			break;
 		case "view":
-			model.addAttribute("docuList", serv.selectViewList(empNo, docuCode));
+			list = serv.selectViewList(empNo, docuCode, cPage);
+			// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+			for (DocuInfoListDTO dto : list) {
+				dto.setWriter(eServ.getName(dto.getEmp_no()));
+			}
+			model.addAttribute("docuList", list);
+			model.addAttribute("totalCount", serv.getCountViewList(empNo, docuCode));
 			break;
 		default:
 			// 추후 에러 페이지로 변경
 			return "redirect:/eApproval/home";
 		}
+		model.addAttribute("cPage", cPage);
+		model.addAttribute("recordCountPerPage", BoardConfig.recordCountPerPage);
+		model.addAttribute("naviCountPerPage", BoardConfig.naviCountPerPage);
 		model.addAttribute("docuCode", docuCode);
 
 		// 해당 문서함 화면으로 이동
@@ -204,6 +359,13 @@ public class EAppprovalController {
 	public List<DocuListDTO> getDocuList() throws Exception {
 		List<DocuListDTO> list = serv.getDocuList();
 		return list;
+	}
+
+	// 임시 저장 상태인 해당 문서를 삭제하기 위한 메서드
+	@RequestMapping("delDocu")
+	public String delDocu(int docuSeq) throws Exception {
+		serv.delDocu(docuSeq);
+		return "redirect:/eApproval/privateList?type=save";
 	}
 
 	// 전자 결재 작성페이지로 이동 시 노출할 데이터를 담아서 전달하는 메서드
@@ -233,7 +395,7 @@ public class EAppprovalController {
 			return "eApproval/write/writeProp";
 		case "M2":
 			// 해당 사원의 잔여 연차 갯수 조회 후 전달
-			//model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
+			// model.addAttribute("remaingLeaves", aServ.getRemainingLeaves(empNo));
 			return "eApproval/write/writeLeave";
 		case "M3":
 			return "eApproval/write/writeLateness";
@@ -258,7 +420,7 @@ public class EAppprovalController {
 		String currentUrl = request.getRequestURI();
 
 		// 요청된 URL에 따라 분기 처리
-		if ("/eApproval/write/Prop".equals(currentUrl)) {
+		if (currentUrl.equals("/eApproval/write/Prop")) {
 
 			// 문서 상태 설정
 			dto.setStatus("진행중");
@@ -271,7 +433,7 @@ public class EAppprovalController {
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
 
-		} else if ("/eApproval/write/tempProp".equals(currentUrl)) {
+		} else if (currentUrl.equals("/eApproval/write/tempProp")) {
 
 			// 문서 상태 설정
 			dto.setStatus("임시 저장");
@@ -314,7 +476,7 @@ public class EAppprovalController {
 		String currentUrl = request.getRequestURI();
 
 		// 요청된 URL에 따라 분기 처리
-		if ("/eApproval/write/Lateness".equals(currentUrl)) {
+		if (currentUrl.equals("/eApproval/write/Lateness")) {
 
 			// 문서 상태 설정
 			dto.setStatus("진행중");
@@ -327,7 +489,7 @@ public class EAppprovalController {
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
 
-		} else if ("/eApproval/write/tempLateness".equals(currentUrl)) {
+		} else if (currentUrl.equals("/eApproval/write/tempLateness")) {
 
 			// 문서 상태 설정
 			dto.setStatus("임시 저장");
@@ -369,7 +531,7 @@ public class EAppprovalController {
 		String currentUrl = request.getRequestURI();
 
 		// 요청된 URL에 따라 분기 처리
-		if ("/eApproval/write/Leave".equals(currentUrl)) {
+		if (currentUrl.equals("/eApproval/write/Leave")) {
 
 			// 문서 상태 설정
 			dto.setStatus("진행중");
@@ -382,7 +544,7 @@ public class EAppprovalController {
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[1], "결재 예정", 2));
 			serv.setApprLine(new ApprLineDTO(docuSeq, apprList[2], "결재 예정", 3));
 
-		} else if ("/eApproval/write/tempLeave".equals(currentUrl)) {
+		} else if (currentUrl.equals("/eApproval/write/tempLeave")) {
 
 			// 문서 상태 설정
 			dto.setStatus("임시 저장");
@@ -409,11 +571,94 @@ public class EAppprovalController {
 		return dto.getDocument_seq();
 	}
 	
-	// 임시 저장 페이지에서 지각 사유서 문서의 내용을 업데이트 하기 위한 메서드
-	@ResponseBody
-	@RequestMapping(value = { "/saved/Lateness", "/saved/tempLateness" }, produces = "application/json;charset=utf8")
-	public void updateLateness(int docuSeq, DocuDTO dto, LatenessDTO subDTO) throws Exception {
-		
+	@RequestMapping("search/{pathVariable}")
+	public String getSearchData(@PathVariable("pathVariable") String pathVar, String type, String docuCode,
+			String keyword, int cPage, Model model) throws Exception {
+
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+
+		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장 후 model 객체로 전달
+		List<DocuInfoListDTO> list = new ArrayList<>();
+		model.addAttribute("type", type);
+		model.addAttribute("keyword", keyword);
+
+		switch (pathVar) {
+		case "apprList":
+			if(type.equals("todo")) {
+				list = serv.searchListByType(empNo, "결재 대기", docuCode, keyword, cPage);
+				model.addAttribute("totalCount", serv.getCountSearchListByType(empNo, "결재 대기", docuCode, keyword));
+			} else if (type.equals("upcoming")) {
+				list = serv.searchListByType(empNo, "결재 예정", docuCode, keyword, cPage);
+				model.addAttribute("totalCount", serv.getCountSearchListByType(empNo, "결재 예정", docuCode, keyword));
+			} else {
+				// 추후 에러 페이지로 변경
+				return "redirect:/eApproval/home";
+			}
+			// 작성자와 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 model 객체로 전달
+			for (DocuInfoListDTO dto : list) {
+				dto.setWriter(eServ.getName(dto.getEmp_no()));
+				dto.setLast_appr_name(eServ.getName(dto.getLast_appr()));
+			}
+			model.addAttribute("docuList", list);
+			break;
+		case "privateList":
+			if (type.equals("write")) {
+				list = serv.searchWriteList(empNo, docuCode, keyword, cPage);
+				// 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+				for (DocuInfoListDTO dto : list) {
+					dto.setLast_appr_name(eServ.getName(dto.getLast_appr()));
+				}
+				model.addAttribute("docuList", list);
+				model.addAttribute("totalCount", serv.getCountSearchWriteList(empNo, docuCode, keyword));
+				
+			} else if (type.equals("save")) {
+				model.addAttribute("docuList", serv.searchSavetList(empNo, docuCode, keyword, cPage));
+				model.addAttribute("totalCount", serv.getCountSearchSaveList(empNo, docuCode, keyword));
+				
+			} else if (type.equals("approved")) {
+				list = serv.searchApprovedList(empNo, docuCode, keyword, cPage);
+				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+				for (DocuInfoListDTO dto : list) {
+					dto.setWriter(eServ.getName(dto.getEmp_no()));
+				}
+				model.addAttribute("docuList", list);
+				model.addAttribute("totalCount", serv.getCountSearchApprovedList(empNo, docuCode, keyword));
+				
+			} else if (type.equals("return")) {
+				list = serv.searchReturnList(empNo, docuCode, keyword, cPage);
+				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+				for (DocuInfoListDTO dto : list) {
+					dto.setWriter(eServ.getName(dto.getEmp_no()));
+				}
+				model.addAttribute("docuList", list);
+				model.addAttribute("totalCount", serv.getCountSearchReturnList(empNo, docuCode, keyword));
+				
+			} else if (type.equals("view")) {
+				list = serv.searchViewList(empNo, docuCode, keyword, cPage);
+				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
+				for (DocuInfoListDTO dto : list) {
+					dto.setWriter(eServ.getName(dto.getEmp_no()));
+				}
+				model.addAttribute("docuList", list);
+				model.addAttribute("totalCount", serv.getCountSearchViewList(empNo, docuCode, keyword));
+			} else {
+				// 추후 에러 페이지로 변경
+				return "redirect:/eApproval/home";
+			}
+			break;
+		default:
+			// 추후 에러 페이지로 변경
+			return "redirect:/eApproval/home";
+		}
+	
+		model.addAttribute("cPage", cPage);
+		model.addAttribute("recordCountPerPage", BoardConfig.recordCountPerPage);
+		model.addAttribute("naviCountPerPage", BoardConfig.naviCountPerPage);
+		model.addAttribute("docuCode", docuCode);
+
+		// 해당 문서함 화면으로 이동
+		return "eApproval/searchList/" + type + "List";
 	}
 
 	// 결재 문서 작성 완료 시 파일을 업로드 하기 위한 메서드
@@ -422,7 +667,7 @@ public class EAppprovalController {
 
 		// 파일을 저장할 서버 경로 설정 및 파일 업로드
 		String realPath = session.getServletContext().getRealPath("eApproval/upload");
-		// System.out.println(realPath);
+		System.out.println(realPath);
 		fServ.uploadDocuFile(docuSeq, realPath, file);
 
 		return "redirect:/eApproval/home";

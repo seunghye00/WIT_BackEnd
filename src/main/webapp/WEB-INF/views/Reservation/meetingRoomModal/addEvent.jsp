@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<form action="/reservation/meetingRoom/addEvent" method="post" id="reservRoomForm">
-<input type="hidden" value="${meetingRoomInfo.room_seq}" name="room_seq">
+<input type="hidden" value="${meetingRoomInfo.room_seq}" id="roomSeq">
 <div id="reservModal" class="modal">
 	<div class="modalContent">
 		<h1>
@@ -22,8 +21,6 @@
 						<input type="date" class="dateInput" id="bookingDate" readonly>&nbsp;&nbsp;
 						<input type="time" class="dateInput" id="startTime" min="10:00" max="17:00" value="10:00">&nbsp;&nbsp;~&nbsp;&nbsp;
 						<input type="time" class="dateInput" id="endTime" min="10:00" max="17:00" value="11:00">
-						<input type="hidden" name="startDate" id="startDate">
-						<input type="hidden" name="endDate" id="endDate">
 					</div>
 				</li>
 				<li>
@@ -35,7 +32,7 @@
 				<li>
 					<span>예약 목적</span>
 					<div>
-						<textarea id="purpose" name="purpose"></textarea>
+						<textarea id="purpose"></textarea>
 					</div>
 				</li>
 				<li>
@@ -48,4 +45,3 @@
 		</div>
 	</div>
 </div>
-</form>
