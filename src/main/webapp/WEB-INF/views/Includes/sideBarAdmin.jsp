@@ -14,17 +14,14 @@
 	<ul>
 		<li><a href="/employee/main"> <i class='bx bxs-home-alt-2'></i>
 				<span class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
-		<li><a href="/addressbook/addressbook"> <i
-				class='bx bx-paperclip'></i> <span class="navItem">주소록</span></a> <span
-			class="toolTip">주소록</span></li>
+		<li><a href="javascript:;"> <i class='bx bx-edit'></i>
+			<span class="navItem">사원 관리</span></a> <span
+		class="toolTip">사원 관리</span></li>
 		<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i> <span
 				class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
 		<li><a href="/calendar/calendar"> <i
 				class='bx bx-calendar-alt'></i> <span class="navItem">캘린더</span></a> <span
 			class="toolTip">캘린더</span></li>
-		<li><a href="/messenger/messenger"> <i
-				class='bx bxs-message-dots'></i> <span class="navItem">메신저</span></a> <span
-			class="toolTip">메신저</span></li>
 		<li><a href="/eApproval/home"> <i class='bx bx-clipboard'></i> <span
 				class="navItem">전자결재</span></a> <span class="toolTip">전자결재</span></li>
 		<li><a href="/attendance/attendance"> <i
