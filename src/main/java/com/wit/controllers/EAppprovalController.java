@@ -180,6 +180,12 @@ public class EAppprovalController {
 		case 3:
 			serv.updateApprLine(docuSeq, 3, "결재 완료");
 			serv.updateDocuStatus(docuSeq, "완료");
+
+			// 최종 승인 후 휴가 처리
+			LeaveRequestDTO leaveRequest = serv.getLeaveDetail(docuSeq);
+			if (leaveRequest != null) {
+				aServ.processLeaveApproval(leaveRequest);
+			}
 			break;
 		default:
 			// 추후 에러 페이지로 변경
@@ -217,10 +223,10 @@ public class EAppprovalController {
 	public String reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO,
 			HttpServletRequest request) throws Exception {
 
-		// 현재 요청된 URL을 확인 
+		// 현재 요청된 URL을 확인
 		String currentUrl = request.getRequestURI();
 		String type = null;
-		
+
 		// 요청된 URL에 따라 문서 상태 변경 및 이동 경로 설정
 		if (currentUrl.equals("/eApproval/reSaveDocu")) {
 			dto.setStatus("임시 저장");
@@ -570,7 +576,7 @@ public class EAppprovalController {
 		}
 		return dto.getDocument_seq();
 	}
-	
+
 	@RequestMapping("search/{pathVariable}")
 	public String getSearchData(@PathVariable("pathVariable") String pathVar, String type, String docuCode,
 			String keyword, int cPage, Model model) throws Exception {
@@ -585,7 +591,7 @@ public class EAppprovalController {
 
 		switch (pathVar) {
 		case "apprList":
-			if(type.equals("todo")) {
+			if (type.equals("todo")) {
 				list = serv.searchListByType(empNo, "결재 대기", docuCode, keyword, cPage);
 				model.addAttribute("totalCount", serv.getCountSearchListByType(empNo, "결재 대기", docuCode, keyword));
 			} else if (type.equals("upcoming")) {
@@ -611,11 +617,11 @@ public class EAppprovalController {
 				}
 				model.addAttribute("docuList", list);
 				model.addAttribute("totalCount", serv.getCountSearchWriteList(empNo, docuCode, keyword));
-				
+
 			} else if (type.equals("save")) {
 				model.addAttribute("docuList", serv.searchSavetList(empNo, docuCode, keyword, cPage));
 				model.addAttribute("totalCount", serv.getCountSearchSaveList(empNo, docuCode, keyword));
-				
+
 			} else if (type.equals("approved")) {
 				list = serv.searchApprovedList(empNo, docuCode, keyword, cPage);
 				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
@@ -624,7 +630,7 @@ public class EAppprovalController {
 				}
 				model.addAttribute("docuList", list);
 				model.addAttribute("totalCount", serv.getCountSearchApprovedList(empNo, docuCode, keyword));
-				
+
 			} else if (type.equals("return")) {
 				list = serv.searchReturnList(empNo, docuCode, keyword, cPage);
 				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
@@ -633,7 +639,7 @@ public class EAppprovalController {
 				}
 				model.addAttribute("docuList", list);
 				model.addAttribute("totalCount", serv.getCountSearchReturnList(empNo, docuCode, keyword));
-				
+
 			} else if (type.equals("view")) {
 				list = serv.searchViewList(empNo, docuCode, keyword, cPage);
 				// 기안자의 사번 정보로 이름을 조회해서 dto에 저장 후 전달
@@ -651,7 +657,7 @@ public class EAppprovalController {
 			// 추후 에러 페이지로 변경
 			return "redirect:/eApproval/home";
 		}
-	
+
 		model.addAttribute("cPage", cPage);
 		model.addAttribute("recordCountPerPage", BoardConfig.recordCountPerPage);
 		model.addAttribute("naviCountPerPage", BoardConfig.naviCountPerPage);
