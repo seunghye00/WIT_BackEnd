@@ -35,6 +35,7 @@ import com.wit.dto.DocuInfoListDTO;
 import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
 import com.wit.dto.LeaveRequestDTO;
+import com.wit.dto.RefeLineDTO;
 import com.wit.dto.WorkPropDTO;
 import com.wit.services.AnnualLeaveService;
 import com.wit.services.EApprovalService;
@@ -77,29 +78,36 @@ public class EApprovalController {
 
 	// 해당 문서의 상세 정보를 열람하는데 필요한 정보들을 담아서 전달하는 메서드
 	@RequestMapping("readDocu")
-	public String readDocu(int docuSeq, @RequestParam(required = false) String type, Model model) throws Exception {
+	public String readDocu(int docuSeq, @RequestParam(required = false) String type, @RequestParam(required = false) String readYN, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
 		
-		// 해당 문서의 내용, 결재 라인, 참조 라인을 model 객체에 담아서 상세 페이지로 이동
+		// 해당 문서의 내용, 기안자 정보, 결재 라인, 문서 열람 목적을 model 객체에 저장
 		DocuDTO dto = serv.getDocuInfo(docuSeq);
 		model.addAttribute("docuInfo", dto);
 		model.addAttribute("writerInfo", eServ.getNameNDept(dto.getEmp_no()));
 		model.addAttribute("apprList", serv.getApprLine(docuSeq));
-		model.addAttribute("refeList", serv.getRefeLine(docuSeq));
 		model.addAttribute("type", type);
 		
 		if (type == null) {
 			type = "read";
 		}
-		// 임시 저장 페이지가 아닌 경우에만 해당 게시물에 등록된 파일 목록을 조회 후 존재한다면 model 객체에 담아서 상세 페이지로 이동
+		// 임시 저장 페이지가 아닌 경우에만 해당 게시물에 등록된 파일 목록을 조회 후 존재한다면 model 객체에 저장
 		if(!type.equals("saved")) {
 			List<DocuFilesDTO> fileList = fServ.getList(docuSeq);
 			if (fileList.size() > 0) {
 				model.addAttribute("files", fileList);
 			}
 		}
+		
+		// 참조 문서함에서 문서 열람 시 문서 열람 여부와 열람 일시 업데이트 후 참조 라인 정보를 model 객체에 저장
+		if(type.equals("read") && readYN != null) {
+			System.out.println(readYN);
+			serv.updateReadYN(docuSeq, empNo, readYN);
+		}
+		model.addAttribute("refeList", serv.getRefeLine(docuSeq));
+		
 		// 문서 양식에 따라 각 문서의 세부 정보를 받아오는 메서드 호출
 		switch (dto.getDocu_code()) {
 		case "M1":

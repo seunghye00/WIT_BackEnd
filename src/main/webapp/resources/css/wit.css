@@ -2845,18 +2845,39 @@ span.return {
 }
 
 .eApprWrite .document .choiBox .refeModal {
-	display: none;
+	display: none;    
 	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
-	border: 1px solid #555;
-	width: 134px;
-	min-height: 63px;
-	position: absolute;
-	top: -3px;
-	right: -143px;
-	border-radius: 10px;
-	background: #fff;
-	padding: 20px 10px;
-	text-align: center;
+    border: 1px solid #555;
+    min-width: 117px;
+    width: max-content;
+    min-height: 63px;
+    position: absolute;
+    top: -3px;
+    left: 394px;
+    border-radius: 10px;
+    background: #fff;
+    padding: 20px;
+}
+
+.eApprWrite.eApprSaved .document .choiBox .refeModal {
+	left: 478px;
+}
+
+.eApprWrite.eApprRead .document .choiBox .refeModal {
+	left: 270px;
+}
+
+.eApprWrite.eApprAppr .document .choiBox .refeModal {
+	left: 336px;
+}
+
+.eApprWrite .document .choiBox .refeModal li span {
+	padding: 0 5px;
+	color: #558BCF;
+}
+
+.eApprWrite .document .choiBox .refeModal li span.beforeRead {
+	color: #dc3545;
 }
 
 .eApprWrite .document .choiBox .refeModal li {
@@ -3481,6 +3502,12 @@ button:nth-child(4) img {
 .eApproval .docuList.docuBox .listBox.approvedList .rows .cols:nth-child(4),
 .eApproval .docuList.docuBox .listBox.viewList .rows .cols:nth-child(4) {
 	width: 45%;
+}
+
+.eApproval .docuList.docuBox .listBox.viewList .rows .cols:nth-child(4) .beforeRead {
+	padding: 0 5px;
+	font-size: 16px;
+	color: #dc3545;
 }
 
 .eApproval .docuList.docuBox .listBox.writeList .rows .cols:nth-child(7) {
@@ -4176,6 +4203,20 @@ button:nth-child(4) img {
 
 .reservation .reservList .listBox .rows .cols:nth-child(5) {
 	width: 10%;
+}
+
+.reservation .reservList .listBox.roomList .rows .cols:nth-child(1),
+.reservation .reservList .listBox.roomList .rows .cols:nth-child(2) {
+	width: 10%;
+}
+
+.reservation .reservList .listBox.roomList .rows .cols:nth-child(3) {
+	width: 50%;
+}
+
+.reservation .reservList .listBox.roomList .rows .cols:nth-child(4),
+.reservation .reservList .listBox.roomList .rows .cols:nth-child(5) {
+	width: 15%;
 }
 
 .reservation .reservList .listBox .rows .cols span {

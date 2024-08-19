@@ -32,7 +32,7 @@
 						<%@ include file="/WEB-INF/views/Reservation/commons/toolbar.jsp"%>
 						<c:choose>
 							<c:when test="${type eq 'meetingRoom'}">
-								<div class="listBox">
+								<div class="listBox roomList">
 									<div class="rows listHeader">
 										<div class="cols">
 											<span>회의실 명</span>
@@ -94,7 +94,7 @@
 								</div>
 							</c:when>
 							<c:otherwise>
-								<div class="listBox">
+								<div class="listBox vehicleList">
 									<div class="rows listHeader">
 										<div class="cols">
 											<span>차량 명</span>

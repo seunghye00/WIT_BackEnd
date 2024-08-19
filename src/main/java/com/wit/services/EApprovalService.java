@@ -122,11 +122,12 @@ public class EApprovalService {
 	}
 
 	// 해당 문서의 참조 라인 정보를 넘겨주기 위한 메서드
-	public List<String> getRefeLine(int docuSeq) {
-		List<String> list = new ArrayList<>(); // 리스트 초기화
-		for (RefeLineDTO dto : dao.getRefeLine(docuSeq)) {
+	public List<RefeLineDTO> getRefeLine(int docuSeq) {
+		List<RefeLineDTO> list = dao.getRefeLine(docuSeq);
+		for(RefeLineDTO dto : list) {
 			String empNo = dto.getEmp_no();
-			list.add(eDao.getName(empNo) + " " + eDao.getRole(empNo));
+			dto.setName(eDao.getName(empNo));
+			dto.setRole_title(eDao.getRole(empNo));
 		}
 		return list;
 	}
@@ -264,5 +265,10 @@ public class EApprovalService {
 	// 해당 사원이 참조자인 문서 목록 중 검색 후의 총 갯수를 넘겨주기 위한 메서드
 	public int getCountSearchViewList(String empNo, String docuCode, String keyword) {
 		return dao.getCountSearchViewList(empNo, docuCode, keyword);
+	}
+
+	// 해당 문서의 참조자인 해당 사원의 읽음 여부와 읽은 시간을 업데이트 하기 위한 메서드
+	public void updateReadYN(int docuSeq, String empNo, String readYN) {
+		dao.updateReadYN(docuSeq, empNo, readYN);
 	}
 }
