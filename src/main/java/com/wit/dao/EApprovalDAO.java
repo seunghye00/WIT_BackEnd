@@ -389,4 +389,13 @@ public class EApprovalDAO {
 		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
 		return mybatis.selectList("eApproval.searchViewList", params);
 	}
+
+	// 해당 문서의 참조자인 해당 사원의 읽음 여부와 읽은 시간을 업데이트 하기 위한 메서드
+	public void updateReadYN(int docuSeq, String empNo, String readYN) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuSeq", docuSeq);
+		params.put("readYN", readYN);
+		mybatis.update("eApproval.updateReadYN", params);
+	}
 }

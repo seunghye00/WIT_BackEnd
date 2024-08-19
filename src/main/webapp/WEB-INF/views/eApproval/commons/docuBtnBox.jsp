@@ -15,7 +15,7 @@
 		<button class="purple refeBtn" type="button">참조선</button>
 	</c:when>
 	<c:otherwise>
-		<button class="green" type="button">코멘트</button>
+		<button class="green viewComm" type="button">코멘트</button>
 		<button class="grey goBack" type="button">목록</button>
 		<button class="purple refeBtn" type="button">참조선</button>
 	</c:otherwise>

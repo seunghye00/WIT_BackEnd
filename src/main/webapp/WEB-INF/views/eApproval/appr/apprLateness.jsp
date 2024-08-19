@@ -37,7 +37,7 @@
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
-				<div class="sideContents eApprWrite">
+				<div class="sideContents eApprWrite eApprAppr">
 					<div class="mainTitle">문서 결재 ( 지각 사유서 )</div>
 					<input type="hidden" name="document_seq" value="${docuSeq}">
 					<div class="document">

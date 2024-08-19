@@ -30,17 +30,16 @@
 					</div>
 					<div class="sideBtnBox">
 						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
-						<%@ include
-							file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp"%>
+						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp"%>
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
-				<div class="sideContents eApprWrite">
+				<div class="sideContents eApprWrite eApprRead">
 					<div class="mainTitle">문서 열람 ( 휴가 신청서 )</div>
 					<div class="document">
 						<div class="choiBox">
-							<%@ include
-								file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
+							<%@ include file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
+							<%@ include file="/WEB-INF/views/eApproval/commons/commModal.jsp"%>
 							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">

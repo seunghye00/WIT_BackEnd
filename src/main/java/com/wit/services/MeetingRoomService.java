@@ -15,9 +15,9 @@ public class MeetingRoomService {
 	@Autowired
 	private MeetingRoomDAO dao;
 
-	// 회의실 목록을 넘겨주기 위한 메서드
-	public List<MeetingRoomDTO> getMeetingRoomList() {
-		return dao.getMeetingRoomList();
+	// 예약 가능한 회의실 목록을 넘겨주기 위한 메서드
+	public List<MeetingRoomDTO> getMeetingRoomList(String status) {
+		return dao.getMeetingRoomList(status);
 	}
 	
 	// 해당 회의실 정보를 넘겨주기 위한 메서드
@@ -38,5 +38,25 @@ public class MeetingRoomService {
 	// 회의실 예약 시간이 겹치는지 확인하기 위한 메서드
 	public int checkBooking(RoomBookingDTO dto) {
 		return dao.checkBooking(dto);
+	}
+
+	// 해당 사원의 모든 회의실 예약 정보를 조회하기 위한 메서드
+	public List<RoomBookingDTO> getAllRoomBookingByEmpNo(String empNo, int cPage) {
+		return dao.getAllRoomBookingByEmpNo(empNo, cPage);
+	}
+
+	// 해당 사원의 모든 회의실 예약 정보 갯수를 조회하기 위한 메서드
+	public int getCountRoomBookingList(String empNo) {
+		return dao.getCountRoomBookingList(empNo);
+	}
+
+	// 해당 사원의 검색한 회의실 예약 정보를 조회하기 위한 메서드
+	public List<RoomBookingDTO> getSearchRoomBookingByEmpNo(String empNo, String keyword, int cPage) {
+		return dao.getSearchRoomBookingByEmpNo(empNo, keyword, cPage);
+	}
+
+	// 해당 사원의 검색한 회의실 예약 정보 갯수를 조회하기 위한 메서드
+	public int getCountSearchRoomBookingList(String empNo, String keyword) {
+		return dao.getCountSearchRoomBookingList(empNo, keyword);
 	}
 }

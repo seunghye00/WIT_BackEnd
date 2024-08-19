@@ -306,8 +306,8 @@
 		select * from (
 			select
 				d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
-				d.status status, done_date,
-				row_number() over (order by emer_yn desc, write_date desc) as rn
+				d.status status, done_date, r.read_yn,
+				row_number() over (order by read_yn, emer_yn desc, write_date desc) as rn
 			from
 				documents d
 			join
@@ -627,4 +627,9 @@
 				</if>
 		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
 	</select>
+	
+	<!-- 해당 문서의 참조자인 해당 사원의 읽음 여부와 읽은 시간을 업데이트 하기 위한 쿼리문 -->
+	<update id="updateReadYN">
+		update reference_line set read_yn = #{readYN}, read_date = sysdate where document_seq = #{docuSeq} and emp_no = #{empNo}
+	</update>
 </mapper>

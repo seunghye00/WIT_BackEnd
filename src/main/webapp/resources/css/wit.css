@@ -2816,7 +2816,7 @@ span.return {
 	height: 28px;
 }
 
-.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList) .rows:not(.listHeader) .cols:last-child span {
+.eApproval .docuList .listBox:not(.todoList, .upcomingList, .saveList, .returnList) .rows:not(.listHeader) .cols:last-child span {
 	border-radius: 5px;
 	color: #fff;
 	padding: 5px;
@@ -2845,18 +2845,39 @@ span.return {
 }
 
 .eApprWrite .document .choiBox .refeModal {
-	display: none;
+	display: none;    
 	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
-	border: 1px solid #555;
-	width: 134px;
-	min-height: 63px;
-	position: absolute;
-	top: -3px;
-	right: -143px;
-	border-radius: 10px;
-	background: #fff;
-	padding: 20px 10px;
-	text-align: center;
+    border: 1px solid #555;
+    min-width: 117px;
+    width: max-content;
+    min-height: 63px;
+    position: absolute;
+    top: -3px;
+    left: 394px;
+    border-radius: 10px;
+    background: #fff;
+    padding: 20px;
+}
+
+.eApprWrite.eApprSaved .document .choiBox .refeModal {
+	left: 478px;
+}
+
+.eApprWrite.eApprRead .document .choiBox .refeModal {
+	left: 270px;
+}
+
+.eApprWrite.eApprAppr .document .choiBox .refeModal {
+	left: 336px;
+}
+
+.eApprWrite .document .choiBox .refeModal li span {
+	padding: 0 5px;
+	color: #558BCF;
+}
+
+.eApprWrite .document .choiBox .refeModal li span.beforeRead {
+	color: #dc3545;
 }
 
 .eApprWrite .document .choiBox .refeModal li {
@@ -3483,6 +3504,12 @@ button:nth-child(4) img {
 	width: 45%;
 }
 
+.eApproval .docuList.docuBox .listBox.viewList .rows .cols:nth-child(4) .beforeRead {
+	padding: 0 5px;
+	font-size: 16px;
+	color: #dc3545;
+}
+
 .eApproval .docuList.docuBox .listBox.writeList .rows .cols:nth-child(7) {
 	width: 8%;
 	justify-content: flex-start;
@@ -3494,10 +3521,6 @@ button:nth-child(4) img {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-}
-
-.eApproval .docuBox .pagination a.disabled {
-	cursor: default;
 }
 
 /* 전자 결재 문서 결재 & 반려 모달창 */
@@ -3566,6 +3589,69 @@ button:nth-child(4) img {
 	display: flex;
 	align-items: end;
 	gap: 10px;
+}
+
+/* 전자 결재 문서 코멘트 모달창 */
+.commModal {
+	display: none;
+	border: 1px solid black;
+	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
+	background-color: #fff;
+	border-radius: 10px;
+	font-size: 18px;
+	position: absolute;
+	top: 13vh;
+	left: 22vw;
+	width: 540px;
+	height: 300px;
+	padding: 30px 25px;
+	z-index: 2;
+	flex-direction: column;
+	align-items: center;
+	gap: 15px;
+}
+
+.commModal.flex {
+	display: flex;
+}
+
+.commModal .commModalTitle {
+	flex: 1;
+	font-size: 24px;
+}
+
+.commModal .commList {
+	flex: 9;
+	width:100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.commModal .commList .apprList {
+	flex: 1;
+	display: flex;
+	gap: 15px;
+	justify-content: center;
+}
+
+.commModal .commList .apprList .approver {
+	display: flex;
+	border: 1px solid #c7c7c7;
+	border-radius: 10px;
+	flex: 2;
+	padding: 10px;
+	align-items: center;
+	justify-content: center;
+}
+
+.commModal .commList .apprList .comm {
+	border: 1px solid #c7c7c7;
+	border-radius: 10px;
+	flex: 8;
+	padding: 10px;
+	display: flex;
+	align-items: center;
 }
 
 /* 승혜 css end */
@@ -3998,17 +4084,14 @@ button:nth-child(4) img {
 
 .reservation .reservList .toolBar {
 	flex: .5;
-	padding-bottom: 10px;
 	display: flex;
 	width: 100%;
-	align-items: center;
+	align-items: end;
 	border-bottom: 2px solid #c1c1c1;
 }
 
 .reservation .reservList .toolBar ul {
 	border-bottom: unset;
-}
-
 }
 
 .reservation .reservList .toolBar ul a {
@@ -4073,21 +4156,26 @@ button:nth-child(4) img {
 
 .reservation .reservList .listBox {
 	flex: 9;
-	/* height: 85%; */
-	width: 100%;
-	display: flex;
-	flex-direction: column;
 	font-size: 16px;
+	border-bottom: 2px solid #888888;
 }
 
 .reservation .reservList .listBox .rows {
 	flex: 1;
 	display: flex;
 	border-bottom: 1px solid #c1c1c1;
+	cursor: default;
 }
 
-.reservation .reservList .listBox .rows:last-child {
-	border-bottom: 2px solid #888888;
+.reservation .reservList .listBox .emptyReservList {
+	flex: 1;
+	max-height: unset;
+	justify-content: center;
+    align-items: center;
+}
+
+.reservation .reservList .listBox .rows:hover {
+	background-color: #fff;
 }
 
 .reservation .reservList .listBox .rows.listHeader {
@@ -4098,8 +4186,6 @@ button:nth-child(4) img {
 
 .reservation .reservList .listBox .rows .cols {
 	padding: 7px 0;
-	display: flex;
-	justify-content: center;
 }
 
 .reservation .reservList .listBox .rows .cols:nth-child(1),
@@ -4117,6 +4203,20 @@ button:nth-child(4) img {
 
 .reservation .reservList .listBox .rows .cols:nth-child(5) {
 	width: 10%;
+}
+
+.reservation .reservList .listBox.roomList .rows .cols:nth-child(1),
+.reservation .reservList .listBox.roomList .rows .cols:nth-child(2) {
+	width: 10%;
+}
+
+.reservation .reservList .listBox.roomList .rows .cols:nth-child(3) {
+	width: 50%;
+}
+
+.reservation .reservList .listBox.roomList .rows .cols:nth-child(4),
+.reservation .reservList .listBox.roomList .rows .cols:nth-child(5) {
+	width: 15%;
 }
 
 .reservation .reservList .listBox .rows .cols span {
