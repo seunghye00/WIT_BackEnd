@@ -46,7 +46,7 @@ public class EmployeeController {
 		List<DeptDTO> deptList = service.AllDepts();
 		model.addAttribute("roleList", roleList);
 		model.addAttribute("deptList", deptList);
-		return "register";
+		return "/Management/register";
 	}
 
 	// 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 조회)
@@ -65,7 +65,7 @@ public class EmployeeController {
 			cService.insertPerDefaultCalendar(dto.getEmp_no());
 			return "redirect:/";
 		} else {
-			return "register";
+			return "/Management/register";
 		}
 	}
 
@@ -114,7 +114,7 @@ public class EmployeeController {
 		} else {
 			return "redirect:/";
 		}
-		return "main";
+		return "/User/main";
 	}
 
 	// 추가 정보 업데이트
@@ -182,7 +182,7 @@ public class EmployeeController {
 		session.setAttribute("loginName", employee.getName());
 		session.setAttribute("loginRole", employee.getRole_code());
 		model.addAttribute("employee", employee);
-		return "mypage";
+		return "/Management/mypage";
 	}
 
 	// 닉네임 중복 체크(마이페이지)
@@ -314,7 +314,7 @@ public class EmployeeController {
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
 		service.updateMyPage(dto);
-		return "mypage";
+		return "/Management/mypage";
 	}
 
 	// 로그아웃
