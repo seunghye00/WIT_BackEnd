@@ -27,20 +27,16 @@
 			<div class="contents">
 				<div class="sideAbout">
 					<div class="sideTxt">
-						<a href="/eApproval/home">
+						<a href="/eApproval/admin/home">
 							<h2 class="sideTit">전자 결재</h2>
 						</a>
 					</div>
-					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
-						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp"%>
-					</div>
-					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
+					<%@ include file="/WEB-INF/views/Admin/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApproval">
 					<div class="mainTitle">결재 예정 문서함</div>
 					<div class="docuList docuBox">
-						<%@ include file="/WEB-INF/views/eApproval/commons/toolbar.jsp"%>
+						<%@ include file="/WEB-INF/views/Admin/eApproval/commons/toolbar.jsp"%>
 						<div class="listBox upcomingList">
 							<div class="rows listHeader">
 								<div class="cols">

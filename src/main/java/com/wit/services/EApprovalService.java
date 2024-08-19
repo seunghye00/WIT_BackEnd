@@ -1,6 +1,5 @@
 package com.wit.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -275,5 +274,15 @@ public class EApprovalService {
 	// 관리자가 결재 대기 or 결재 예정인 목록을 5개까지만 조회하기 위한 메서드
 	public List<DocuInfoListDTO> selectApprList(String empNo, String status) {
 		return dao.selectApprList(empNo, status);
+	}
+
+	// 관리자가 문서 양식 별 데이터를 조회하기 위한 메서드
+	public List<DocuInfoListDTO> searchDocuListByDocuCode(String docuCode, String status, String keyword, int cPage) {
+		return dao.searchDocuListByDocuCode(docuCode, status, keyword, cPage);
+	}
+
+	// 관리자가 조회하는 문서 양식 별 데이터의 총 갯수를 얻기 위한 메서드
+	public int getCountSearchDocuList(String docuCode, String status, String keyword) {
+		return dao.getCountSearchDocuList(docuCode, status, keyword);
 	}
 }

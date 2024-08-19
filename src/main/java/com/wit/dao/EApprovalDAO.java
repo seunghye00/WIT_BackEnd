@@ -406,4 +406,24 @@ public class EApprovalDAO {
 		params.put("status", status);
 		return mybatis.selectList("eApproval.selectApprList", params);
 	}
+
+	// 관리자가 문서 양식 별 데이터를 조회하기 위한 메서드
+	public List<DocuInfoListDTO> searchDocuListByDocuCode(String docuCode, String status, String keyword, int cPage) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("docuCode", docuCode);
+		params.put("status", status);
+		params.put("keyword", keyword);
+		params.put("cPage", cPage);
+		params.put("recordCountPerPage", BoardConfig.recordCountPerPage);
+		return mybatis.selectList("eApproval.searchDocuListByDocuCode", params);
+	}
+
+	// 관리자가 조회하는 문서 양식 별 데이터의 총 갯수를 얻기 위한 메서드
+	public int getCountSearchDocuList(String docuCode, String status, String keyword) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("docuCode", docuCode);
+		params.put("status", status);
+		params.put("keyword", keyword);
+		return mybatis.selectOne("eApproval.getCountSearchDocuList", params);
+	}
 }

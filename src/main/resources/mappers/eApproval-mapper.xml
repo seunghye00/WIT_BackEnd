@@ -387,7 +387,9 @@
 			approvals_line a on d.document_seq = a.document_seq
 		where
 			a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if> 
 		<if test="docuCode != null">
 			and d.docu_code = #{docuCode}
 		</if>
@@ -404,9 +406,11 @@
 		join
 			approvals_line a on d.document_seq = a.document_seq
 		where
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				upper(title) like upper('%'||#{keyword}||'%') and
+			</if> 
 			<if test="docuCode != null">
-				and d.docu_code = #{docuCode}
+				d.docu_code = #{docuCode} and
 			</if>
 			d.status = '진행중' and
 			approval_order = 3 and
@@ -428,9 +432,11 @@
 			join
 				approvals_line a on d.document_seq = a.document_seq
 			where
-				upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				upper(title) like upper('%'||#{keyword}||'%') and
+			</if>  
 			<if test="docuCode != null">
-				and d.docu_code = #{docuCode}
+				d.docu_code = #{docuCode} and
 			</if>
 				d.status = '진행중' and
 				approval_order = 3 and
@@ -451,7 +457,9 @@
 			approvals_line a on d.document_seq = a.document_seq
 		where
 			a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if>  
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -472,7 +480,9 @@
 				approvals_line a on d.document_seq = a.document_seq
 			where
 				a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
-				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
 				<if test="docuCode != null">
 					and d.docu_code = #{docuCode}
 				</if>
@@ -488,7 +498,9 @@
 		join document_list dl on d.docu_code = dl.docu_code
 		where
 			status = '임시 저장' and emp_no = #{empNo}
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if>  
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -505,7 +517,9 @@
 			join document_list dl on d.docu_code = dl.docu_code
 			where
 				status = '임시 저장' and emp_no = #{empNo}
-				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
 				<if test="docuCode != null">
 					and d.docu_code = #{docuCode}
 				</if>
@@ -523,7 +537,9 @@
 		join
 			approvals_line a on d.document_seq = a.document_seq
 		where a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '완료'
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if>  
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -543,7 +559,9 @@
 			join
 				approvals_line a on d.document_seq = a.document_seq
 			where a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '완료'
-				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
 				<if test="docuCode != null">
 					and d.docu_code = #{docuCode}
 				</if>
@@ -562,7 +580,9 @@
 			approvals_line a on d.document_seq = a.document_seq
 		where
 			a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '반려'
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if> 
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -583,7 +603,9 @@
 				approvals_line a on d.document_seq = a.document_seq
 			where
 				a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '반려'
-				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>	
 				<if test="docuCode != null">
 					and d.docu_code = #{docuCode}
 				</if>
@@ -600,7 +622,9 @@
 			document_list dl on d.docu_code = dl.docu_code
 		join
 			reference_line r on d.document_seq = r.document_seq
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if> 
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -610,7 +634,7 @@
 	<select id="searchViewList" resultType="com.wit.dto.DocuInfoListDTO">
 		select * from (
 			select
-				d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
+				d.document_seq document_seq, d.emp_no emp_no, write_date, dl.name, emer_yn, title,
 				d.status status, done_date,
 				row_number() over (order by emer_yn desc, write_date desc) as rn
 			from
@@ -620,7 +644,9 @@
 			join
 				reference_line r on d.document_seq = r.document_seq
 			where r.emp_no = #{empNo}
-				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
 				<if test="docuCode != null">
 					and d.docu_code = #{docuCode}
 				</if>
@@ -636,7 +662,7 @@
 	<select id="selectApprList" resultType="com.wit.dto.DocuInfoListDTO">
 		select * from (
 			select
-				d.document_seq, write_date, name, emer_yn, title, e.name writer
+				d.document_seq, write_date, dl.name, emer_yn, title, e.name writer
 			from
 				documents d
 			join
@@ -649,5 +675,47 @@
             order by emer_yn desc, write_date desc
 		)
 		where rownum &lt;= 5
+	</select>
+	
+	<select id="searchDocuListByDocuCode" resultType="com.wit.dto.DocuInfoListDTO">
+		select * from (
+			select
+				d.document_seq, d.emp_no , write_date, dl.name, emer_yn, title,
+				d.status status, done_date,
+				row_number() over (order by write_date desc) as rn
+			from
+				documents d
+			join
+				document_list dl on d.docu_code = dl.docu_code
+			where 
+				d.docu_code = #{docuCode}
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
+				<if test="status != null">
+					and d.status = #{status}
+				</if>
+		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
+	
+	<select id="getCountSearchDocuList" resultType="int">
+		select count(*) from (
+			select
+				d.document_seq, d.emp_no , write_date, dl.name, emer_yn, title,
+				d.status status, done_date,
+				row_number() over (order by write_date desc) as rn
+			from
+				documents d
+			join
+				document_list dl on d.docu_code = dl.docu_code
+			where 
+				d.docu_code = #{docuCode}
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
+				<if test="status != null">
+					and d.status = #{status}
+				</if>
+		)
 	</select>
 </mapper>

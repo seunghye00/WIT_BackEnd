@@ -21,27 +21,23 @@
 
 <body>
 	<div class="container">
-		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>	
+		<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp" %>	
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
 			<div class="contents">
 				<div class="sideAbout">
 					<div class="sideTxt">
-						<a href="/eApproval/home">
+						<a href="/eApproval/admin/home">
 							<h2 class="sideTit">전자 결재</h2>
 						</a>
 					</div>
-					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
-						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp" %>
-					</div>
-					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp" %>
+					<%@ include file="/WEB-INF/views/Admin/eApproval/commons/sideToggle.jsp" %>
 				</div>
 				<div class="sideContents eApproval">
 					<div class="mainTitle">전자 결재 홈</div>
 					<div class="docuList">
 						<div class="subTitle">
-							기안 진행 문서 <input type="checkbox" id="progInfo" hidden> <label
+							결재 대기 문서 <input type="checkbox" id="progInfo" hidden> <label
 								class="titleIcon" for="progInfo"> <i
 								class='bx bx-info-circle'></i>
 							</label>
@@ -69,12 +65,12 @@
 							<c:choose>
 								<c:when test="${empty toDoList}">
 									<div class="rows emptyDocuList">
-										<p>진행중인 문서가 없습니다.</p>
+										<p>결재 대기 중인 문서가 없습니다.</p>
 									</div>
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="${toDoList}" var="i">
-										<a href="/eApproval/readDocu?docuSeq=${i.document_seq}">
+										<a href="/eApproval/admin/apprDocu?docuSeq=${i.document_seq}">
 										<div class="rows">
 											<div class="cols">
 												<span><fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" /></span>
@@ -105,7 +101,7 @@
 					</div>
 					<div class="docuList">
 						<div class="subTitle">
-							완료 문서 <input type="checkbox" id="doneInfo" hidden> <label
+							결재 예정 문서 <input type="checkbox" id="doneInfo" hidden> <label
 								class="titleIcon" for="doneInfo"> <i
 								class='bx bx-info-circle'></i>
 							</label>
@@ -132,12 +128,12 @@
 							<c:choose>
 								<c:when test="${empty upComingList}">
 									<div class="rows emptyDocuList">
-										<p>완료된 문서가 없습니다.</p>
+										<p>결재 예정인 문서가 없습니다.</p>
 									</div>
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="${upComingList}" var="i">
-										<a href="/eApproval/readDocu?docuSeq=${i.document_seq}">
+										<a href="/eApproval/admin/readDocu?docuSeq=${i.document_seq}">
 										<div class="rows">
 											<div class="cols">
 												<span> <fmt:formatDate value="${i.write_date}"
