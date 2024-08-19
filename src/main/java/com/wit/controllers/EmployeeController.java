@@ -314,7 +314,7 @@ public class EmployeeController {
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
 		service.updateMyPage(dto);
-		return "mypage";
+		return "/Management/mypage";
 	}
 
 	// 로그아웃
