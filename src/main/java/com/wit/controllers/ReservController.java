@@ -19,7 +19,6 @@ import com.wit.commons.BoardConfig;
 import com.wit.dto.EmployeeInfoDTO;
 import com.wit.dto.RoomBookingDTO;
 import com.wit.dto.VehicleBookingDTO;
-import com.wit.dto.VehiclesDTO;
 import com.wit.services.EmployeeService;
 import com.wit.services.MeetingRoomService;
 import com.wit.services.VehicleBookingService;

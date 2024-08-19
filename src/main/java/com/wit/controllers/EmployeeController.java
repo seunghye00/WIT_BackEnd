@@ -182,7 +182,7 @@ public class EmployeeController {
 		session.setAttribute("loginName", employee.getName());
 		session.setAttribute("loginRole", employee.getRole_code());
 		model.addAttribute("employee", employee);
-		return "mypage";
+		return "/Management/mypage";
 	}
 
 	// 닉네임 중복 체크(마이페이지)
