@@ -1,6 +1,8 @@
 package com.wit.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,6 @@ public class ChatService {
     // 채팅 메시지 입력
     @Transactional
     public int insert(String chatRoomSeq, String name, String message, int read_count) throws Exception {
-    	System.out.println(read_count);
         String sender = userv.getUserNameByLoginID(name);
         return dao.insertChat(new ChatDTO(0, Integer.parseInt(chatRoomSeq), name, sender, message, null, read_count));
     }
@@ -44,4 +45,10 @@ public class ChatService {
     public String getUserNameByLoginID(String loginID) {
         return userv.getUserNameByLoginID(loginID);
     }
+    
+     // 읽지 않은 사용자 목록 조회
+    public List<Map<String, Object>> getUnreadUsers(int chatRoomSeq) {
+        return dao.getUnreadUsers(chatRoomSeq);
+    }
+
 }

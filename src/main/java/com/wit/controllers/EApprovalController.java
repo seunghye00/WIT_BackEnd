@@ -196,6 +196,12 @@ public class EApprovalController {
 		case 3:
 			serv.updateApprLine(docuSeq, 3, "결재 완료");
 			serv.updateDocuStatus(docuSeq, "완료");
+
+			// 최종 승인 후 휴가 처리
+			LeaveRequestDTO leaveRequest = serv.getLeaveDetail(docuSeq);
+			if (leaveRequest != null) {
+				aServ.processLeaveApproval(leaveRequest);
+			}
 			break;
 		default:
 			// 추후 에러 페이지로 변경
