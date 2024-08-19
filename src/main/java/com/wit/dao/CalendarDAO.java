@@ -1,6 +1,8 @@
 package com.wit.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +34,12 @@ public class CalendarDAO {
 	}
 
 	// 부서 캘린더 출력
-	public List<DepartmentCalendarDTO> depCalendarList(String empNo) {
-		return mybatis.selectList("calendar.depCalendarList", empNo);
-	}
+	public List<DepartmentCalendarDTO> depCalendarList(String empNo, String roleCode) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("empNo", empNo);
+        params.put("roleCode", roleCode);
+        return mybatis.selectList("calendar.depCalendarList", params);
+    }
 
 	// 부서 캘린더 추가 (각 부서 부장만 가능)
 	public int insertDepCalendar(DepartmentCalendarDTO dto) {
@@ -59,5 +64,10 @@ public class CalendarDAO {
 	// 개인 캘린더 테이블에 해당 테이블이 존재하는지 확인
 	public int selectPersonalByCalendarSeq(int calendarSeq) {
 		return mybatis.selectOne("calendar.selectPersonalByCalendarSeq", calendarSeq);
+	}
+	
+	// 직급 코드가 R1일 경우 부서 캘린더 조회
+	public List<DepartmentCalendarDTO> adminDepCalendarList(String empNo){
+		return mybatis.selectList("calendar.adminDepCalendarList", empNo);
 	}
 }
