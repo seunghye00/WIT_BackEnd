@@ -264,3 +264,12 @@ function goToSearchList(keyword){
 	// 변수에 저장된 값을 서버에 전송
 	location.href = '/eApproval/admin/' + docuList + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=1';
 }
+
+
+// input 태그의 입력 문자열 길이를 제어하는 메서드
+function handleOnInput(e, maxLength) {
+	if ($(e).val().length > maxLength) {
+    	alert($(e).data('label') + "의 글자 수는 " + maxLength + "자까지만 입력 가능 합니다.");
+        $(e).val($(e).val().substr(0, maxLength - 1));
+    }
+}

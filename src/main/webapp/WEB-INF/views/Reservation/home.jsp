@@ -139,12 +139,12 @@
 													</div>
 													<div class="cols">
 														<span>
-															<fmt:formatDate value="${i.start_date}" pattern="yyyy-MM-dd" />
+															<fmt:formatDate value="${i.start_date}" pattern="yyyy-MM-dd HH:mm" />
 														</span>
 													</div>
 													<div class="cols">
 														<span>
-															<fmt:formatDate value="${i.end_date}" pattern="yyyy-MM-dd" />
+															<fmt:formatDate value="${i.end_date}" pattern="yyyy-MM-dd HH:mm" />
 														</span>
 													</div>
 												</div>
