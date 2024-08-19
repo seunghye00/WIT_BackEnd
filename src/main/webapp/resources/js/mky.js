@@ -369,7 +369,7 @@ function startChat() {
         webSocket.close();
     }
     
-    webSocket = new WebSocket('ws://192.168.45.236/chat/' + chat_room_seq);
+    webSocket = new WebSocket('ws://192.168.1.4/chat/' + chat_room_seq);
     webSocket.onopen = function (event) {
         console.log("WebSocket is open now.");
     };
@@ -588,7 +588,7 @@ function addPasteImageListener(elementId) {
                 if (item.type.indexOf('image') !== -1) {
                     const file = item.getAsFile()
                     const formData = new FormData()
-                    formData.append('image', file)
+                    formData.append('file', file)
 
                     fetch('/uploadImage', {
                         method: 'POST',

@@ -1,4 +1,4 @@
-let globalWebSocket = new WebSocket('ws://192.168.45.236/global_chat');
+let globalWebSocket = new WebSocket('ws://192.168.1.4/global_chat');
 
 globalWebSocket.onopen = function (event) {
     console.log("WebSocket is open now.");
