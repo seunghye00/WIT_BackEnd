@@ -33,5 +33,9 @@ public class ChatDAO {
     public List<ChatDTO> chatListByRoom(int chat_room_seq) {
         return mybatis.selectList("chat.chatListByRoom", chat_room_seq);
     }
-
+    
+    // 읽지 않은 사용자 목록 조회
+    public List<Map<String, Object>> getUnreadUsers(int chatRoomSeq) {
+        return mybatis.selectList("chat.getUnreadUsers", chatRoomSeq);
+    }
 }

@@ -85,9 +85,7 @@ public class ChatEndpoint {
     
     @OnMessage
     public void onMessage(@PathParam("chatRoomSeq") String chatRoomSeq, Session session, String message) {
-        System.out.println("Received message: " + message); // 디버깅 로그 추가
         JsonObject jsonMessage = gson.fromJson(message, JsonObject.class);
-        System.out.println("Parsed message: " + jsonMessage); // 디버깅 로그 추가
 
         // 현재 시간 생성 (HH:mm 형식으로 변환)
         String currentTime = getCurrentTime();
@@ -125,6 +123,10 @@ public class ChatEndpoint {
                         // 읽음 처리는 여기서 하지 않고 클라이언트 측에서 메시지를 수신했을 때 처리
                         if (client.isOpen()) {
                             // 여전히 read_count를 1로 유지
+                        	 JsonObject notification = new JsonObject();
+                             notification.addProperty("type", "notification");
+                             notification.addProperty("message", userName + "님이 메시지를 보냈습니다.");
+                             client.getBasicRemote().sendText(notification.toString());
                         }
                     }
                     client.getBasicRemote().sendText(data.toString());
@@ -133,14 +135,32 @@ public class ChatEndpoint {
                 }
             }
         }
+        
+        // 특정 사용자가 메시지를 받지 않았다면 글로벌 알림 전송
+        try {
+            int chatRoomSeqInt = Integer.parseInt(chatRoomSeq);
+            List<Map<String, Object>> unreadUsers = cServ.getUnreadUsers(chatRoomSeqInt);
+            
+            for (Map<String, Object> user : unreadUsers) {
+                String receiverName = (String) user.get("RECEIVER");
+                String senderName = (String) user.get("SENDER");
+                System.out.println(user);
+                if (!sender.equals(receiverName)) { // 보낸 사람을 제외하고
+                    GlobalChatEndpoint.notifyUnreadMessage(receiverName, senderName + "님이 새 메시지를 보냈습니다.");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
+    
     @OnClose
     public void onClose(@PathParam("chatRoomSeq") String chatRoomSeq, Session session) {
         String loginID = sessionUserMap.get(session);
         chatRooms.get(chatRoomSeq).remove(session);
         sessionUserMap.remove(session);
     }
+    
     @OnError
     public void onError(Throwable t, @PathParam("chatRoomSeq") String chatRoomSeq, Session session) {
         String loginID = sessionUserMap.get(session);
