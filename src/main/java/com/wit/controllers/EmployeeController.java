@@ -108,13 +108,22 @@ public class EmployeeController {
 		model.addAttribute("boardList",boardList);
 		model.addAttribute("noticeList",noticeList);
 		
-		if (empNo != null) {
-			EmployeeDTO employee = service.employeeInfo(empNo);
-			model.addAttribute("employee", employee);
-		} else {
-			return "redirect:/";
-		}
-		return "/User/main";
+	    // 직원 정보 가져오기
+	    EmployeeDTO employee = service.employeeInfo(empNo);
+
+	    if (employee != null) {
+	        model.addAttribute("employee", employee);
+
+	        // 사장님(CEO)이라면 Admin 페이지로 이동
+	        if ("사장".equals(employee.getRole_code())) {
+	            return "Admin/main";
+	        } else {
+	            // 다른 직급이라면 User 페이지로 이동
+	            return "User/main";
+	        }
+	    } else {
+	        return "redirect:/";
+	    }
 	}
 
 	// 추가 정보 업데이트

@@ -7,12 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>근태 관리</title>
+<title>부서별 근태현황</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <link rel="stylesheet" href="/resources/css/style.main.css">
 <link rel="stylesheet" href="/resources/css/mky.css">
-<link rel="stylesheet" href="/resources/css/wit.css">
+<link rel="stylesheet" href="/resources/css/employee.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/employee.js"></script>
 
@@ -84,126 +84,68 @@
 						</ul>
 					</div>
 					<div style="padding: 10px;"></div>
-					<a href="/annualLeave/attendance_vacation">
+					<a href="/annualLeave/attendanceVacation">
 						<h3 class="toggleTit">휴가관리</h3>
 					</a>
 					<div style="padding: 10px;"></div>
-					<a href="/annualLeave/attendance_vacation">
-						<h3 class="toggleTit">부서별 근무현황</h3>
+					<a href="/attendance/attendanceDept">
+						<h3 class="toggleTit">부서별 근태현황</h3>
 					</a>
 					<div style="padding: 10px;"></div>
-					<a href="/annualLeave/attendance_vacation">
+					<a href="/annualLeave/attendanceDeptVacation">
 						<h3 class="toggleTit">부서별 휴가현황</h3>
 					</a>
 				</div>
-				<div class="sideContents Attendance">
-					<h2>근태관리</h2>
-					<div class="Attendance_container">
-						<div class="Attendance_sections">
-							<div class="status_container">
-								<h3>월간 근태현황</h3>
-								<div class="status_row status_header">
-									<div class="status_col">
-										<span>지각</span>
-									</div>
-									<div class="status_col">
-										<span>조퇴</span>
-									</div>
-									<div class="status_col">
-										<span>결근</span>
-									</div>
-								</div>
-								<div class="status_row">
-									<div class="status_col">
-										<span>${monthlyStatus.LATE}회</span>
-									</div>
-									<div class="status_col">
-										<span>${monthlyStatus.EARLYLEAVE}회</span>
-									</div>
-									<div class="status_col">
-										<span>${monthlyStatus.ABSENCE}회</span>
-									</div>
-								</div>
+				<div class="sideContents AttendanceDept">
+					<h2>부서별 근무현황</h2>
+					<div class="week_selector">
+						<i class="bx bx-chevron-left"
+							onclick="window.location.href='?week=${previousWeek}'"></i> <span>${startDate}
+							~ ${endDate}</span> <i class="bx bx-chevron-right"
+							onclick="window.location.href='?week=${nextWeek}'"></i>
+					</div>
+					<div class="dept_tabs">
+						<c:forEach var="dept" items="${departments}">
+							<div class="dept_tab ${dept == selectedDept ? 'active' : ''}">
+								<a href="?dept=${dept.dept_title}">${dept.dept_title}</a>
 							</div>
-							<div class="hours_container">
-								<h3>월간 근무시간</h3>
-								<div class="hours_row status_header">
-									<div class="hours_col">
-										<span>근무일수</span>
-									</div>
-									<div class="hours_col">
-										<span>총 근무시간</span>
-									</div>
-								</div>
-								<div class="hours_row">
-									<div class="hours_col">
-										<span>${monthlyWorkHours.WORKINGDAYS}일</span>
-									</div>
-									<div class="hours_col">
-										<span>${monthlyWorkHours.totalWorkingHours}</span>
-									</div>
-								</div>
-							</div>
+						</c:forEach>
+					</div>
+					<div class="attendance_table">
+						<div class="header_row">
+							<span>이름</span> <span>월</span> <span>화</span> <span>수</span> <span>목</span>
+							<span>금</span> <span>토</span>
 						</div>
-						<div class="week_status">
-							<h3>주간 근무현황</h3>
-							<div class="week_row week_header">
-								<div class="week_col">
-									<span>근무일</span>
-								</div>
-								<div class="week_col">
-									<span>출근시간</span>
-								</div>
-								<div class="week_col">
-									<span>퇴근시간</span>
-								</div>
-								<div class="week_col">
-									<span>근무시간</span>
-								</div>
+						<c:forEach var="attendanceItem" items="${attendanceData}">
+							<div class="attendance_row">
+								<span>${attendanceItem.ROLETITLE}
+									${attendanceItem.EMPNAME}</span> <span>${attendanceItem.STARTTIME}
+									- ${attendanceItem.ENDTIME}</span>
 							</div>
-							<c:forEach var="status" items="${weeklyStatus}">
-								<div class="week_row">
-									<div class="week_col">
-										<fmt:formatDate value="${status.WORK_DATE}"
-											pattern="yyyy-MM-dd" />
-									</div>
-									<div class="week_col">
-										<span>${status.START_TIME}</span>
-									</div>
-									<div class="week_col">
-										<span>${status.END_TIME}</span>
-									</div>
-									<div class="week_col">
-										<span>${status.WORK_HOURS}</span>
-									</div>
-								</div>
-							</c:forEach>
-						</div>
+						</c:forEach>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-	<!-- sidebar 공통요소 script -->
-	<script>
-		let btn = document.querySelector("#btn")
-		let sideBar = document.querySelector(".sideBar")
+			<!-- sidebar 공통요소 script -->
+			<script>
+				let btn = document.querySelector("#btn")
+				let sideBar = document.querySelector(".sideBar")
 
-		btn.onclick = function() {
-			sideBar.classList.toggle("active")
-		};
+				btn.onclick = function() {
+					sideBar.classList.toggle("active")
+				};
 
-		// 주소록 토글 이벤트 설정
-		const toggleItems = document.querySelectorAll('.toggleItem')
-		toggleItems.forEach(function(toggleItem) {
-			const toggleTit = toggleItem.querySelector('.toggleTit')
-			const subList = toggleItem.querySelector('.subList')
+				// 주소록 토글 이벤트 설정
+				const toggleItems = document.querySelectorAll('.toggleItem')
+				toggleItems.forEach(function(toggleItem) {
+					const toggleTit = toggleItem.querySelector('.toggleTit')
+					const subList = toggleItem.querySelector('.subList')
 
-			toggleTit.addEventListener('click', function() {
-				subList.classList.toggle('active')
-				toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
-			})
-		})
-	</script>
+					toggleTit.addEventListener('click', function() {
+						subList.classList.toggle('active')
+						toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
+					})
+				})
+			</script>
 </body>
 </html>

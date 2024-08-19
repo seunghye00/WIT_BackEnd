@@ -13,7 +13,7 @@
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="/resources/css/style.main.css">
 <link rel="stylesheet" href="/resources/css/mky.css">
-<link rel="stylesheet" href="/resources/css/wit.css">
+<link rel="stylesheet" href="/resources/css/employee.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/employee.js"></script>
 </head>
@@ -101,11 +101,11 @@
 					</a>
 				</div>
 				<div class="sideContents Attendance">
-					<h2>휴가관리</h2>
+					<h2>부서별 휴가현황</h2>
 					<div class="Attendance_container">
 						<div class="Attendance_vacation">
 							<div class="vacation_container">
-								<h3>휴가 보유 현황</h3>
+								<h3>부서별 휴가현황</h3>
 								<div class="vacation_row vacation_header">
 									<div class="vacation_col">
 										<span>총 휴가</span>

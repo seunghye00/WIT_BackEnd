@@ -23,7 +23,7 @@ public class AnnualLeaveController {
     @Autowired
     private HttpSession session;
 
-    @RequestMapping("/attendance_vacation")
+    @RequestMapping("/attendanceVacation")
     public String attendanceVacation(Model model, @RequestParam(defaultValue = "1") int cpage) {
 
         String empNo = (String) session.getAttribute("loginID");
@@ -69,5 +69,11 @@ public class AnnualLeaveController {
         model.addAttribute("leaveRequests", leaveRequests);
 
         return "Attendance/attendanceVacation";
+    }
+    
+    // 부서별 휴가현황 (관리자)
+    @RequestMapping("/attendanceDeptVacation")
+    public String attendance_vaction() {
+    	return "Admin/Attendance/attendanceDeptVacation";
     }
 }
