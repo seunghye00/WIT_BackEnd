@@ -5,17 +5,17 @@
 	<ul>
 		<c:choose>
 			<c:when test="${type eq 'meetingRoom'}">
-				<li><a href="javascript:;" class="active">회의실</a></li>
-				<li><a href="javascript:;">차량</a></li>
+				<li><a href="/reservation/home?type=meetingRoom&cPage=1" class="active">회의실</a></li>
+				<li><a href="/reservation/home?type=vehicle&cPage=1">차량</a></li>
 			</c:when>
 			<c:otherwise>
-				<li><a href="javascript:;">회의실</a></li>
-				<li><a href="javascript:;" class="active">차량</a></li>
+				<li><a href="/reservation/home?type=meetingRoom&cPage=1">회의실</a></li>
+				<li><a href="/reservation/home?type=vehicle&cPage=1" class="active">차량</a></li>
 			</c:otherwise>
 		</c:choose>
 	</ul>
 	<div class="searchBox">
-		<input type="text" placeholder="검색">
+		<input type="text" id="searchTxt" placeholder="검색">
 		<button class="searchBtn">
 			<i class="bx bx-search"></i>
 		</button>

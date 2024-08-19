@@ -73,7 +73,7 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="${docuList}" var="i">
-										<a href="/eApproval/readDocu?docuSeq=${i.document_seq}">
+										<a href="/eApproval/readDocu?docuSeq=${i.document_seq}<c:if test='${i.read_yn eq "N"}'> &readYN=Y</c:if>">
 										<div class="rows">
 											<div class="cols">
 												<span><fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" /></span>
@@ -89,7 +89,10 @@
 												</span>
 											</div>
 											<div class="cols">
-												<span>${i.title}</span>
+												<span>
+													${i.title} 
+													 <c:if test="${i.read_yn eq 'N'}"> <span class="beforeRead">N</span></c:if>
+												</span>
 											</div>
 											<div class="cols">
 												<span>${i.writer}</span>
@@ -98,7 +101,17 @@
 												<span><fmt:formatDate value="${i.done_date}" pattern="yyyy-MM-dd" /></span>
 											</div>
 											<div class="cols">
-												<span>${i.status}</span>
+												<c:choose>
+													<c:when test="${i.status eq '진행중'}">
+														<span class="ing">${i.status}</span>
+													</c:when>
+													<c:when test="${i.status eq '완료'}">
+														<span class="done">${i.status}</span>
+													</c:when>
+													<c:otherwise>
+														<span class="return">${i.status}</span>
+													</c:otherwise>
+												</c:choose>
 											</div>
 										</div>
 										</a>

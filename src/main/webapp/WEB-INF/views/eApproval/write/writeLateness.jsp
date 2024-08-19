@@ -143,16 +143,13 @@
 									</table>
 								</form>
 							</div>
-							<form id="fileInputForm" action="/eApproval/uploadFiles" method="post" enctype="multipart/form-data">
-								<div class="docuFiles">
-									<label for="file">🔗 파일 선택</label> 
-									<input type="file" id="file" name="file" multiple> 
-									<span class="uploadFiles"></span>
-								</div>
-							</form>
+							<div class="docuFiles">
+								<label for="file">🔗 파일 선택</label> 
+								<input type="file" id="file" name="file" multiple> 
+								<span class="uploadFiles"></span>
+							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>

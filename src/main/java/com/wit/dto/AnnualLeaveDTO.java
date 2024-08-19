@@ -2,16 +2,13 @@ package com.wit.dto;
 
 // 각 사원의 연차에 대한 데이터를 보관하기 위한 DTO
 public class AnnualLeaveDTO {
-	private int annual_leave_seq; // 연차 SEQ
 	private String emp_no; // 사번
 	private int annual_leave_num; // 연차 갯수
 	private int use_num; // 사용 연차 갯수
 	private int remaining_leaves; // 남은 연차 갯수
 
-	public AnnualLeaveDTO(int annual_leave_seq, String emp_no, int annual_leave_num, int use_num,
-			int remaining_leaves) {
+	public AnnualLeaveDTO(String emp_no, int annual_leave_num, int use_num, int remaining_leaves) {
 		super();
-		this.annual_leave_seq = annual_leave_seq;
 		this.emp_no = emp_no;
 		this.annual_leave_num = annual_leave_num;
 		this.use_num = use_num;
@@ -19,15 +16,7 @@ public class AnnualLeaveDTO {
 	}
 
 	public AnnualLeaveDTO() {
-
-	}
-
-	public int getAnnual_leave_seq() {
-		return annual_leave_seq;
-	}
-
-	public void setAnnual_leave_seq(int annual_leave_seq) {
-		this.annual_leave_seq = annual_leave_seq;
+		super();
 	}
 
 	public String getEmp_no() {

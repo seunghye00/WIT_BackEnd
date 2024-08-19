@@ -1,5 +1,9 @@
 package com.wit.dao;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -7,10 +11,6 @@ import org.springframework.stereotype.Repository;
 import com.wit.dto.AnnualLeaveDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.LeaveRequestDTO;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Repository
 public class AnnualLeaveDAO {
@@ -36,18 +36,9 @@ public class AnnualLeaveDAO {
         mybatis.update("annualLeave.updateAnnualLeaveUsage", params);
     }
 
-    // 연차 사용 내역을 로그로 기록
-    public void insertAnnualLeaveLog(String empNo, int annualLeaveSeq, int documentSeq) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("empNo", empNo);
-        params.put("annualLeaveSeq", annualLeaveSeq);
-        params.put("documentSeq", documentSeq);
-        mybatis.insert("annualLeave.insertAnnualLeaveLog", params);
-    }
-
     // 상태가 완료된 직원의 휴가 신청 내역을 조회
-    public List<LeaveRequestDTO> getApprovedLeaveRequestsByEmpNo(String empNo) {
-        return mybatis.selectList("annualLeave.selectApprovedLeaveRequestsByEmpNo", empNo);
+    public List<LeaveRequestDTO> selectApprovedLeave(String empNo) {
+        return mybatis.selectList("annualLeave.selectApprovedLeave", empNo);
     }
 
     // 직원 정보 조회
@@ -59,4 +50,25 @@ public class AnnualLeaveDAO {
     public String getEmpNoByDocumentSeq(int documentSeq) {
         return mybatis.selectOne("annualLeave.selectEmpNoByDocumentSeq", documentSeq);
     }
+    
+	// 해당 직원의 남은 연차 갯수 조회
+	public int getRemainingLeavesByEmpNo(String empNo) {
+		return mybatis.selectOne("annualLeave.getRemainingLeaves", empNo);
+	}
+	
+	// 해당 직원의 연차 정보 업데이트
+	public void updateByAnnualLeave(String empNo, float useNum) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("useNum", useNum);
+		mybatis.update("annualLeave.updateByAnnualLeave", params);
+	}
+	
+	// 연차 사용 정보 기록
+	public void insertAnnualLeaveLog(String empNo, int docuSeq) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("docuSeq", docuSeq);
+		mybatis.insert("annualLeave.insertAnnualLeaveLog", params);
+	}
 }

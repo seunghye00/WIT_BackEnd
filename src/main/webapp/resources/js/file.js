@@ -28,28 +28,31 @@ $('#file').on('change', function() {
     });
 });
 
-// 폼 제출 시 파일 전송
-$('#fileInputForm').on('submit', function(event) {
-    event.preventDefault(); // 기본 제출 동작 방지
-
-    // FormData 객체 생성
+function insertFiles(parentSeq, goToUrl) {
+	// FormData 객체 생성
     const formData = new FormData();
+	
+	if(goToUrl.includes('eApproval')){
+		goToUrl = goToUrl + '?docuSeq=' + parentSeq;
+	}
 
     // addedFiles 배열의 파일들을 FormData에 추가
     addedFiles.forEach(file => formData.append('file', file));
+	
 
     // AJAX 요청으로 파일 전송
     $.ajax({
-        url: $(this).attr('action'),
+        url: goToUrl,
         method: 'POST',
+        dataType: 'json',
         data: formData,  // FormData 객체
-    	processData: false,  // 데이터를 자동으로 처리하지 않음
-    	contentType: false,  // Content-Type을 자동으로 설정
-        success: function(response) {
-            console.log('파일 업로드 성공:', response);
-        },
-        error: function(xhr, status, error) {
-            console.error('파일 업로드 실패:', status, error);
-        }
-    });
-});
+    	processData: false,  // FormData를 사용하기 때문에 기본적으로 jQuery가 데이터를 처리하지 않도록 설정
+    	contentType: false  // 기본 콘텐츠 타입을 설정하지 않도록 설정
+    }).done(resp => {
+		// 해당 문서 열람 페이지로 이동
+		location.href = resp.hrefUrl;    	
+
+    }).fail((jqXHR, textStatus, errorThrown) => {
+    	console.error('AJAX request failed:', textStatus, errorThrown);  // 오류 로그 출력
+	});
+}

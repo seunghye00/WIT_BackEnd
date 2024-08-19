@@ -37,12 +37,12 @@
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
-				<div class="sideContents eApprWrite">
+				<div class="sideContents eApprWrite eApprRead">
 					<div class="mainTitle">문서 열람 ( 지각 사유서 )</div>
 					<div class="document">
 						<div class="choiBox">
-							<%@ include
-								file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
+							<%@ include file="/WEB-INF/views/eApproval/commons/docuBtnBox.jsp"%>
+							<%@ include file="/WEB-INF/views/eApproval/commons/commModal.jsp"%>
 							<%@ include file="/WEB-INF/views/eApproval/commons/refeModal.jsp"%>
 						</div>
 						<div class="docuCont">
@@ -138,8 +138,16 @@
 								</table>
 							</div>
 							<div class="docuFiles">
-								<label class="disabled">🔗 파일 목록</label> <span
-									class="uploadFiles"></span>
+								<label class="disabled">🔗 파일 목록</label> 
+								<span class="uploadFiles">
+								<c:if test="${!empty files}">
+									<c:forEach items="${files}" var="i">
+										<a href="/eApproval/downloadFiles?sysname=${i.sysname}&oriname=${i.oriname}">
+											<span>${i.oriname}</span>
+										</a>
+									</c:forEach>
+								</c:if>
+								</span>
 							</div>
 						</div>
 					</div>
