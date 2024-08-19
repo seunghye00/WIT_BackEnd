@@ -46,7 +46,7 @@ public class EmployeeController {
 		List<DeptDTO> deptList = service.AllDepts();
 		model.addAttribute("roleList", roleList);
 		model.addAttribute("deptList", deptList);
-		return "register";
+		return "/Management/register";
 	}
 
 	// 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 조회)
@@ -65,7 +65,7 @@ public class EmployeeController {
 			cService.insertPerDefaultCalendar(dto.getEmp_no());
 			return "redirect:/";
 		} else {
-			return "register";
+			return "/Management/register";
 		}
 	}
 
@@ -108,13 +108,22 @@ public class EmployeeController {
 		model.addAttribute("boardList",boardList);
 		model.addAttribute("noticeList",noticeList);
 		
-		if (empNo != null) {
-			EmployeeDTO employee = service.employeeInfo(empNo);
-			model.addAttribute("employee", employee);
-		} else {
-			return "redirect:/";
-		}
-		return "/User/main";
+	    // 직원 정보 가져오기
+	    EmployeeDTO employee = service.employeeInfo(empNo);
+
+	    if (employee != null) {
+	        model.addAttribute("employee", employee);
+
+	        // 사장님(CEO)이라면 Admin 페이지로 이동
+	        if ("사장".equals(employee.getRole_code())) {
+	            return "Admin/main";
+	        } else {
+	            // 다른 직급이라면 User 페이지로 이동
+	            return "User/main";
+	        }
+	    } else {
+	        return "redirect:/";
+	    }
 	}
 
 	// 추가 정보 업데이트
@@ -314,7 +323,7 @@ public class EmployeeController {
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
 		service.updateMyPage(dto);
-		return "mypage";
+		return "/Management/mypage";
 	}
 
 	// 로그아웃

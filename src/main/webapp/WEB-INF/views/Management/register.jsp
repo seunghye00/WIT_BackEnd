@@ -18,7 +18,7 @@
                     <option value="${dept.dept_code}">${dept.dept_title}</option>
                 </c:forEach>
             </select>
-            <select name="role_code" required>
+            <select name="role_code" id="role_select" required>
                 <option value="" disabled selected>직급 선택</option>
                 <c:forEach var="role" items="${roleList}">
                     <option value="${role.role_code}">${role.role_title}</option>

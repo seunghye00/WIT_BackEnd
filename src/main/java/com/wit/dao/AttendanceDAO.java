@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.wit.dto.AttendanceDTO;
+import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 
 @Repository
@@ -82,5 +83,15 @@ public class AttendanceDAO {
 	// 직원 정보 조회 메소드 추가
 	public EmployeeDTO employeeInfo(String emp_no) {
 		return mybatis.selectOne("attendance.employeeInfo", emp_no);
+	}
+
+	// 부서별 근태현황(관리자)
+	public List<Map<String, Object>> deptAtd(Map<String, Object> params) {
+		return mybatis.selectList("attendance.deptAtd", params);
+	}
+
+	// 부서 조회
+	public List<DeptDTO> getAllDepartments() {
+		return mybatis.selectList("attendance.AllDepts");
 	}
 }
