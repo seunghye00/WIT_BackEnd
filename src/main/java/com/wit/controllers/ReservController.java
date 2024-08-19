@@ -40,7 +40,7 @@ public class ReservController {
 	private VehicleBookingService vService;
 
 	// 예약 메인페이지로 이동
-	@RequestMapping("home")
+	@RequestMapping(value = { "admin/home", "home" })
 	public String home(String type, @RequestParam(required = false) String keyword, int cPage, Model model) throws Exception {
 		
 		// 세션에 저장된 사번을 변수에 저장
