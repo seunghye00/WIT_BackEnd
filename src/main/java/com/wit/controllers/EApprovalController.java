@@ -221,8 +221,13 @@ public class EApprovalController {
 			serv.updateDocuStatus(docuSeq, "완료");
 			if (applyLeaves != null) {
 				float useNum = Float.parseFloat(applyLeaves);
+				System.out.println("Parsed useNum: " + useNum); // 변환된 useNum 값 확인
+
 				aServ.updateAnnualLeave(empNo, useNum);
+				System.out.println("updateAnnualLeave 호출 완료");
+
 				aServ.insertAnnualLeaveLog(empNo, docuSeq);
+				System.out.println("insertAnnualLeaveLog 호출 완료");
 			}
 			break;
 		default:
