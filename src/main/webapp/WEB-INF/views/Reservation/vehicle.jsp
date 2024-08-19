@@ -25,7 +25,8 @@
             <div class="contents">
                 <%@ include file="/WEB-INF/views/Reservation/commons/sideToggle.jsp"%>
                 <div class="sideContents reservation vehicles">
-                    <div class="mainTitle" >차량 [ ${vehicle.name}_${vehicle.license_plate} ]</div>
+                    <div class="mainTitle" >차량 [ ${vehicleInfo.name}_${vehicleInfo.license_plate} ]</div>
+                    <input type="hidden" value="${vehicleInfo.vehicle_seq}" id="vehicleSeq">
                     <div class="reservBox">
                         <div class="calendar" id="calendar"></div>
                     </div>
@@ -41,7 +42,7 @@
                     <ul>
                         <li>
                             <span>차량 명</span>
-                            <div><input type="text" id="vehicleName" value="${vehicle.name}" readonly></div>
+                            <div><input type="text" id="vehicleName" value="${vehicleInfo.name}" readonly></div>
                         </li>
                         <li>
                             <span>예약 기간</span>
@@ -64,7 +65,7 @@
                             </div>
                         </li>
                     </ul>
-                    <input type="hidden" id="vehicleSeq" name="vehicle_seq" value="${vehicle.vehicle_seq }">
+                    <input type="hidden" id="vehicleSeq" name="vehicle_seq" value="${vehicleInfo.vehicle_seq }">
                     <input type="hidden" name="vehicleStartAt" id="vehicleStartAt">
                     <input type="hidden" name="vehicleEndAt" id="vehicleEndAt">
                     <input type="hidden" name="dept_title" id="deptTitle">
@@ -81,7 +82,7 @@
                     <ul>
                         <li>
                             <span>차량 명</span>
-                            <div><input type="text" id="eventVehicleName" value="${vehicle.name}" readonly></div>
+                            <div><input type="text" id="eventVehicleName" value="${vehicleInfo.name}" readonly></div>
                         </li>
                         <li>
                             <span>예약자</span>
@@ -110,6 +111,5 @@
             </div>
         </div>
     </div>
-
 </body>
 </html>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.wit.dto.EmployeeInfoDTO;
 import com.wit.dto.RoomBookingDTO;
 import com.wit.dto.VehicleBookingDTO;
+import com.wit.dto.VehiclesDTO;
 import com.wit.services.EmployeeService;
 import com.wit.services.MeetingRoomService;
 import com.wit.services.VehicleBookingService;
@@ -43,6 +44,7 @@ public class ReservController {
 	public String home(Model model) throws Exception {
 		// 회의실 목록을 조회해서 model 객체에 담아 JSP로 전달
 		model.addAttribute("meetingRooms", mServ.getMeetingRoomList());
+		model.addAttribute("vehicles", vService.getVehicleList());
 		return "Reservation/home";
 	}
 
@@ -95,8 +97,9 @@ public class ReservController {
 	// 차량 예약 페이지로 이동
 	@RequestMapping("vehicle")
 	public String reservVehicle(int vehicleSeq, Model model) throws Exception {
-		model.addAttribute("vehicle", vService.reservVehicle(vehicleSeq));
 		
+		model.addAttribute("vehicles", vService.getVehicleList());
+		model.addAttribute("vehicleInfo", vService.getVehicleInfo(vehicleSeq));		
 		return "Reservation/vehicle";
 	}
 
