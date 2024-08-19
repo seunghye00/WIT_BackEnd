@@ -31,12 +31,24 @@
 	</delete>
 	
 	
-	<!-- 부서 캘린더 출력 -->
 	<select id="depCalendarList" resultType="com.wit.dto.DepartmentCalendarDTO">
-		select * from department_calendar d
-		join employee e on d.dept_code = e.dept_code
-		where e.emp_no = #{empNo} 
-	</select>
+    <choose>
+        <!-- 직급 코드가 R1인 경우 -->
+        <when test="roleCode == 'R1'">
+            select dc.*, d.dept_title
+            from department_calendar dc
+            join dept d on dc.dept_code = d.dept_code
+        </when>
+        <!-- 직급 코드가 R1이 아닌 경우 -->
+        <otherwise>
+            select dc.*, d.dept_title 
+            from department_calendar dc
+            join dept d on dc.dept_code = d.dept_code
+            join employee e on dc.dept_code = e.dept_code
+            where e.emp_no = #{empNo}
+        </otherwise>
+    </choose>
+</select>
 	
 	<!-- 부서 캘린더 추가 (각 부서 부장만 가능) -->
 	<insert id="insertDepCalendar"
@@ -61,7 +73,7 @@
 
 	<!-- 직원 정보 조회 -->
 	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
-		SELECT name, role_code, dept_code
+		SELECT emp_no, name, role_code, dept_code
 		FROM Employee
 		WHERE emp_no = #{empNo}
 	</select>
