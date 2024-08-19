@@ -46,7 +46,7 @@ public class EmployeeController {
 		List<DeptDTO> deptList = service.AllDepts();
 		model.addAttribute("roleList", roleList);
 		model.addAttribute("deptList", deptList);
-		return "register";
+		return "/Management/register";
 	}
 
 	// 입사 순서대로 부서코드 생성을 위한 DB 조회 (사번 조회)
@@ -65,7 +65,7 @@ public class EmployeeController {
 			cService.insertPerDefaultCalendar(dto.getEmp_no());
 			return "redirect:/";
 		} else {
-			return "register";
+			return "/Management/register";
 		}
 	}
 
