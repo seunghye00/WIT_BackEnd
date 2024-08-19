@@ -65,4 +65,10 @@
 	<select id="selectEmpNoByDocumentSeq" resultType="string">
 		SELECT emp_no FROM documents WHERE document_seq = #{documentSeq}
 	</select>
+
+	<!-- document_seq로 emp_no를 조회하는 쿼리 -->
+	<select id="selectEmpNoByDocumentSeq" resultType="string">
+		SELECT emp_no FROM documents WHERE document_seq = #{documentSeq}
+	</select>
+
 </mapper>
