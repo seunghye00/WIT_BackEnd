@@ -63,43 +63,6 @@
 												</li>
 											</ul>
 										</div>
-
-										<!-- <div class="addressListPrivate">
-									<ul class="privateList">
-										<li class="toggleItem">
-											<h3 class="toggleTit active">
-												<a href="/board/list">
-													<h3 class="sideTit">
-														자유 게시판
-													</h3>
-												</a>
-												<ul class="subList actice">
-													<li class="newList"><a href="/board/list?boardCode=2">공지 사항</a></li>
-												</ul>
-											</h3>
-
-										</li>
-									</ul>
-								</div> -->
-
-										<!-- <div class="addressListGroup">
-									<ul class="GroupList">
-										<li class="toggleItem">
-											<h3 class="toggle">
-												<a href="/board/list?bookmark=true">북마크한 게시물</a>
-											</h3>
-										</li>
-									</ul>
-								</div> -->
-										<!-- <div class="addressListGroup">
-									<ul class="GroupList">
-										<li class="toggleItem">
-											<h3 class="toggle">
-												<a href="/board/list?report=true">신고한 게시물</a>
-											</h3>
-										</li>
-									</ul>
-								</div> -->
 									</div>
 
 									<div class="sideContents board">
