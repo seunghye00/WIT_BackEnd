@@ -164,8 +164,8 @@ public class EApprovalController {
 
 	// 관리자가 해당 문서의 상세 정보를 열람하는데 필요한 정보들을 담아서 전달하는 메서드
 	@RequestMapping("admin/readDocu")
-	public String adminReadDocu(int docuSeq, @RequestParam(required = false) String readYN, Model model)
-			throws Exception {
+	public String adminReadDocu(int docuSeq, @RequestParam(required = false) String type,
+			@RequestParam(required = false) String readYN, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -175,9 +175,13 @@ public class EApprovalController {
 		model.addAttribute("docuInfo", dto);
 		model.addAttribute("writerInfo", eServ.getNameNDept(dto.getEmp_no()));
 		model.addAttribute("apprList", serv.getApprLine(docuSeq));
+		model.addAttribute("type", type);
 
+		if (type == null) {
+			type = "read";
+		}
 		// 참조 문서함에서 문서 열람 시 문서 열람 여부와 열람 일시 업데이트 후 참조 라인 정보를 model 객체에 저장
-		if (readYN != null) {
+		if (type.equals("read") && readYN != null) {
 			serv.updateReadYN(docuSeq, empNo, readYN);
 		}
 		model.addAttribute("refeList", serv.getRefeLine(docuSeq));
@@ -186,15 +190,27 @@ public class EApprovalController {
 		switch (dto.getDocu_code()) {
 		case "M1":
 			model.addAttribute("docuDetail", serv.getPropDetail(docuSeq));
-			return "Admin/eApproval/read/readProp";
+			if (type.equals("read")) {
+				return "Admin/eApproval/read/readProp";
+			} else if (type.equals("toAppr")) {
+				return "Admin/eApproval/appr/apprProp";
+			}
 		case "M2":
 			model.addAttribute("docuDetail", serv.getLeaveDetail(docuSeq));
 			// 해당 사원의 잔여 연차 갯수 조회 후 전달
 			model.addAttribute("remaingLeaves", aServ.getRemainingLeavesByEmpNo(empNo));
-			return "Admin/eApproval/read/readLeave";
+			if (type.equals("read")) {
+				return "Admin/eApproval/read/readLeave";
+			} else if (type.equals("toAppr")) {
+				return "Admin/eApproval/appr/apprLeave";
+			}
 		case "M3":
-			model.addAttribute("docuDetail", serv.getLatenessDetail(docuSeq));
-			return "Admin/eApproval/read/readLateness";
+			model.addAttribute("docuDetail", serv.getLatenessDetail(docuSeq));	
+			if (type.equals("read")) {
+				return "Admin/eApproval/read/readLateness";
+			} else if (type.equals("toAppr")) {
+				return "Admin/eApproval/appr/apprLateness";
+			}
 		default:
 			// 추후 에러 페이지로 변경
 			return "redirect:/eApproval/home";
@@ -282,13 +298,8 @@ public class EApprovalController {
 			serv.updateDocuStatus(docuSeq, "완료");
 			if (applyLeaves != null) {
 				float useNum = Float.parseFloat(applyLeaves);
-				System.out.println("Parsed useNum: " + useNum); // 변환된 useNum 값 확인
-
-				aServ.updateAnnualLeave(empNo, useNum);
-				System.out.println("updateAnnualLeave 호출 완료");
-
-				aServ.insertAnnualLeaveLog(empNo, docuSeq);
-				System.out.println("insertAnnualLeaveLog 호출 완료");
+				aServ.updateAnnualLeave(docuSeq, useNum);
+				aServ.insertAnnualLeaveLog(docuSeq);
 			}
 			break;
 		default:
@@ -331,13 +342,8 @@ public class EApprovalController {
 			serv.updateDocuStatus(docuSeq, "완료");
 			if (applyLeaves != null) {
 				float useNum = Float.parseFloat(applyLeaves);
-				System.out.println("Parsed useNum: " + useNum); // 변환된 useNum 값 확인
-
-				aServ.updateAnnualLeave(empNo, useNum);
-				System.out.println("updateAnnualLeave 호출 완료");
-
-				aServ.insertAnnualLeaveLog(empNo, docuSeq);
-				System.out.println("insertAnnualLeaveLog 호출 완료");
+				aServ.updateAnnualLeave(docuSeq, useNum);
+				aServ.insertAnnualLeaveLog(docuSeq);
 			}
 			break;
 		default:
@@ -368,8 +374,8 @@ public class EApprovalController {
 				serv.updateDocuStatus(docuSeq, "완료");
 				if (applyLeaves != null) {
 					float useNum = Float.parseFloat(applyLeaves);
-					aServ.updateAnnualLeave(empNo, useNum);
-					aServ.insertAnnualLeaveLog(empNo, docuSeq);
+					aServ.updateAnnualLeave(docuSeq, useNum);
+					aServ.insertAnnualLeaveLog(docuSeq);
 				}
 				break;
 			}
@@ -398,8 +404,8 @@ public class EApprovalController {
 				serv.updateDocuStatus(docuSeq, "완료");
 				if (applyLeaves != null) {
 					float useNum = Float.parseFloat(applyLeaves);
-					aServ.updateAnnualLeave(empNo, useNum);
-					aServ.insertAnnualLeaveLog(empNo, docuSeq);
+					aServ.updateAnnualLeave(docuSeq, useNum);
+					aServ.insertAnnualLeaveLog(docuSeq);
 				}
 				break;
 			}
@@ -444,9 +450,10 @@ public class EApprovalController {
 		return "redirect:/eApproval/readDocu?docuSeq=" + dto.getDocument_seq() + "&type=" + type;
 	}
 
-	// 관리자가 결재 대기 or 결재 예정 문서함으로 이동할 때 필요한 데이터를 담아서 전달하는 메서드 
+	// 관리자가 결재 대기 or 결재 예정 문서함으로 이동할 때 필요한 데이터를 담아서 전달하는 메서드
 	@RequestMapping("admin/apprList")
-	public String apprList(String type, String docuCode, @RequestParam(required = false) String keyword, int cPage, Model model) throws Exception {
+	public String apprList(String type, String docuCode, @RequestParam(required = false) String keyword, int cPage,
+			Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -464,11 +471,11 @@ public class EApprovalController {
 			// 추후 에러 페이지로 변경
 			// return "redirect:/";
 		}
-		
+
 		// 문서 정보를 저장할 변수 생성 후 검색 여부에 따라 해당하는 데이터를 변수에 저장
 		List<DocuInfoListDTO> list = serv.searchListByType(empNo, status, docuCode, keyword, cPage);
-		model.addAttribute("totalCount", serv.getCountSearchListByType(empNo, status, docuCode, keyword));	
-		
+		model.addAttribute("totalCount", serv.getCountSearchListByType(empNo, status, docuCode, keyword));
+
 		// 작성자와 마지막 결재자의 사번 정보로 이름을 조회해서 dto에 저장 후 model 객체로 전달
 		for (DocuInfoListDTO dto : list) {
 			dto.setWriter(eServ.getName(dto.getEmp_no()));
@@ -590,7 +597,8 @@ public class EApprovalController {
 
 	// 관리자가 개인 문서함 페이지로 이동 시 필요한 데이터를 담아서 전달하는 메서드
 	@RequestMapping("admin/privateList")
-	public String adminPrivateList(String type, String docuCode, @RequestParam(required = false) String keyword, int cPage, Model model) throws Exception {
+	public String adminPrivateList(String type, String docuCode, @RequestParam(required = false) String keyword,
+			int cPage, Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -639,10 +647,11 @@ public class EApprovalController {
 		// 해당 문서함 화면으로 이동
 		return "Admin/eApproval/list/" + type + "List";
 	}
-	
+
 	// 관리자가 개인 문서함 페이지로 이동 시 필요한 데이터를 담아서 전달하는 메서드
 	@RequestMapping("admin/docuList")
-	public String adminDocuList(String type, String status, @RequestParam(required = false) String keyword, int cPage, Model model) throws Exception {
+	public String adminDocuList(String type, String status, @RequestParam(required = false) String keyword, int cPage,
+			Model model) throws Exception {
 
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장 후 model 객체로 전달
 		model.addAttribute("type", type);
@@ -663,7 +672,7 @@ public class EApprovalController {
 			return "redirect:/eApproval/admin/home";
 		}
 		List<DocuInfoListDTO> list = serv.searchDocuListByDocuCode(docuCode, status, keyword, cPage);
-		for(DocuInfoListDTO dto : list) {
+		for (DocuInfoListDTO dto : list) {
 			dto.setWriter(eServ.getName(dto.getEmp_no()));
 		}
 		model.addAttribute("totalCount", serv.getCountSearchDocuList(docuCode, status, keyword));

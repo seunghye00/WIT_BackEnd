@@ -2905,6 +2905,10 @@ span.return {
 	padding: 5px;
 }
 
+.eApproval.adminCont .docuList .listBox .rows:not(.listHeader) .cols:last-child span {
+	color: #333;
+}
+
 .eApproval .docuList.docuBox .listBox.progList .rows:not(.listHeader) .cols:last-child span {
 	width: max-content;
 }
@@ -4272,33 +4276,16 @@ button:nth-child(4) img {
 }
 
 .reservation .reservList .listBox .rows .cols:nth-child(1),
-.cols:nth-child(2) {
-	width: 15%;
+.reservation .reservList .listBox .rows .cols:nth-child(2) {
+	width: 10%;
 }
 
 .reservation .reservList .listBox .rows .cols:nth-child(3) {
-	width: 40%;
-}
-
-.reservation .reservList .listBox .rows .cols:nth-child(4) {
-	width: 30%;
-}
-
-.reservation .reservList .listBox .rows .cols:nth-child(5) {
-	width: 10%;
-}
-
-.reservation .reservList .listBox.roomList .rows .cols:nth-child(1),
-.reservation .reservList .listBox.roomList .rows .cols:nth-child(2) {
-	width: 10%;
-}
-
-.reservation .reservList .listBox.roomList .rows .cols:nth-child(3) {
 	width: 50%;
 }
 
-.reservation .reservList .listBox.roomList .rows .cols:nth-child(4),
-.reservation .reservList .listBox.roomList .rows .cols:nth-child(5) {
+.reservation .reservList .listBox .rows .cols:nth-child(4),
+.reservation .reservList .listBox .rows .cols:nth-child(5) {
 	width: 15%;
 }
 

@@ -718,4 +718,9 @@
 				</if>
 		)
 	</select>
+	
+	<!-- 해당 문서의 작성자 사번을 조회하기 위한 쿼리문 -->
+	<select id="getEmpNoByDocuSeq" resultType="String">
+		select emp_no from documents where document_seq = #{docuSeq}
+	</select>
 </mapper>

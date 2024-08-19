@@ -426,4 +426,9 @@ public class EApprovalDAO {
 		params.put("keyword", keyword);
 		return mybatis.selectOne("eApproval.getCountSearchDocuList", params);
 	}
+
+	// 해당 문서의 작성자 사번을 조회하기 위한 메서드
+	public String getEmpNoByDocuSeq(int docuSeq) {
+		return mybatis.selectOne("eApproval.getEmpNoByDocuSeq", docuSeq);
+	}
 }
