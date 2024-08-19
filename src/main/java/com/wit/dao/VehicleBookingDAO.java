@@ -20,8 +20,13 @@ public class VehicleBookingDAO {
 	private SqlSession mybatis;
 	
 	// 차량별 예약 목록
-	public VehiclesDTO reservVehicle(int vehicleSeq) {
-		return mybatis.selectOne("vehicleBooking.reservVehicle", vehicleSeq);
+	public List<VehiclesDTO> getVehicleList() {
+		return mybatis.selectList("vehicleBooking.getVehicleList");
+	}
+	
+	// 해당 차량 정보 받아오기
+	public VehiclesDTO getVehicleInfo(int vehicleSeq) {
+		return mybatis.selectOne("vehicleBooking.getVehicleInfo", vehicleSeq);
 	}
 	
 	// 차량 예약 추가
