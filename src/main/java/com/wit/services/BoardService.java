@@ -16,6 +16,7 @@ import com.wit.dao.BoardDAO;
 import com.wit.dao.BoardFilesDAO;
 import com.wit.dto.BoardDTO;
 import com.wit.dto.BoardFilesDTO;
+import com.wit.dto.BoardReportDTO;
 import com.wit.dto.EmployeeDTO;
 
 @Service
@@ -34,24 +35,39 @@ public class BoardService {
 	}
 
 	// 게시물 조회
-	public List<BoardDTO> list(String searchTxt, String searchTarget, String sortTarget, int cpage) {
+	public List<BoardReportDTO> list(String searchTxt, String searchTarget, String sortTarget, int cpage, String emp_no,String bookmark,int board_code,String report) {
 		Map<String, Object> maps = new HashMap<String, Object>();
 		maps.put("sortTarget", sortTarget); 
 		maps.put("searchTarget", searchTarget);
 		maps.put("searchTxt", searchTxt);
-		maps.put("start", cpage*BoardConfig.recordCountPerPage-(BoardConfig.recordCountPerPage-1));
-		maps.put("end", cpage*BoardConfig.recordCountPerPage);
+		maps.put("emp_no", emp_no);
+		maps.put("bookmark", bookmark);
+		maps.put("board_code", board_code);
+		maps.put("report", report);
+		
+		if(cpage==0) {
+			maps.put("start", 1);
+			maps.put("end", 5);
+		}
+		else {
+			maps.put("start", cpage*BoardConfig.recordCountPerPage-(BoardConfig.recordCountPerPage-1));
+			maps.put("end", cpage*BoardConfig.recordCountPerPage);
+		}
+		
 		
 		
 		return bdao.list(maps);
 	}
 	// 게시글 개수
-	public int boardCount(String searchTxt, String searchTarget) {
+	public int boardCount(String searchTxt, String searchTarget, String emp_no,String bookmark,int board_code,String report) {
 		Map<String, Object> maps = new HashMap<String, Object>();
 	 
+		maps.put("bookmark", bookmark);
 		maps.put("searchTarget", searchTarget);
 		maps.put("searchTxt", searchTxt);
-	
+		maps.put("emp_no", emp_no);
+		maps.put("board_code", board_code);
+		maps.put("report", report);
 		return bdao.boardCount(maps);
 	}
 
