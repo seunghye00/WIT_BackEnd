@@ -58,9 +58,10 @@ public class BoardController {
 			@RequestParam(defaultValue = "1") int cpage,
 			@RequestParam(defaultValue = "false") String bookmark,
 			@RequestParam(defaultValue = "1") int boardCode,
-			@RequestParam(defaultValue = "false") String report) throws Exception {
+			@RequestParam(defaultValue = "false") String report,
+			@RequestParam(defaultValue = "false") String adminReport) throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
-		List<BoardReportDTO> boardList = bserv.list(searchTxt, searchTarget, sortTarget, cpage,empNo,bookmark,boardCode,report);
+		List<BoardReportDTO> boardList = bserv.list(searchTxt, searchTarget, sortTarget, cpage,empNo,bookmark,boardCode,report,adminReport);
 
 		EmployeeDTO employee = bserv.employeeInfo(empNo);
 		model.addAttribute("board_code",boardCode);
@@ -69,12 +70,13 @@ public class BoardController {
 		model.addAttribute("sortTarget",sortTarget);
 		model.addAttribute("searchTxt",searchTxt);
 		model.addAttribute("bookmark",bookmark); 
+		model.addAttribute("adminReport",adminReport); 
 		model.addAttribute("cpage",cpage);
 		model.addAttribute("list", boardList);
 		model.addAttribute("employee", employee);
 		
 		// 검색포함 전체 게시글 개수
-		model.addAttribute("record_total_count",bserv.boardCount(searchTxt, searchTarget, empNo,bookmark,boardCode,report) );
+		model.addAttribute("record_total_count",bserv.boardCount(searchTxt, searchTarget, empNo,bookmark,boardCode,report,adminReport) );
 		// 한 페이지에 보여줄 게시글 개수
 		model.addAttribute("record_count_per_page",BoardConfig.recordCountPerPage);
 		// navi 개수
@@ -84,7 +86,7 @@ public class BoardController {
 
 	// 글 작성으로 이동
 	@RequestMapping("write")
-	public String write(Model model) throws Exception {
+	public String write(Model model,@RequestParam(defaultValue = "1") int boardCode) throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 
 		EmployeeDTO employee = bserv.employeeInfo(empNo);
@@ -92,10 +94,20 @@ public class BoardController {
 		model.addAttribute("employee", employee);
 		// 처음 작성할 때는 파일 사이즈가 0으로 설정
 		model.addAttribute("filesSize", 0);
+		model.addAttribute("board_code",boardCode);
 
 		return "Board/writeBoard";
 	}
-
+	
+	// 신고현황 게시판으로 이동
+	@RequestMapping("reportList")
+	public String reportList(Model model) throws Exception{
+		// 신고된 게시물 목록 조회
+		List<BoardReportDTO> reportedPosts = bserv.getReportedPosts();
+		model.addAttribute("reportedPosts",reportedPosts);
+		return "Board/report";
+	}
+	
 	// 게시물 등록
 	@RequestMapping("writeProc")
 	public String writeProc(BoardDTO dto, MultipartFile[] files,@RequestParam(defaultValue = "1") int boardCode) throws Exception {
@@ -105,7 +117,14 @@ public class BoardController {
 		// 파일 등록
 		String realPath = session.getServletContext().getRealPath("/uploads");
 		fserv.upload(dto,realPath, files);
-		return "redirect:/board/list";
+//		return "redirect:/board/list";
+		
+		// 게시판 코드에 따라 다른 페이지로 리다이렉트
+		if(boardCode == 2) {
+			return "redirect:/board/list?&boardCode="+boardCode;
+		} else {
+			return "redirect:/board/list";
+		}
 	}
 
 	// 게시물 상세 조회

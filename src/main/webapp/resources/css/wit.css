@@ -254,6 +254,11 @@
 	flex: 1;
 }
 
+.boardList .notiList .rows .boardBtn {
+	flex: 1;
+}
+
+
 /* pagenavi css start */
 .boardList .pageNavi {
 	height: 50px;
@@ -2845,18 +2850,18 @@ span.return {
 }
 
 .eApprWrite .document .choiBox .refeModal {
-	display: none;    
+	display: none;
 	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
-    border: 1px solid #555;
-    min-width: 117px;
-    width: max-content;
-    min-height: 63px;
-    position: absolute;
-    top: -3px;
-    left: 394px;
-    border-radius: 10px;
-    background: #fff;
-    padding: 20px;
+	border: 1px solid #555;
+	min-width: 117px;
+	width: max-content;
+	min-height: 63px;
+	position: absolute;
+	top: -3px;
+	left: 394px;
+	border-radius: 10px;
+	background: #fff;
+	padding: 20px;
 }
 
 .eApprWrite.eApprSaved .document .choiBox .refeModal {
@@ -3622,7 +3627,7 @@ button:nth-child(4) img {
 
 .commModal .commList {
 	flex: 9;
-	width:100%;
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
@@ -4171,7 +4176,7 @@ button:nth-child(4) img {
 	flex: 1;
 	max-height: unset;
 	justify-content: center;
-    align-items: center;
+	align-items: center;
 }
 
 .reservation .reservList .listBox .rows:hover {

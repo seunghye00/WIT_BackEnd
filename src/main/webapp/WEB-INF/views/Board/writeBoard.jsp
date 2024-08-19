@@ -106,6 +106,7 @@
 									<form action="/board/writeProc" method="post" enctype="multipart/form-data"
 										id="submitForm">
 										<input type="hidden" name="contents" id="contents">
+										<input type="hidden" name="boardCode" value="${board_code}">
 										<div class="mainTitle">글 작성</div>
 										<div class="writeWrapper">
 											<input class="writeTitle" placeholder="제목을 입력하세요." name="title"></input>

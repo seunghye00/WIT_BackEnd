@@ -59,7 +59,18 @@
 														<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
 														</li>
 														<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+														<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
 													</ul>
+												</li>
+											</ul>
+										</div>
+
+										<div class="addressListGroup">
+											<ul class="GroupList">
+												<li class="toggleItem">
+													<h3 class="reportList">
+														신고 현황
+													</h3>
 												</li>
 											</ul>
 										</div>
@@ -81,9 +92,19 @@
 												</c:choose>
 											</c:when>
 											<c:when test="${board_code=='2'}">
-												<div class="mainTitle">공지 사항 홈</div>
-											</c:when>
+												<c:choose>
+													<c:when test="${bookmark=='false'}">
+														<div class="mainTitle">공지사항 홈</div>
+													</c:when>
+													<c:when test="${bookmark=='true'}">
+														<div class="mainTitle">북마크 홈</div>
+													</c:when>
 
+												</c:choose>
+											</c:when>
+											<!-- <c:if test="${adminReport=='true'}">
+													<div class="mainTitle">신고현황 홈</div>
+											</c:if> -->
 										</c:choose>
 
 										<div class="boardList">
@@ -97,6 +118,8 @@
 														<input type="text" name="bookmark" id="bookmark">
 														<input type="text" name="boardCode" id="board_code" value="1">
 														<input type="text" name="report" id="report" value="false">
+														<input type="text" name="adminReport" id="adminReport"
+															value="false">
 													</form>
 													<select class="form-select" aria-label="Default select example"
 														id="searchTarget">
@@ -117,7 +140,15 @@
 													<select class="form-select" aria-label="Default select example"
 														id="sortTarget">
 														<option selected value="board_seq">최신순</option>
-														<option value="views">조회수</option>
+														<c:choose>
+															<c:when test="${adminReport=='true'}">
+																<option value="views">신고 횟수</option>
+															</c:when>
+															<c:otherwise>
+																<option value="views">조회수</option>
+															</c:otherwise>
+														</c:choose>
+
 													</select>
 												</div>
 
@@ -140,6 +171,12 @@
 													<c:choose>
 														<c:when test="${report=='true'}">
 															<div class="cols boardView">신고유형</div>
+														</c:when>
+														<c:when test="${adminReport=='true'}">
+															<div class="cols boardView">신고 횟수</div>
+															<div class="cols boardBtn">
+																게시글 삭제
+															</div>
 														</c:when>
 														<c:otherwise>
 															<div class="cols boardView">조회수</div>
@@ -179,11 +216,18 @@
 																</div>
 															</c:otherwise>
 														</c:choose>
-
 														<c:choose>
 															<c:when test="${report=='true'}">
 																<div class="cols boardView">
 																	<span>${board.report_type}</span>
+																</div>
+															</c:when>
+															<c:when test="${adminReport=='true'}">
+																<div class="cols boardView">
+																	<span>${board.count}</span>
+																</div>
+																<div class="cols boardWriter">
+																	<button class="">삭제</button>
 																</div>
 															</c:when>
 															<c:otherwise>
@@ -192,7 +236,6 @@
 																</div>
 															</c:otherwise>
 														</c:choose>
-
 													</div>
 												</c:forEach>
 											</div>
@@ -227,6 +270,11 @@
 						document.getElementById('report').value = "${ report }";
 					}
 
+					if (${ adminReport != "false" }) {
+						document.getElementById('adminReport').value = "${ adminReport }";
+					}
+
+
 					// 글작성 버튼 누르면 글 작성 페이지로 이동
 					document.getElementById('writeBtn').addEventListener('click',
 						function () {
@@ -244,6 +292,11 @@
 						})
 
 					}
+
+					// 신고현황 클릭 시
+					$(".reportList").on("click", function () {
+						window.location.href = "/board/list?adminReport=true";
+					});
 
 					// 검색 버튼 누르면 검색 옵션, 정렬 옵션, 검색 내용 값 넣어주기
 					$("#searchBtn").on("click", function () {
