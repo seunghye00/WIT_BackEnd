@@ -114,7 +114,7 @@ public class EmployeeController {
 		} else {
 			return "redirect:/";
 		}
-		return "main";
+		return "/User/main";
 	}
 
 	// 추가 정보 업데이트
