@@ -1,6 +1,7 @@
 package com.wit.services;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.wit.dao.AttendanceDAO;
 import com.wit.dto.AttendanceDTO;
+import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 
 @Service
@@ -171,8 +173,7 @@ public class AttendanceService {
 	}
 
 	// 월간 근무현황 조회 (페이징 적용)
-	public List<Map<String, Object>> monthlyWorkStatus(String empNo, String month, int cpage,
-			int recordCountPerPage) {
+	public List<Map<String, Object>> monthlyWorkStatus(String empNo, String month, int cpage, int recordCountPerPage) {
 		int start = (cpage - 1) * recordCountPerPage + 1;
 		int end = cpage * recordCountPerPage;
 		return dao.monthlyWorkStatus(empNo, month, start, end);
@@ -202,5 +203,19 @@ public class AttendanceService {
 	// 직원 정보 조회
 	public EmployeeDTO employeeInfo(String emp_no) {
 		return dao.employeeInfo(emp_no);
+	}
+
+	// 부서별 근태현황(관리자)
+	public List<Map<String, Object>> deptAtd(String deptTitle, Date startDate, Date endDate) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("deptTitle", deptTitle);
+		params.put("startDate", startDate);
+		params.put("endDate", endDate);
+		return dao.deptAtd(params);
+	}
+
+	// 부서 조회
+	public List<DeptDTO> getDepartments() {
+		return dao.getAllDepartments();
 	}
 }

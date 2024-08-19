@@ -19,7 +19,6 @@ import com.wit.commons.BoardConfig;
 import com.wit.dto.EmployeeInfoDTO;
 import com.wit.dto.RoomBookingDTO;
 import com.wit.dto.VehicleBookingDTO;
-import com.wit.dto.VehiclesDTO;
 import com.wit.services.EmployeeService;
 import com.wit.services.MeetingRoomService;
 import com.wit.services.VehicleBookingService;
@@ -41,7 +40,7 @@ public class ReservController {
 	private VehicleBookingService vService;
 
 	// 예약 메인페이지로 이동
-	@RequestMapping("home")
+	@RequestMapping(value = { "admin/home", "home" })
 	public String home(String type, @RequestParam(required = false) String keyword, int cPage, Model model) throws Exception {
 		
 		// 세션에 저장된 사번을 변수에 저장
@@ -131,7 +130,7 @@ public class ReservController {
 	public String reservVehicle(int vehicleSeq, Model model) throws Exception {
 		model.addAttribute("meetingRooms", mServ.getMeetingRoomList("예약 가능"));
 		model.addAttribute("vehicles", vService.getVehicleList("예약 가능"));
-		model.addAttribute("vehicle", vService.getVehicleInfo(vehicleSeq));
+		model.addAttribute("vehicleInfo", vService.getVehicleInfo(vehicleSeq));
 		return "Reservation/vehicle";
 	}
 

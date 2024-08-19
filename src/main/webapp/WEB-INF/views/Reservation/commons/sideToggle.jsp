@@ -44,7 +44,7 @@
 		<ul class="GroupList">
 			<li class="toggleItem">
 				<c:choose>
-					<c:when test="${empty vehicle}">
+					<c:when test="${empty vehicleInfo}">
 						<h3 class="toggleTit">차량</h3>
 						<ul class="subList">
 						<c:forEach items="${vehicles}" var="i">
@@ -57,12 +57,12 @@
 						</ul>
 					</c:when>
 					<c:otherwise>
-						<h3 class="toggleTit active">회의실</h3>
+						<h3 class="toggleTit active">차량</h3>
 						<ul class="subList active">
 						<c:forEach items="${vehicles}" var="i">
 							<li>
 								<a href="/reservation/vehicle?vehicleSeq=${i.vehicle_seq}" 
-									<c:if test="${vehicle.vehicle_seq eq i.vehicle_seq}">class="active"</c:if>>
+									<c:if test="${vehicleInfo.vehicle_seq eq i.vehicle_seq}">class="active"</c:if>>
 									${i.name}_${i.license_plate}
 								</a>
 							</li>
