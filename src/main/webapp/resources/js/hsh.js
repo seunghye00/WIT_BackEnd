@@ -1056,19 +1056,10 @@ function goToSearchList(keyword){
 	const pathName = window.location.pathname;
 	const docuList = pathName.split('/').pop();
 	
-	if(keyword == ''){
-		if (docuCode == ''){
-			location.href = '/eApproval/' + docuList + '?type=' + type + '&cPage=1';
-			return;
-		}
-		location.href = '/eApproval/' + docuList + '?type=' + type + '&docuCode=' + docuCode + '&cPage=1';
-		return;
-	} 
-	
 	// 변수에 저장된 값을 서버에 전송
 	if (docuCode == ''){
-		location.href = '/eApproval/search/' + docuList + '?type=' + type + '&keyword=' + keyword + '&cPage=1';
+		location.href = '/eApproval/' + docuList + '?type=' + type + '&keyword=' + keyword + '&cPage=1';
 		return;
 	}
-	location.href = '/eApproval/search/' + docuList + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=1';
+	location.href = '/eApproval/' + docuList + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=1';
 }
