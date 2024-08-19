@@ -104,6 +104,7 @@
 							~ ${endDate}</span> <i class="bx bx-chevron-right"
 							onclick="window.location.href='?week=${nextWeek}'"></i>
 					</div>
+
 					<div class="dept_tabs">
 						<c:forEach var="dept" items="${departments}">
 							<div
