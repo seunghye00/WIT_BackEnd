@@ -36,7 +36,7 @@
 	</insert>
 
 	<!-- 상태가 완료된 직원의 휴가 신청 내역을 조회 -->
-	<select id="selectApprovedLeaveRequestsByEmpNo"
+	<select id="selectApprovedLeave"
 		resultType="com.wit.dto.LeaveRequestDTO">
 		SELECT lr.*
 		FROM leave_requests lr

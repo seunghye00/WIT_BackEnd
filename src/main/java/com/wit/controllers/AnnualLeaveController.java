@@ -36,7 +36,7 @@ public class AnnualLeaveController {
 		AnnualLeaveDTO annualLeave = service.getAnnualLeaveByEmpNo(empNo);
 
 		// 상태가 완료된 직원의 휴가 신청 내역 조회
-		List<LeaveRequestDTO> leaveRequests = service.getApprovedLeaveRequestsByEmpNo(empNo);
+		List<LeaveRequestDTO> leaveRequests = service.selectApprovedLeave(empNo);
 
 		model.addAttribute("employee", employee);
 		model.addAttribute("annualLeave", annualLeave);

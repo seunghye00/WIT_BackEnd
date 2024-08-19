@@ -46,8 +46,8 @@ public class AnnualLeaveDAO {
     }
 
     // 상태가 완료된 직원의 휴가 신청 내역을 조회
-    public List<LeaveRequestDTO> getApprovedLeaveRequestsByEmpNo(String empNo) {
-        return mybatis.selectList("annualLeave.selectApprovedLeaveRequestsByEmpNo", empNo);
+    public List<LeaveRequestDTO> selectApprovedLeave(String empNo) {
+        return mybatis.selectList("annualLeave.selectApprovedLeave", empNo);
     }
 
     // 직원 정보 조회
