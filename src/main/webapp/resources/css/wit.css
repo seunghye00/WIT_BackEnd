@@ -936,6 +936,14 @@
 	gap: 15px;
 }
 
+.sideContents.addressCont .manageForm{
+	width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+	gap: 15px;
+}
+
 .sideContents.addressCont .mainTitle {
 	flex: unset;
 	color: #333;
@@ -1196,6 +1204,8 @@
 
 .formGroup input[type="text"],
 .formGroup input[type="file"],
+.formGroup input[type="date"],
+.formGroup input[type="email"],
 .formGroup select {
 	width: 50%;
 	padding: 15px;
@@ -1224,6 +1234,10 @@
 	border: none;
 	cursor: pointer;
 	border-radius: 4px;
+}
+
+.photoWrapper button:hover {
+	background-color: #e74c3c;
 }
 
 .photoWrapper input[type="file"] {
@@ -1864,6 +1878,75 @@
 	font-weight: bold;
 }
 
+.manageForm .manageTool {
+	display:flex;
+	justify-content: space-between;
+    align-items: center;
+}
+
+.manageForm .manageTool .search {
+	display:flex;
+    gap: 10px;
+}
+.manageForm .manageTool .search select {
+	border: none;
+    font-size: 16px;
+    font-weight: bold;
+    outline:none;
+    min-width: 70px;
+}
+.manageForm .listBox .rows .cols{
+	width: calc(100% / 6);
+}
+
+
+.manageDetailForm{
+	display:flex;
+	flex-direction:column;
+	gap: 40px;
+}
+.manageDetailForm .formCon{
+	display:flex;
+	flex-direction:column;
+	gap: 40px;
+}
+
+.manageDetailForm .formCont {
+	display:flex;
+}
+
+.formCont .leftForm {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 60px;
+}
+
+.formCont .rightForm {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 60px;;
+}
+
+.formCon .photoWrapper  {
+	gap: 10px;
+}
+
+.formCon .photoWrapper .imgBox {
+	width: 150px;
+	height: 170px;
+    overflow: hidden;
+}
+
+.formCon .photoWrapper img {
+	object-fit: cover;
+	width: 100%;
+	height: 100%;
+}
+.formCon .photoWrapper label {
+	margin-left:0;
+}
 /* 경원 css end */
 
 /* 민서 css start */
