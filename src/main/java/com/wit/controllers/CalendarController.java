@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wit.dto.DepartmentCalendarDTO;
 import com.wit.dto.EmployeeDTO;
+import com.wit.dto.EmployeeInfoDTO;
 import com.wit.dto.PersonalCalendarDTO;
 import com.wit.services.CalendarService;
 
@@ -32,11 +33,12 @@ public class CalendarController {
 	// 캘린더 이동
 	@RequestMapping("/calendar")
 	public String calendar(Model model) {
-		String empNo = (String) session.getAttribute("loginID");
+		String empNo = (String) session.getAttribute("loginID");		
+		EmployeeDTO employee = service.employeeInfo(empNo);		
+		String roleCode = employee.getRole_code();
+		
+		List<DepartmentCalendarDTO> dlist = service.depCalendarList(empNo,roleCode);
 		List<PersonalCalendarDTO> plist = service.perCalendarList(empNo);
-		List<DepartmentCalendarDTO> dlist = service.depCalendarList(empNo);
-		EmployeeDTO employee = service.employeeInfo(empNo);
-		employee.setEmp_no(empNo);
 
 		model.addAttribute("plist", plist);
 		model.addAttribute("dlist", dlist);
