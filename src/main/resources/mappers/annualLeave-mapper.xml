@@ -28,13 +28,6 @@
 		WHERE emp_no = #{empNo}
 	</update>
 
-	<!-- 연차 사용 내역을 로그로 기록 -->
-	<insert id="insertAnnualLeaveLog">
-		INSERT INTO annual_leave_log (log_seq, emp_no, annual_leave_seq,
-		document_seq)
-		VALUES (log_seq.NEXTVAL, #{empNo}, #{annualLeaveSeq}, #{documentSeq})
-	</insert>
-
 	<!-- 상태가 완료된 직원의 휴가 신청 내역을 조회 -->
 	<select id="selectApprovedLeave"
 		resultType="com.wit.dto.LeaveRequestDTO">
