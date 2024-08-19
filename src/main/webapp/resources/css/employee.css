@@ -755,14 +755,22 @@
 	width: 100%;
 	border-collapse: collapse;
 	margin-top: 10px;
+	font-size: 18px;
 }
 
-.header_row, .attendance_row {
+.header_row {
 	display: flex;
 	border-bottom: 1px solid #ccc;
 	padding: 10px 0;
 	background-color: #555;
 	color: white;
+	border-radius: 10px;
+}
+
+.attendance_row {
+	display: flex;
+	border-bottom: 1px solid #ccc;
+	padding: 10px 0;
 	border-radius: 10px;
 }
 

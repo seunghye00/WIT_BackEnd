@@ -106,8 +106,9 @@
 					</div>
 					<div class="dept_tabs">
 						<c:forEach var="dept" items="${departments}">
-							<div class="dept_tab ${dept == selectedDept ? 'active' : ''}">
-								<a href="?dept=${dept.dept_title}">${dept.dept_title}</a>
+							<div
+								class="dept_tab ${dept.dept_title == deptTitle ? 'active' : ''}">
+								<a href="?deptTitle=${dept.dept_title}">${dept.dept_title}</a>
 							</div>
 						</c:forEach>
 					</div>
@@ -119,8 +120,10 @@
 						<c:forEach var="attendanceItem" items="${attendanceData}">
 							<div class="attendance_row">
 								<span>${attendanceItem.ROLETITLE}
-									${attendanceItem.EMPNAME}</span> <span>${attendanceItem.STARTTIME}
-									- ${attendanceItem.ENDTIME}</span>
+									${attendanceItem.EMPNAME}</span> <span>${attendanceItem.MONDAY}</span>
+								<span>${attendanceItem.TUESDAY}</span> <span>${attendanceItem.WEDNESDAY}</span>
+								<span>${attendanceItem.THURSDAY}</span> <span>${attendanceItem.FRIDAY}</span>
+								<span>${attendanceItem.SATURDAY}</span>
 							</div>
 						</c:forEach>
 					</div>
