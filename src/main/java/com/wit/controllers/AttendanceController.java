@@ -136,4 +136,10 @@ public class AttendanceController {
 		return response;
 	}
 	
+	// 부서별 근태현황 (관리자)
+	@RequestMapping("/attendanceDept")
+	public String attendanceDept() {
+		return "Admin/Attendance/attendanceDept";
+	}
+	
 }

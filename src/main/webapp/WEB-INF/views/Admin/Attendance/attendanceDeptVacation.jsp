@@ -96,16 +96,16 @@
 						<h3 class="toggleTit">부서별 근태현황</h3>
 					</a>
 					<div style="padding: 10px;"></div>
-					<a href="/annualLeave/attendanceDeptVacation">
+					<a href="/annualLeave/attendance_vacation">
 						<h3 class="toggleTit">부서별 휴가현황</h3>
 					</a>
 				</div>
 				<div class="sideContents Attendance">
-					<h2>휴가관리</h2>
+					<h2>부서별 휴가현황</h2>
 					<div class="Attendance_container">
 						<div class="Attendance_vacation">
 							<div class="vacation_container">
-								<h3>휴가 보유 현황</h3>
+								<h3>부서별 휴가현황</h3>
 								<div class="vacation_row vacation_header">
 									<div class="vacation_col">
 										<span>총 휴가</span>
