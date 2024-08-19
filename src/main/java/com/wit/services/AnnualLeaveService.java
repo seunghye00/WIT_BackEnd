@@ -38,11 +38,13 @@ public class AnnualLeaveService {
 
     // 해당 직원의 연차 정보 업데이트
     public void updateAnnualLeave(String empNo, float useNum) {
+    	System.out.println("서비스 : " + empNo +  "사용한 휴가 : " + useNum);
 		dao.updateByAnnualLeave(empNo, useNum);
 	}
 	
 	// 연차 사용 정보 기록
 	public void insertAnnualLeaveLog(String empNo, int docuSeq) {
+		System.out.println("서비스 : " + empNo +  " 로그: " + docuSeq);
 		dao.insertAnnualLeaveLog(empNo, docuSeq);
 	}
 }
