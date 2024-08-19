@@ -35,7 +35,6 @@ import com.wit.dto.DocuInfoListDTO;
 import com.wit.dto.DocuListDTO;
 import com.wit.dto.LatenessDTO;
 import com.wit.dto.LeaveRequestDTO;
-import com.wit.dto.RefeLineDTO;
 import com.wit.dto.WorkPropDTO;
 import com.wit.services.AnnualLeaveService;
 import com.wit.services.EApprovalService;
@@ -410,7 +409,7 @@ public class EApprovalController {
 
 	// 임시 저장 페이지에서 다시 임시 저장을 하거나 결재 요청을 했을 시 처리하기 위한 메서드
 	@Transactional
-	@RequestMapping(value = { "/reSaveDocu", "/update" })
+	@RequestMapping(value = { "reSaveDocu", "update" })
 	public String reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO,
 			HttpServletRequest request) throws Exception {
 
@@ -731,7 +730,7 @@ public class EApprovalController {
 
 	// 업무 기안 문서를 작성 완료 or 임시 저장했을 경우 정보를 저장하기 위한 메서드
 	@ResponseBody
-	@RequestMapping(value = { "/write/Prop", "/write/tempProp" }, produces = "application/json;charset=utf8")
+	@RequestMapping(value = { "write/Prop", "write/tempProp" }, produces = "application/json;charset=utf8")
 	public int writeProp(@RequestParam("apprList") String[] apprList,
 			@RequestParam(value = "refeList", required = false) String[] refeList, DocuDTO dto, WorkPropDTO subDTO,
 			HttpServletRequest request) throws Exception {
@@ -786,7 +785,7 @@ public class EApprovalController {
 
 	// 지각 사유서 문서를 작성 완료 or 임시 저장했을 경우 정보를 저장하기 위한 메서드
 	@ResponseBody
-	@RequestMapping(value = { "/write/Lateness", "/write/tempLateness" }, produces = "application/json;charset=utf8")
+	@RequestMapping(value = { "write/Lateness", "write/tempLateness" }, produces = "application/json;charset=utf8")
 	public int writeLateness(@RequestParam("apprList") String[] apprList,
 			@RequestParam(value = "refeList", required = false) String[] refeList, DocuDTO dto, LatenessDTO subDTO,
 			HttpServletRequest request) throws Exception {
@@ -841,7 +840,7 @@ public class EApprovalController {
 
 	// 휴가 신청서 문서를 작성 완료 or 임시 저장했을 경우 정보를 저장하기 위한 메서드
 	@ResponseBody
-	@RequestMapping(value = { "/write/Leave", "/write/tempLeave" }, produces = "application/json;charset=utf8")
+	@RequestMapping(value = { "write/Leave", "write/tempLeave" }, produces = "application/json;charset=utf8")
 	public int writeLeave(@RequestParam("apprList") String[] apprList,
 			@RequestParam(value = "refeList", required = false) String[] refeList, DocuDTO dto, LeaveRequestDTO subDTO,
 			HttpServletRequest request) throws Exception {

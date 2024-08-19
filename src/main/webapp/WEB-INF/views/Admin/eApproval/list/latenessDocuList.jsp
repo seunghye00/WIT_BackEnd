@@ -32,7 +32,7 @@
 					<%@ include file="/WEB-INF/views/Admin/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApproval">
-					<div class="mainTitle">참조 문서함</div>
+					<div class="mainTitle">지각 사유서 문서함</div>
 					<div class="docuList docuBox">
 						<%@ include file="/WEB-INF/views/Admin/eApproval/commons/docuToolbar.jsp"%>
 						<div class="listBox latenessDocuList">

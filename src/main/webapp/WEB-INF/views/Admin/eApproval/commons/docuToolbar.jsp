@@ -17,8 +17,7 @@
 			<c:when test="${status eq '완료'}">
 				<li><a href="/eApproval/admin/docuList?type=${type}&cPage=1">전체</a></li>
 				<li><a
-					href="/eApproval/admin/docuList?type=${type}&status=진행중&cPage=1"
-					class="active">진행중</a></li>
+					href="/eApproval/admin/docuList?type=${type}&status=진행중&cPage=1">진행중</a></li>
 				<li><a
 					href="/eApproval/admin/docuList?type=${type}&status=완료&cPage=1" class="active">완료</a></li>
 				<li><a
