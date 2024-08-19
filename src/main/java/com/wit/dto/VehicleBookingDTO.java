@@ -8,6 +8,7 @@ public class VehicleBookingDTO {
 	private String emp_no;
 	private String dept_title;
 	private String name;
+	private String license_plate;
 	private int vehicle_seq;
 	private Timestamp start_date;
 	private Timestamp end_date;
@@ -36,6 +37,12 @@ public class VehicleBookingDTO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getLicense_plate() {
+		return license_plate;
+	}
+	public void setLicense_plate(String license_plate) {
+		this.license_plate = license_plate;
 	}
 	public int getVehicle_seq() {
 		return vehicle_seq;
@@ -67,21 +74,22 @@ public class VehicleBookingDTO {
 	public void setPurpose(String purpose) {
 		this.purpose = purpose;
 	}
-	
-	public VehicleBookingDTO() {}
-	
-	public VehicleBookingDTO(int vehicle_booking_seq, String emp_no, String dept_title, String name, int vehicle_seq,
-			Timestamp start_date, Timestamp end_date, String passenger, String purpose) {
+	public VehicleBookingDTO(int vehicle_booking_seq, String emp_no, String dept_title, String name,
+			String license_plate, int vehicle_seq, Timestamp start_date, Timestamp end_date, String passenger,
+			String purpose) {
 		super();
 		this.vehicle_booking_seq = vehicle_booking_seq;
 		this.emp_no = emp_no;
 		this.dept_title = dept_title;
 		this.name = name;
+		this.license_plate = license_plate;
 		this.vehicle_seq = vehicle_seq;
 		this.start_date = start_date;
 		this.end_date = end_date;
 		this.passenger = passenger;
 		this.purpose = purpose;
 	}
-	
+	public VehicleBookingDTO() {
+		super();
+	}
 }

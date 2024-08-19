@@ -35,7 +35,7 @@
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
-				<div class="sideContents eApprWrite">
+				<div class="sideContents eApprWrite eApprAppr">
 					<div class="mainTitle">문서 결재 ( 휴가 신청서 )</div>
 					<div class="document">
 						<div class="choiBox">
@@ -106,7 +106,7 @@
 									</table>
 								</div>
 							</div>
-							<div class="docuWrite docuLeave">
+							<div class="docuWrite docuRead docuLeave">
 								<table>
 									<thead>
 										<tr>
@@ -174,8 +174,16 @@
 								</table>
 							</div>
 							<div class="docuFiles">
-								<label class="disabled">🔗 파일 목록</label> <span
-									class="uploadFiles"></span>
+								<label class="disabled">🔗 파일 목록</label> 
+								<span class="uploadFiles">
+								<c:if test="${!empty files}">
+									<c:forEach items="${files}" var="i">
+										<a href="/eApproval/downloadFiles?sysname=${i.sysname}&oriname=${i.oriname}">
+											<span>${i.oriname}</span>
+										</a>
+									</c:forEach>
+								</c:if>
+								</span>
 							</div>
 						</div>
 					</div>
