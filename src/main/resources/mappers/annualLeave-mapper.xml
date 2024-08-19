@@ -17,8 +17,8 @@
 		USING dual
 		ON (al.emp_no = #{empNo})
 		WHEN NOT MATCHED THEN
-		INSERT (emp_no, annual_leave_num, use_num)
-		VALUES (#{empNo}, 15, 0)
+		INSERT (emp_no, annual_leave_num, use_num, remaining_leaves)
+		VALUES (#{empNo}, 15, 0, 15)
 	</insert>
 
 	<!-- 상태가 완료된 직원의 휴가 신청 내역을 조회 -->
@@ -26,36 +26,45 @@
 		resultType="com.wit.dto.LeaveRequestDTO">
 		SELECT lr.*
 		FROM leave_requests lr
-		JOIN documents d ON lr.document_seq = d.document_seq
+		JOIN documents d ON
+		lr.document_seq = d.document_seq
 		WHERE d.emp_no = #{empNo}
-		AND d.status = '완료'
+		AND d.status
+		= '완료'
 	</select>
 
 	<!-- 직원 정보 조회 -->
 	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
-		SELECT e.emp_no, e.name, r.role_title as role_code
+		SELECT e.emp_no, e.name,
+		r.role_title as role_code
 		FROM employee e
-		JOIN role r ON e.role_code = r.role_code
+		JOIN role r ON e.role_code =
+		r.role_code
 		WHERE e.emp_no = #{empNo}
 	</select>
-	
+
 	<!-- 남은 연차 갯수 조회 -->
 	<select id="getRemainingLeaves" resultType="int">
-		select remaining_leaves from annual_leave where emp_no = #{empNo}
+		select
+		remaining_leaves from annual_leave where emp_no = #{empNo}
 	</select>
-	
+
 	<!-- 연차 정보 업데이트 -->
 	<update id="updateByAnnualLeave">
-		update annual_leave set use_num = use_num + #{useNum}, remaining_leaves = remaining_leaves - #{useNum} where emp_no = #{empNo}
+		update annual_leave set use_num = use_num +
+		#{useNum}, remaining_leaves = remaining_leaves - #{useNum} where
+		emp_no = #{empNo}
 	</update>
-	
+
 	<!-- 연차 사용 정보 기록 -->
 	<insert id="insertAnnualLeaveLog">
-		insert into annual_leave_log values (log_seq.nextval, #{empNo}, #{docuSeq})
+		insert into annual_leave_log values (log_seq.nextval,
+		#{empNo}, #{docuSeq})
 	</insert>
 
 	<!-- document_seq로 emp_no를 조회하는 쿼리 -->
 	<select id="selectEmpNoByDocumentSeq" resultType="string">
-		SELECT emp_no FROM documents WHERE document_seq = #{documentSeq}
+		SELECT emp_no
+		FROM documents WHERE document_seq = #{documentSeq}
 	</select>
 </mapper>
