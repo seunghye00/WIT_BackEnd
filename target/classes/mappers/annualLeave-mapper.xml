@@ -21,13 +21,6 @@
 		VALUES (#{empNo}, 15, 0)
 	</insert>
 
-	<!-- 연차 데이터 업데이트 (사용량 증가) -->
-	<update id="updateAnnualLeaveUsage">
-		UPDATE annual_leave
-		SET use_num = #{useNum}
-		WHERE emp_no = #{empNo}
-	</update>
-
 	<!-- 상태가 완료된 직원의 휴가 신청 내역을 조회 -->
 	<select id="selectApprovedLeave"
 		resultType="com.wit.dto.LeaveRequestDTO">
@@ -65,10 +58,4 @@
 	<select id="selectEmpNoByDocumentSeq" resultType="string">
 		SELECT emp_no FROM documents WHERE document_seq = #{documentSeq}
 	</select>
-
-	<!-- document_seq로 emp_no를 조회하는 쿼리 -->
-	<select id="selectEmpNoByDocumentSeq" resultType="string">
-		SELECT emp_no FROM documents WHERE document_seq = #{documentSeq}
-	</select>
-
 </mapper>
