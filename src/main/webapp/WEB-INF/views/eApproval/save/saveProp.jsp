@@ -36,7 +36,7 @@
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
-				<div class="sideContents eApprWrite">
+				<div class="sideContents eApprWrite eApprSaved">
 					<div class="mainTitle">임시 저장 문서 ( 업무 기안 )</div>
 					<div class="document">
 						<div class="choiBox">

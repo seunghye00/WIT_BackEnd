@@ -319,9 +319,22 @@ $('.goSavaList').on('click', () => {
 	}
 });
 
+// 결재 문서 페이지에서 목록 버튼 클릭 시 결재 대기 문서함으로 이동
+$('.goToDoList').on('click', () => {
+	if(confirm('결재를 보류하시겠습니까 ?')){
+		location.href = '/eApproval/apprList?type=todo&cPage=1';
+	}
+});
+
 // 문서 열람 페이지에서 목록 버튼 클릭 시 바로 전 페이지로 이동
 $('.goBack').on('click', () => {
-	window.history.back();
+	// 이전 페이지의 url을 변수에 저장
+	const prevUrl = document.referrer;
+	if(prevUrl.includes('writeProc')){
+		location.href = '/eApproval/privateList?type=write&cPage=1';
+	} else {
+		window.history.back();
+	}
 });
 
 // 임시 저장 문서 페이지에서 삭제 버튼 클릭 시 임시 저장 문서함으로 이동
@@ -583,6 +596,11 @@ $('.docuSaveBtn').on('click', function() {
 	}
 });
 
+// 코멘트 버튼 클릭 시 코멘트 리스트 모달창 활성화
+$('.viewComm').on('click', () => {
+   $('.commModal').toggleClass('flex');
+});
+
 // 참조 버튼 클릭 시 참조선 리스트 모달창 활성화
 $('.refeBtn').on('click', () => {
     $('.refeModal').toggle();
@@ -657,7 +675,10 @@ $('.docuAppr').on('click', () => {
 		return;
 	}
 	$('#apprComm').val($('#apprComm').val().trim());
-	location.href="/eApproval/apprDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#returnComm').val();
+	if($('.docuWrite').hasClass('docuLeave')){
+		location.href="/eApproval/apprDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#apprComm').val() + '&applyLeaves=' + $('#applyLeaves').val();
+	}
+	location.href="/eApproval/apprDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#apprComm').val();
 }); 
 
 // 결재 코멘트 모달창에서 전결 버튼 클릭 시
@@ -668,7 +689,10 @@ $('.docuAllAppr').on('click', () => {
 		return;
 	}
 	$('#apprComm').val($('#apprComm').val().trim());
-	location.href="/eApproval/apprAllDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#returnComm').val();
+	if($('.docuWrite').hasClass('docuLeave')){
+		location.href="/eApproval/apprAllDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#apprComm').val() + '&applyLeaves=' + $('#applyLeaves').val();
+	}
+	location.href="/eApproval/apprAllDocu?docuSeq=" + $('#docuSeq').val() + "&comments=" + $('#apprComm').val();
 }); 
 
 // AJAX로 서버에 해당 문서의 데이터를 보내고 문서 번호를 받아오는 메서드
@@ -703,15 +727,9 @@ function sendFormData(choiUrl) {
      	}
      	// 결재 요청 시 등록된 파일이 존재할 때만 데이터 전송
      	if(addedFiles.length > 0){
-     		const docuSeq = $('<input>', {
-     	 		type: 'hidden',
-     	 		value: resp,
-     	 		name: 'docuSeq'
-     	 	});
-     	 	$('#fileInputForm').append(docuSeq);
-     	 	$('#fileInputForm').submit();
+     	 	insertFiles(resp, '/eApproval/uploadFiles');
      	} else {
-     		location.href = "/eApproval/home";
+     		location.href = "/eApproval/readDocu?docuSeq=" + resp;
      	}
      });	
 }
@@ -743,7 +761,6 @@ $('#endLeaveDay').on('change', function () {
         $(this).val('');
         return;
     }
-
     // 시작일과 종료일을 Date객체로 변환
     const start = new Date($('#startLeaveDay').val());
     const end = new Date($('#endLeaveDay').val());
@@ -759,14 +776,19 @@ $('#endLeaveDay').on('change', function () {
         alert('잔여 연차를 확인해주세요.');
         $('#endLeaveDay').val($('#startLeaveDay').val());
         $('#applyLeaves').val(1).trigger('change');
+        $('#startDay, #startDayAM, #startDayPM').prop('checked', true);
+        $('#endDay, #endDayAM, #endDayPM').prop('checked', false);
+        $('#endDay, #endDayAM, #endDayPM').prop('disabled', true);
         return;
     }
     if (day == 1) {
         // 신청 연차가 1일인 경우 체크박스 종료일 체크박스 비활성화
+        $('#startDay, #startDayAM, #startDayPM').prop('checked', true);
         $('#endDay, #endDayAM, #endDayPM').prop('checked', false);
         $('#endDay, #endDayAM, #endDayPM').prop('disabled', true);
     } else {
         // 신청 연차가 2일 이상일 경우 종료일 체크박스 활성화
+        $('#startDay, #startDayAM, #startDayPM').prop('checked', true);
         $('#endDay, #endDayAM, #endDayPM').prop('checked', true);
         $('#endDay, #endDayAM, #endDayPM').prop('disabled', false);
     }
@@ -1030,7 +1052,7 @@ function goToSearchList(keyword){
 	const docuCode = $('#docuCode').val();
 	const type = $('#listType').val();
 
-	// 현재 페이지의 URL 중 pathname 값 중 마지막 단어만 변수에 저장
+	// 현재 페이지의 URL pathname 값 중 마지막 단어만 변수에 저장
 	const pathName = window.location.pathname;
 	const docuList = pathName.split('/').pop();
 	

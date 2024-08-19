@@ -202,7 +202,9 @@
 										</div>
 									</div>
 									<div class="right">
-										<div class="rightTop">전자결재영역</div>
+										<div class="rightTop">전자결재영역
+										<i class='bx bx-file bx-flip-horizontal' style='color:#558bcf'></i>
+										</div>
 										<div class="rightBottom">
 											<div id="calendar" class="calendar"></div>
 										</div>
