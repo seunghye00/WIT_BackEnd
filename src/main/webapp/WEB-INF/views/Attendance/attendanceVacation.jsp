@@ -147,12 +147,23 @@
 						</div>
 					</div>
 					<div class="pagination">
-						<a href="javascript:;" class="prev "><i
-							class='bx bx-chevron-left'></i></a> <a href="javascript:;"
-							class="active">1</a> <a href="javascript:;">2</a> <a
-							href="javascript:;">3</a> <a href="javascript:;">4</a> <a
-							href="javascript:;">5</a> <a href="javascript:;"
-							class="next active"><i class='bx bx-chevron-right'></i></a>
+						<!-- 이전 페이지로 이동 -->
+						<a
+							href="/annualLeave/attendance_vacation?cpage=${cpage > 1 ? cpage - 1 : 1}"
+							class="prev"> <i class='bx bx-chevron-left'></i>
+						</a>
+
+						<!-- 페이지 번호 -->
+						<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
+							<a href="/annualLeave/attendance_vacation?cpage=${i}"
+								class="${i == cpage ? 'active' : ''}">${i}</a>
+						</c:forEach>
+
+						<!-- 다음 페이지로 이동 -->
+						<a
+							href="/annualLeave/attendance_vacation?cpage=${cpage < pageTotalCount ? cpage + 1 : pageTotalCount}"
+							class="next"> <i class='bx bx-chevron-right'></i>
+						</a>
 					</div>
 				</div>
 			</div>
