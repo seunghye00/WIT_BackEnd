@@ -178,8 +178,8 @@ public class EApprovalService {
 	}
 
 	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록의 총 갯수를 문서 종류에 따라 넘겨주기 위한 메서드
-	public int getCountListByType(String empNo, String string, String docuCode) {
-		return dao.getCountListByType(empNo, string, docuCode);
+	public int getCountListByType(String empNo, String status, String docuCode) {
+		return dao.getCountListByType(empNo, status, docuCode);
 	}
 
 	// 해당 사원이 기안한 문서 목록 총 갯수를 넘겨주기 위한 메서드
@@ -238,8 +238,8 @@ public class EApprovalService {
 	}
 
 	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록 중 검색 후의 총 갯수를 문서 종류에 따라 넘겨주기 위한 메서드
-	public int getCountSearchListByType(String empNo, String string, String docuCode, String keyword) {
-		return dao.getCountSearchListByType(empNo, string, docuCode, keyword);
+	public int getCountSearchListByType(String empNo, String status, String docuCode, String keyword) {
+		return dao.getCountSearchListByType(empNo, status, docuCode, keyword);
 	}
 
 	// 해당 사원이 기안한 문서 목록 중 검색 후의 총 갯수를 넘겨주기 위한 메서드
@@ -270,5 +270,10 @@ public class EApprovalService {
 	// 해당 문서의 참조자인 해당 사원의 읽음 여부와 읽은 시간을 업데이트 하기 위한 메서드
 	public void updateReadYN(int docuSeq, String empNo, String readYN) {
 		dao.updateReadYN(docuSeq, empNo, readYN);
+	}
+
+	// 관리자가 결재 대기 or 결재 예정인 목록을 5개까지만 조회하기 위한 메서드
+	public List<DocuInfoListDTO> selectApprList(String empNo, String status) {
+		return dao.selectApprList(empNo, status);
 	}
 }

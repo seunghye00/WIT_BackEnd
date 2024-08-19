@@ -398,4 +398,12 @@ public class EApprovalDAO {
 		params.put("readYN", readYN);
 		mybatis.update("eApproval.updateReadYN", params);
 	}
+
+	// 관리자가 결재 대기 or 결재 예정인 목록을 5개까지만 조회하기 위한 메서드
+	public List<DocuInfoListDTO> selectApprList(String empNo, String status) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("empNo", empNo);
+		params.put("status", status);
+		return mybatis.selectList("eApproval.selectApprList", params);
+	}
 }

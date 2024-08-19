@@ -16,8 +16,7 @@
 		where status = #{status} and emp_no = #{empNo}
 		order by write_date desc
 		) d
-		join
-		document_list dl ON d.docu_code = dl.docu_code
+		join document_list dl ON d.docu_code = dl.docu_code
 		where ROWNUM &lt;= 5
 	</select>
 
@@ -429,7 +428,7 @@
 			join
 				approvals_line a on d.document_seq = a.document_seq
 			where
-			and upper(title) like upper('%'||#{keyword}||'%') 
+				upper(title) like upper('%'||#{keyword}||'%') 
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -632,4 +631,23 @@
 	<update id="updateReadYN">
 		update reference_line set read_yn = #{readYN}, read_date = sysdate where document_seq = #{docuSeq} and emp_no = #{empNo}
 	</update>
+	
+	<!-- 관리자가 결재 대기 or 결재 예정인 문서를 5개까지만 조회하는 쿼리문 -->
+	<select id="selectApprList" resultType="com.wit.dto.DocuInfoListDTO">
+		select * from (
+			select
+				d.document_seq, write_date, name, emer_yn, title, e.name writer
+			from
+				documents d
+			join
+				document_list dl on d.docu_code = dl.docu_code
+			join
+				employee e on d.emp_no = e.emp_no
+			where
+				d.status = '진행중' and
+				d.document_seq in (select document_seq from approvals_line where emp_no = #{empNo} and status = #{status})
+            order by emer_yn desc, write_date desc
+		)
+		where rownum &lt;= 5
+	</select>
 </mapper>
