@@ -3,7 +3,7 @@
 <div class="header">
     <!-- 마이페이지로 이동 -->
     <span class="myName"> 
-        <img src="/resources/img/푸바오.png" alt="프로필 사진" class="userImg">
+        <img src="/uploads/${loginPhoto}" alt="프로필 사진" class="userImg">
         <a href="/employee/mypage">${loginName} ${loginRole}</a>
     </span> 
     <span class="alert">

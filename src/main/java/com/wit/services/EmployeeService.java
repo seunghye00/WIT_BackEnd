@@ -150,11 +150,23 @@ public class EmployeeService {
 	public List<EmployeeDTO> searchEmployeeList(String keyword, int cpage) {
 		return dao.searchEmployeeAddressList(keyword, cpage);
 	}
-
 	// 주소록 검색 카운트 값 조회
 	@Transactional
-	public int totalCountPage() {
-		return dao.totalCountPage();
+	public int CountPageAddress(String chosung, String category, int cpage) {
+		int startNum = (cpage - 1) * BoardConfig.recordCountPerPage + 1;
+		int endNum = cpage * BoardConfig.recordCountPerPage;
+		Map<String, Object> params = new HashMap<>();
+		params.put("chosung", chosung);
+		params.put("category", category);
+		params.put("startNum", startNum);
+		params.put("endNum", endNum);
+		return dao.CountPageAddress(params);
+	}
+	
+	// 주소록 검색 카운트 값 조회
+	@Transactional
+	public int totalCountPage(String emp_no) {
+		return dao.totalCountPage(emp_no);
 	}
 
 	// 주소록 카테고리 조회
@@ -217,5 +229,46 @@ public class EmployeeService {
 	@Transactional
 	public String getEmployeeName(String emp_no) {
 		return dao.getEmployeeName(emp_no);
+	}
+	
+	// 관리자 사원 조회
+	@Transactional
+	public List<Map<String, Object>> getManagementList(String emp_no, int cpage) {
+		int startNum = (cpage - 1) * BoardConfig.recordCountPerPage + 1;
+		int endNum = cpage * BoardConfig.recordCountPerPage;
+		Map<String, Object> params = new HashMap<>();
+		params.put("emp_no", emp_no);
+		params.put("startNum", startNum);
+		params.put("endNum", endNum);
+		return dao.getManagementList(params);
+	}
+	
+	// 관리자 사원 검색
+	@Transactional
+	public List<Map<String, Object>> selectByManage(String emp_no, String column, String keyword, int cpage) {
+		int startNum = (cpage - 1) * BoardConfig.recordCountPerPage + 1;
+		int endNum = cpage * BoardConfig.recordCountPerPage;
+		Map<String, Object> params = new HashMap<>();
+		params.put("emp_no", emp_no);
+		params.put("column", column);
+		params.put("keyword", keyword);
+		params.put("startNum", startNum);
+		params.put("endNum", endNum);
+		return dao.selectByManage(params);
+	}
+	// 관리자 사원 검색 페이지네이션 총합
+	@Transactional
+	public int totalCountManageSearch(String emp_no, String column, String keyword) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("emp_no", emp_no);
+		params.put("column", column);
+		params.put("keyword", keyword);
+		return dao.totalCountManageSearch(params);
+	}
+	
+	// 관리자 사원 조회 상세
+	@Transactional
+	public Map<String, Object> managementDetail(String emp_no) {
+		return dao.managementDetail(emp_no);
 	}
 }
