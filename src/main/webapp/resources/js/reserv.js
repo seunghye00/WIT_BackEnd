@@ -140,54 +140,66 @@ $(document).ready(function() {
             });
         },
         events: function (fetchInfo, successCallback, failureCallback) {
-                    $.ajax({
-                    	// 서버의 이벤트 데이터 엔드포인트
-                        url: '/reservation/allVehicleBooking', 
-                        method: 'GET',
-                        dataType: 'json',
-                        data:{
-                        	vehicleSeq : $('#vehicleSeq').val()
-                        }, 
-                        success: function (data) {
-                            console.log(data);// 서버로부터 받은 이벤트 데이터를 풀캘린더에 전달합니다.
-                            
-                            // 날짜와 시간을 ISO 8601 형식으로 변환하는 함수
-                            function formatDate(dateStr) {
-                                // 문자열을 Date 객체로 변환 (로컬 타임존 기준)
-                                let date = new Date(dateStr);
+ 			$.ajax({
+    		// 서버의 이벤트 데이터 엔드포인트
+    			url: '/reservation/allVehicleBooking',
+    			method: 'GET',
+    			dataType: 'json',
+    			data: {
+        			vehicleSeq: $('#vehicleSeq').val()
+   	 			},
+    			success: function (data) {
+        			console.log(data); // 서버로부터 받은 데이터를 콘솔에 출력
 
-                                // ISO 8601 형식으로 변환하기 위해 로컬 시간 기준으로 포맷팅
-                                let year = date.getFullYear();
-                                let month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 +1
-                                let day = date.getDate().toString().padStart(2, '0');
-                                let hours = date.getHours().toString().padStart(2, '0');
-                                let minutes = date.getMinutes().toString().padStart(2, '0');
-                                let seconds = date.getSeconds().toString().padStart(2, '0');
+        		// 날짜와 시간을 ISO 8601 형식으로 변환하는 함수
+        		function formatDate(dateStr) {
+            		let date = new Date(dateStr);
+            		let year = date.getFullYear();
+            		let month = (date.getMonth() + 1).toString().padStart(2, '0');
+            		let day = date.getDate().toString().padStart(2, '0');
+            		let hours = date.getHours().toString().padStart(2, '0');
+            		let minutes = date.getMinutes().toString().padStart(2, '0');
+            		let seconds = date.getSeconds().toString().padStart(2, '0');
 
-                                // ISO 8601 형식으로 조합
-                                let isoString = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':' + seconds;
+            		return year + '-' + month + '-' + day + 'T' + hours + ':' + minutes + ':' + seconds;
+        		}
 
-                                return isoString;
-                            }                          
-                            successCallback(data.map(event => ({
-                                title: event.name,
-                             	// 변환된 시작 날짜
-                                start: formatDate(event.start_date), 
-                             	// 변환된 종료 날짜
-                                end: formatDate(event.end_date),     
-                                extendedProps: {                      	
-                                    passenger: event.passenger,
-                                    purpose: event.purpose,
-                                    deptTitle: event.dept_title,
-                                    name: event.name
-                                }
-                            })));
-                        },
-                        error: function () {
-                            alert('이벤트를 불러오는데 실패했습니다.');
-                            failureCallback();
-                        }
-                    });
+        		// 이벤트 데이터 매핑 및 색상 지정
+        		successCallback(data.map(event => {
+            		let color = '#3788D8'; // 기본 색상
+
+            		if (event.dept_title === '인사부') {
+               	 		color = '#81DAC6';
+            		} else if (event.dept_title === '영업부') {
+                		color = '#C8DD9F';
+            		} else if (event.dept_title === 'IT부') {
+                		color = '#F5D48F';
+            		} else if (event.dept_title === '마케팅부') {
+                		color = '#F28376';
+            		} else if (event.dept_title === '기술지원부') {
+                		color = '#C4A4D1';
+            		}
+
+            		return {
+                		title: event.name,
+                		start: formatDate(event.start_date), // 변환된 시작 날짜
+                		end: formatDate(event.end_date), // 변환된 종료 날짜
+                		color: color,
+               			extendedProps: {
+                    		passenger: event.passenger,
+                    		purpose: event.purpose,
+                    		deptTitle: event.dept_title,
+                    		name: event.name
+                	}
+            	};
+        	}));
+    	},
+    	error: function () {
+        	alert('이벤트를 불러오는데 실패했습니다.');
+        	failureCallback();
+    	}
+	});
+
                 }
     });
 

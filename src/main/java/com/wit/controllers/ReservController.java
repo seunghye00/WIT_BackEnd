@@ -130,7 +130,7 @@ public class ReservController {
 	public String reservVehicle(int vehicleSeq, Model model) throws Exception {
 		model.addAttribute("meetingRooms", mServ.getMeetingRoomList("예약 가능"));
 		model.addAttribute("vehicles", vService.getVehicleList("예약 가능"));
-		model.addAttribute("vehicle", vService.getVehicleInfo(vehicleSeq));
+		model.addAttribute("vehicleInfo", vService.getVehicleInfo(vehicleSeq));
 		return "Reservation/vehicle";
 	}
 
