@@ -28,14 +28,6 @@ public class AnnualLeaveDAO {
         mybatis.insert("annualLeave.insertOrUpdateAnnualLeave", empNo);
     }
 
-    // 연차 데이터 업데이트 (사용량 증가)
-    public void updateAnnualLeaveUsage(String empNo, int useNum) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("empNo", empNo);
-        params.put("useNum", useNum);
-        mybatis.update("annualLeave.updateAnnualLeaveUsage", params);
-    }
-
     // 상태가 완료된 직원의 휴가 신청 내역을 조회
     public List<LeaveRequestDTO> selectApprovedLeave(String empNo) {
         return mybatis.selectList("annualLeave.selectApprovedLeave", empNo);
