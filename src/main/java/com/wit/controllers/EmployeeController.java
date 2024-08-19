@@ -11,11 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wit.dto.BoardReportDTO;
 import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.RoleDTO;
+import com.wit.services.BoardService;
 import com.wit.services.CalendarService;
 import com.wit.services.EmployeeService;
 
@@ -32,6 +35,9 @@ public class EmployeeController {
 
 	@Autowired
 	private HttpSession session;
+	
+	@Autowired
+	private BoardService bserv;
 
 	// 관리자 회원가입 폼으로 이동
 	@RequestMapping("/register_form")
@@ -88,9 +94,19 @@ public class EmployeeController {
 
 	// 메인 페이지로 이동
 	@RequestMapping("/main")
-	public String main(Model model, HttpSession session) {
+	public String main(Model model,
+			@RequestParam(defaultValue = "") String searchTarget,
+			@RequestParam(defaultValue = "views") String sortTarget,
+			@RequestParam(defaultValue = "") String searchTxt,
+			@RequestParam(defaultValue = "0") int cpage,
+			@RequestParam(defaultValue = "false") String bookmark,
+			@RequestParam(defaultValue = "false") String report)throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
+		List<BoardReportDTO> boardList = bserv.list(searchTxt, searchTarget, sortTarget, cpage,empNo,bookmark,1,report);
+		List<BoardReportDTO> noticeList = bserv.list(searchTxt, searchTarget, sortTarget, cpage,empNo,bookmark,2,report);
 		System.out.println(empNo);
+		model.addAttribute("boardList",boardList);
+		model.addAttribute("noticeList",noticeList);
 		
 		if (empNo != null) {
 			EmployeeDTO employee = service.employeeInfo(empNo);

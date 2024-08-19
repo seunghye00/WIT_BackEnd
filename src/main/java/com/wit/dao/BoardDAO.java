@@ -6,7 +6,9 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import com.wit.dto.BoardDTO;
+import com.wit.dto.BoardReportDTO;
 import com.wit.dto.EmployeeDTO;
 
 @Repository
@@ -21,7 +23,7 @@ public class BoardDAO {
 	}
 
 	// 게시물 조회
-	public List<BoardDTO> list(Map<String, Object> maps) {
+	public List<BoardReportDTO> list(Map<String, Object> maps) {
 		return mybatis.selectList("board.list", maps);
 	}
 	

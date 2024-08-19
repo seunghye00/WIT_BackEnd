@@ -100,10 +100,6 @@ $(document).ready(function () {
     $('.rClose').on('click', function () {
         $('#modal').css('display', 'none')
     })
-
-    $('#reportInsert').on('click', function () {
-        $('#reportForm').submit()
-    })
 })
 
 // 댓글 글자 수 제한 함수
