@@ -58,54 +58,62 @@
 													<ul class="subList">
 														<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
 														</li>
-														<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+														<c:if test="${employee.role_code == '사장'}">
+															<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+														</c:if>
 														<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
 													</ul>
 												</li>
 											</ul>
 										</div>
-
-										<div class="addressListGroup">
-											<ul class="GroupList">
-												<li class="toggleItem">
-													<h3 class="reportList">
-														신고 현황
-													</h3>
-												</li>
-											</ul>
-										</div>
+										<c:if test="${employee.role_code == '사장'}">
+											<div class="addressListGroup">
+												<ul class="GroupList">
+													<li class="toggleItem">
+														<h3 class="reportList">
+															신고 현황
+														</h3>
+													</li>
+												</ul>
+											</div>
+										</c:if>
 									</div>
 
 									<div class="sideContents board">
 										<c:choose>
-											<c:when test="${board_code=='1'}">
+											<c:when test="${adminReport == 'true'}">
+												<div class="mainTitle">신고 현황 홈</div>
+											</c:when>
+											<c:otherwise>
 												<c:choose>
-													<c:when test="${report=='true'}">
-														<div class="mainTitle">신고글 홈</div>
+													<c:when test="${board_code=='1'}">
+														<c:choose>
+															<c:when test="${report=='true'}">
+																<div class="mainTitle">신고글 홈</div>
+															</c:when>
+															<c:when test="${bookmark=='false'}">
+																<div class="mainTitle">자유 게시판 홈</div>
+															</c:when>
+															<c:when test="${bookmark=='true'}">
+																<div class="mainTitle">북마크 홈</div>
+															</c:when>
+														</c:choose>
 													</c:when>
-													<c:when test="${bookmark=='false'}">
-														<div class="mainTitle">자유 게시판 홈</div>
-													</c:when>
-													<c:when test="${bookmark=='true'}">
-														<div class="mainTitle">북마크 홈</div>
+													<c:when test="${board_code=='2'}">
+														<c:choose>
+															<c:when test="${bookmark == 'true'}">
+																<div class="mainTitle">북마크 홈</div>
+															</c:when>
+															<c:otherwise>
+																<div class="mainTitle">공지 사항 홈</div>
+															</c:otherwise>
+														</c:choose>
 													</c:when>
 												</c:choose>
-											</c:when>
-											<c:when test="${board_code=='2'}">
-												<c:choose>
-													<c:when test="${bookmark=='false'}">
-														<div class="mainTitle">공지사항 홈</div>
-													</c:when>
-													<c:when test="${bookmark=='true'}">
-														<div class="mainTitle">북마크 홈</div>
-													</c:when>
-
-												</c:choose>
-											</c:when>
-											<!-- <c:if test="${adminReport=='true'}">
-													<div class="mainTitle">신고현황 홈</div>
-											</c:if> -->
+											</c:otherwise>
 										</c:choose>
+
+
 
 										<div class="boardList">
 											<div class="controls">
@@ -227,7 +235,8 @@
 																	<span>${board.count}</span>
 																</div>
 																<div class="cols boardWriter">
-																	<button class="">삭제</button>
+																	<button class="deleteBoard"
+																		onclick="deleteBoard(${board.board_seq})">삭제</button>
 																</div>
 															</c:when>
 															<c:otherwise>
@@ -379,6 +388,14 @@
 							toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
 						})
 					})
+
+					// 삭제 기능
+					function deleteBoard(boardSeq) {
+						if (confirm("정말로 삭제하시겠습니까?")) {
+							// 사용자에게 삭제 확인을 받았을 때만 삭제 요청
+							location.href = "/board/delete?board_seq=" + boardSeq;
+						}
+					}
 				</script>
 			</body>
 
