@@ -65,9 +65,4 @@ public class CalendarDAO {
 	public int selectPersonalByCalendarSeq(int calendarSeq) {
 		return mybatis.selectOne("calendar.selectPersonalByCalendarSeq", calendarSeq);
 	}
-	
-	// 직급 코드가 R1일 경우 부서 캘린더 조회
-	public List<DepartmentCalendarDTO> adminDepCalendarList(String empNo){
-		return mybatis.selectList("calendar.adminDepCalendarList", empNo);
-	}
 }
