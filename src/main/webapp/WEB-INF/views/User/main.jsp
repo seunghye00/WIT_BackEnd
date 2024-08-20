@@ -44,14 +44,12 @@
 						<h3 id="clock"></h3>
 						<div class="attendance-btn">
 							<div class="start">
-								<img src="/img/출퇴근.png" alt="출근" class="attendance_icon">
-								<button type="button" id="start_button">출근</button>
 								<span class="check-time" id="start_time_display">00:00</span>
+								<button type="button" id="start_button"><i class="bx bxs-id-card"></i>출근</button>
 							</div>
 							<div class="end">
-								<img src="/img/출퇴근.png" alt="퇴근" class="attendance_icon">
-								<button type="button" id="end_button">퇴근</button>
 								<span class="check-time" id="end_time_display">00:00</span>
+								<button type="button" id="end_button"><i class='bx bxs-home'></i>퇴근</button>
 							</div>
 						</div>
 					</div>
@@ -304,7 +302,15 @@
 								+ '일';
 						var days = [ '일', '월', '화', '수', '목', '금', '토' ];
 						var day = days[now.getDay()];
-						var time = now.toLocaleTimeString();
+						// AM/PM 형식으로 시간 표시
+						var options = {
+							hour: 'numeric',
+							minute: 'numeric',
+							second: 'numeric',
+							hour12: true // 12시간 형식 사용, AM/PM 표기
+						};
+						var time = now.toLocaleTimeString('en-US', options);
+
 						$('#date').text(date + ' (' + day + ')');
 						$('#clock').text(time);
 					}
