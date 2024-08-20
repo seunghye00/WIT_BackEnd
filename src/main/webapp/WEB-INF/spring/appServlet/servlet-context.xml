@@ -40,6 +40,25 @@
 
    <context:component-scan
       base-package="com.wit.controllers" />
+      
+      <interceptors>
+      
+    <interceptor>
+        	<mapping path="/**"/>
+        	<exclude-mapping path="/"/>
+        	<exclude-mapping path="/employee/login"/>
+        	
+        	<exclude-mapping path="/employee/main"/>
+        	<exclude-mapping path="/employee/find_ID"/>
+        	<exclude-mapping path="/employee/findID"/>
+        	
+        	<exclude-mapping path="/employee/find_PW"/>
+        	<exclude-mapping path="/employee/verifyEmployee"/>
+        	<exclude-mapping path="/employee/modifyPassword"/>
+        <beans:bean class="com.wit.interceptors.LoginValidator"/>
+    	</interceptor>
+    
+	</interceptors>
 
 
 

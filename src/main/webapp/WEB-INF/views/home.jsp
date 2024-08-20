@@ -24,9 +24,9 @@
 				href="/employee/find_PW" class="find_pw">PW 찾기</a>
 		</div>
 		<form id="loginForm" action="/employee/login" method="post">
-			<input type="text" id="emp_no" name="emp_no" placeholder="User ID"
+			<input type="text" id="emp_no" name="emp_no" placeholder="사원번호"
 				required> <input type="password" name="pw"
-				placeholder="User PW" required>
+				placeholder="패스워드" required>
 			<button type="submit">Login</button>
 		</form>
 		<div class="employee_container">

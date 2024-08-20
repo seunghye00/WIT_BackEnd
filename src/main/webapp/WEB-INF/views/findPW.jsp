@@ -13,10 +13,10 @@
     <div class="find_pw_container active">
         <img src="/resources/img/logo.png" alt="로고 이미지">
         <form id="findId" method="post">
-            <input type="text" name="emp_no" placeholder="EMP_NO" required>
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="text" name="ssn" placeholder="SSN" required>
-            <button type="button" id="openModalButton">Find PW</button>
+            <input type="text" name="emp_no" placeholder="사원번호" required>
+            <input type="text" name="name" placeholder="이름" required>
+            <input type="text" name="ssn" placeholder="주민등록번호" required>
+            <button type="button" id="openModalButton">PW 찾기</button>
         </form>
     </div>
 
