@@ -153,7 +153,7 @@
 	            </div>
 	        </div>
 	        <div class="actions">
-	            <button type="button" onclick="closePopup('viewContactModal')">목록</button>
+	            <button type="button" class="grey" onclick="closePopup('viewContactModal')">목록</button>
 	        </div>
 	    </div>
 	</div>
@@ -315,6 +315,7 @@
 	// 주소록 상세 조회
 	function fillViewForm(contact) {
 		console.log(contact);
+		document.getElementById('viewPhoto').src = contact.PHOTO !== null && contact.PHOTO !== undefined ? contact.PHOTO : '/resources/img/default.png';;
 	    document.getElementById('viewName').textContent = contact.NAME !== null && contact.NAME !== undefined ? contact.NAME : '-';
 	    document.getElementById('viewPhone').textContent = contact.PHONE !== null && contact.PHONE !== undefined ? contact.PHONE : '-';
 	    document.getElementById('viewEmail').textContent = contact.EMAIL !== null && contact.EMAIL !== undefined ? contact.EMAIL : '-';

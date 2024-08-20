@@ -179,7 +179,7 @@
 	            </div>
 	            <div class="actions">
 	                <button type="submit" class="save">저장</button>
-	                <button type="button" onclick="closePopup('popupModal')">목록</button>
+	                <button type="button" class="grey" onclick="closePopup('popupModal')">목록</button>
 	            </div>
 	        </form>
 	    </div>

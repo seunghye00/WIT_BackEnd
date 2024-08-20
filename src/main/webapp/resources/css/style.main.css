@@ -25,6 +25,19 @@ button {
     font-display: block;
 }
 
+@font-face {
+    font-family: LABDigital;
+    font-weight: normal;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/webfontworld/fontlab/LABDigital.eot');
+    src: url('https://cdn.jsdelivr.net/gh/webfontworld/fontlab/LABDigital.eot?#iefix') format('embedded-opentype'),
+         url('https://cdn.jsdelivr.net/gh/webfontworld/fontlab/LABDigital.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/webfontworld/fontlab/LABDigital.woff') format('woff'),
+         url('https://cdn.jsdelivr.net/gh/webfontworld/fontlab/LABDigital.ttf') format("truetype");
+    font-display: swap;
+}
+
+
 body {
     background-color: rgb(247, 251, 255);
     height: 100vh;
@@ -367,6 +380,11 @@ body {
     background-color: rgb(255, 255, 255);
     border: 3px solid #558BCF;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #555;
+    gap: 40px;
 }
 
 .center {
@@ -582,4 +600,16 @@ body {
 
 .searchBox button.searchBtn:hover {
     background: #f0f0f0;
+}
+
+#date {
+	font-size: 30px;
+	font-family:LABDigital;
+}
+
+#clock {
+	font-size: 80px;
+	margin-top: 20px;
+	font-family:LABDigital;
+	font-weight: 500;
 }
