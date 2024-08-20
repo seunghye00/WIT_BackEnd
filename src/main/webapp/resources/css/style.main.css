@@ -1,585 +1,589 @@
 * {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-    list-style-type: none;
-    text-decoration: none;
-    font-family: Interop;
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+	list-style-type: none;
+	text-decoration: none;
+	font-family: Interop;
 }
 
 a {
-    text-decoration: none;
-    color: #333;
+	text-decoration: none;
+	color: #333;
 }
 
-input,
-button {
-    font-size: 16px;
+input, button {
+	font-size: 16px;
 }
 
 @font-face {
-    font-family: Interop;
-    src: url("https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff2") format("woff2"), url("https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff") format("woff");
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
+	font-family: Interop;
+	src:
+		url("https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff2")
+		format("woff2"),
+		url("https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff")
+		format("woff");
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
 }
 
 body {
-    background-color: rgb(247, 251, 255);
-    height: 100vh;
+	background-color: rgb(247, 251, 255);
+	height: 100vh;
 }
 
 .container {
-    width: 100%;
-    padding: 20px;
-    display: flex;
-    gap: 20px;
-    height: 100%;
+	width: 100%;
+	padding: 20px;
+	display: flex;
+	gap: 20px;
+	height: 100%;
 }
 
 .userImg {
-    width: 70px;
-    border-radius: 100%;
-    border: 3px solid #fff;
-    transition: all 0.5s ease;
+	width: 70px;
+	border-radius: 100%;
+	border: 3px solid #fff;
+	transition: all 0.5s ease;
 }
 
 .sideBar {
-    width: 100px;
-    background-color: rgb(85, 139, 207);
-    padding: 0.8rem;
-    transition: all 0.5s ease 0s;
-    border-radius: 25px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-content: center;
+	width: 100px;
+	background-color: rgb(85, 139, 207);
+	padding: 0.8rem;
+	transition: all 0.5s ease 0s;
+	border-radius: 25px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-content: center;
 }
 
-.sideBar.active~.main-content {
-    width: 100%;
+.sideBar.active ~.main-content {
+	width: 100%;
 }
 
 .sideBar.active {
-    width: 300px;
+	width: 300px;
 }
 
 .sideBar #btn {
-    font-size: 2.5rem;
-    line-height: 50px;
-    cursor: pointer;
-    color: white;
-    transition: all 0.5s ease 0s;
-    display: inline-block;
+	font-size: 2.5rem;
+	line-height: 50px;
+	cursor: pointer;
+	color: white;
+	transition: all 0.5s ease 0s;
+	display: inline-block;
 }
 
 .sideBar.active .top {
-    justify-content: flex-start;
-    transition: all 0.5s ease 0s;
+	justify-content: flex-start;
+	transition: all 0.5s ease 0s;
 }
 
-.sideBar.active #btn {}
+.sideBar.active #btn {
+	
+}
 
 .sideBar .top {
-    margin-bottom: 35px;
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    transition: all 0.5s ease 0s;
+	margin-bottom: 35px;
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	transition: all 0.5s ease 0s;
 }
 
 .sideBar .top .logo {
-    color: rgb(255, 255, 255);
-    display: flex;
-    height: 50px;
-    width: 100%;
-    align-items: center;
-    pointer-events: none;
-    opacity: 0;
+	color: rgb(255, 255, 255);
+	display: flex;
+	height: 50px;
+	width: 100%;
+	align-items: center;
+	pointer-events: none;
+	opacity: 0;
 }
 
-.sideBar.active .top .logo {}
+.sideBar.active .top .logo {
+	
+}
 
 .top .logo i {
-    font-size: 2rem;
-    margin-right: 5px;
+	font-size: 2rem;
+	margin-right: 5px;
 }
 
 .user {
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 30px;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 30px;
 }
 
 .user p {
-    color: rgb(255, 255, 255);
-    opacity: 1;
-    margin-left: 1rem;
+	color: rgb(255, 255, 255);
+	opacity: 1;
+	margin-left: 1rem;
 }
 
 .bold {
-    font-weight: 600;
+	font-weight: 600;
 }
 
 .sideBar p {
-    opacity: 0;
-    transition: all 0.5s ease 0s;
+	opacity: 0;
+	transition: all 0.5s ease 0s;
 }
 
 .sideBar.active p {
-    opacity: 1;
-    font-size: 30px;
-    margin-top: 10px;
+	opacity: 1;
+	font-size: 30px;
+	margin-top: 10px;
 }
 
 .sideBar.active .userImg {
-    border: 5px solid #fff;
-    width: 150px;
+	border: 5px solid #fff;
+	width: 150px;
 }
 
 .sideBar ul {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: 100%;
-    padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	width: 100%;
+	padding: 0;
 }
 
 .sideBar ul li {
-    display: flex;
-    width: 100%;
-    position: relative;
+	display: flex;
+	width: 100%;
+	position: relative;
 }
 
 .sideBar ul li a {
-    color: rgb(255, 255, 255);
-    border-radius: 0.8rem;
-    width: 100%;
-    height: 50px;
+	color: rgb(255, 255, 255);
+	border-radius: 0.8rem;
+	width: 100%;
+	height: 50px;
 }
 
 .sideBar.active ul li a {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    flex-wrap: wrap;
-    height: 100%;
-    font-size: 21px;
-    overflow: hidden;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	flex-wrap: wrap;
+	height: 100%;
+	font-size: 21px;
+	overflow: hidden;
 }
 
 .sideBar.active ul li a {
-    flex-wrap: nowrap;
-    gap: 20px;
-    padding: 0px 20px;
+	flex-wrap: nowrap;
+	gap: 20px;
+	padding: 0px 20px;
 }
 
 .sideBar ul li:hover a {
-    background-color: rgba(27, 109, 212, 0.38);
-    width: 100%;
-    color: white;
+	background-color: rgba(27, 109, 212, 0.38);
+	width: 100%;
+	color: white;
 }
 
 .sideBar ul li a i {
-    height: 50px;
-    border-radius: 12px;
-    line-height: 50px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+	height: 50px;
+	border-radius: 12px;
+	line-height: 50px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
 }
 
 .sideBar.active ul li a i {
-    width: auto;
+	width: auto;
 }
 
 .sideBar .navItem {
-    opacity: 0;
-    white-space: nowrap;
-    transition: all 0.5s ease 0s;
-    width: 0px;
-    height: 0px;
+	opacity: 0;
+	white-space: nowrap;
+	transition: all 0.5s ease 0s;
+	width: 0px;
+	height: 0px;
 }
 
 .sideBar.active .navItem {
-    opacity: 1;
-    width: auto;
-    height: auto;
+	opacity: 1;
+	width: auto;
+	height: auto;
 }
 
 .nickName {
-    border: none;
+	border: none;
 }
 
 .sideBar ul li .toolTip {
-    position: absolute;
-    left: 0;
-    top: calc(50% - 22.5px);
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 0.5rem 0.8rem;
-    border-radius: 0.6rem;
-    padding: 0.5rem 0.6rem;
-    line-height: 1.8rem;
-    z-index: 20;
-    opacity: 0;
-    white-space: nowrap;
-    background-color: white;
-    font-size: 20px;
-    transition: opacity 0.3s ease;
-    /* 부드러운 전환 효과 추가 */
-    pointer-events: none;
-    /* 툴팁에 마우스 이벤트가 전달되지 않도록 설정 */
+	position: absolute;
+	left: 0;
+	top: calc(50% - 22.5px);
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 0.5rem 0.8rem;
+	border-radius: 0.6rem;
+	padding: 0.5rem 0.6rem;
+	line-height: 1.8rem;
+	z-index: 20;
+	opacity: 0;
+	white-space: nowrap;
+	background-color: white;
+	font-size: 20px;
+	transition: opacity 0.3s ease;
+	/* 부드러운 전환 효과 추가 */
+	pointer-events: none;
+	/* 툴팁에 마우스 이벤트가 전달되지 않도록 설정 */
 }
 
 .sideBar ul li:hover .toolTip {
-    opacity: 1;
-    transform: translateX(92px);
+	opacity: 1;
+	transform: translateX(92px);
 }
 
 .sideBar.active ul li .toolTip {
-    display: none;
+	display: none;
 }
 
 /* 개인 사이드 메뉴 토글 효과 */
 .sideAbout .addressListPrivate {
-    padding-bottom: 30px;
+	padding-bottom: 30px;
 }
 
 /* 공통 스타일 */
 .subList {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.5s ease, opacity 0.5s ease;
-    padding-left: 20px;
+	max-height: 0;
+	overflow: hidden;
+	opacity: 0;
+	transition: max-height 0.5s ease, opacity 0.5s ease;
+	padding-left: 20px;
 }
 
 .subList.active {
-    max-height: 500px;
-    /* 적당히 큰 값으로 설정 */
-    opacity: 1;
+	max-height: 500px;
+	/* 적당히 큰 값으로 설정 */
+	opacity: 1;
 }
 
 .subList li:not(:last-child) {
-    padding-bottom: 8px;
+	padding-bottom: 8px;
 }
 
 .subList li a.active {
-    color: #558BCF;
-    font-weight: 600;
+	color: #558BCF;
+	font-weight: 600;
 }
 
 .main-content {
-    transition: all 0.5s ease 0s;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px 0px;
+	transition: all 0.5s ease 0s;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 20px 0px;
 }
 
 .header {
-    height: 70px;
-    padding: 10px 40px;
-    background-color: #558BCF;
-    display: flex;
-    justify-content: flex-end;
-    border-radius: 25px;
-    gap: 30px;
-    align-items: center;
+	height: 70px;
+	padding: 10px 40px;
+	background-color: #558BCF;
+	display: flex;
+	justify-content: flex-end;
+	border-radius: 25px;
+	gap: 30px;
+	align-items: center;
 }
 
 .header span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .header span a {
-    text-decoration: none;
-    color: rgb(255, 255, 255);
-    font-size: 18px;
+	text-decoration: none;
+	color: rgb(255, 255, 255);
+	font-size: 18px;
 }
+
 .header span.alert a {
-	display: flex;	
-    text-decoration: none;
-    color: rgb(255, 255, 255);
-    font-size: 18px;
-    gap: 10px;
-    align-items: center;
+	display: flex;
+	text-decoration: none;
+	color: rgb(255, 255, 255);
+	font-size: 18px;
+	gap: 10px;
+	align-items: center;
 }
 
 .header span i {
-    font-size: 1.6rem;
+	font-size: 1.6rem;
 }
 
-.alert,
-.logOut,
-.myName {
-    font-size: 20px;
-    font-weight: bold;
+.alert, .logOut, .myName {
+	font-size: 20px;
+	font-weight: bold;
 }
 
 .header .myName {
-    gap: 10px;
+	gap: 10px;
 }
 
 .header .myName .myImgBox {
-    height: 50px;
-    border-radius: 100%;
-    border: 2px solid #fff;
-    width: 50px;
-    overflow: hidden;
+	height: 50px;
+	border-radius: 100%;
+	border: 2px solid #fff;
+	width: 50px;
+	overflow: hidden;
 }
+
 .header .myName img {
 	width: 100%;
-    height: 100%;
-    border: none;
-    object-fit: cover;
-    border-radius: unset;
+	height: 100%;
+	border: none;
+	object-fit: cover;
+	border-radius: unset;
 }
+
 .contents {
-    /* flex: 4 1 0%; */
-    height: calc(100% - 90px);
-    display: flex;
-    gap: 20px;
+	/* flex: 4 1 0%; */
+	height: calc(100% - 90px);
+	display: flex;
+	gap: 20px;
 }
 
 .left {
-    flex: 1 1 0%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+	flex: 1 1 0%;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 }
 
 .leftTop {
-    border-radius: 20px;
-    flex: 1 1 0%;
-    background-color: rgb(255, 255, 255);
-    border: 3px solid #558BCF;
-    padding: 20px;
+	border-radius: 20px;
+	flex: 1 1 0%;
+	background-color: rgb(255, 255, 255);
+	border: 3px solid #558BCF;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 30px;
 }
 
 .leftBottom {
-    flex: 1 1 0%;
-    border-radius: 20px;
-    background-color: rgb(255, 255, 255);
-    border: 3px solid #558BCF;
-    padding: 20px;
+	flex: 1 1 0%;
+	border-radius: 20px;
+	background-color: rgb(255, 255, 255);
+	border: 3px solid #558BCF;
+	padding: 20px;
 }
 
 .center {
-    flex: 2 1 0%;
-    background-color: rgb(255, 255, 255);
-    border-radius: 25px;
-    border: 3px solid #558BCF;
-    padding: 20px;
+	flex: 2 1 0%;
+	background-color: rgb(255, 255, 255);
+	border-radius: 25px;
+	border: 3px solid #558BCF;
+	padding: 20px;
 }
 
 .right {
-    flex: 1 1 0%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+	flex: 1 1 0%;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 }
 
 .rightTop {
-    flex: 1 1 0%;
-    background-color: rgb(255, 255, 255);
-    border-radius: 20px;
-    border: 3px solid #558BCF;
-    padding: 20px;
+	flex: 1 1 0%;
+	background-color: rgb(255, 255, 255);
+	border-radius: 20px;
+	border: 3px solid #558BCF;
+	padding: 20px;
 }
 
 .rightBottom {
-    flex: 1 1 0%;
-    background-color: rgb(255, 255, 255);
-    border-radius: 20px;
-    border: 3px solid #558BCF;
-    padding: 20px;
+	flex: 1 1 0%;
+	background-color: rgb(255, 255, 255);
+	border-radius: 20px;
+	border: 3px solid #558BCF;
+	padding: 20px;
 }
 
-
-
 .sideContents {
-    flex: 6 1 0%;
-    border-radius: 25px;
-    border: 3px solid #558BCF;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    padding: 30px 40px;
+	flex: 6 1 0%;
+	border-radius: 25px;
+	border: 3px solid #558BCF;
+	background-color: #fff;
+	display: flex;
+	flex-direction: column;
+	padding: 30px 40px;
 }
 
 .sideContents .mainTitle {
-    /* flex: 1; */
-    font-size: 28px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
+	/* flex: 1; */
+	font-size: 28px;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
 }
-
 
 /* sideBar 오른쪽에 sub sideBar */
 /* 사이드 영역 CSS */
 .sideAbout {
-    flex: 1;
-    padding: 30px 20px;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    border-radius: 25px;
-    color: #333;
-    border: 3px solid #558BCF;
+	flex: 1;
+	padding: 30px 20px;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+	border-radius: 25px;
+	color: #333;
+	border: 3px solid #558BCF;
 }
 
 /* 사이드 타이틀 */
 .sideAbout .sideTit {
-    font-size: 26px;
-    padding-bottom: 30px;
-    color: #333;
+	font-size: 26px;
+	padding-bottom: 30px;
+	color: #333;
 }
 
 /* 사이드 버튼 */
 .sideAbout .sideBtnBox {
-    padding-bottom: 30px;
+	padding-bottom: 30px;
 }
 
 .sideAbout .sideBtn {
-    width: 100%;
-    padding: 15px 30px;
-    background-color: #fff;
-    border: 3px solid #558BCF;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #558BCF;
+	width: 100%;
+	padding: 15px 30px;
+	background-color: #fff;
+	border: 3px solid #558BCF;
+	border-radius: 10px;
+	font-size: 18px;
+	font-weight: 600;
+	color: #558BCF;
 }
 
 /* 버튼 효과 */
-.sideAbout .sideBtn:hover,
-.sideAbout .sideBtn:focus,
-.sideAbout .sideBtn:active {
-    cursor: pointer;
-    background-color: #558BCF;
-    color: #fff;
-    box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
+.sideAbout .sideBtn:hover, .sideAbout .sideBtn:focus, .sideAbout .sideBtn:active
+	{
+	cursor: pointer;
+	background-color: #558BCF;
+	color: #fff;
+	box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
 }
 
 /* 토글 */
 .toggleItem .toggleTit {
-    padding-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    cursor: pointer;
-    position: relative;
+	padding-bottom: 10px;
+	display: flex;
+	justify-content: space-between;
+	cursor: pointer;
+	position: relative;
 }
 
 .toggleItem .toggleTit::after {
-    content: "";
-    display: block;
-    width: 20px;
-    height: 23px;
-    background-image: url(/img/toggle.png);
-    background-size: 10px 8px;
-    background-repeat: no-repeat;
-    background-position: center;
-    transition: transform 0.5s ease;
-    transform: rotate(0deg);
+	content: "";
+	display: block;
+	width: 20px;
+	height: 23px;
+	background-image: url(/img/toggle.png);
+	background-size: 10px 8px;
+	background-repeat: no-repeat;
+	background-position: center;
+	transition: transform 0.5s ease;
+	transform: rotate(0deg);
 }
 
 .toggleItem .toggleTit.active::after {
-    transform: rotate(180deg);
+	transform: rotate(180deg);
 }
-
 
 /* 페이지네이션 */
 .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* margin: 20px 0; */
-    height: 5%;
-    gap: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	/* margin: 20px 0; */
+	height: 5%;
+	gap: 5px;
 }
 
 .pagination a {
-    padding: 10px 12px;
-    cursor: pointer;
-    color: #333;
+	padding: 10px 12px;
+	cursor: pointer;
+	color: #333;
 }
 
 .pagination a.disabled {
-    cursor: default;
+	cursor: default;
 }
 
 .pagination a.active {
-    background-color: #558BCF;
-    color: white;
-    border-radius: 100%;
-    width: 40px;
-    text-align: center;
+	background-color: #558BCF;
+	color: white;
+	border-radius: 100%;
+	width: 40px;
+	text-align: center;
 }
 
-.pagination a.prev,
-.pagination a.next {
-    font-size: 24px;
-    color: #ccc;
-    font-weight: bold;
+.pagination a.prev, .pagination a.next {
+	font-size: 24px;
+	color: #ccc;
+	font-weight: bold;
 }
 
-.pagination a.prev,
-.pagination a.next {
-    background-color: unset;
-    border: none;
-    font-size: 24px;
-    padding: 5px 10px;
+.pagination a.prev, .pagination a.next {
+	background-color: unset;
+	border: none;
+	font-size: 24px;
+	padding: 5px 10px;
 }
 
-.pagination a.prev.active,
-.pagination a.next.active {
-    color: #333;
+.pagination a.prev.active, .pagination a.next.active {
+	color: #333;
 }
 
 /* 검색창 */
 .searchBox {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    padding: 5px 10px;
-    width: 300px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    /* height: 5%; */
-    height: 40px;
+	display: flex;
+	align-items: center;
+	border: 1px solid #ccc;
+	border-radius: 25px;
+	padding: 5px 10px;
+	width: 300px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	/* height: 5%; */
+	height: 40px;
 }
 
 .searchBox input {
-    border: none;
-    outline: none;
-    flex-grow: 1;
-    padding: 5px 10px;
-    border-radius: 25px;
-    font-size: 16px;
+	border: none;
+	outline: none;
+	flex-grow: 1;
+	padding: 5px 10px;
+	border-radius: 25px;
+	font-size: 16px;
 }
 
 .searchBox button.searchBtn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: #333;
-    border-radius: 50%;
-    transition: background 0.3s;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 18px;
+	color: #333;
+	border-radius: 50%;
+	transition: background 0.3s;
 }
 
 .searchBox button.searchBtn:hover {
-    background: #f0f0f0;
+	background: #f0f0f0;
 }
