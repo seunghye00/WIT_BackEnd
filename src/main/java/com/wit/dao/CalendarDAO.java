@@ -8,8 +8,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.wit.dto.CompanyCalendarDTO;
 import com.wit.dto.DepartmentCalendarDTO;
 import com.wit.dto.EmployeeDTO;
+import com.wit.dto.ExecutiveCalendarDTO;
 import com.wit.dto.PersonalCalendarDTO;
 
 @Repository
@@ -66,8 +68,13 @@ public class CalendarDAO {
 		return mybatis.selectOne("calendar.selectPersonalByCalendarSeq", calendarSeq);
 	}
 	
-	// 직급 코드가 R1일 경우 부서 캘린더 조회
-	public List<DepartmentCalendarDTO> adminDepCalendarList(String empNo){
-		return mybatis.selectList("calendar.adminDepCalendarList", empNo);
+	// 전사 일정 목록 출력
+	public List<CompanyCalendarDTO> comCalendarList(){
+		return mybatis.selectList("calendar.comCalendarList");
+	}
+	
+	// 임원 일정 목록 출력
+	public List<ExecutiveCalendarDTO> exCalendarList(){
+		return mybatis.selectList("calendar.exCalendarList");
 	}
 }

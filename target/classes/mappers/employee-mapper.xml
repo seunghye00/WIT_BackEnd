@@ -53,11 +53,13 @@
 	<!-- 로그인 -->
 	<select id="login" resultType="com.wit.dto.EmployeeDTO">
 		SELECT e.emp_no, e.pw, e.name,
-		r.role_title AS role_code
+		r.role_title AS role_code,
+		e.quit_yn
 		FROM employee e
-		JOIN role r ON e.role_code =
-		r.role_code
-		WHERE e.emp_no = #{emp_no} AND e.pw = #{pw}
+		JOIN role r ON e.role_code = r.role_code
+		WHERE e.emp_no = #{emp_no}
+		AND e.pw = #{pw}
+		AND e.quit_yn = 'N'
 	</select>
 
 	<!-- 직원 정보 조회 -->
@@ -71,7 +73,8 @@
 		JOIN
 		Role r ON e.role_code = r.role_code
 		JOIN
-		Dept d ON e.dept_code = d.dept_code
+		Dept d ON e.dept_code =
+		d.dept_code
 		WHERE
 		e.emp_no = #{emp_no}
 	</select>
@@ -96,7 +99,7 @@
 		e.zip_code, e.address, e.detail_address,
 		d.dept_title AS dept_code,
 		r.role_title AS role_code,
-		e.join_date, e.quit_date, e.quit_yn
+		e.join_date, e.quit_date, e.quit_yn, e.photo
 		FROM
 		employee e
 		JOIN dept d ON e.dept_code = d.dept_code
@@ -186,9 +189,10 @@
 
 	<!-- 사원 이름 조회 -->
 	<select id="getName" resultType="String">
-		select name from employee where emp_no = #{empNo}
+		select name from employee where
+		emp_no = #{empNo}
 	</select>
-	
+
 	<!-- 사원 직급명 조회 -->
 	<select id="getRole" resultType="String">
 		select role_title
@@ -197,7 +201,7 @@
 		e.role_code = d.role_code
 		where emp_no = #{empNo}
 	</select>
-	
+
 	<!-- 사원 부서명 조회 -->
 	<select id="getDept" resultType="String">
 		select dept_title
@@ -262,12 +266,14 @@
 		            and d.dept_title = #{category}
 		        ]]>
 		</if>
-		<![CDATA[order by em.name
+		<![CDATA[
+		and em.quit_yn = 'N'
+		order by em.name
 		) 
 		where rown between #{startNum} and #{endNum}
 		]]>
 	</select>
-	
+
 	<!-- 직원 주소록 리스트 조회 -->
 	<select id="CountPageAddress" parameterType="map"
 		resultType="int">
@@ -310,6 +316,7 @@
 		            and d.dept_title = #{category}
 		        ]]>
 		</if>
+		and em.quit_yn = 'N'
 	</select>
 	<!-- 직원 주소록 검색 -->
 	<select id="searchEmployeeAddressList" parameterType="map"
@@ -326,9 +333,9 @@
 	<!-- 주소록 페이지네이션 총 카운트 -->
 	<select id="totalCountPage" resultType="int">
 		select count(*) from
-			employee
-		where 
-			emp_no != #{emp_no}
+		employee
+		where
+		emp_no != #{emp_no}
 	</select>
 
 	<!-- 카테고리 목록 가져오기 -->
@@ -345,7 +352,8 @@
 		r.role_title
 		from
 		employee em
-		left join
+		left
+		join
 		dept d on em.dept_code = d.dept_code
 		left join
 		role r on
@@ -391,6 +399,7 @@
 		r.role_code
 		where
 		emp_no != #{emp_no}
+		and em.quit_yn = 'N' 
 	</select>
 
 	<!-- 메신저 주소록 상세 조회 -->
@@ -399,25 +408,27 @@
 		d.dept_title, r.role_title, phone, email
 		from employee em
 		left join
-	        dept d on em.dept_code = d.dept_code
-	    left join
-	        role r on em.role_code = r.role_code
-	    where emp_no = #{emp_no}
-    </select>
-    
-    <!--  메신저 emp_no 이름으로 변경 -->
-	<select id="getEmployeeName" parameterType="String" resultType="String">
-	    SELECT name FROM employee WHERE emp_no = #{emp_no}
+		dept d on em.dept_code = d.dept_code
+		left join
+		role r on em.role_code = r.role_code
+		where emp_no = #{emp_no}
 	</select>
-	
+
+	<!-- 메신저 emp_no 이름으로 변경 -->
+	<select id="getEmployeeName" parameterType="String"
+		resultType="String">
+		SELECT name FROM employee WHERE emp_no = #{emp_no}
+	</select>
+
 	<!-- 관리자 사원 조회 -->
-    <select id="getManagementList" parameterType="map" resultType="map">
+	<select id="getManagementList" parameterType="map"
+		resultType="map">
 		select * from (
 		    select 
 		        em.*, 
 		        d.dept_title,
 		        r.role_title,
-		        row_number() over (order by em.name asc) as rown
+		        row_number() over (order by em.emp_no asc) as rown
 		    from 
 		        employee em
 		    left join
@@ -429,15 +440,15 @@
 		    )
 		    where rown between #{startNum} and #{endNum}    
 	</select>
-	
+
 	<!-- 관리자 사원 검색 조회 -->
-    <select id="selectByManage" parameterType="map" resultType="map">
+	<select id="selectByManage" parameterType="map" resultType="map">
 		select * from (
 		    select 
 		        em.*, 
 		        d.dept_title,
 		        r.role_title,
-		        row_number() over (order by em.name asc) as rown
+		        row_number() over (order by em.emp_no asc) as rown
 		    from 
 		        employee em
 		    left join
@@ -450,26 +461,40 @@
 		    )
 		    where rown between #{startNum} and #{endNum}    
 	</select>
-	
+
 	<!-- 관리자 사원 검색 총 카운트 -->
-    <select id="totalCountManageSearch" resultType="int">
-        select count(*) from employee where em.emp_no != #{empNo} and ${column} like '%'||#{keyword}||'%'
-    </select>		
-    
-   	<!-- 관리자 사원 상세 -->
-    <select id="managementDetail" resultType="map">
-       	select 
-		    em.*, 
-		    d.dept_title,
-		    r.role_title,
-		    SUBSTR(em.ssn, 1, 6) as birthdate
-		from 
-		    employee em 
+	<select id="totalCountManageSearch" resultType="int">
+		select count(*) from employee where em.emp_no != #{empNo} and ${column} like
+		'%'||#{keyword}||'%'
+	</select>
+
+	<!-- 관리자 사원 상세 -->
+	<select id="managementDetail" resultType="map">
+		select
+		em.*,
+		d.dept_title,
+		r.role_title,
+		SUBSTR(em.ssn, 1, 6) as birthdate
+		from
+		employee em
 		left join
-		    dept d on em.dept_code = d.dept_code
+		dept d on em.dept_code = d.dept_code
 		left join
 		    role r on em.role_code = r.role_code
 		where 
 		    emp_no = #{emp_no}
-    </select>		
+    </select>	
+    
+    <update id="updateManage" parameterType="map">
+    	update employee 
+		    set 
+		        phone = #{phone}, 
+		        email = #{email}, 
+		        dept_code = #{dept_code}, 
+		        role_code = #{role_code}, 
+		        photo = #{photo}, 
+		        quit_yn = #{quit_yn},
+		        quit_date = CASE WHEN #{quit_yn} = 'Y' THEN sysdate ELSE quit_date END
+		    WHERE emp_no = #{emp_no}
+    </update>	
 </mapper>

@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wit.dto.CompanyCalendarDTO;
 import com.wit.dto.DepartmentCalendarDTO;
 import com.wit.dto.EmployeeDTO;
-import com.wit.dto.EmployeeInfoDTO;
+import com.wit.dto.ExecutiveCalendarDTO;
 import com.wit.dto.PersonalCalendarDTO;
 import com.wit.services.CalendarService;
 
@@ -39,9 +40,15 @@ public class CalendarController {
 		
 		List<DepartmentCalendarDTO> dlist = service.depCalendarList(empNo,roleCode);
 		List<PersonalCalendarDTO> plist = service.perCalendarList(empNo);
-
+		List<CompanyCalendarDTO> clist = service.comCalendarList();
+		List<ExecutiveCalendarDTO> elist = service.exCalendarList();
+		
+		System.out.println("clist size: " + clist.get(0).getCalendar_name());
+		System.out.println("elist size: " + elist.get(0).getCalendar_name());
 		model.addAttribute("plist", plist);
 		model.addAttribute("dlist", dlist);
+		model.addAttribute("clist", clist);
+		model.addAttribute("elist", elist);
 		model.addAttribute("employee", employee);
 		return "/Calendar/calendar";
 	}

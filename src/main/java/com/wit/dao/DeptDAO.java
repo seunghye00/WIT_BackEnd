@@ -18,5 +18,9 @@ public class DeptDAO {
 	public List<DeptDTO> getList() {
 		return mybatis.selectList("dept.selectAll");
 	}
-
+	
+	// 부서 타이틀 부서 코드로 변환
+	public String getDeptCode(String deptTitle) {
+		return mybatis.selectOne("dept.getDeptCode", deptTitle);
+	}
 }

@@ -14,7 +14,7 @@
 	<ul>
 		<li><a href="/employee/main"> <i class='bx bxs-home-alt-2'></i>
 				<span class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
-		<li><a href="javascript:;"> <i class='bx bx-edit'></i>
+		<li><a href="/employee/management"> <i class='bx bx-edit'></i>
 			<span class="navItem">사원 관리</span></a> <span
 		class="toolTip">사원 관리</span></li>
 		<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i> <span

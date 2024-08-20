@@ -3,8 +3,10 @@
 <div class="header">
     <!-- 마이페이지로 이동 -->
     <span class="myName"> 
-        <img src="/uploads/${loginPhoto}" alt="프로필 사진" class="userImg">
-        <a href="/employee/mypage">${loginName} ${loginRole}</a>
+	    <span class="myImgBox">
+	        <img src="" alt="프로필 사진" class="userImg">
+	    </span>
+        <a href="/employee/mypage"></a>
     </span> 
     <span class="alert">
         <a href="javascript:;" id="notificationBell" data-toggle="modal" data-target="#notificationModal">
@@ -39,4 +41,24 @@
     </div>
   </div>
 </div>
+<script>
 
+$(document).ready(function() {
+    $.ajax({
+        url: '/employee/getSessionInfo',
+        type: 'GET',
+        success: function(response) {
+            // 로그인 정보가 성공적으로 불러와졌을 때
+            if (response.photo) {
+                $('.myImgBox img').attr('src', response.photo);
+            }
+            if (response.name && response.role_code) {
+                $('.myName a').text(response.role_code + ' ' + response.name);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+        }
+    });
+});
+</script>

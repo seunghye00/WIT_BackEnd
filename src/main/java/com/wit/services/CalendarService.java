@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.wit.dao.CalendarDAO;
 import com.wit.dao.EventsDAO;
+import com.wit.dto.CompanyCalendarDTO;
 import com.wit.dto.DepartmentCalendarDTO;
 import com.wit.dto.EmployeeDTO;
-import com.wit.dto.EmployeeInfoDTO;
+import com.wit.dto.ExecutiveCalendarDTO;
 import com.wit.dto.PersonalCalendarDTO;
 
 @Service
@@ -29,6 +30,16 @@ public class CalendarService {
 	// 부서캘린더 목록 출력
 	public List<DepartmentCalendarDTO> depCalendarList(String empNo, String roleCode) {
 		return dao.depCalendarList(empNo, roleCode);
+	}
+	
+	// 전사 일정 목록 출력
+	public List<CompanyCalendarDTO> comCalendarList(){
+		return dao.comCalendarList();
+	}
+	
+	// 임원 일정 목록 출력
+	public List<ExecutiveCalendarDTO> exCalendarList(){
+		return dao.exCalendarList();
 	}
 
 	// 개인캘린더 추가
@@ -76,8 +87,4 @@ public class CalendarService {
 		}
 	}
 	
-	// 직급 코드가 R1일 때 부서 캘린더 출력
-	public List<DepartmentCalendarDTO> adminDepCalendarList(String empNo){
-		return dao.adminDepCalendarList(empNo);
-	}
 }

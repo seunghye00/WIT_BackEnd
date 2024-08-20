@@ -11,7 +11,6 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <link rel="stylesheet" href="/resources/css/style.main.css">
-<link rel="stylesheet" href="/resources/css/mky.css">
 <link rel="stylesheet" href="/resources/css/wit.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/employee.js"></script>
@@ -25,10 +24,10 @@
 				href="/employee/find_PW" class="find_pw">PW 찾기</a>
 		</div>
 		<form id="loginForm" action="/employee/login" method="post">
-			<input type="text" id="emp_no" name="emp_no" placeholder="User ID"
+			<input type="text" id="emp_no" name="emp_no" placeholder="사원번호"
 				required> <input type="password" name="pw"
-				placeholder="User PW" required>
-			<button type="submit">Login</button>
+				placeholder="패스워드" required>
+			<button type="submit">로그인</button>
 		</form>
 		<div class="employee_container">
 			<!-- 나중에 삭제 할 예정이긴 한데 아직 아무도 건들지 마세요! -->

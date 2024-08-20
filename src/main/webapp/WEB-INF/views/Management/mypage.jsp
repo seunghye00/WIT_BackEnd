@@ -11,62 +11,20 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <link rel="stylesheet" href="/resources/css/style.main.css">
-<link rel="stylesheet" href="/resources/css/mky.css">
 <link rel="stylesheet" href="/resources/css/wit.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="/resources/js/employee.js"></script>
 </head>
 
 <body>
-	<!-- 공통영역 -->
+
 	<div class="container">
-		<div class="sideBar">
-			<div class="top">
-				<i class="bx bx-menu" id="btn"></i>
-			</div>
-			<div class="user">
-				<img src="/resources/img/WIT_logo1.png" alt="로고" class="userImg">
-				<div class="nickName">
-					<p class="bold">Wit Works</p>
-					<p></p>
-				</div>
-			</div>
-
-			<ul>
-				<li><a href="/employee/main"> <i class='bx bxs-home-alt-2'></i>
-						<span class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
-				<li><a href="/addressbook/addressbook"> <i
-						class='bx bx-paperclip'></i> <span class="navItem">주소록</span></a> <span
-					class="toolTip">주소록</span></li>
-				<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i>
-						<span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
-				<li><a href="/calendar/calendar"> <i
-						class='bx bx-calendar-alt'></i> <span class="navItem">캘린더</span></a> <span
-					class="toolTip">캘린더</span></li>
-				<li><a href="/messenger/messenger"> <i
-						class='bx bxs-message-dots'></i> <span class="navItem">메신저</span></a>
-					<span class="toolTip">메신저</span></li>
-				<li><a href="#"> <i class='bx bx-clipboard'></i> <span
-						class="navItem">전자결재</span></a> <span class="toolTip">전자결재</span></li>
-				<li><a href="/attendance/attendance"> <i
-						class='bx bxs-briefcase-alt-2'></i> <span class="navItem">근태관리</span></a>
-					<span class="toolTip">근태관리</span></li>
-				<li><a href="#"> <i class='bx bxs-check-square'></i> <span
-						class="navItem">예약</span></a> <span class="toolTip">예약</span></li>
-				<li><a href="#"> <i class='bx bx-sitemap'></i> <span
-						class="navItem">조직도</span></a> <span class="toolTip">조직도</span></li>
-			</ul>
-		</div>
+		<!-- 공통영역 -->
+		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
 		<!-- 공통영역 끝 -->
-
 		<div class="main-content">
-			<div class="header">
-				<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
-				<span class="myName"> <img src="/resources/img/푸바오.png"
-					alt="프로필 사진" class="userImg"><a href="/employee/mypage">${employee.name}
-						${employee.role_code}</a>
-				</span> <span class="logOut"><a href="/employee/logout">LogOut</a></span>
-			</div>
+			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
+			
 			<div class="contents">
 				<div class="sideAbout">
 					<div class="sideTxt">
