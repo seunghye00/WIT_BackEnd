@@ -39,9 +39,9 @@
                                    <label for="photo">사진</label>
                                    <div class="photoWrapper">
                                        <div class="imgBox">
-	                                       <img src="/uploads/${employee.PHOTO}" alt="사진" id="photo">
+	                                       <img src="${employee.PHOTO}" alt="사진" id="photo">
                                        </div>
-                                       <button type="button" class="red" onclick="removePhoto()">삭제</button>
+                                       <button type="button" disabled class="red" id="removePhotoBtn">삭제</button>
                                        <input type="file" id="photoUpload" accept="image/*"
                                            onchange="previewPhoto(event)" disabled>
                                        <label for="photoUpload">등록</label>
@@ -52,7 +52,7 @@
 								<div class="leftForm">
 									<div class="formGroup">
 										<label for="name">이름</label> <input type="text" id="name"
-											name="name" value="${employee.NAME}" readonly>
+											name="name" value="${employee.NAME}" readonly disabled="true">
 									</div>
 									<div class="formGroup">
 										<label for="deptTitle">부서</label> <select id="deptTitle"
@@ -124,7 +124,15 @@
 	    $('select').prop('disabled', false); 
 	    // 저장 버튼 표시, 수정 버튼 숨기기
 	    $('#saveBtn').show();
-	    $('#quitOutBtn').show();
+	    $('#removePhotoBtn').prop('disabled', false); 
+	    
+	    // 퇴사일이 있는지 확인
+	    if ($('#quitDate').val()) {
+	        $('#quitOutBtn').prop('disabled', true); // 퇴사일이 있으면 퇴사 버튼 비활성화
+	    } else {
+	        $('#quitOutBtn').show(); // 퇴사일이 없으면 퇴사 버튼 활성화
+	    }
+	    
 	    $(this).hide();
 	});
 
@@ -137,15 +145,16 @@
 	    reader.readAsDataURL(event.target.files[0]);
 	}
 	
- 	function removePhoto() {
-        document.getElementById('photo').src = '/uploads/default.png';
-        document.getElementById('photoUpload').value = "";
-    }
+	$('#removePhotoBtn').click(function() {
+        $('#photo').attr('src', '/uploads/default.png');
+        $('#photoUrl').val(''); // 이미지 삭제 시 photoUrl 필드를 비움
+        $('#photoDeleted').val('true'); // 사진이 삭제되었음을 표시
+    });
 	 
  	function saveEmployee() {
- 	    var formData = new FormData(document.getElementById('employeeDetailForm'));
- 	    var fileInput = document.getElementById('photoUpload');
- 	    var photoChanged = fileInput.files.length > 0; // 사용자가 이미지를 변경했는지 여부를 확인
+ 		var fileInput = document.getElementById('photoUpload');
+        var photoChanged = fileInput.files.length > 0; // 사용자가 이미지를 변경했는지 여부를 확인
+        var photoDeleted = $('#photoDeleted').val() === 'true';
 
  	    if (photoChanged) {
  	        // 사용자가 이미지를 변경한 경우
@@ -172,10 +181,16 @@
  	                console.error('Error:', status, error);
  	            }
  	        });
- 	    } else {
- 	        // 사용자가 이미지를 변경하지 않은 경우
- 	        submitEmployeeForm(formData); // 이미지를 제외한 나머지 정보를 업데이트
- 	    }
+ 	    } else if (photoDeleted) {
+            // 이미지가 삭제된 경우
+            $('#photoUrl').val('/uploads/default.png'); // 기본 이미지로 설정
+            document.getElementById('employeeDetailForm').submit();
+        } else {
+            // 사용자가 이미지를 변경하지 않은 경우
+            var existingPhotoUrl = $('#photo').attr('src')
+            $('#photoUrl').val(existingPhotoUrl);
+            document.getElementById('employeeDetailForm').submit();
+        }
  	}
 	
 	$('#quitOutBtn').click(function() {

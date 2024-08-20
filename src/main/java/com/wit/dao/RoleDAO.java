@@ -20,6 +20,6 @@ public class RoleDAO {
 	
 	// 직급 타이틀 직급 코드로 변환
 	public String getRoleCode(String roleTitle) {
-		return mybatis.selectOne("role.getRoleCode");
+		return mybatis.selectOne("role.getRoleCode", roleTitle);
 	}
 }

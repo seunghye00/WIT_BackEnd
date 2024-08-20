@@ -421,7 +421,7 @@
 		        em.*, 
 		        d.dept_title,
 		        r.role_title,
-		        row_number() over (order by em.name asc) as rown
+		        row_number() over (order by em.emp_no asc) as rown
 		    from 
 		        employee em
 		    left join
@@ -430,7 +430,6 @@
 		        role r on em.role_code = r.role_code
 		   	where 
             	em.emp_no != #{emp_no}
-            	and em.quit_yn = 'N'
 		    )
 		    where rown between #{startNum} and #{endNum}    
 	</select>
@@ -442,7 +441,7 @@
 		        em.*, 
 		        d.dept_title,
 		        r.role_title,
-		        row_number() over (order by em.name asc) as rown
+		        row_number() over (order by em.emp_no asc) as rown
 		    from 
 		        employee em
 		    left join
@@ -451,7 +450,6 @@
 		        role r on em.role_code = r.role_code
 		    where 
 	    		em.emp_no != #{emp_no}
-	    		and em.quit_yn = 'N'
 		    	and ${column} like '%'||#{keyword}||'%'    
 		    )
 		    where rown between #{startNum} and #{endNum}    
@@ -477,5 +475,18 @@
 		    role r on em.role_code = r.role_code
 		where 
 		    emp_no = #{emp_no}
-    </select>		
+    </select>	
+    
+    <update id="updateManage" parameterType="map">
+    	update employee 
+		    set 
+		        phone = #{phone}, 
+		        email = #{email}, 
+		        dept_code = #{dept_code}, 
+		        role_code = #{role_code}, 
+		        photo = #{photo}, 
+		        quit_yn = #{quit_yn},
+		        quit_date = CASE WHEN #{quit_yn} = 'Y' THEN sysdate ELSE quit_date END
+		    WHERE emp_no = #{emp_no}
+    </update>	
 </mapper>

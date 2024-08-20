@@ -1899,6 +1899,9 @@
 	width: calc(100% / 6);
 }
 
+.manageForm .listBox .rows.line-through {
+    text-decoration: line-through;
+}
 
 .manageDetailForm{
 	display:flex;

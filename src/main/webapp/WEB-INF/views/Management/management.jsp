@@ -125,8 +125,9 @@
                 $('#results').empty();
                 if (Array.isArray(data) && data.length > 0) {
                     data.forEach(function(contact) {
+                    	var rowClass = contact.QUIT_DATE ? 'line-through' : '';
                         var $row = $('<div>', {
-                            class: 'rows',
+                        	class: 'rows ' + rowClass,
                             onclick: 'handleRowClick(event, this)',
                             'data-seq': contact.EMP_NO
                         });

@@ -489,17 +489,17 @@ public class EmployeeController {
 	
 	// 관리자 사원 관리 상세
 	@RequestMapping("/updateManage")
-	public String updateManage(String empNo, String photoUrl, String name, String deptTitle, String roleTitle, String phone, String quitDate, String email) throws Exception {
+	public String updateManage(String empNo, String photoUrl, String deptTitle, String roleTitle, String phone, String quitDate, String email) throws Exception {
 		String quit_yn = "N";
 		if (quitDate != null && !quitDate.isEmpty()) {
 	        quit_yn = "Y"; // 퇴사 여부를 'y'로 설정
 	    }
+		System.out.println(photoUrl);
 		String dept_code = deptServ.getDeptCode(deptTitle);
 		String role_code = roleServ.getRoleCode(roleTitle);
-        service.updateMange(empNo, photoUrl, phone, quit_yn ,email, dept_code, role_code);
+        service.updateManage(empNo, photoUrl, phone, quit_yn, email, dept_code, role_code);
 		return "redirect:/employee/managementDetail?empNo=" + empNo;
 	}
-	c
 	// 예외를 담당하는 메서드 생성
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception e) {
