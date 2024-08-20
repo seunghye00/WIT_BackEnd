@@ -1,40 +1,39 @@
 $(document).ready(function () {
-    // 로그인
-    $('#loginForm').on('submit', function (e) {
-        e.preventDefault()
+// 로그인
+$('#loginForm').on('submit', function (e) {
+    e.preventDefault();
 
-		// emp_no 값을 가져옴
-        var empNo = $('#emp_no').val(); 
-        // 체크박스 상태 확인
-        var rememberMe = $('#remember_id').is(':checked'); 
-        var formData = $(this).serialize();
+	// emp_no 값 가져오기
+    var empNo = $('#emp_no').val(); 
+    // 체크박스 상태 확인
+    var rememberMe = $('#remember_id').is(':checked'); 
+    var formData = $(this).serialize();
 
-        $.ajax({
-            type: 'POST',
-            url: '/employee/login',
-            data: formData,
-            success: function (response) {
-                console.log(response);
-                if (response.success) {
-                		// empNo가 유효한지 확인
-                    if (rememberMe && empNo) { 
-                        // 체크박스가 체크된 경우 로컬 스토리지에 아이디 저장
-                        localStorage.setItem('rememberedId', empNo);
-                    } else {
-                        // 체크박스가 체크되지 않은 경우 로컬 스토리지에서 아이디 제거
-                        localStorage.removeItem('rememberedId');
-                    }
-
-                    window.location.href = '/employee/main';
+    $.ajax({
+        type: 'POST',
+        url: '/employee/login',
+        data: formData,
+        success: function (response) {
+            if (response.success) {
+            		// emp_no가 유효한지 확인
+                if (rememberMe && empNo) {
+                	// 체크박스가 체크된 경우 로컬 스토리지에 아이디 저장 
+                    localStorage.setItem('rememberedId', empNo);
                 } else {
-                    alert('ID 및 PW를 확인 해주세요.');
+                	// 체크박스가 체크되지 않은 경우 로컬 스토리지 에서 아이디 제거
+                    localStorage.removeItem('rememberedId');
                 }
-            },
-            error: function () {
-                alert('로그인 중 오류가 발생했습니다.');
-            },
-        });
+
+                window.location.href = '/employee/main';
+            } else {
+                alert(response.message || '로그인 중 오류가 발생했습니다.');
+            }
+        },
+        error: function () {
+            alert('로그인 중 오류가 발생했습니다.');
+        },
     });
+});
 
     // 페이지 로드 시 로컬 스토리지에서 아이디 불러오기
     var rememberedId = localStorage.getItem('rememberedId');
