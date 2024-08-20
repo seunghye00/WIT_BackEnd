@@ -131,7 +131,25 @@
 							</li>
 						</ul>
 					</div>
-				</div>
+					<div style="padding: 60px;"></div>					
+					    <hr>					    
+					    <ul class="company">
+					        <!-- 전사 일정 -->
+					        <c:forEach var="cl" items="${clist}">
+					            <li>
+					                <input type="checkbox" id="calendar_${cl.calendar_seq}" name="calendar_${cl.calendar_seq}">
+					                <label for="calendar_${cl.calendar_seq}">${cl.calendar_name}</label>
+					            </li>
+					        </c:forEach>
+					        <!-- 임원 일정 -->
+					        <c:forEach var="el" items="${elist}">
+					            <li>
+					                <input type="checkbox" id="calendar_${el.calendar_seq}" name="calendar_${el.calendar_seq}">
+					                <label for="calendar_${el.calendar_seq}">${el.calendar_name}</label>
+					            </li>
+					        </c:forEach>
+					    </ul>
+					</div>
 				<div class="sideContents calendarBox">
 					<div id="calendar" class="calendar"></div>
 				</div>
@@ -139,67 +157,82 @@
 		</div>
 		<!-- 날짜 박스 눌렀을 시 모달 -->
 		<div id="calendarModal" class="modal">
-			<div class="modalContent">
-				<h1>
-					일정등록<span class="modalClose">&times;</span>
-				</h1>
-				<div class="calendarAdd">
-					<form id="eventForm" action="/events/save_event" method="post">
-						<ul>
-							<li><span>일정명</span>
-								<div>
-									<input type="text" name="title">
-								</div></li>
-							<li><span>일정기간</span>
-								<div>
-									<input type="date" class="startDate dateInput" id="startDate"
-										name="startDate"> <input type="time"
-										class="startDate dateInput" id="startTime" name="startTime">
-									~ <input type="date" class="endDate dateInput" id="endDate"
-										name="endDate"> <input type="time"
-										class="endDate dateInput" id="endTime" name="endTime">
-								</div></li>
-							<li><span>내 캘린더</span>
-								<div>
-									<select name="calendar_seq" id="choiCalendar">
-										<!-- role_code가 'R2'인 경우 -->
-										<c:if test="${employee.role_code eq 'R2'}">
-											<c:forEach items="${plist}" var="dto">
-												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
-											</c:forEach>
-											<c:forEach items="${dlist}" var="dto">
-												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
-											</c:forEach>
-										</c:if>
-										<!-- role_code가 'R2'가 아닌 경우 -->
-										<c:if test="${employee.role_code ne 'R2'}">
-											<c:forEach items="${plist}" var="dto">
-												<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
-											</c:forEach>
-										</c:if>
-									</select>
-								</div></li>
-							<li><span>장소</span>
-								<div>
-									<input type="text" class="eventLocation" name="location">
-								</div></li>
-							<li><span>내용</span>
-								<div>
-									<textarea id="calendarText" name="content"></textarea>
-								</div></li>
-							<li>
-								<div class="btns">
-									<button type="submit" id="addBtn" class="okBtn">완료</button>
-									<button type="button" class="cancelBtn">취소</button>
-								</div>
-							</li>
-						</ul>
-						<input type="hidden" name="start_at" id="start_at"> <input
-							type="hidden" name="end_at" id="end_at">
-					</form>
-				</div>
-			</div>
-		</div>
+    <div class="modalContent">
+        <h1>
+            일정등록<span class="modalClose">&times;</span>
+        </h1>
+        <div class="calendarAdd">
+            <form id="eventForm" action="/events/save_event" method="post">
+                <ul>
+                    <li><span>일정명</span>
+                        <div>
+                            <input type="text" name="title">
+                        </div>
+                    </li>
+                    <li><span>일정기간</span>
+                        <div>
+                            <input type="date" class="startDate dateInput" id="startDate" name="startDate">
+                            <input type="time" class="startDate dateInput" id="startTime" name="startTime"> ~ 
+                            <input type="date" class="endDate dateInput" id="endDate" name="endDate"> 
+                            <input type="time" class="endDate dateInput" id="endTime" name="endTime">
+                        </div>
+                    </li>
+                    <li><span>내 캘린더</span>
+                        <div>
+                            <select name="calendar_seq" id="choiCalendar">
+                                <!-- role_code가 'R2'인 경우 -->
+                                <c:if test="${employee.role_code eq 'R2'}">
+                                    <c:forEach items="${plist}" var="dto">
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                    </c:forEach>
+                                    <c:forEach items="${dlist}" var="dto">
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                    </c:forEach>
+                                </c:if>
+                                <!-- role_code가 'R1'인 경우 -->
+                                <c:if test="${employee.role_code eq 'R1'}">
+                                    <c:forEach items="${plist}" var="dto">
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                    </c:forEach>
+                                    <c:forEach items="${clist}" var="dto">
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                    </c:forEach>
+                                    <c:forEach items="${elist}" var="dto">
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                    </c:forEach>
+                                </c:if>
+                                <!-- role_code가 'R1, R2'가 아닌 경우 -->
+                                <c:if test="${employee.role_code ne 'R2' and employee.role_code ne 'R1'}">
+                                    <c:forEach items="${plist}" var="dto">
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                    </c:forEach>
+                                </c:if>
+                            </select>
+                        </div>
+                    </li>
+                    <li><span>장소</span>
+                        <div>
+                            <input type="text" class="eventLocation" name="location">
+                        </div>
+                    </li>
+                    <li><span>내용</span>
+                        <div>
+                            <textarea id="calendarText" name="content"></textarea>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="btns">
+                            <button type="submit" id="addBtn" class="okBtn">완료</button>
+                            <button type="button" class="cancelBtn">취소</button>
+                        </div>
+                    </li>
+                </ul>
+                <input type="hidden" name="start_at" id="start_at"> 
+                <input type="hidden" name="end_at" id="end_at">
+            </form>
+        </div>
+    </div>
+</div>
 		<!-- 개인 캘린더 event 클릭 시 모달 -->
 		<%@ include file="/WEB-INF/views/Calendar/Modal.jsp"%>
 	</div>

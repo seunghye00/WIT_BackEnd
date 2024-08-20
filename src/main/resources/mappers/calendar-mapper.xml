@@ -84,5 +84,14 @@
 	<select id="selectPersonalByCalendarSeq" resultType="int">
 		select count(*) from personal_calendar where calendar_seq = #{calendarSeq}
 	</select>
-
+	
+	<!-- 전사 일정 목록 출력 -->
+	<select id="comCalendarList" resultType="com.wit.dto.CompanyCalendarDTO">
+		select * from company_calendar
+	</select>
+	
+	<!-- 임원 일정 목록 출력 -->
+	<select id="exCalendarList" resultType="com.wit.dto.ExecutiveCalendarDTO">
+		select * from executive_calendar
+	</select>
 </mapper>

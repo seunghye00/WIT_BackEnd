@@ -8,8 +8,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.wit.dto.CompanyCalendarDTO;
 import com.wit.dto.DepartmentCalendarDTO;
 import com.wit.dto.EmployeeDTO;
+import com.wit.dto.ExecutiveCalendarDTO;
 import com.wit.dto.PersonalCalendarDTO;
 
 @Repository
@@ -64,5 +66,15 @@ public class CalendarDAO {
 	// 개인 캘린더 테이블에 해당 테이블이 존재하는지 확인
 	public int selectPersonalByCalendarSeq(int calendarSeq) {
 		return mybatis.selectOne("calendar.selectPersonalByCalendarSeq", calendarSeq);
+	}
+	
+	// 전사 일정 목록 출력
+	public List<CompanyCalendarDTO> comCalendarList(){
+		return mybatis.selectList("calendar.comCalendarList");
+	}
+	
+	// 임원 일정 목록 출력
+	public List<ExecutiveCalendarDTO> exCalendarList(){
+		return mybatis.selectList("calendar.exCalendarList");
 	}
 }
