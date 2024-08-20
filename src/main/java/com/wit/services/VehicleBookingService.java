@@ -65,4 +65,15 @@ public class VehicleBookingService {
 	public int getCountSearchVehicleList(String empNo, String keyword) {
 		return dao.getCountSearchVehicleList(empNo, keyword);
 	}
+
+	// 해당 항목의 상태를 변경
+	public void updateStatus(int seq, String status) {
+		System.out.println("서비스");
+		dao.updateStatus(seq, status);
+	}
+
+	// 해당 항목의 안내 사항을 변경하기 위한 메서드
+	public void updateGuideLines(int seq, String guideLines) {
+		dao.updateGuideLines(seq, guideLines);
+	}
 }

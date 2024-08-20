@@ -217,8 +217,8 @@ public class EApprovalController {
 
 	// 해당 문서를 반려 처리하기 위한 메서드
 	@Transactional
-	@RequestMapping("returnDocu")
-	public String returnDocu(int docuSeq, String comments) throws Exception {
+	@RequestMapping(value = { "admin/returnDocu", "returnDocu" })
+	public String returnDocu(int docuSeq, String comments, HttpServletRequest request) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -235,39 +235,20 @@ public class EApprovalController {
 				serv.updateDocuStatus(docuSeq, "반려");
 				break;
 			}
+		}
+		// 현재 요청된 URL을 확인 후 이동 경로 설정
+		String currentUrl = request.getRequestURI();
+		if (currentUrl.equals("/eApproval/admin/returnDocu")) {
+			return "redirect:/eApproval/admin/apprList?type=todo&cPage=1";
 		}
 		return "redirect:/eApproval/apprList?type=todo&cPage=1";
 	}
 
-	// 관리자가 해당 문서를 반려 처리하기 위한 메서드
-	@Transactional
-	@RequestMapping("admin/returnDocu")
-	public String adminReturnDocu(int docuSeq, String comments) throws Exception {
-
-		// 세션에서 접속자 정보를 꺼내 변수에 저장
-		String empNo = (String) session.getAttribute("loginID");
-		List<ApprLineDTO> list = serv.getApprLine(docuSeq);
-
-		// 해당 사원의 결재 순서에 따라 결재 라인 정보 업데이트
-		for (int i = 0; i < 3; i++) {
-			ApprLineDTO dto = list.get(i);
-			if (dto.getEmp_no().equals(empNo)) {
-				dto.setComments(comments);
-				serv.insertComments(dto);
-				serv.updateApprLineAll(docuSeq, i + 1);
-				// 문서 상태 업데이트
-				serv.updateDocuStatus(docuSeq, "반려");
-				break;
-			}
-		}
-		return "redirect:/eApproval/admin/apprList?type=todo&cPage=1";
-	}
-
 	// 관리자가 해당 문서를 결재 처리하기 위한 메서드
 	@Transactional
-	@RequestMapping("admin/apprDocu")
-	public String adminApprDocu(int docuSeq, String comments, @RequestParam(required = false) String applyLeaves)
-			throws Exception {
+	@RequestMapping(value = { "admin/apprDocu", "apprDocu" })
+	public String adminApprDocu(int docuSeq, String comments, @RequestParam(required = false) String applyLeaves,
+			HttpServletRequest request) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -302,60 +283,21 @@ public class EApprovalController {
 			break;
 		default:
 			// 추후 에러 페이지로 변경
-			return "redirect:/eApproval/home";
+			return "redirect:/";
 		}
-		return "redirect:/eApproval/admin/apprList?type=todo&cPage=1";
-	}
-
-	// 해당 문서를 결재 처리하기 위한 메서드
-	@Transactional
-	@RequestMapping("apprDocu")
-	public String apprDocu(int docuSeq, String comments, @RequestParam(required = false) String applyLeaves)
-			throws Exception {
-
-		// 세션에서 접속자 정보를 꺼내 변수에 저장
-		String empNo = (String) session.getAttribute("loginID");
-
-		// 해당 문서의 결재 라인과 해당 사원의 결재 순서 조회 후 변수에 저장
-		int apprOrder = 0;
-		for (ApprLineDTO dto : serv.getApprLine(docuSeq)) {
-			if (empNo.equals(dto.getEmp_no())) {
-				apprOrder = dto.getApproval_order();
-				break;
-			}
-		}
-		// 해당 사원의 결재 순서에 따라 결재 라인 정보 업데이트
-		switch (apprOrder) {
-		case 1:
-			serv.updateApprLine(docuSeq, 1, "결재 완료");
-			serv.updateApprLine(docuSeq, 2, "결재 대기");
-			serv.updateApprLine(docuSeq, 3, "결재 예정");
-			break;
-		case 2:
-			serv.updateApprLine(docuSeq, 2, "결재 완료");
-			serv.updateApprLine(docuSeq, 3, "결재 대기");
-			break;
-		case 3:
-			serv.updateApprLine(docuSeq, 3, "결재 완료");
-			serv.updateDocuStatus(docuSeq, "완료");
-			if (applyLeaves != null) {
-				float useNum = Float.parseFloat(applyLeaves);
-				aServ.updateAnnualLeave(docuSeq, useNum);
-				aServ.insertAnnualLeaveLog(docuSeq);
-			}
-			break;
-		default:
-			// 추후 에러 페이지로 변경
-			return "redirect:/eApproval/home";
+		// 현재 요청된 URL을 확인 후 이동 경로 설정
+		String currentUrl = request.getRequestURI();
+		if (currentUrl.equals("/eApproval/admin/apprDocu")) {
+			return "redirect:/eApproval/admin/apprList?type=todo&cPage=1";
 		}
 		return "redirect:/eApproval/apprList?type=todo&cPage=1";
 	}
 
 	// 해당 문서를 전결 처리하기 위한 메서드
 	@Transactional
-	@RequestMapping("apprAllDocu")
-	public String apprAllDocu(int docuSeq, String comments, @RequestParam(required = false) String applyLeaves)
-			throws Exception {
+	@RequestMapping(value = { "admin/apprAllDocu", "apprAllDocu" })
+	public String apprAllDocu(int docuSeq, String comments, @RequestParam(required = false) String applyLeaves,
+			HttpServletRequest request) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
@@ -377,38 +319,13 @@ public class EApprovalController {
 				}
 				break;
 			}
+		}
+		// 현재 요청된 URL을 확인 후 이동 경로 설정
+		String currentUrl = request.getRequestURI();
+		if (currentUrl.equals("/eApproval/admin/apprAllDocu")) {
+			return "redirect:/eApproval/admin/apprList?type=todo&cPage=1";
 		}
 		return "redirect:/eApproval/apprList?type=todo&cPage=1";
-	}
-
-	// 관리자가 해당 문서를 전결 처리하기 위한 메서드
-	@Transactional
-	@RequestMapping("admin/apprAllDocu")
-	public String adminApprAllDocu(int docuSeq, String comments, @RequestParam(required = false) String applyLeaves)
-			throws Exception {
-
-		// 세션에서 접속자 정보를 꺼내 변수에 저장
-		String empNo = (String) session.getAttribute("loginID");
-		List<ApprLineDTO> list = serv.getApprLine(docuSeq);
-
-		// 해당 사원의 결재 순서에 따라 결재 라인 정보 업데이트
-		for (int i = 0; i < 3; i++) {
-			ApprLineDTO dto = list.get(i);
-			if (dto.getEmp_no().equals(empNo)) {
-				dto.setComments(comments);
-				serv.insertComments(dto);
-				serv.updateApprLineAll(docuSeq, i + 1);
-				// 문서 상태 업데이트
-				serv.updateDocuStatus(docuSeq, "완료");
-				if (applyLeaves != null) {
-					float useNum = Float.parseFloat(applyLeaves);
-					aServ.updateAnnualLeave(docuSeq, useNum);
-					aServ.insertAnnualLeaveLog(docuSeq);
-				}
-				break;
-			}
-		}
-		return "redirect:/eApproval/admin/apprList?type=todo&cPage=1";
 	}
 
 	// 임시 저장 페이지에서 다시 임시 저장을 하거나 결재 요청을 했을 시 처리하기 위한 메서드
@@ -536,7 +453,8 @@ public class EApprovalController {
 
 	// 브라우저에서 선택한 type에 따라 개인 문서함 페이지로 이동 시 해당 페이지에서 초기에 노출할 데이터를 담아서 전달하는 메서드
 	@RequestMapping("privateList")
-	public String privateList(String type, String docuCode, @RequestParam(required = false) String keyword, int cPage, Model model) throws Exception {
+	public String privateList(String type, String docuCode, @RequestParam(required = false) String keyword, int cPage,
+			Model model) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");

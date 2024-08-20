@@ -7,6 +7,7 @@ public class MeetingRoomDTO {
 	private String location;
 	private int capacity;
 	private String status;
+	private String guidelines;
 	public int getRoom_seq() {
 		return room_seq;
 	}
@@ -37,13 +38,20 @@ public class MeetingRoomDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public MeetingRoomDTO(int room_seq, String name, String location, int capacity, String status) {
+	public String getGuidelines() {
+		return guidelines;
+	}
+	public void setGuidelines(String guidelines) {
+		this.guidelines = guidelines;
+	}
+	public MeetingRoomDTO(int room_seq, String name, String location, int capacity, String status, String guidelines) {
 		super();
 		this.room_seq = room_seq;
 		this.name = name;
 		this.location = location;
 		this.capacity = capacity;
 		this.status = status;
+		this.guidelines = guidelines;
 	}
 	public MeetingRoomDTO(int room_seq, String name) {
 		super();

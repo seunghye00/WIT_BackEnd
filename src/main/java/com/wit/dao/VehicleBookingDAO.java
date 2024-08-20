@@ -80,4 +80,20 @@ public class VehicleBookingDAO {
 		params.put("keyword", keyword);
 		return mybatis.selectOne("vehicleBooking.getCountSearchBookingList", params);
 	}
+
+	// 해당 항목의 상태 변경
+	public void updateStatus(int seq, String status) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("seq", seq);
+		params.put("status", status);
+		System.out.println("dao : " + seq + " : " + status);
+		mybatis.update("vehicleBooking.updateStatus", params);
+	}
+
+	public void updateGuideLines(int seq, String guideLines) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("seq", seq);
+		params.put("guideLines", guideLines);
+		mybatis.update("vehicleBooking.updateGuideLines", params);
+	}
 }

@@ -125,7 +125,7 @@ $('.searchBtn').on('click', function() {
 
 function goToSearchList(keyword){
 
-	// 현재 페이지의 URL 중 pathname 값만 변수에 저장
+	// 현재 페이지의 URL 중 pathname 값과 search 값을 변수에 저장
 	const pathName = window.location.pathname;
 	const search = window.location.search; 
 
@@ -148,3 +148,41 @@ function goToSearchList(keyword){
 		return;
 	}
 }
+
+// 안내 사항 수정 버튼 클릭 시 
+$('#updateGuideLines').on('click', function(){
+
+	// textarea의 값을 변수에 저장
+	const guideLines = $('#guideLine').val(); 
+
+    if (guideLines === undefined) {
+        console.error('GuideLines is undefined');
+        return;
+    }
+
+    const trimmedGuideLines = guideLines.trim(); // 앞뒤 공백을 제거합니다
+
+    // 안내 사항이 기본값이거나 비어있으면 경고
+    if (trimmedGuideLines === '등록된 안내 사항이 없습니다.' || trimmedGuideLines === '') {
+        alert('안내 사항을 먼저 입력해주세요');
+        guideLineElement.focus();
+        return;
+    }
+	
+	if(confirm('정말로 수정하시겠습니까 ?')){
+		// 현재 페이지의 URL 중 search 값을 변수에 저장
+		const search = window.location.search; 
+
+		// 쿼리 문자열을 URLSearchParams 객체로 변환
+		const params = new URLSearchParams(search);
+
+		// type & seq의 값을 가져오기
+		const type = params.get("type");
+		const seq = params.get("seq");
+		
+		// guideLines를 URL 인코딩
+        const encodedGuideLines = encodeURIComponent(trimmedGuideLines);
+	
+		location.href = '/reservation/admin/updateGuideLines?target=' + type + '&seq=' + seq + '&guideLines=' + encodedGuideLines;	
+	}
+});

@@ -23,7 +23,25 @@
 			<div class="contents">
 				 <%@ include file="/WEB-INF/views/Reservation/commons/sideToggle.jsp"%>
                 <div class="sideContents reservation meetingRooms">
-                    <div class="mainTitle">회의실 [ ${meetingRoomInfo.name} ] <span>최대 수용 인원 : ${meetingRoomInfo.capacity}명</span></div>
+                    <div class="mainTitle">회의실 [ ${meetingRoomInfo.name} ] 
+                    	<span class="infoIcon">
+                    	    <label class="titleIcon" for="roomInfo"> 
+                    			<i class='bx bx-info-circle'></i>
+							</label>
+							<input type="checkbox" id="roomInfo" hidden> 
+							<span class="infoBox">
+								<c:choose>
+									<c:when test="${empty meetingRoomInfo.guidelines}">
+										등록된 안내 사항이 없습니다.
+									</c:when>
+									<c:otherwise>
+										<textarea>${meetingRoomInfo.guidelines}</textarea>
+									</c:otherwise>
+								</c:choose>
+							</span>
+                    	</span>
+                    	<span class="capacity">최대 수용 인원 : ${meetingRoomInfo.capacity}명</span>        	
+                    </div>
                     <input type="hidden" value="${meetingRoomInfo.room_seq}" id="roomSeq">
                     <div class="reservBox">
                         <div class="calendar" id="calendar"></div>
