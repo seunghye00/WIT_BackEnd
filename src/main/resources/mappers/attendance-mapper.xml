@@ -124,8 +124,10 @@
 	<!-- 월간 레코드 수 조회 -->
 	<select id="monthlyRecordCount" resultType="int">
 		SELECT COUNT(*)
-		FROM Attendance
-		WHERE emp_no = #{empNo} AND TO_CHAR(work_date, 'YYYY-MM') = #{month}
+		FROM
+		Attendance
+		WHERE emp_no = #{empNo} AND TO_CHAR(work_date, 'YYYY-MM') =
+		#{month}
 	</select>
 
 	<!-- 월간 근무현황 조회 (페이징 적용) -->
@@ -169,6 +171,53 @@
 		FROM Employee e
 		JOIN Role r ON e.role_code = r.role_code
 		WHERE e.emp_no = #{emp_no}
+	</select>
+
+	<!-- 부서별 근태현황 (관리자) -->
+	<select id="deptAtd" parameterType="map" resultType="map">
+		SELECT
+		e.name AS empname,
+		r.role_title AS roletitle,
+		MAX(CASE WHEN TO_CHAR(a.work_date, 'D') = '2' THEN a.start_time || ' - ' ||
+		a.end_time ELSE '' END) AS monday,
+		MAX(CASE WHEN TO_CHAR(a.work_date, 'D') = '3' THEN a.start_time || ' - ' ||
+		a.end_time ELSE '' END) AS tuesday,
+		MAX(CASE WHEN TO_CHAR(a.work_date, 'D') = '4' THEN a.start_time || ' - ' ||
+		a.end_time ELSE '' END) AS wednesday,
+		MAX(CASE WHEN TO_CHAR(a.work_date, 'D') = '5' THEN a.start_time || ' - ' ||
+		a.end_time ELSE '' END) AS thursday,
+		MAX(CASE WHEN TO_CHAR(a.work_date, 'D') = '6' THEN a.start_time || ' - ' ||
+		a.end_time ELSE '' END) AS friday,
+		MAX(CASE WHEN TO_CHAR(a.work_date, 'D') = '7' THEN a.start_time || ' - ' ||
+		a.end_time ELSE '' END) AS saturday
+		FROM
+		employee e
+		JOIN dept d ON e.dept_code = d.dept_code
+		JOIN role r ON e.role_code = r.role_code
+		LEFT JOIN attendance a ON e.emp_no = a.emp_no AND a.work_date BETWEEN
+		#{startDate} AND #{endDate}
+		WHERE
+		d.dept_title = #{deptTitle}
+		GROUP BY
+		e.name, r.role_title
+		ORDER BY
+		CASE
+		WHEN r.role_title = '사장' THEN 1
+		WHEN r.role_title = '부장' THEN 2
+		WHEN r.role_title = '차장' THEN 3
+		WHEN r.role_title = '과장' THEN 4
+		WHEN r.role_title = '대리' THEN 5
+		WHEN r.role_title = '사원' THEN 6
+		WHEN r.role_title = '인턴' THEN 7
+		ELSE 8
+		END ASC,
+		e.name ASC
+	</select>
+
+	<!-- 부서 조회 -->
+	<select id="AllDepts" resultType="com.wit.dto.DeptDTO">
+		SELECT dept_code, dept_title
+		FROM dept
 	</select>
 
 </mapper>

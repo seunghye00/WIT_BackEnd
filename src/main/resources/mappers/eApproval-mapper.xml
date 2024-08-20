@@ -16,8 +16,7 @@
 		where status = #{status} and emp_no = #{empNo}
 		order by write_date desc
 		) d
-		join
-		document_list dl ON d.docu_code = dl.docu_code
+		join document_list dl ON d.docu_code = dl.docu_code
 		where ROWNUM &lt;= 5
 	</select>
 
@@ -98,229 +97,6 @@
 		select * from leave_requests where document_seq = #{docuSeq}
 	</select>
 
-	<!-- 해당 사원의 결재 대기 or 결재 예정 문서 목록 총 갯수를 조회하는 쿼리문 -->
-	<select id="getCountListByType" resultType="int">
-		select
-			count(*)
-		from
-			documents d
-		join
-			document_list dl on d.docu_code = dl.docu_code
-		join
-			approvals_line a on d.document_seq = a.document_seq
-		where
-		<if test="docuCode != null">
-			d.docu_code = #{docuCode} and
-		</if>
-			d.status = '진행중' and
-			approval_order = 3 and
-			d.document_seq in (select document_seq from approvals_line where emp_no = #{empNo}
-			and status = #{status})
-	</select>
-
-	<!-- 해당 사원의 결재 대기 or 결재 예정 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectListByType" resultType="com.wit.dto.DocuInfoListDTO">
-		select * from (
-			select
-				d.document_seq document_seq, write_date, name, emer_yn, title, d.emp_no emp_no,
-				a.emp_no last_appr,
-				row_number() over (order by write_date desc, emer_yn desc) as rn 
-			from
-				documents d
-			join
-				document_list dl on d.docu_code = dl.docu_code
-			join
-				approvals_line a on d.document_seq = a.document_seq
-			where
-			<if test="docuCode != null">
-				d.docu_code = #{docuCode} and
-			</if>
-				d.status = '진행중' and
-				approval_order = 3 and
-				d.document_seq in (select document_seq from approvals_line where emp_no = #{empNo}
-				and status = #{status})
-		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
-	</select>
-
-	<!-- 해당 사원의 기안 문서 목록 총 갯수를 조회하는 쿼리문 -->
-	<select id="getCountWriteList" resultType="int">
-		select
-			count(*)
-		from
-			documents d
-		join
-			document_list dl on d.docu_code = dl.docu_code
-		join
-			approvals_line a on d.document_seq = a.document_seq
-		where
-			a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
-		<if test="docuCode != null">
-			and d.docu_code = #{docuCode}
-		</if>
-	</select>
-
-	<!-- 해당 사원의 기안 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectWriteList" resultType="com.wit.dto.DocuInfoListDTO">
-		select * from (
-			select
-				d.document_seq document_seq, write_date, name, emer_yn, title, d.status status,
-				a.emp_no last_appr, done_date,
-				row_number() over (order by write_date desc) as rn
-			from
-				documents d
-			join
-				document_list dl on d.docu_code = dl.docu_code
-			join
-				approvals_line a on d.document_seq = a.document_seq
-			where
-				a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
-			<if test="docuCode != null">
-				and d.docu_code = #{docuCode}
-			</if>
-			) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
-	</select>
-
-	<!-- 해당 사원의 임시 저장 문서 목록 총 갯수를 조회하는 쿼리문 -->
-	<select id="getCountSaveList" resultType="int">
-		select
-			count(*)
-		from
-			documents d
-		join document_list dl on d.docu_code = dl.docu_code
-		where
-			status = '임시 저장' and emp_no = #{empNo}
-		<if test="docuCode != null">
-			and d.docu_code = #{docuCode}
-		</if>
-	</select>
-	
-	<!-- 해당 사원의 임시 저장 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectSaveList" resultType="com.wit.dto.DocuInfoListDTO">
-		select * from (
-			select
-				document_seq, write_date, name, emer_yn, title,
-				row_number() over (order by write_date desc) as rn
-			from
-				documents d
-			join document_list dl on d.docu_code = dl.docu_code
-			where
-				status = '임시 저장' and emp_no = #{empNo}
-			<if test="docuCode != null">
-				and d.docu_code = #{docuCode}
-			</if>
-		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
-	</select>
-
-	<!-- 해당 사원이 결재한 문서 목록 총 갯수를 조회하는 쿼리문 -->
-	<select id="getCountApprovedList" resultType="int">
-		select
-			count(*)
-		from
-			documents d
-		join
-			document_list dl on d.docu_code = dl.docu_code
-		join
-			approvals_line a on d.document_seq = a.document_seq
-		where a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '완료'
-		<if test="docuCode != null">
-			and d.docu_code = #{docuCode}
-		</if>
-	</select>
-	
-	<!-- 해당 사원이 결재한 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectApprovedList" resultType="com.wit.dto.DocuInfoListDTO">
-		select * from (
-			select
-				d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
-				d.status status, done_date,
-				row_number() over (order by write_date desc) as rn
-			from
-				documents d
-			join
-				document_list dl on d.docu_code = dl.docu_code
-			join
-				approvals_line a on d.document_seq = a.document_seq
-			where a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '완료'
-			<if test="docuCode != null">
-				and d.docu_code = #{docuCode}
-			</if>
-		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
-	</select>
-
-	<!-- 해당 사원이 반려한 문서 목록 총 갯수를 조회하는 쿼리문 -->
-	<select id="getCountReturnList" resultType="int">
-		select
-			count(*)
-		from
-			documents d
-		join
-			document_list dl on d.docu_code = dl.docu_code
-		join
-			approvals_line a on d.document_seq = a.document_seq
-		where
-			a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '반려'
-		<if test="docuCode != null">
-			and d.docu_code = #{docuCode}
-		</if>
-	</select>
-
-	<!-- 해당 사원이 반려한 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectReturnList" resultType="com.wit.dto.DocuInfoListDTO">
-		select * from (
-			select
-				d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
-				done_date,
-				row_number() over (order by write_date desc) as rn
-			from
-				documents d
-			join
-				document_list dl on d.docu_code = dl.docu_code
-			join
-				approvals_line a on d.document_seq = a.document_seq
-			where
-				a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '반려'
-			<if test="docuCode != null">
-				and d.docu_code = #{docuCode}
-			</if>
-		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
-	</select>
-	
-	<!-- 해당 사원이 참조자인 문서 목록 총 갯수를 조회하는 쿼리문 -->
-	<select id="getCountViewList" resultType="int">
-		select
-			count(*)
-		from
-			documents d
-		join
-			document_list dl on d.docu_code = dl.docu_code
-		join
-			reference_line r on d.document_seq = r.document_seq
-		where r.emp_no = #{empNo}
-		<if test="docuCode != null">
-			and d.docu_code = #{docuCode}
-		</if>
-	</select>
-
-	<!-- 해당 사원이 참조자인 문서 목록을 조회하는 쿼리문 -->
-	<select id="selectViewList" resultType="com.wit.dto.DocuInfoListDTO">
-		select * from (
-			select
-				d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
-				d.status status, done_date, r.read_yn,
-				row_number() over (order by read_yn, emer_yn desc, write_date desc) as rn
-			from
-				documents d
-			join
-				document_list dl on d.docu_code = dl.docu_code
-			join
-				reference_line r on d.document_seq = r.document_seq
-			where r.emp_no = #{empNo}
-			<if test="docuCode != null">
-				and d.docu_code = #{docuCode}
-			</if>
-		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
-	</select>
-	
 	<!-- 해당 문서를 삭제하기 위한 쿼리문 -->
 	<delete id="deleteByDocuSeq">
 		delete from documents where document_seq = #{docuSeq}
@@ -388,7 +164,9 @@
 			approvals_line a on d.document_seq = a.document_seq
 		where
 			a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if> 
 		<if test="docuCode != null">
 			and d.docu_code = #{docuCode}
 		</if>
@@ -405,9 +183,11 @@
 		join
 			approvals_line a on d.document_seq = a.document_seq
 		where
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				upper(title) like upper('%'||#{keyword}||'%') and
+			</if> 
 			<if test="docuCode != null">
-				and d.docu_code = #{docuCode}
+				d.docu_code = #{docuCode} and
 			</if>
 			d.status = '진행중' and
 			approval_order = 3 and
@@ -429,9 +209,11 @@
 			join
 				approvals_line a on d.document_seq = a.document_seq
 			where
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				upper(title) like upper('%'||#{keyword}||'%') and
+			</if>  
 			<if test="docuCode != null">
-				and d.docu_code = #{docuCode}
+				d.docu_code = #{docuCode} and
 			</if>
 				d.status = '진행중' and
 				approval_order = 3 and
@@ -452,7 +234,9 @@
 			approvals_line a on d.document_seq = a.document_seq
 		where
 			a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if>  
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -473,7 +257,9 @@
 				approvals_line a on d.document_seq = a.document_seq
 			where
 				a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
-				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
 				<if test="docuCode != null">
 					and d.docu_code = #{docuCode}
 				</if>
@@ -489,7 +275,9 @@
 		join document_list dl on d.docu_code = dl.docu_code
 		where
 			status = '임시 저장' and emp_no = #{empNo}
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if>  
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -506,7 +294,9 @@
 			join document_list dl on d.docu_code = dl.docu_code
 			where
 				status = '임시 저장' and emp_no = #{empNo}
-				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
 				<if test="docuCode != null">
 					and d.docu_code = #{docuCode}
 				</if>
@@ -524,7 +314,9 @@
 		join
 			approvals_line a on d.document_seq = a.document_seq
 		where a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '완료'
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if>  
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -544,7 +336,9 @@
 			join
 				approvals_line a on d.document_seq = a.document_seq
 			where a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '완료'
-				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
 				<if test="docuCode != null">
 					and d.docu_code = #{docuCode}
 				</if>
@@ -563,7 +357,9 @@
 			approvals_line a on d.document_seq = a.document_seq
 		where
 			a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '반려'
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if> 
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -584,7 +380,9 @@
 				approvals_line a on d.document_seq = a.document_seq
 			where
 				a.emp_no = #{empNo} and a.status = '결재 완료' and d.status = '반려'
-				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>	
 				<if test="docuCode != null">
 					and d.docu_code = #{docuCode}
 				</if>
@@ -601,7 +399,9 @@
 			document_list dl on d.docu_code = dl.docu_code
 		join
 			reference_line r on d.document_seq = r.document_seq
-			and upper(title) like upper('%'||#{keyword}||'%') 
+			<if test="keyword != null">
+				and upper(title) like upper('%'||#{keyword}||'%') 
+			</if> 
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
@@ -611,7 +411,7 @@
 	<select id="searchViewList" resultType="com.wit.dto.DocuInfoListDTO">
 		select * from (
 			select
-				d.document_seq document_seq, d.emp_no emp_no, write_date, name, emer_yn, title,
+				d.document_seq document_seq, d.emp_no emp_no, write_date, dl.name, emer_yn, title,
 				d.status status, done_date,
 				row_number() over (order by emer_yn desc, write_date desc) as rn
 			from
@@ -621,7 +421,9 @@
 			join
 				reference_line r on d.document_seq = r.document_seq
 			where r.emp_no = #{empNo}
-				and upper(title) like upper('%'||#{keyword}||'%') 
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
 				<if test="docuCode != null">
 					and d.docu_code = #{docuCode}
 				</if>
@@ -632,4 +434,70 @@
 	<update id="updateReadYN">
 		update reference_line set read_yn = #{readYN}, read_date = sysdate where document_seq = #{docuSeq} and emp_no = #{empNo}
 	</update>
+	
+	<!-- 관리자가 결재 대기 or 결재 예정인 문서를 5개까지만 조회하는 쿼리문 -->
+	<select id="selectApprList" resultType="com.wit.dto.DocuInfoListDTO">
+		select * from (
+			select
+				d.document_seq, write_date, dl.name, emer_yn, title, e.name writer
+			from
+				documents d
+			join
+				document_list dl on d.docu_code = dl.docu_code
+			join
+				employee e on d.emp_no = e.emp_no
+			where
+				d.status = '진행중' and
+				d.document_seq in (select document_seq from approvals_line where emp_no = #{empNo} and status = #{status})
+            order by emer_yn desc, write_date desc
+		)
+		where rownum &lt;= 5
+	</select>
+	
+	<select id="searchDocuListByDocuCode" resultType="com.wit.dto.DocuInfoListDTO">
+		select * from (
+			select
+				d.document_seq, d.emp_no , write_date, dl.name, emer_yn, title,
+				d.status status, done_date,
+				row_number() over (order by write_date desc) as rn
+			from
+				documents d
+			join
+				document_list dl on d.docu_code = dl.docu_code
+			where 
+				d.docu_code = #{docuCode}
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
+				<if test="status != null">
+					and d.status = #{status}
+				</if>
+		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
+	
+	<select id="getCountSearchDocuList" resultType="int">
+		select count(*) from (
+			select
+				d.document_seq, d.emp_no , write_date, dl.name, emer_yn, title,
+				d.status status, done_date,
+				row_number() over (order by write_date desc) as rn
+			from
+				documents d
+			join
+				document_list dl on d.docu_code = dl.docu_code
+			where 
+				d.docu_code = #{docuCode}
+				<if test="keyword != null">
+					and upper(title) like upper('%'||#{keyword}||'%') 
+				</if>  
+				<if test="status != null">
+					and d.status = #{status}
+				</if>
+		)
+	</select>
+	
+	<!-- 해당 문서의 작성자 사번을 조회하기 위한 쿼리문 -->
+	<select id="getEmpNoByDocuSeq" resultType="String">
+		select emp_no from documents where document_seq = #{docuSeq}
+	</select>
 </mapper>

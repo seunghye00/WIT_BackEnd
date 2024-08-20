@@ -15,54 +15,135 @@
 	<insert id="insertOrUpdateAnnualLeave">
 		MERGE INTO annual_leave al
 		USING dual
-		ON (al.emp_no = #{empNo})
+		ON (al.emp_no =
+		#{empNo})
 		WHEN NOT MATCHED THEN
-		INSERT (emp_no, annual_leave_num, use_num)
-		VALUES (#{empNo}, 15, 0)
+		INSERT (emp_no, annual_leave_num,
+		use_num, remaining_leaves)
+		VALUES (#{empNo}, 15, 0, 15)
 	</insert>
 
-	<!-- 연차 데이터 업데이트 (사용량 증가) -->
-	<update id="updateAnnualLeaveUsage">
-		UPDATE annual_leave
-		SET use_num = #{useNum}
-		WHERE emp_no = #{empNo}
-	</update>
-
-	<!-- 상태가 완료된 직원의 휴가 신청 내역을 조회 -->
-	<select id="selectApprovedLeave"
-		resultType="com.wit.dto.LeaveRequestDTO">
-		SELECT lr.*
+	<!-- 연간 휴가 내역의 총 레코드 수 조회 -->
+	<select id="annualLeaveRecordCount" resultType="int">
+		SELECT COUNT(*)
 		FROM leave_requests lr
-		JOIN documents d ON lr.document_seq = d.document_seq
+		JOIN documents d ON lr.document_seq =
+		d.document_seq
 		WHERE d.emp_no = #{empNo}
 		AND d.status = '완료'
+		AND
+		TO_CHAR(lr.start_date, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+	</select>
+
+	<!-- 연간 휴가 내역을 페이징하여 조회 -->
+	<select id="selectAnnualLeaveRequests"
+		resultType="com.wit.dto.LeaveRequestDTO">
+		SELECT *
+		FROM (
+		SELECT lr.*, ROWNUM rnum
+		FROM leave_requests
+		lr
+		JOIN documents d ON lr.document_seq = d.document_seq
+		WHERE d.emp_no =
+		#{empNo}
+		AND d.status = '완료'
+		AND TO_CHAR(lr.start_date, 'YYYY') =
+		TO_CHAR(SYSDATE, 'YYYY')
+		ORDER BY lr.start_date DESC
+		)
+		WHERE rnum BETWEEN
+		#{start} AND #{end}
 	</select>
 
 	<!-- 직원 정보 조회 -->
 	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
-		SELECT e.emp_no, e.name, r.role_title as role_code
+		SELECT e.emp_no, e.name,
+		r.role_title as role_code
 		FROM employee e
-		JOIN role r ON e.role_code = r.role_code
+		JOIN role r ON e.role_code =
+		r.role_code
 		WHERE e.emp_no = #{empNo}
 	</select>
-	
+
 	<!-- 남은 연차 갯수 조회 -->
 	<select id="getRemainingLeaves" resultType="int">
-		select remaining_leaves from annual_leave where emp_no = #{empNo}
+		select
+		remaining_leaves from annual_leave where emp_no = #{empNo}
 	</select>
-	
+
 	<!-- 연차 정보 업데이트 -->
 	<update id="updateByAnnualLeave">
-		update annual_leave set use_num = use_num + #{useNum}, remaining_leaves = remaining_leaves - #{useNum} where emp_no = #{empNo}
+		update annual_leave set use_num = use_num +
+		#{useNum}, remaining_leaves = remaining_leaves - #{useNum} where
+		emp_no = #{empNo}
 	</update>
-	
+
 	<!-- 연차 사용 정보 기록 -->
 	<insert id="insertAnnualLeaveLog">
-		insert into annual_leave_log values (log_seq.nextval, #{empNo}, #{docuSeq})
+		insert into annual_leave_log values (log_seq.nextval,
+		#{empNo}, #{docuSeq})
 	</insert>
 
 	<!-- document_seq로 emp_no를 조회하는 쿼리 -->
 	<select id="selectEmpNoByDocumentSeq" resultType="string">
-		SELECT emp_no FROM documents WHERE document_seq = #{documentSeq}
+		SELECT emp_no
+		FROM documents WHERE document_seq = #{documentSeq}
 	</select>
+
+	<!-- 부서별 휴가현황(관리자) -->
+	<select id="selectAnnualLeaveRequestsByDept" resultType="map">
+		SELECT *
+		FROM (
+		SELECT
+		lr.*,
+		e.name,
+		r.role_title as role_code,
+		dpt.dept_title as dept_name,
+		ROWNUM rnum
+		FROM
+		leave_requests lr
+		JOIN documents d ON lr.document_seq = d.document_seq
+		JOIN employee e ON d.emp_no = e.emp_no
+		JOIN role r ON e.role_code = r.role_code
+		JOIN dept dpt ON e.dept_code = dpt.dept_code
+		WHERE
+		dpt.dept_title = #{deptTitle}
+		AND d.status = '완료'
+		<if test="searchTxt != null and searchTxt != ''">
+			AND e.name LIKE '%' || #{searchTxt} || '%'
+		</if>
+		ORDER BY
+		lr.start_date DESC
+		)
+		WHERE rnum BETWEEN #{start} AND #{end}
+	</select>
+
+	<!-- 검색된 연간 휴가 내역의 총 레코드 수 조회 -->
+	<select id="annualLeaveRecordCountByDept" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		leave_requests lr
+		JOIN
+		documents d ON lr.document_seq
+		= d.document_seq
+		JOIN
+		employee e ON d.emp_no = e.emp_no
+		JOIN
+		dept dpt ON
+		e.dept_code = dpt.dept_code
+		WHERE
+		dpt.dept_title = #{deptTitle}
+		AND
+		d.status = '완료'
+		<if test="searchTxt != null and searchTxt != ''">
+			AND e.name LIKE '%' || #{searchTxt} || '%'
+		</if>
+	</select>
+
+	<!-- 부서 리스트 조회 -->
+	<select id="selectAllDepartments"
+		resultType="com.wit.dto.DeptDTO">
+		SELECT dept_code, dept_title FROM dept
+	</select>
+
 </mapper>

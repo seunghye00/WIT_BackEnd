@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wit.commons.AttendanceConfig;
 import com.wit.dto.AttendanceDTO;
+import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.services.AttendanceService;
+
+import java.sql.Date;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -68,6 +72,8 @@ public class AttendanceController {
 	@RequestMapping("/attendance_month")
 	public String attendanceMonth(Model model, @RequestParam(defaultValue = "1") int cpage) {
 		String empNo = (String) session.getAttribute("loginID");
+		
+		EmployeeDTO employee = service.employeeInfo(empNo);
 
 		// 현재 월을 가져옴
 		String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
@@ -106,6 +112,7 @@ public class AttendanceController {
 		model.addAttribute("endNavi", endNavi);
 		model.addAttribute("needPrev", needPrev);
 		model.addAttribute("needNext", needNext);
+		model.addAttribute("employee", employee);
 
 		// 월간 근무 현황 조회 (페이징 적용)
 		List<Map<String, Object>> monthlyWorkStatus = service.monthlyWorkStatus(empNo, month, cpage,
@@ -135,5 +142,59 @@ public class AttendanceController {
 
 		return response;
 	}
-	
+
+	// 부서별 근태현황 (관리자)
+	@RequestMapping("/attendanceDept")
+	public String attendanceDept(@RequestParam(value = "deptTitle", defaultValue = "인사부") String deptTitle,
+			@RequestParam(value = "week", required = false) String week, Model model) {
+		String empNo = (String) session.getAttribute("loginID");
+
+		// 부서 리스트 가져오기
+		List<DeptDTO> departments = service.getDepartments();
+		model.addAttribute("departments", departments);
+
+		EmployeeDTO employee = service.employeeInfo(empNo);
+
+		// 날짜 계산
+		LocalDate startDate;
+		LocalDate endDate;
+
+		if (week != null) {
+			startDate = LocalDate.parse(week, DateTimeFormatter.ISO_DATE);
+		} else {
+			startDate = LocalDate.now().with(DayOfWeek.MONDAY);
+		}
+
+		endDate = startDate.with(DayOfWeek.SATURDAY);
+
+		// 이전 주와 다음 주의 날짜 계산
+		LocalDate previousWeek = startDate.minusWeeks(1);
+		LocalDate nextWeek = startDate.plusWeeks(1);
+
+		// 디버깅용 출력
+		System.out.println("deptTitle: " + deptTitle);
+		System.out.println("startDate: " + startDate);
+		System.out.println("endDate: " + endDate);
+
+		List<Map<String, Object>> attendanceData = service.deptAtd(deptTitle, Date.valueOf(startDate),
+				Date.valueOf(endDate));
+
+		// attendanceData 출력
+		System.out.println("attendanceData size: " + attendanceData.size());
+		for (Map<String, Object> attendanceItem : attendanceData) {
+			System.out.println("Attendance Item: " + attendanceItem);
+		}
+
+		// 모델에 데이터 추가
+		model.addAttribute("attendanceData", attendanceData);
+		model.addAttribute("deptTitle", deptTitle);
+		model.addAttribute("startDate", startDate);
+		model.addAttribute("endDate", endDate);
+		model.addAttribute("previousWeek", previousWeek);
+		model.addAttribute("nextWeek", nextWeek);
+		model.addAttribute("employee", employee);
+
+		return "Admin/Attendance/attendanceDept";
+	}
+
 }

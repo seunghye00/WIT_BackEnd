@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>참조 문서함</title>
+<title>결재 문서함</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <script
@@ -27,21 +27,17 @@
 			<div class="contents">
 				<div class="sideAbout">
 					<div class="sideTxt">
-						<a href="/eApproval/home">
+						<a href="/eApproval/admin/home">
 							<h2 class="sideTit">전자 결재</h2>
 						</a>
 					</div>
-					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
-						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp"%>
-					</div>
-					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
+					<%@ include file="/WEB-INF/views/Admin/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApproval">
-					<div class="mainTitle">참조 문서함</div>
+					<div class="mainTitle">결재 문서함</div>
 					<div class="docuList docuBox">
-						<%@ include file="/WEB-INF/views/eApproval/commons/toolbar.jsp"%>
-						<div class="listBox viewList">
+						<%@ include file="/WEB-INF/views/Admin/eApproval/commons/toolbar.jsp"%>
+						<div class="listBox approvedList">
 							<div class="rows listHeader">
 								<div class="cols">
 									<span>기안일</span>
@@ -68,7 +64,14 @@
 							<c:choose>
 								<c:when test="${empty docuList}">
 									<div class="rows emptyDocuList">
-										<p>진행중인 문서가 없습니다.</p>
+										<c:choose>
+											<c:when test="${keyword == null}">
+												<p>결재한 문서가 없습니다.</p>
+											</c:when>
+											<c:otherwise>
+												<p>검색한 결과가 없습니다.</p>
+											</c:otherwise>
+										</c:choose>
 									</div>
 								</c:when>
 								<c:otherwise>
@@ -98,7 +101,17 @@
 												<span><fmt:formatDate value="${i.done_date}" pattern="yyyy-MM-dd" /></span>
 											</div>
 											<div class="cols">
-												<span>${i.status}</span>
+												<c:choose>
+													<c:when test="${i.status eq '진행중'}">
+														<span class="ing">${i.status}</span>
+													</c:when>
+													<c:when test="${i.status eq '완료'}">
+														<span class="done">${i.status}</span>
+													</c:when>
+													<c:otherwise>
+														<span class="return">${i.status}</span>
+													</c:otherwise>
+												</c:choose>
 											</div>
 										</div>
 										</a>

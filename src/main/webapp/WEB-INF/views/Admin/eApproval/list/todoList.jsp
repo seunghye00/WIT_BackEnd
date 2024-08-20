@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>임시 저장 문서함</title>
+<title>결재 대기 문서함</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <script
@@ -27,24 +27,20 @@
 			<div class="contents">
 				<div class="sideAbout">
 					<div class="sideTxt">
-						<a href="/eApproval/home">
+						<a href="/eApproval/admin/home">
 							<h2 class="sideTit">전자 결재</h2>
 						</a>
 					</div>
-					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
-						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp"%>
-					</div>
-					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
+					<%@ include file="/WEB-INF/views/Admin/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApproval">
-					<div class="mainTitle">임시 저장 문서함</div>
+					<div class="mainTitle">결재 대기 문서함</div>
 					<div class="docuList docuBox">
-						<%@ include file="/WEB-INF/views/eApproval/commons/toolbar.jsp"%>
-						<div class="listBox saveList">
+						<%@ include file="/WEB-INF/views/Admin/eApproval/commons/toolbar.jsp"%>
+						<div class="listBox todoList">
 							<div class="rows listHeader">
 								<div class="cols">
-									<span>작성일</span>
+									<span>기안일</span>
 								</div>
 								<div class="cols">
 									<span>문서 양식</span>
@@ -55,32 +51,52 @@
 								<div class="cols">
 									<span>제목</span>
 								</div>
+								<div class="cols">
+									<span>기안자</span>
+								</div>
+								<div class="cols">
+									<span>최종 결재자</span>
+								</div>
 							</div>
 							<c:choose>
 								<c:when test="${empty docuList}">
 									<div class="rows emptyDocuList">
-										<p>진행중인 문서가 없습니다.</p>
+										<c:choose>
+											<c:when test="${keyword == null}">
+												<p>결재 대기 중인 문서가 없습니다.</p>
+											</c:when>
+											<c:otherwise>
+												<p>검색한 결과가 없습니다.</p>
+											</c:otherwise>
+										</c:choose>
 									</div>
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="${docuList}" var="i">
-									<a href="/eApproval/readDocu?docuSeq=${i.document_seq}&type=saved">
+										<a href="/eApproval/readDocu?docuSeq=${i.document_seq}&type=toAppr">
 										<div class="rows">
 											<div class="cols">
-												<span><fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" /></span>
+												<span> <fmt:formatDate value="${i.write_date}"
+														pattern="yyyy-MM-dd" />
+												</span>
 											</div>
 											<div class="cols">
 												<span>${i.name}</span>
 											</div>
 											<div class="cols">
-												<span>
-												<c:if test="${i.emer_yn eq 'Y'}">
-													<img src="/img/icon/siren.png" class="emer">
-												</c:if>
+												<span> <c:if test="${i.emer_yn eq 'Y'}">
+														<img src="/img/icon/siren.png" class="emer">
+													</c:if>
 												</span>
 											</div>
 											<div class="cols">
 												<span>${i.title}</span>
+											</div>
+											<div class="cols">
+												<span>${i.writer}</span>
+											</div>
+											<div class="cols">
+												<span>${i.last_appr_name}</span>
 											</div>
 										</div>
 										</a>

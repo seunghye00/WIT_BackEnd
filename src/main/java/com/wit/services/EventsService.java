@@ -18,8 +18,7 @@ public class EventsService {
 	public int saveEvent(EventsDTO dto) {
 		return dao.saveEvent(dto);
 	}
-	
-	
+		
 	// 이벤트 출력
 	public List<EventsDTO> getEventsByCalendar(List<Integer> calendarSeq){
 	    return dao.getEventsByCalendar(calendarSeq);

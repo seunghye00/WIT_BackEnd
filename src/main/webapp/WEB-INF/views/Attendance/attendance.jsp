@@ -84,9 +84,20 @@
 						</ul>
 					</div>
 					<div style="padding: 10px;"></div>
-					<a href="/annualLeave/attendance_vacation">
-						<h3 class="toggleTit">휴가 관리</h3>
+					<a href="/annualLeave/attendanceVacation">
+						<h3 class="toggleTit">휴가관리</h3>
 					</a>
+					<div style="padding: 10px;"></div>
+					<!-- 사장일 때만 부서별 근태현황과 부서별 휴가현황을 보여줌 -->
+					<c:if test="${employee.role_code == '사장'}">
+						<a href="/attendance/attendanceDept">
+							<h3 class="toggleTit">부서별 근태현황</h3>
+						</a>
+						<div style="padding: 10px;"></div>
+						<a href="/annualLeave/attendanceDeptVacation">
+							<h3 class="toggleTit">부서별 휴가현황</h3>
+						</a>
+					</c:if>
 				</div>
 				<div class="sideContents Attendance">
 					<h2>근태관리</h2>

@@ -21,7 +21,7 @@
 			<body class="membership_body">
 				<div class="container">
 					<!-- 공통영역 -->
-					<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>
+					<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp" %>
 						<!-- 공통영역 끝 -->
 						<div class="main-content">
 							<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
@@ -29,7 +29,7 @@
 								<div class="contents">
 									<div class="left">
 										<div class="leftTop">
-											<img src="/img/푸바오.png" alt="프로필 사진" class="profileImg">
+											<img src="/img/푸바오admin.png" alt="프로필 사진" class="profileImg">
 											<div class="dept-role">${employee.dept_code}
 												${employee.role_code}</div>
 											<div class="username">${employee.name}</div>

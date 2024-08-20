@@ -88,9 +88,20 @@
 						</ul>
 					</div>
 					<div style="padding: 10px;"></div>
-					<a href="/annualLeave/attendance_vacation">
-						<h3 class="toggleTit">휴가 관리</h3>
+					<a href="/annualLeave/attendanceVacation">
+						<h3 class="toggleTit">휴가관리</h3>
 					</a>
+					<div style="padding: 10px;"></div>
+					<!-- 사장일 때만 부서별 근태현황과 부서별 휴가현황을 보여줌 -->
+					<c:if test="${employee.role_code == '사장'}">
+						<a href="/attendance/attendanceDept">
+							<h3 class="toggleTit">부서별 근태현황</h3>
+						</a>
+						<div style="padding: 10px;"></div>
+						<a href="/annualLeave/attendanceDeptVacation">
+							<h3 class="toggleTit">부서별 휴가현황</h3>
+						</a>
+					</c:if>
 				</div>
 				<div class="sideContents Attendance">
 					<h2>휴가관리</h2>
@@ -147,12 +158,23 @@
 						</div>
 					</div>
 					<div class="pagination">
-						<a href="javascript:;" class="prev "><i
-							class='bx bx-chevron-left'></i></a> <a href="javascript:;"
-							class="active">1</a> <a href="javascript:;">2</a> <a
-							href="javascript:;">3</a> <a href="javascript:;">4</a> <a
-							href="javascript:;">5</a> <a href="javascript:;"
-							class="next active"><i class='bx bx-chevron-right'></i></a>
+						<!-- 이전 페이지로 이동 -->
+						<a
+							href="/annualLeave/attendance_vacation?cpage=${cpage > 1 ? cpage - 1 : 1}"
+							class="prev"> <i class='bx bx-chevron-left'></i>
+						</a>
+
+						<!-- 페이지 번호 -->
+						<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
+							<a href="/annualLeave/attendance_vacation?cpage=${i}"
+								class="${i == cpage ? 'active' : ''}">${i}</a>
+						</c:forEach>
+
+						<!-- 다음 페이지로 이동 -->
+						<a
+							href="/annualLeave/attendance_vacation?cpage=${cpage < pageTotalCount ? cpage + 1 : pageTotalCount}"
+							class="next"> <i class='bx bx-chevron-right'></i>
+						</a>
 					</div>
 				</div>
 			</div>

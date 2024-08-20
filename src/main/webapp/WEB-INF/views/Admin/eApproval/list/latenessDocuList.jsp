@@ -1,14 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>결재 문서함</title>
+<title>지각 사유서 문서함</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <script
@@ -18,7 +17,6 @@
 <script defer src="/js/wit.js"></script>
 <script defer src="/js/hsh.js"></script>
 </head>
-
 <body>
 	<div class="container">
 		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
@@ -27,22 +25,17 @@
 			<div class="contents">
 				<div class="sideAbout">
 					<div class="sideTxt">
-						<a href="/eApproval/home">
+						<a href="/eApproval/admin/home">
 							<h2 class="sideTit">전자 결재</h2>
 						</a>
 					</div>
-					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn" id="startApprBtn">새 결재 진행</button>
-						<%@ include
-							file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp"%>
-					</div>
-					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
+					<%@ include file="/WEB-INF/views/Admin/eApproval/commons/sideToggle.jsp"%>
 				</div>
 				<div class="sideContents eApproval">
-					<div class="mainTitle">결재 문서함</div>
+					<div class="mainTitle">지각 사유서 문서함</div>
 					<div class="docuList docuBox">
-						<%@ include file="/WEB-INF/views/eApproval/commons/toolbar.jsp"%>
-						<div class="listBox approvedList">
+						<%@ include file="/WEB-INF/views/Admin/eApproval/commons/docuToolbar.jsp"%>
+						<div class="listBox latenessDocuList">
 							<div class="rows listHeader">
 								<div class="cols">
 									<span>기안일</span>
@@ -69,7 +62,14 @@
 							<c:choose>
 								<c:when test="${empty docuList}">
 									<div class="rows emptyDocuList">
-										<p>진행중인 문서가 없습니다.</p>
+										<c:choose>
+											<c:when test="${keyword == null}">
+												<p>작성된 문서가 없습니다.</p>
+											</c:when>
+											<c:otherwise>
+												<p>검색한 결과가 없습니다.</p>
+											</c:otherwise>
+										</c:choose>
 									</div>
 								</c:when>
 								<c:otherwise>
@@ -90,7 +90,9 @@
 												</span>
 											</div>
 											<div class="cols">
-												<span>${i.title}</span>
+												<span>
+													${i.title} 
+												</span>
 											</div>
 											<div class="cols">
 												<span>${i.writer}</span>
@@ -117,12 +119,11 @@
 								</c:otherwise>
 							</c:choose>
 						</div>
-						<%@ include file="/WEB-INF/views/eApproval/commons/pagination.jsp"%>
+						<%@ include file="/WEB-INF/views/Admin/eApproval/commons/pagination.jsp"%>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
-
 </html>

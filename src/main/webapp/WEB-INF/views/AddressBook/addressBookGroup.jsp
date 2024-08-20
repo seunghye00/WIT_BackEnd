@@ -14,36 +14,9 @@
 </head>
 <body>
     <div class="container">
-        <div class="sideBar">
-            <div class="top">
-                <i class="bx bx-menu" id="btn"></i>
-            </div>
-            <div class="user">
-                <img src="../images/logo/WIT_logo1.png" alt="logo" class="userImg">
-                <div class="nickName">
-                    <p class="bold">Wit Works</p>
-                    <p></p>
-                </div>
-            </div>
-            <ul>
-                <li><a href="#"> <i class='bx bxs-home-alt-2'></i> <span class="navItem">홈</span></a> <span class="toolTip">홈</span></li>
-                <li><a href="/addressbook/personal"> <i class='bx bx-paperclip'></i> <span class="navItem">개인 주소록</span></a> <span class="toolTip">개인 주소록</span></li>
-                <li><a href="/employee/group"> <i class='bx bx-sitemap'></i> <span class="navItem">그룹 주소록</span></a> <span class="toolTip">그룹 주소록</span></li>
-                <li><a href="board2.html"> <i class="bx bxs-grid-alt"></i> <span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
-                <li><a href="#"> <i class='bx bx-calendar-alt'></i> <span class="navItem">캘린더</span></a> <span class="toolTip">캘린더</span></li>
-                <li><a href="#"> <i class='bx bxs-message-dots'></i> <span class="navItem">메신저</span></a> <span class="toolTip">메신저</span></li>
-                <li><a href="#"> <i class='bx bx-clipboard'></i> <span class="navItem">전자결재</span></a> <span class="toolTip">전자결재</span></li>
-                <li><a href="#"> <i class='bx bxs-briefcase-alt-2'></i> <span class="navItem">근태관리</span></a> <span class="toolTip">근태관리</span></li>
-                <li><a href="#"> <i class='bx bxs-check-square'></i> <span class="navItem">예약</span></a> <span class="toolTip">예약</span></li>
-                <li><a href="#"> <i class='bx bx-sitemap'></i> <span class="navItem">조직도</span></a> <span class="toolTip">조직도</span></li>
-            </ul>
-        </div>
-
+        <%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>
         <div class="main-content">
-            <div class="header">
-                <span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
-                <span class="myName"> <img src="../images/프로필.jpg"><a href="#">문경원 부장</a></span> <span class="logOut"><a href="#">LogOut</a></span>
-            </div>
+            <%@ include file="/WEB-INF/views/Includes/header.jsp" %>	
             <div class="contents">
                 <div class="sideAbout">
                     <div class="sideTxt">
@@ -234,8 +207,8 @@
 
                 let cpage = response.cpage;
                 let record_total_count = response.totPage;
-                let record_count_per_page = response.recordCountPerPage;
-                let navi_count_per_page = response.naviCountPerPage;
+                let record_count_per_page = 10;
+                let navi_count_per_page = 5;
                 let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
 
                 let startNavi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;

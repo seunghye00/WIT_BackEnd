@@ -51,7 +51,7 @@
 	<select id="selectAllByEmpNo" resultType="com.wit.dto.VehicleBookingDTO">
 		select * from (
 			select 
-				vb.*, v.name, v.license_plate,
+				vb.purpose, vb.start_date, vb.end_date, v.name, v.license_plate,
 				row_number() over (order by start_date desc) as rn
 			from 
 				vehicle_booking vb
