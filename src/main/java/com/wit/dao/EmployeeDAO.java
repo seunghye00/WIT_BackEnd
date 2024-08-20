@@ -99,12 +99,12 @@ public class EmployeeDAO {
 		params.put("cpage", cpage);
 		return mybatis.selectList("employee.searchEmployeeAddressList", params);
 	}
-	
+
 	// 주소록 데이터 총 조회
 	public int CountPageAddress(Map<String, Object> params) {
 		return mybatis.selectOne("employee.CountPageAddress", params);
 	}
-	
+
 	// 주소록 데이터 총 조회
 	public int totalCountPage(String emp_no) {
 		return mybatis.selectOne("employee.totalCountPage", emp_no);
@@ -194,24 +194,29 @@ public class EmployeeDAO {
 	public String getDept(String empNo) {
 		return mybatis.selectOne("employee.getDept", empNo);
 	}
-	
+
 	// 직원 리스트 조회
 	public List<Map<String, Object>> getManagementList(Map<String, Object> params) {
 		return mybatis.selectList("employee.getManagementList", params);
 	}
-	
+
 	// 직원 검색 조회
 	public List<Map<String, Object>> selectByManage(Map<String, Object> params) {
 		return mybatis.selectList("employee.selectByManage", params);
 	}
-	
+
 	// 직원 조회 페이지네이션 총 카운트
 	public int totalCountManageSearch(Map<String, Object> params) {
 		return mybatis.selectOne("employee.totalCountManageSearch", params);
 	}
-	
+
 	// 직원 상세 조회
 	public Map<String, Object> managementDetail(String emp_no) {
 		return mybatis.selectOne("employee.managementDetail", emp_no);
+	}
+	
+	// 직원 상세 업데이트
+	public void updateManage(Map<String, Object> params) {
+		mybatis.update("employee.updateManage", params);
 	}
 }
