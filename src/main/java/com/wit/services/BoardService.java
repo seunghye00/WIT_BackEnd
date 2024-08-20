@@ -35,7 +35,7 @@ public class BoardService {
 	}
 
 	// 게시물 조회
-	public List<BoardReportDTO> list(String searchTxt, String searchTarget, String sortTarget, int cpage, String emp_no,String bookmark,int board_code,String report) {
+	public List<BoardReportDTO> list(String searchTxt, String searchTarget, String sortTarget, int cpage, String emp_no,String bookmark,int board_code,String report,String adminReport) {
 		Map<String, Object> maps = new HashMap<String, Object>();
 		maps.put("sortTarget", sortTarget); 
 		maps.put("searchTarget", searchTarget);
@@ -44,6 +44,7 @@ public class BoardService {
 		maps.put("bookmark", bookmark);
 		maps.put("board_code", board_code);
 		maps.put("report", report);
+		maps.put("adminReport", adminReport);
 		
 		if(cpage==0) {
 			maps.put("start", 1);
@@ -59,7 +60,7 @@ public class BoardService {
 		return bdao.list(maps);
 	}
 	// 게시글 개수
-	public int boardCount(String searchTxt, String searchTarget, String emp_no,String bookmark,int board_code,String report) {
+	public int boardCount(String searchTxt, String searchTarget, String emp_no,String bookmark,int board_code,String report,String adminReport) {
 		Map<String, Object> maps = new HashMap<String, Object>();
 	 
 		maps.put("bookmark", bookmark);
@@ -68,6 +69,7 @@ public class BoardService {
 		maps.put("emp_no", emp_no);
 		maps.put("board_code", board_code);
 		maps.put("report", report);
+		maps.put("adminReport", adminReport);
 		return bdao.boardCount(maps);
 	}
 
@@ -120,9 +122,15 @@ public class BoardService {
 		// 게시물 삭제
 		bdao.deleteBoard(board_seq);
 	}
-
+	
+	// 신고 목록 조회 메서드 
+	public List<BoardReportDTO> getReportedPosts() throws Exception{
+		return bdao.getReportedPosts();
+	}
+	
 	// 직원 정보 조회 메소드 추가
 	public EmployeeDTO employeeInfo(String emp_no) {
 		return bdao.employeeInfo(emp_no);
 	}
 }
+

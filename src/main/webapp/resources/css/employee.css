@@ -779,4 +779,10 @@
 	text-align: center;
 }
 
+#search_name {
+	position: relative;
+	left: 78%;
+	margin-bottom: 5px;
+}
+
 /* 민서 css end */

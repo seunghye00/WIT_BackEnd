@@ -30,7 +30,7 @@
 		#{calendarSeq}
 	</delete>
 	
-	
+	<!-- 부서별 부서 캘린더 조회 (관리자는 모든 부서 캘린더 조회 가능) -->
 	<select id="depCalendarList" resultType="com.wit.dto.DepartmentCalendarDTO">
     <choose>
         <!-- 직급 코드가 R1인 경우 -->
@@ -38,6 +38,7 @@
             select dc.*, d.dept_title
             from department_calendar dc
             join dept d on dc.dept_code = d.dept_code
+            order by dc.calendar_seq
         </when>
         <!-- 직급 코드가 R1이 아닌 경우 -->
         <otherwise>
@@ -46,6 +47,7 @@
             join dept d on dc.dept_code = d.dept_code
             join employee e on dc.dept_code = e.dept_code
             where e.emp_no = #{empNo}
+            order by dc.calendar_seq
         </otherwise>
     </choose>
 </select>

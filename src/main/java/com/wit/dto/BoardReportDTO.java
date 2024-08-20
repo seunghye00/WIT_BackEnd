@@ -12,6 +12,7 @@ public class BoardReportDTO {
 	private int board_code;
 	private String report_type=null;
 	private Timestamp report_date=null;
+	private int count ;
 	public int getBoard_seq() {
 		return board_seq;
 	}
@@ -66,8 +67,14 @@ public class BoardReportDTO {
 	public void setReport_date(Timestamp report_date) {
 		this.report_date = report_date;
 	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
 	public BoardReportDTO(int board_seq, String emp_no, String title, String contents, Timestamp write_date, int views,
-			int board_code, String report_type, Timestamp report_date) {
+			int board_code, String report_type, Timestamp report_date, int count) {
 		super();
 		this.board_seq = board_seq;
 		this.emp_no = emp_no;
@@ -78,10 +85,13 @@ public class BoardReportDTO {
 		this.board_code = board_code;
 		this.report_type = report_type;
 		this.report_date = report_date;
+		this.count = count;
 	}
 	public BoardReportDTO() {
 		super();
 	}
+	
+	
 	
 	
 }

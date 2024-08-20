@@ -22,9 +22,9 @@ public class EmployeeService {
 
 	@Autowired
 	private EmployeeDAO dao;
-	
-    @Autowired
-    private AnnualLeaveDAO adao;
+
+	@Autowired
+	private AnnualLeaveDAO adao;
 
 	// 모든 직급 정보 가져오기
 	public List<RoleDTO> AllRoles() {
@@ -55,7 +55,14 @@ public class EmployeeService {
 	// 로그인
 	public EmployeeDTO login(String empNo, String pw) {
 		String encryptedPw = PWUtill.encryptPassword(pw);
-		return dao.login(empNo, encryptedPw);
+		EmployeeDTO employee = dao.login(empNo, encryptedPw);
+
+		// 퇴사자인 경우 로그인 실패 처리
+		if (employee != null && employee.getQuit_yn() == 'Y') {
+			return null; // 퇴사자인 경우 null을 반환
+		}
+
+		return employee;
 	}
 
 	// 추가 정보 업데이트 를 위한 직원 정보 조회
@@ -78,14 +85,14 @@ public class EmployeeService {
 	@Transactional
 	public int updateInfo(EmployeeDTO dto) {
 		dto.setPw(PWUtill.encryptPassword(dto.getPw()));
-        // 직원 정보 업데이트
-        int result = dao.updateInfo(dto);
+		// 직원 정보 업데이트
+		int result = dao.updateInfo(dto);
 
-        // 연차 데이터 생성 (연차 15일 추가)
-        adao.insertOrUpdateAnnualLeave(dto.getEmp_no());
-        
-        return result;
-    }
+		// 연차 데이터 생성 (연차 15일 추가)
+		adao.insertOrUpdateAnnualLeave(dto.getEmp_no());
+
+		return result;
+	}
 
 	// ID찾기
 	public String findID(String name, String ssn) {
@@ -150,6 +157,7 @@ public class EmployeeService {
 	public List<EmployeeDTO> searchEmployeeList(String keyword, int cpage) {
 		return dao.searchEmployeeAddressList(keyword, cpage);
 	}
+
 	// 주소록 검색 카운트 값 조회
 	@Transactional
 	public int CountPageAddress(String chosung, String category, int cpage) {
@@ -162,7 +170,7 @@ public class EmployeeService {
 		params.put("endNum", endNum);
 		return dao.CountPageAddress(params);
 	}
-	
+
 	// 주소록 검색 카운트 값 조회
 	@Transactional
 	public int totalCountPage(String emp_no) {
@@ -231,7 +239,7 @@ public class EmployeeService {
 	public String getEmployeeName(String emp_no) {
 		return dao.getEmployeeName(emp_no);
 	}
-	
+
 	// 관리자 사원 조회
 	@Transactional
 	public List<Map<String, Object>> getManagementList(String emp_no, int cpage) {
@@ -243,7 +251,7 @@ public class EmployeeService {
 		params.put("endNum", endNum);
 		return dao.getManagementList(params);
 	}
-	
+
 	// 관리자 사원 검색
 	@Transactional
 	public List<Map<String, Object>> selectByManage(String emp_no, String column, String keyword, int cpage) {
@@ -257,6 +265,7 @@ public class EmployeeService {
 		params.put("endNum", endNum);
 		return dao.selectByManage(params);
 	}
+
 	// 관리자 사원 검색 페이지네이션 총합
 	@Transactional
 	public int totalCountManageSearch(String emp_no, String column, String keyword) {
@@ -266,7 +275,7 @@ public class EmployeeService {
 		params.put("keyword", keyword);
 		return dao.totalCountManageSearch(params);
 	}
-	
+
 	// 관리자 사원 조회 상세
 	@Transactional
 	public Map<String, Object> managementDetail(String emp_no) {

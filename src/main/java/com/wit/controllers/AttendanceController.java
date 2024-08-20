@@ -72,6 +72,8 @@ public class AttendanceController {
 	@RequestMapping("/attendance_month")
 	public String attendanceMonth(Model model, @RequestParam(defaultValue = "1") int cpage) {
 		String empNo = (String) session.getAttribute("loginID");
+		
+		EmployeeDTO employee = service.employeeInfo(empNo);
 
 		// 현재 월을 가져옴
 		String month = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
@@ -110,6 +112,7 @@ public class AttendanceController {
 		model.addAttribute("endNavi", endNavi);
 		model.addAttribute("needPrev", needPrev);
 		model.addAttribute("needNext", needNext);
+		model.addAttribute("employee", employee);
 
 		// 월간 근무 현황 조회 (페이징 적용)
 		List<Map<String, Object>> monthlyWorkStatus = service.monthlyWorkStatus(empNo, month, cpage,

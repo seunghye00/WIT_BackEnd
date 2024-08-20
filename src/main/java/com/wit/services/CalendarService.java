@@ -75,9 +75,4 @@ public class CalendarService {
 			return "dept";
 		}
 	}
-	
-	// 직급 코드가 R1일 때 부서 캘린더 출력
-	public List<DepartmentCalendarDTO> adminDepCalendarList(String empNo){
-		return dao.adminDepCalendarList(empNo);
-	}
 }

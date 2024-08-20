@@ -12,7 +12,8 @@
 	<insert id="write" parameterType="com.wit.dto.BoardDTO">
 		INSERT INTO board (board_seq, emp_no, title, contents, write_date,
 		views,board_code)
-		VALUES (board_seq.NEXTVAL, #{emp_no}, #{title}, #{contents},
+		VALUES (board_seq.NEXTVAL, #{emp_no}, #{title},
+		#{contents},
 		sysdate, 0, ${board_code})
 
 		<!-- 시퀀스 값 가져오기 -->
@@ -27,8 +28,8 @@
 	<!-- 그리고 작성날짜가 최신순인게 맨위로 올라온다! -->
 	<!-- 조인 너무 어려워 밍쥬야... -->
 	<select id="list" resultType="com.wit.dto.BoardReportDTO">
-		select a.*
-		from 
+	select a.*
+		from
 		(SELECT
 		row_number() over(
 		<choose>
@@ -36,7 +37,12 @@
 				order by b.write_date desc
 			</when>
 			<when test="sortTarget == 'views'">
-				order by b.views desc
+			<if test="adminReport=='true'">
+				order by r.count desc
+			</if>
+			<if test="adminReport=='false'">
+					order by b.views desc
+			</if>
 			</when>
 			<otherwise>
 				order by b.board_seq desc
@@ -49,12 +55,19 @@
 		<if test="report=='true'">
 			,r.report_type,r.report_date
 		</if>
+		<if test="adminReport=='true'">
+			,r.count
+		</if>
 
 		FROM
 		board b
 		JOIN employee e ON b.emp_no = e.emp_no
 		<if test="report=='true'">
 			join report r on b.board_seq=r.board_seq
+		</if>
+		<if test="adminReport=='true'">
+			join (select board_seq,count(*) as count from report group by board_seq) r
+			on b.board_seq=r.board_seq
 		</if>
 
 		where b.board_code=${board_code}
@@ -70,15 +83,22 @@
 			emp_no=#{emp_no})
 		</if>
 		<if test="report=='true'">
-			and b.board_seq in (select board_seq from report where emp_no=#{emp_no})
+			and b.board_seq in (select board_seq from report where
+			emp_no=#{emp_no})
 		</if>
 		) a
 		where rown between ${start} and ${end}
+
 	</select>
 
 	<!-- 게시글 개수 -->
 	<select id="boardCount" resultType="int">
-		select count(*) from board where board_code=${board_code}
+		select count(*) from board 
+		<if test="adminReport=='true'">
+			 b join (select board_seq,count(*) as count from report group by board_seq) r
+			on b.board_seq=r.board_seq
+		</if>
+		where board_code=${board_code}
 		<if test="searchTarget == 'title'">
 			and title like '%'||#{searchTxt}||'%'
 		</if>
@@ -91,7 +111,8 @@
 			emp_no=#{emp_no})
 		</if>
 		<if test="report=='true'">
-			and board_seq in (select board_seq from report where emp_no=#{emp_no})
+			and board_seq in (select board_seq from report where
+			emp_no=#{emp_no})
 		</if>
 	</select>
 
@@ -146,4 +167,24 @@
 		update board set title=#{title} ,
 		contents=#{contents}, write_date=sysdate where board_seq=${board_seq}
 	</update>
+
+	<!-- 신고된 게시물 조회 -->
+	<select id="getReportedPosts"
+		resultType="com.wit.dto.BoardReportDTO">
+		select
+		b.board_seq,
+		b.title,
+		count(r.board_seq) AS report_count
+		from
+		board b
+		left join
+		report r
+		on
+		b.board_seq = r.board_seq
+		group by
+		b.board_seq , b.title
+		having
+		count(r.board_seq) > 0
+	</select>
+
 </mapper>
