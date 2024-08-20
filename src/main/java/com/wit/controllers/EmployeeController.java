@@ -501,6 +501,16 @@ public class EmployeeController {
         service.updateManage(empNo, photoUrl, phone, quit_yn, email, dept_code, role_code);
 		return "redirect:/employee/managementDetail?empNo=" + empNo;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/getSessionInfo")
+	public EmployeeDTO getSessionInfo(Model model) {
+		String emp_no = (String) session.getAttribute("loginID");
+		// 직원 정보 가져오기
+		EmployeeDTO employee = service.findByEmpNo(emp_no);
+		return employee;
+    }
+	
 	// 예외를 담당하는 메서드 생성
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception e) {
