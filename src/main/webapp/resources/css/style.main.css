@@ -325,13 +325,20 @@ body {
     gap: 10px;
 }
 
-.header .myName img {
+.header .myName .myImgBox {
     height: 50px;
     border-radius: 100%;
     border: 2px solid #fff;
     width: 50px;
+    overflow: hidden;
 }
-
+.header .myName img {
+	width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: cover;
+    border-radius: unset;
+}
 .contents {
     /* flex: 4 1 0%; */
     height: calc(100% - 90px);

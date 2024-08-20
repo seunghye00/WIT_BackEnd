@@ -151,47 +151,49 @@
         $('#photoDeleted').val('true'); // 사진이 삭제되었음을 표시
     });
 	 
- 	function saveEmployee() {
- 		var fileInput = document.getElementById('photoUpload');
-        var photoChanged = fileInput.files.length > 0; // 사용자가 이미지를 변경했는지 여부를 확인
-        var photoDeleted = $('#photoDeleted').val() === 'true';
+	function saveEmployee() {
+	    var fileInput = document.getElementById('photoUpload');
+	    var photoChanged = fileInput.files.length > 0; // 사용자가 이미지를 변경했는지 여부를 확인
+	    var photoDeleted = $('#photoDeleted').val() === 'true';
 
- 	    if (photoChanged) {
- 	        // 사용자가 이미지를 변경한 경우
- 	        var file = fileInput.files[0];
- 	        formData.append("file", file);
+	    var formData = new FormData(); // formData 초기화
 
- 	        // 이미지 업로드를 먼저 처리
- 	        $.ajax({
- 	            url: '/uploadImage',
- 	            type: 'POST',
- 	            data: formData,
- 	            processData: false,
- 	            contentType: false,
- 	            success: function(response) {
- 	                if (response.success) {
- 	                    // 서버에 저장된 이미지 URL을 폼에 추가하여 저장할 수 있도록 설정
- 	                    $('#photoUrl').val(response.url);
- 	                   	document.getElementById('employeeDetailForm').submit(); 
- 	                } else {
- 	                    alert("이미지 업로드 실패: " + response.message);
- 	                }
- 	            },
- 	            error: function(xhr, status, error) {
- 	                console.error('Error:', status, error);
- 	            }
- 	        });
- 	    } else if (photoDeleted) {
-            // 이미지가 삭제된 경우
-            $('#photoUrl').val('/uploads/default.png'); // 기본 이미지로 설정
-            document.getElementById('employeeDetailForm').submit();
-        } else {
-            // 사용자가 이미지를 변경하지 않은 경우
-            var existingPhotoUrl = $('#photo').attr('src')
-            $('#photoUrl').val(existingPhotoUrl);
-            document.getElementById('employeeDetailForm').submit();
-        }
- 	}
+	    if (photoChanged) {
+	        // 사용자가 이미지를 변경한 경우
+	        var file = fileInput.files[0];
+	        formData.append("file", file);
+
+	        // 이미지 업로드를 먼저 처리
+	        $.ajax({
+	            url: '/uploadImage',
+	            type: 'POST',
+	            data: formData,
+	            processData: false,
+	            contentType: false,
+	            success: function(response) {
+	                if (response.success) {
+	                    // 서버에 저장된 이미지 URL을 폼에 추가하여 저장할 수 있도록 설정
+	                    $('#photoUrl').val(response.url);
+	                    document.getElementById('employeeDetailForm').submit(); 
+	                } else {
+	                    alert("이미지 업로드 실패: " + response.message);
+	                }
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('Error:', status, error);
+	            }
+	        });
+	    } else if (photoDeleted) {
+	        // 이미지가 삭제된 경우
+	        $('#photoUrl').val('/uploads/default.png'); // 기본 이미지로 설정
+	        document.getElementById('employeeDetailForm').submit();
+	    } else {
+	        // 사용자가 이미지를 변경하지 않은 경우
+	        var existingPhotoUrl = $('#photo').attr('src');
+	        $('#photoUrl').val(existingPhotoUrl);
+	        document.getElementById('employeeDetailForm').submit();
+	    }
+	}
 	
 	$('#quitOutBtn').click(function() {
 	    // 현재 날짜를 yyyy-mm-dd 형식으로 포맷
