@@ -41,16 +41,19 @@
 		SELECT *
 		FROM (
 		SELECT lr.*, ROWNUM rnum
-		FROM leave_requests lr
+		FROM leave_requests
+		lr
 		JOIN documents d ON lr.document_seq = d.document_seq
-		WHERE d.emp_no = #{empNo}
+		WHERE d.emp_no =
+		#{empNo}
 		AND d.status = '완료'
-		AND TO_CHAR(lr.start_date, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+		AND TO_CHAR(lr.start_date, 'YYYY') =
+		TO_CHAR(SYSDATE, 'YYYY')
 		ORDER BY lr.start_date DESC
 		)
-		WHERE rnum BETWEEN #{start} AND #{end}
+		WHERE rnum BETWEEN
+		#{start} AND #{end}
 	</select>
-
 
 	<!-- 직원 정보 조회 -->
 	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
@@ -86,4 +89,61 @@
 		SELECT emp_no
 		FROM documents WHERE document_seq = #{documentSeq}
 	</select>
+
+	<!-- 부서별 휴가현황(관리자) -->
+	<select id="selectAnnualLeaveRequestsByDept" resultType="map">
+		SELECT *
+		FROM (
+		SELECT
+		lr.*,
+		e.name,
+		r.role_title as role_code,
+		dpt.dept_title as dept_name,
+		ROWNUM rnum
+		FROM
+		leave_requests lr
+		JOIN documents d ON lr.document_seq = d.document_seq
+		JOIN employee e ON d.emp_no = e.emp_no
+		JOIN role r ON e.role_code = r.role_code
+		JOIN dept dpt ON e.dept_code = dpt.dept_code
+		WHERE
+		dpt.dept_title = #{deptTitle}
+		AND d.status = '완료'
+		<if test="searchTxt != null and searchTxt != ''">
+			AND e.name LIKE '%' || #{searchTxt} || '%'
+		</if>
+		ORDER BY
+		lr.start_date DESC
+		)
+		WHERE rnum BETWEEN #{start} AND #{end}
+	</select>
+
+	<!-- 검색된 연간 휴가 내역의 총 레코드 수 조회 -->
+	<select id="annualLeaveRecordCountByDept" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		leave_requests lr
+		JOIN
+		documents d ON lr.document_seq
+		= d.document_seq
+		JOIN
+		employee e ON d.emp_no = e.emp_no
+		JOIN
+		dept dpt ON
+		e.dept_code = dpt.dept_code
+		WHERE
+		dpt.dept_title = #{deptTitle}
+		AND
+		d.status = '완료'
+		<if test="searchTxt != null and searchTxt != ''">
+			AND e.name LIKE '%' || #{searchTxt} || '%'
+		</if>
+	</select>
+
+	<!-- 부서 리스트 조회 -->
+	<select id="selectAllDepartments"
+		resultType="com.wit.dto.DeptDTO">
+		SELECT dept_code, dept_title FROM dept
+	</select>
+
 </mapper>

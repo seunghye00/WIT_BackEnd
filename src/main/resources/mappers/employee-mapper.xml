@@ -99,7 +99,7 @@
 		e.zip_code, e.address, e.detail_address,
 		d.dept_title AS dept_code,
 		r.role_title AS role_code,
-		e.join_date, e.quit_date, e.quit_yn
+		e.join_date, e.quit_date, e.quit_yn, e.photo
 		FROM
 		employee e
 		JOIN dept d ON e.dept_code = d.dept_code
