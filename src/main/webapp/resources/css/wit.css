@@ -260,7 +260,6 @@
 	flex: 1;
 }
 
-
 /* pagenavi css start */
 .boardList .pageNavi {
 	height: 50px;
@@ -1889,12 +1888,12 @@
 }
 
 .manageForm .listBox .rows.line-through {
-    text-decoration: line-through;
+	text-decoration: line-through;
 }
 
-.manageDetailForm{
-	display:flex;
-	flex-direction:column;
+.manageDetailForm {
+	display: flex;
+	flex-direction: column;
 	gap: 40px;
 }
 
@@ -1941,8 +1940,6 @@
 .formCon .photoWrapper label {
 	margin-left: 0;
 }
-
-
 
 /* 경원 css end */
 
@@ -2514,20 +2511,17 @@
 .check-time {
 	color: #999;
 	font-size: 15px;
+	margin-top: 5px;
 }
 
 .attendance-btn {
 	display: flex;
-	justify-content: space-between;
-	gap: 20px;
-	margin-top: 10px;
 }
 
 .attendance-btn div {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 5px;
 }
 
 #date {
@@ -2644,6 +2638,9 @@
 	border-radius: 100%;
 	border: 3px solid #fff;
 	transition: all 0.5s ease;
+	position: relative;
+	left: 20%;
+	top: 10%;
 }
 
 .attendance_icon {
@@ -2652,10 +2649,18 @@
 
 .dept-role {
 	font-weight: bold;
+	position: relative;
+	left: 35%;
+	top: 15%;
+	font-size: 25px;
 }
 
 .username {
 	font-weight: bold;
+	position: relative;
+	left: 41%;
+	top: 20%;
+	font-size: 25px;
 }
 
 .start {
@@ -3563,7 +3568,7 @@ span.return {
 }
 
 .eApprModal.apprChoiModal .choiCont .resultAppr .list ul li input:checked
-	~label {
+	 ~label {
 	background-color: #e9e9e9;
 }
 
