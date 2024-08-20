@@ -114,14 +114,12 @@
 	height: 5px;
 }
 
-.board .boardDetail .detail .docuFiles .uploadFiles::-webkit-scrollbar-thumb
-	{
+.board .boardDetail .detail .docuFiles .uploadFiles::-webkit-scrollbar-thumb {
 	background: rgb(255, 204, 214);
 	border-radius: 10px;
 }
 
-.board .boardDetail .detail .docuFiles .uploadFiles::-webkit-scrollbar-track
-	{
+.board .boardDetail .detail .docuFiles .uploadFiles::-webkit-scrollbar-track {
 	background: rgba(222, 151, 165, 0.1);
 }
 
@@ -343,7 +341,7 @@
 
 .boardDetail .detail .detailTop .top .writeReport {
 	/* flex: 1; */
-	
+
 }
 
 .boardDetail .detail .detailCen {
@@ -371,8 +369,8 @@
 }
 
 /*수정 버튼*/
-.boardDetail .detail .detailBott #fboardUpd, .boardDetail .detail .detailBott #boardUpd
-	{
+.boardDetail .detail .detailBott #fboardUpd,
+.boardDetail .detail .detailBott #boardUpd {
 	padding: 10px 20px;
 	border: 1px solid #c1c1c1;
 	border-radius: 8px;
@@ -380,14 +378,14 @@
 	color: white
 }
 
-.boardDetail .detail .detailBott #fboardUpd:hover, .boardDetail .detail .detailBott #boardUpd:hover
-	{
+.boardDetail .detail .detailBott #fboardUpd:hover,
+.boardDetail .detail .detailBott #boardUpd:hover {
 	background-color: #1268d4;
 }
 
 /*삭제 버튼*/
-.boardDetail .detail .detailBott #fboardDel, .boardDetail .detail .detailBott #boardDel
-	{
+.boardDetail .detail .detailBott #fboardDel,
+.boardDetail .detail .detailBott #boardDel {
 	padding: 10px 20px;
 	border: 1px solid #dc3545;
 	border-radius: 8px;
@@ -395,14 +393,14 @@
 	color: white
 }
 
-.boardDetail .detail .detailBott #fboardDel:hover, .boardDetail .detail .detailBott #boardDel:hover
-	{
+.boardDetail .detail .detailBott #fboardDel:hover,
+.boardDetail .detail .detailBott #boardDel:hover {
 	background-color: #c51221;
 }
 
 /*목록 이동 버튼*/
-.boardDetail .detail .detailBott #fboardList, .boardDetail .detail .detailBott #boardList
-	{
+.boardDetail .detail .detailBott #fboardList,
+.boardDetail .detail .detailBott #boardList {
 	padding: 10px 20px;
 	border: 1px solid #888;
 	border-radius: 8px;
@@ -410,8 +408,8 @@
 	color: white
 }
 
-.boardDetail .detail .detailBott #fboardList:hover, .boardDetail .detail .detailBott #boardList:hover
-	{
+.boardDetail .detail .detailBott #fboardList:hover,
+.boardDetail .detail .detailBott #boardList:hover {
 	background-color: #555;
 }
 
@@ -775,25 +773,65 @@
 	flex-direction: column;
 }
 
-.dialog .ct .reporter, .dialog .ct .reportSort {
+.dialog .ct .ctTitle {
+	flex: 1;
+	display: flex;
+}
+
+.dialog .ct .ctTitle .reportPer {
+	flex: 1;
+}
+
+.dialog .ct .ctTitle .reportRes {
+	flex: 2;
+}
+
+.dialog .ct .ctTitle .reportDate {
+	flex: 2;
+}
+
+
+
+.dialog .ct .ctCont {
+	flex: 1;
+	display: flex;
+}
+
+.dialog .ct .ctCont .reportPer {
+	flex: 1;
+}
+
+.dialog .ct .ctCont .reportRes {
+	flex: 2;
+}
+
+.dialog .ct .ctCont .reportDate {
+	flex: 2;
+}
+
+.dialog .ct .reporter,
+.dialog .ct .reportSort {
 	flex: 1;
 	display: flex;
 	align-items: center;
 }
 
-.dialog .ct .reportNick, .dialog .ct .sort {
+.dialog .ct .reportNick,
+.dialog .ct .sort {
 	display: flex;
 	/* justify-content: center; */
 	font-weight: 400
 }
 
-.dialog .ct .reportNick, .dialog .ct .sort {
+.dialog .ct .reportNick,
+.dialog .ct .sort {
 	flex: 1;
 	/* font-weight: 900; */
 	/* color: #0d6efd; */
 }
 
-.dialog .ct .reportInput, .dialog .ct .selectSort {
+.dialog .ct .reportInput,
+.dialog .ct .selectSort {
 	width: 350px;
 }
 
@@ -979,9 +1017,7 @@
 	gap: 25px;
 }
 
-.toolBar li {
-	
-}
+.toolBar li {}
 
 .toolBar a {
 	padding: 5px 0;
@@ -1064,8 +1100,9 @@
 	justify-content: center;
 }
 
-.listBox .rows .cols:nth-child(1), .cols:nth-child(2), .cols:nth-child(5)
-	{
+.listBox .rows .cols:nth-child(1),
+.cols:nth-child(2),
+.cols:nth-child(5) {
 	width: 10%;
 }
 
@@ -1139,13 +1176,15 @@
 	right: 20px;
 }
 
-#addCategoryForm, #editCategoryForm {
+#addCategoryForm,
+#editCategoryForm {
 	display: flex;
 	flex-direction: column;
 	gap: 20px
 }
 
-#addCategoryForm input, #editCategoryForm input {
+#addCategoryForm input,
+#editCategoryForm input {
 	width: calc(100% - 120px);
 }
 
@@ -1204,8 +1243,11 @@
 	font-size: 18px;
 }
 
-.formGroup input[type="text"], .formGroup input[type="file"], .formGroup input[type="date"],
-	.formGroup input[type="email"], .formGroup select {
+.formGroup input[type="text"],
+.formGroup input[type="file"],
+.formGroup input[type="date"],
+.formGroup input[type="email"],
+.formGroup select {
 	width: 50%;
 	padding: 15px;
 	border: 1px solid #ccc;
@@ -1299,7 +1341,9 @@
 	font-size: 24px;
 }
 
-.toggleBtn, .createChatBtn, .createChatConfirmBtn {
+.toggleBtn,
+.createChatBtn,
+.createChatConfirmBtn {
 	padding: 10px 20px;
 	border: none;
 	background-color: #558BCF;
@@ -1309,7 +1353,9 @@
 	margin-left: 10px;
 }
 
-.toggleBtn:hover, .createChatBtn:hover, .createChatConfirmBtn:hover {
+.toggleBtn:hover,
+.createChatBtn:hover,
+.createChatConfirmBtn:hover {
 	background-color: #1268d4;
 }
 
@@ -1323,11 +1369,14 @@
 	padding: 6px 20px;
 }
 
-.toggleBtn.active, .createChatBtn:active, .createChatConfirmBtn:active {
+.toggleBtn.active,
+.createChatBtn:active,
+.createChatConfirmBtn:active {
 	background-color: #1268d4;
 }
 
-.chatList, .addressList {
+.chatList,
+.addressList {
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -1337,7 +1386,8 @@
 	padding-bottom: 10px;
 }
 
-.chatList li, .addressList li:not(:first-child) {
+.chatList li,
+.addressList li:not(:first-child) {
 	border-bottom: 1px solid #c1c1c1;
 }
 
@@ -1345,11 +1395,13 @@
 	background-color: #f0f0f0;
 }
 
-.chatList li:hover, .addressList li:not(:first-child):hover {
+.chatList li:hover,
+.addressList li:not(:first-child):hover {
 	background-color: #f0f0f0;
 }
 
-.chatList li a, .addressList li a {
+.chatList li a,
+.addressList li a {
 	text-decoration: none;
 	color: #333;
 	display: flex;
@@ -1446,7 +1498,8 @@
 	position: relative;
 }
 
-.message .sender, .message .text_box {
+.message .sender,
+.message .text_box {
 	font-size: 18px;
 }
 
@@ -1509,8 +1562,9 @@
 	cursor: pointer;
 }
 
-.chatFooter button:hover, .chatFooter button:active, .chatFooter button:focus
-	{
+.chatFooter button:hover,
+.chatFooter button:active,
+.chatFooter button:focus {
 	background-color: #1268d4;
 }
 
@@ -1915,7 +1969,8 @@
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 60px;;
+	gap: 60px;
+	;
 }
 
 .formCon .photoWrapper {
@@ -1937,6 +1992,7 @@
 .formCon .photoWrapper label {
 	margin-left: 0;
 }
+
 /* 경원 css end */
 
 /* 민서 css start */
@@ -1960,8 +2016,11 @@
 	margin: 0;
 }
 
-.membership, .find_id_container, .find_pw_container,
-	.registration_container, .profile_update_container {
+.membership,
+.find_id_container,
+.find_pw_container,
+.registration_container,
+.profile_update_container {
 	background-color: #fff;
 	padding: 20px;
 	border-radius: 8px;
@@ -1970,8 +2029,11 @@
 	display: none;
 }
 
-.membership.active, .find_id_container.active, .find_pw_container.active,
-	.registration_container.active, .profile_update_container.active {
+.membership.active,
+.find_id_container.active,
+.find_pw_container.active,
+.registration_container.active,
+.profile_update_container.active {
 	display: block;
 	width: 25%;
 	margin: auto;
@@ -1982,21 +2044,29 @@
 	margin: auto;
 }
 
-.find_id_container.active, .find_pw_container.active {
+.find_id_container.active,
+.find_pw_container.active {
 	margin: auto;
 }
 
-.membership h2, .find_id_container h2, .find_pw_container h2,
-	.registration_container h2, .profile_update_container h2 {
+.membership h2,
+.find_id_container h2,
+.find_pw_container h2,
+.registration_container h2,
+.profile_update_container h2 {
 	margin-bottom: 20px;
 }
 
-.membership input[type="text"], .membership input[type="password"],
-	.find_id_container input[type="text"], .find_id_container input[type="email"],
-	.find_pw_container input[type="text"], .registration_container input[type="text"],
-	.registration_container input[type="password"], .registration_container select,
-	.profile_update_container input[type="text"], .profile_update_container input[type="email"]
-	{
+.membership input[type="text"],
+.membership input[type="password"],
+.find_id_container input[type="text"],
+.find_id_container input[type="email"],
+.find_pw_container input[type="text"],
+.registration_container input[type="text"],
+.registration_container input[type="password"],
+.registration_container select,
+.profile_update_container input[type="text"],
+.profile_update_container input[type="email"] {
 	width: 100%;
 	padding: 15px;
 	margin: 10px 0;
@@ -2005,8 +2075,8 @@
 	font-size: 15px;
 }
 
-.registration_container input[type="text"], .registration_container input[type="password"]
-	{
+.registration_container input[type="text"],
+.registration_container input[type="password"] {
 	width: 90%;
 }
 
@@ -2041,8 +2111,11 @@
 	font-size: 15px;
 }
 
-.membership button, .find_id_container button, .find_pw_container button,
-	.registration_container button, .profile_update_container button {
+.membership button,
+.find_id_container button,
+.find_pw_container button,
+.registration_container button,
+.profile_update_container button {
 	width: 100%;
 	padding: 10px;
 	background-color: #558BCF;
@@ -2054,24 +2127,31 @@
 	margin-top: 10px;
 }
 
-.registration_container button, .profile_update_container button {
+.registration_container button,
+.profile_update_container button {
 	width: 40%;
 }
 
-.membership button:hover, .find_id_container button:hover,
-	.find_pw_container button:hover, .registration_container button:hover,
-	.profile_update_container button:hover {
+.membership button:hover,
+.find_id_container button:hover,
+.find_pw_container button:hover,
+.registration_container button:hover,
+.profile_update_container button:hover {
 	background-color: #558BCF;
 }
 
-.membership .find_id, .membership .find_pw, .employee_container .insert_employee,
-	.back_to_login a {
+.membership .find_id,
+.membership .find_pw,
+.employee_container .insert_employee,
+.back_to_login a {
 	color: #558BCF;
 	text-decoration: none;
 }
 
-.membership .find_id:hover, .membership .find_pw:hover,
-	.employee_container .insert_employee:hover, .back_to_login a:hover {
+.membership .find_id:hover,
+.membership .find_pw:hover,
+.employee_container .insert_employee:hover,
+.back_to_login a:hover {
 	text-decoration: underline;
 }
 
@@ -2082,7 +2162,8 @@
 	gap: 5px;
 }
 
-.find_id_container.active img, .find_pw_container.active img {
+.find_id_container.active img,
+.find_pw_container.active img {
 	width: 155px;
 }
 
@@ -2100,7 +2181,8 @@
 	display: none;
 }
 
-#pwCheck, #checkpwCheck {
+#pwCheck,
+#checkpwCheck {
 	display: inline-block;
 	vertical-align: middle;
 	/* margin-top: 1px; */
@@ -2226,7 +2308,8 @@
 }
 
 /* 마이페이지 스타일 */
-.resultpw, .resultcheckpw {
+.resultpw,
+.resultcheckpw {
 	font-size: 10px;
 	display: block;
 	margin-top: 5px;
@@ -2236,7 +2319,8 @@
 	width: 100%;
 }
 
-.form-container #pwCheck, .form-container #checkpwCheck {
+.form-container #pwCheck,
+.form-container #checkpwCheck {
 	vertical-align: middle;
 	margin-left: -20px;
 	margin-top: 14px;
@@ -2255,7 +2339,8 @@
 	position: relative;
 }
 
-.form-group span, .form-group-photo span {
+.form-group span,
+.form-group-photo span {
 	width: 100px;
 	font-size: 18px;
 	font-weight: 500;
@@ -2326,8 +2411,8 @@
 	border: 1px solid #ccc;
 }
 
-.form-container input[type="text"], .form-container input[type="password"]
-	{
+.form-container input[type="text"],
+.form-container input[type="password"] {
 	width: 60%;
 }
 
@@ -2545,7 +2630,8 @@
 /* .Attendance {
     gap: 10px;
 } */
-.Attendance_sections, .Attendance_vacation {
+.Attendance_sections,
+.Attendance_vacation {
 	display: flex;
 	width: 100%;
 	justify-content: space-between;
@@ -2554,7 +2640,10 @@
 	/* padding: 35px; */
 }
 
-.status_container, .hours_container, .week_status, .vacation_status {
+.status_container,
+.hours_container,
+.week_status,
+.vacation_status {
 	width: 100%;
 	/* padding: 20px; */
 	border-radius: 10px;
@@ -2566,7 +2655,8 @@
 	border-radius: 10px;
 }
 
-.status_row, .hours_row {
+.status_row,
+.hours_row {
 	display: flex;
 	padding: 10px 0;
 	border-bottom: 1px solid #ddd;
@@ -2602,12 +2692,19 @@
 	justify-content: center;
 }
 
-.status_col, .hours_col, .vacation_col, .week_col, .month_col {
+.status_col,
+.hours_col,
+.vacation_col,
+.week_col,
+.month_col {
 	flex: 1;
 	text-align: center;
 }
 
-.week_header, .vacation_header, .status_header, .month_header {
+.week_header,
+.vacation_header,
+.status_header,
+.month_header {
 	background-color: #555;
 	color: white;
 	font-weight: bold;
@@ -2651,13 +2748,9 @@
 	font-weight: bold;
 }
 
-.start {
-	
-}
+.start {}
 
-.end {
-	
-}
+.end {}
 
 /* 관리자 근태현황 */
 .dept_tabs {
@@ -2714,7 +2807,8 @@
 	border-radius: 10px;
 }
 
-.header_row span, .attendance_row span {
+.header_row span,
+.attendance_row span {
 	flex: 1;
 	text-align: center;
 }
@@ -2758,24 +2852,29 @@ button.purple {
 	background-color: #c058f0;
 }
 
-button:hover, button:active {
+button:hover,
+button:active {
 	cursor: pointer;
 	background-color: #1268d4;
 }
 
-button.red:hover, button.red:active {
+button.red:hover,
+button.red:active {
 	background-color: #c51221;
 }
 
-button.green:hover, button.green:active {
+button.green:hover,
+button.green:active {
 	background-color: #096309;
 }
 
-button.grey:hover, button.grey:active {
+button.grey:hover,
+button.grey:active {
 	background-color: #555;
 }
 
-button.purple:hover, button.purple:active {
+button.purple:hover,
+button.purple:active {
 	background-color: #9733c5;
 }
 
@@ -2838,7 +2937,8 @@ span.return {
 	bottom: 7px;
 }
 
-#progInfo:checked ~.infoBox, #doneInfo:checked ~.infoBox {
+#progInfo:checked~.infoBox,
+#doneInfo:checked~.infoBox {
 	display: block;
 }
 
@@ -2881,8 +2981,8 @@ span.return {
 	max-height: 48px;
 }
 
-.eApproval .docuList .listBox.progList .rows.listHeader, .eApproval .docuList .listBox.doneList .rows.listHeader
-	{
+.eApproval .docuList .listBox.progList .rows.listHeader,
+.eApproval .docuList .listBox.doneList .rows.listHeader {
 	max-height: 45px;
 }
 
@@ -2894,8 +2994,9 @@ span.return {
 	padding: 7px 0;
 }
 
-.eApproval .docuList .listBox .rows .cols:nth-child(1), .cols:nth-child(2),
-	.cols:nth-child(5) {
+.eApproval .docuList .listBox .rows .cols:nth-child(1),
+.cols:nth-child(2),
+.cols:nth-child(5) {
 	width: 15%;
 }
 
@@ -2918,13 +3019,11 @@ span.return {
 	padding: 5px;
 }
 
-.eApproval.adminCont .docuList .listBox .rows:not(.listHeader) .cols:last-child span
-	{
+.eApproval.adminCont .docuList .listBox .rows:not(.listHeader) .cols:last-child span {
 	color: #333;
 }
 
-.eApproval .docuList.docuBox .listBox.progList .rows:not(.listHeader) .cols:last-child span
-	{
+.eApproval .docuList.docuBox .listBox.progList .rows:not(.listHeader) .cols:last-child span {
 	width: max-content;
 }
 
@@ -2993,7 +3092,10 @@ span.return {
 	gap: 10px;
 }
 
-.eApprWrite .document .docuCont table, tr, th, td {
+.eApprWrite .document .docuCont table,
+tr,
+th,
+td {
 	border: 1px solid #888888;
 }
 
@@ -3030,25 +3132,21 @@ span.return {
 	padding: 2px;
 }
 
-.eApprWrite .document .docuCont .docuInfo .apprTable table thead tr th:first-child
-	{
+.eApprWrite .document .docuCont .docuInfo .apprTable table thead tr th:first-child {
 	width: 20%;
 }
 
-.eApprWrite .document .docuCont .docuInfo .apprTable table tbody tr:nth-child(2)
-	{
+.eApprWrite .document .docuCont .docuInfo .apprTable table tbody tr:nth-child(2) {
 	height: 70%;
 }
 
-.eApprWrite .document .docuCont .docuInfo .apprTable table tbody tr:nth-child(2) td
-	{
+.eApprWrite .document .docuCont .docuInfo .apprTable table tbody tr:nth-child(2) td {
 	width: 50px;
 	height: 80px;
 	padding: 3px 0;
 }
 
-.eApprWrite .document .docuCont .docuInfo .apprTable table tbody tr:nth-child(2) td img
-	{
+.eApprWrite .document .docuCont .docuInfo .apprTable table tbody tr:nth-child(2) td img {
 	width: 50px;
 }
 
@@ -3069,8 +3167,7 @@ span.return {
 	height: 100%;
 }
 
-.eApprWrite .document .docuCont .docuWrite table thead td input[type="text"]
-	{
+.eApprWrite .document .docuCont .docuWrite table thead td input[type="text"] {
 	width: 100%;
 	height: 100%;
 	padding: 10px;
@@ -3083,8 +3180,7 @@ span.return {
 	height: 20%;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuProp table thead td input[type="date"]
-	{
+.eApprWrite .document .docuCont .docuWrite.docuProp table thead td input[type="date"] {
 	width: 94%;
 	padding: 5px;
 	margin: 5px;
@@ -3093,8 +3189,7 @@ span.return {
 	border-radius: 8px;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuProp table thead td input[type="checkbox"]
-	{
+.eApprWrite .document .docuCont .docuWrite.docuProp table thead td input[type="checkbox"] {
 	width: max-content;
 }
 
@@ -3107,23 +3202,19 @@ span.return {
 	border: 1px solid #ccc;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuProp table thead tr:first-child td:nth-child(2)
-	{
+.eApprWrite .document .docuCont .docuWrite.docuProp table thead tr:first-child td:nth-child(2) {
 	width: 160px;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuProp table thead tr:first-child td:nth-child(4)
-	{
+.eApprWrite .document .docuCont .docuWrite.docuProp table thead tr:first-child td:nth-child(4) {
 	width: 58%;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuProp table thead tr:first-child td:last-child
-	{
+.eApprWrite .document .docuCont .docuWrite.docuProp table thead tr:first-child td:last-child {
 	width: 9%;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuProp table thead tr:first-child td:last-child div
-	{
+.eApprWrite .document .docuCont .docuWrite.docuProp table thead tr:first-child td:last-child div {
 	display: flex;
 	padding: 0 17px;
 	gap: 5px;
@@ -3143,8 +3234,7 @@ span.return {
 	padding-left: 10px;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLeave table thead td select
-	{
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead td select {
 	width: 90%;
 	padding: 5px 7px;
 	border-radius: 8px;
@@ -3152,15 +3242,13 @@ span.return {
 	border: 1px solid #ccc;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLeave table thead td input.readOnly
-	{
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead td input.readOnly {
 	width: 20%;
 	border-radius: 8px;
 	height: 80%;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:first-child td input[type="date"]
-	{
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:first-child td input[type="date"] {
 	width: 150px;
 	padding: 5px;
 	border-radius: 8px;
@@ -3168,25 +3256,21 @@ span.return {
 	border: 1px solid #ccc;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:first-child td:last-child
-	{
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:first-child td:last-child {
 	width: 10%;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:first-child td:last-child div
-	{
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:first-child td:last-child div {
 	display: flex;
 	padding-left: 10px;
 	gap: 5px;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLeave table thead td span
-	{
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead td span {
 	padding: 0 15px;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:nth-child(3) td
-	{
+.eApprWrite .document .docuCont .docuWrite.docuLeave table thead tr:nth-child(3) td {
 	padding-left: unset;
 }
 
@@ -3196,8 +3280,7 @@ span.return {
 	padding: 13px 0;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLateness table thead input[type="date"]
-	{
+.eApprWrite .document .docuCont .docuWrite.docuLateness table thead input[type="date"] {
 	margin-left: 10px;
 	width: 18%;
 	padding: 7px;
@@ -3206,18 +3289,15 @@ span.return {
 	border: 1px solid #ccc;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLateness table thead td:last-child
-	{
+.eApprWrite .document .docuCont .docuWrite.docuLateness table thead td:last-child {
 	width: 10%;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLateness table thead th:nth-child(3)
-	{
+.eApprWrite .document .docuCont .docuWrite.docuLateness table thead th:nth-child(3) {
 	width: 4%;
 }
 
-.eApprWrite .document .docuCont .docuWrite.docuLateness table thead td:last-child div
-	{
+.eApprWrite .document .docuCont .docuWrite.docuLateness table thead td:last-child div {
 	padding: 0 28px;
 }
 
@@ -3262,19 +3342,16 @@ span.return {
 	border-radius: 8px;
 }
 
-.eApprWrite .document .docuCont .docuFiles .uploadFiles::-webkit-scrollbar
-	{
+.eApprWrite .document .docuCont .docuFiles .uploadFiles::-webkit-scrollbar {
 	height: 5px;
 }
 
-.eApprWrite .document .docuCont .docuFiles .uploadFiles::-webkit-scrollbar-thumb
-	{
+.eApprWrite .document .docuCont .docuFiles .uploadFiles::-webkit-scrollbar-thumb {
 	background: rgb(255, 204, 214);
 	border-radius: 10px;
 }
 
-.eApprWrite .document .docuCont .docuFiles .uploadFiles::-webkit-scrollbar-track
-	{
+.eApprWrite .document .docuCont .docuFiles .uploadFiles::-webkit-scrollbar-track {
 	background: rgba(222, 151, 165, 0.1);
 }
 
@@ -3287,8 +3364,7 @@ span.return {
 	padding-left: 5px;
 }
 
-.eApprWrite .document .docuCont .docuFiles .uploadFiles .delFileBtn:hover
-	{
+.eApprWrite .document .docuCont .docuFiles .uploadFiles .delFileBtn:hover {
 	cursor: pointer;
 }
 
@@ -3325,7 +3401,8 @@ span.return {
 	font-weight: bold;
 }
 
-.eApprModal .eApprModalTitle span:hover, span:active {
+.eApprModal .eApprModalTitle span:hover,
+span:active {
 	cursor: pointer;
 	color: #777;
 }
@@ -3385,7 +3462,7 @@ span.return {
 	background-color: #e9e9e9;
 }
 
-.eApprModal.apprChoiModal .choiCont .deptList li input:checked ~label {
+.eApprModal.apprChoiModal .choiCont .deptList li input:checked~label {
 	background-color: #d2d2d2;
 }
 
@@ -3402,19 +3479,16 @@ span.return {
 	width: 227px;
 }
 
-.eApprModal.apprChoiModal .choiCont .employeeList ul::-webkit-scrollbar
-	{
+.eApprModal.apprChoiModal .choiCont .employeeList ul::-webkit-scrollbar {
 	width: 10px;
 }
 
-.eApprModal.apprChoiModal .choiCont .employeeList ul::-webkit-scrollbar-thumb
-	{
+.eApprModal.apprChoiModal .choiCont .employeeList ul::-webkit-scrollbar-thumb {
 	background: #777;
 	border-radius: 10px;
 }
 
-.eApprModal.apprChoiModal .choiCont .employeeList ul::-webkit-scrollbar-track
-	{
+.eApprModal.apprChoiModal .choiCont .employeeList ul::-webkit-scrollbar-track {
 	background: #e6e6e6;
 }
 
@@ -3434,8 +3508,7 @@ span.return {
 	background-color: #e9e9e9;
 }
 
-.eApprModal.apprChoiModal .choiCont .employeeList ul li input:checked ~label
-	{
+.eApprModal.apprChoiModal .choiCont .employeeList ul li input:checked~label {
 	background-color: #e9e9e9;
 }
 
@@ -3456,19 +3529,19 @@ span.return {
 	justify-content: center;
 }
 
-.eApprModal.apprChoiModal .choiCont .arrBtns button:hover, .eApprModal.apprChoiModal .choiCont .arrBtns button:active
-	{
+.eApprModal.apprChoiModal .choiCont .arrBtns button:hover,
+.eApprModal.apprChoiModal .choiCont .arrBtns button:active {
 	background-color: #c0c0c0;
 }
 
 .eApprModal.apprChoiModal .choiCont .arrBtns button:first-child img,
-	button:nth-child(4) img {
+button:nth-child(4) img {
 	rotate: -90deg;
 	width: 17px;
 }
 
 .eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(2) img,
-	.eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(5) img {
+.eApprModal.apprChoiModal .choiCont .arrBtns button:nth-child(5) img {
 	rotate: 90deg;
 	width: 17px;
 }
@@ -3526,19 +3599,16 @@ span.return {
 	height: 31px;
 }
 
-.eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar
-	{
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar {
 	width: 10px;
 }
 
-.eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar-thumb
-	{
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar-thumb {
 	background: #777;
 	border-radius: 10px;
 }
 
-.eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar-track
-	{
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul::-webkit-scrollbar-track {
 	background: #e6e6e6;
 }
 
@@ -3549,14 +3619,12 @@ span.return {
 	border-radius: 8px;
 }
 
-.eApprModal.apprChoiModal .choiCont .resultAppr .list ul li label:hover
-	{
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul li label:hover {
 	cursor: pointer;
 	background-color: #e9e9e9;
 }
 
-.eApprModal.apprChoiModal .choiCont .resultAppr .list ul li input:checked
-	~label {
+.eApprModal.apprChoiModal .choiCont .resultAppr .list ul li input:checked~label {
 	background-color: #e9e9e9;
 }
 
@@ -3623,32 +3691,27 @@ span.return {
 }
 
 .eApproval .docuList.docuBox .listBox.todoList .rows .cols:nth-child(4),
-	.eApproval .docuList.docuBox .listBox.upcomingList .rows .cols:nth-child(4),
-	.eApproval .docuList.docuBox .listBox.upcomingList .rows .cols:nth-child(4)
-	{
+.eApproval .docuList.docuBox .listBox.upcomingList .rows .cols:nth-child(4),
+.eApproval .docuList.docuBox .listBox.upcomingList .rows .cols:nth-child(4) {
 	width: 40%;
 }
 
-.eApproval .docuList.docuBox .listBox.saveList .rows .cols:nth-child(4)
-	{
+.eApproval .docuList.docuBox .listBox.saveList .rows .cols:nth-child(4) {
 	width: 64%;
 }
 
 .eApproval .docuList.docuBox .listBox.approvedList .rows .cols:nth-child(4),
-	.eApproval .docuList.docuBox .listBox.viewList .rows .cols:nth-child(4)
-	{
+.eApproval .docuList.docuBox .listBox.viewList .rows .cols:nth-child(4) {
 	width: 45%;
 }
 
-.eApproval .docuList.docuBox .listBox.viewList .rows .cols:nth-child(4) .beforeRead
-	{
+.eApproval .docuList.docuBox .listBox.viewList .rows .cols:nth-child(4) .beforeRead {
 	padding: 0 5px;
 	font-size: 16px;
 	color: #dc3545;
 }
 
-.eApproval .docuList.docuBox .listBox.writeList .rows .cols:nth-child(7)
-	{
+.eApproval .docuList.docuBox .listBox.writeList .rows .cols:nth-child(7) {
 	width: 8%;
 	justify-content: flex-start;
 }
@@ -3662,7 +3725,8 @@ span.return {
 }
 
 /* 전자 결재 문서 결재 & 반려 모달창 */
-.returnModal, .apprModal {
+.returnModal,
+.apprModal {
 	display: none;
 	border: 1px solid black;
 	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
@@ -3681,12 +3745,14 @@ span.return {
 	gap: 15px;
 }
 
-.returnModal .returnModalTitle, .apprModal .apprModalTitle {
+.returnModal .returnModalTitle,
+.apprModal .apprModalTitle {
 	flex: 1;
 	font-size: 24px;
 }
 
-.returnModal .returnModalTitle span, .apprModal .apprModalTitle span {
+.returnModal .returnModalTitle span,
+.apprModal .apprModalTitle span {
 	position: relative;
 	top: -18px;
 	right: -95px;
@@ -3695,19 +3761,22 @@ span.return {
 	font-weight: bold;
 }
 
-.returnModal .returnModalTitle span:hover, .returnModal .returnModalTitle span:active,
-	.apprModal .apprModalTitle span:hover, .apprModal .apprModalTitle span:active
-	{
+.returnModal .returnModalTitle span:hover,
+.returnModal .returnModalTitle span:active,
+.apprModal .apprModalTitle span:hover,
+.apprModal .apprModalTitle span:active {
 	cursor: pointer;
 	color: #777;
 }
 
-.returnModal .returnComm, .apprModal .apprComm {
+.returnModal .returnComm,
+.apprModal .apprComm {
 	flex: 4;
 	width: 100%;
 }
 
-.returnModal .returnComm textarea, .apprModal .apprComm textarea {
+.returnModal .returnComm textarea,
+.apprModal .apprComm textarea {
 	width: 100%;
 	height: 100%;
 	resize: none;
@@ -3715,7 +3784,8 @@ span.return {
 	border-radius: 8px;
 }
 
-.returnModal .modalBtnBox, .apprModal .modalBtnBox {
+.returnModal .modalBtnBox,
+.apprModal .modalBtnBox {
 	flex: 1;
 	display: flex;
 	align-items: end;
@@ -3966,7 +4036,8 @@ span.return {
 	font-weight: bold;
 }
 
-.modalClose:hover, .modalClose:focus {
+.modalClose:hover,
+.modalClose:focus {
 	color: black;
 	text-decoration: none;
 	cursor: pointer;
@@ -4172,13 +4243,15 @@ span.return {
 	background-color: #365c89;
 }
 
-.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active
-	{
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
 	background-color: #365c89;
 }
 
-.fc .fc-button:focus, .fc-button-primary:focus, .fc-button-primary:not(:disabled).fc-button-active:focus,
-	.fc-button-primary:not(:disabled):active:focus {
+.fc .fc-button:focus,
+.fc-button-primary:focus,
+.fc-button-primary:not(:disabled).fc-button-active:focus,
+.fc-button-primary:not(:disabled):active:focus {
 	box-shadow: unset !important;
 }
 
@@ -4331,8 +4404,8 @@ span.return {
 	padding: 7px 0;
 }
 
-.reservation .reservList .listBox .rows .cols:nth-child(1), .reservation .reservList .listBox .rows .cols:nth-child(2)
-	{
+.reservation .reservList .listBox .rows .cols:nth-child(1),
+.reservation .reservList .listBox .rows .cols:nth-child(2) {
 	width: 10%;
 }
 
@@ -4340,8 +4413,8 @@ span.return {
 	width: 50%;
 }
 
-.reservation .reservList .listBox .rows .cols:nth-child(4), .reservation .reservList .listBox .rows .cols:nth-child(5)
-	{
+.reservation .reservList .listBox .rows .cols:nth-child(4),
+.reservation .reservList .listBox .rows .cols:nth-child(5) {
 	width: 15%;
 }
 
@@ -4400,8 +4473,9 @@ span.return {
 	color: #444444;
 }
 
-.fc .fc-button-primary:focus, .fc-button-primary:not(:disabled).fc-button-active:focus,
-	.fc-button-primary:not(:disabled):active:focus {
+.fc .fc-button-primary:focus,
+.fc-button-primary:not(:disabled).fc-button-active:focus,
+.fc-button-primary:not(:disabled):active:focus {
 	box-shadow: unset !important;
 }
 
@@ -4425,8 +4499,9 @@ span.return {
 	background-color: #c058f0;
 }
 
-.fc .fc-button-primary:hover, .fc-button-primary:not(:disabled).fc-button-active,
-	.fc-button-primary:not(:disabled):active {
+.fc .fc-button-primary:hover,
+.fc-button-primary:not(:disabled).fc-button-active,
+.fc-button-primary:not(:disabled):active {
 	background-color: #1268d4;
 }
 
@@ -4474,7 +4549,8 @@ span.return {
 	right: -8px;
 }
 
-.modalClose:hover, .modalClose:focus {
+.modalClose:hover,
+.modalClose:focus {
 	color: black;
 	text-decoration: none;
 	cursor: pointer;
@@ -4556,8 +4632,8 @@ span.return {
 	background-color: #1268d4;
 }
 
-.fc-direction-ltr .fc-daygrid-event.fc-event-end, .fc-direction-rtl .fc-daygrid-event.fc-event-start
-	{
+.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
 	cursor: pointer;
 }
 
