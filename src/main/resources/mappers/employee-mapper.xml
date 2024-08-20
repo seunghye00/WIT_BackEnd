@@ -266,7 +266,9 @@
 		            and d.dept_title = #{category}
 		        ]]>
 		</if>
-		<![CDATA[order by em.name
+		<![CDATA[
+		and em.quit_yn = 'N'
+		order by em.name
 		) 
 		where rown between #{startNum} and #{endNum}
 		]]>
@@ -314,6 +316,7 @@
 		            and d.dept_title = #{category}
 		        ]]>
 		</if>
+		and em.quit_yn = 'N'
 	</select>
 	<!-- 직원 주소록 검색 -->
 	<select id="searchEmployeeAddressList" parameterType="map"
@@ -396,6 +399,7 @@
 		r.role_code
 		where
 		emp_no != #{emp_no}
+		and em.quit_yn = 'N' 
 	</select>
 
 	<!-- 메신저 주소록 상세 조회 -->
@@ -420,42 +424,42 @@
 	<select id="getManagementList" parameterType="map"
 		resultType="map">
 		select * from (
-		select
-		em.*,
-		d.dept_title,
-		r.role_title,
-		row_number() over (order by em.name asc) as rown
-		from
-		employee em
-		left join
-		dept d on em.dept_code = d.dept_code
-		left join
-		role r on em.role_code = r.role_code
-		where
-		em.emp_no != #{emp_no}
-		)
-		where rown between #{startNum} and #{endNum}
+		    select 
+		        em.*, 
+		        d.dept_title,
+		        r.role_title,
+		        row_number() over (order by em.emp_no asc) as rown
+		    from 
+		        employee em
+		    left join
+		        dept d on em.dept_code = d.dept_code
+		    left join
+		        role r on em.role_code = r.role_code
+		   	where 
+            	em.emp_no != #{emp_no}
+		    )
+		    where rown between #{startNum} and #{endNum}    
 	</select>
 
 	<!-- 관리자 사원 검색 조회 -->
 	<select id="selectByManage" parameterType="map" resultType="map">
 		select * from (
-		select
-		em.*,
-		d.dept_title,
-		r.role_title,
-		row_number() over (order by em.name asc) as rown
-		from
-		employee em
-		left join
-		dept d on em.dept_code = d.dept_code
-		left join
-		role r on em.role_code = r.role_code
-		where
-		em.emp_no != #{emp_no}
-		and ${column} like '%'||#{keyword}||'%'
-		)
-		where rown between #{startNum} and #{endNum}
+		    select 
+		        em.*, 
+		        d.dept_title,
+		        r.role_title,
+		        row_number() over (order by em.emp_no asc) as rown
+		    from 
+		        employee em
+		    left join
+		        dept d on em.dept_code = d.dept_code
+		    left join
+		        role r on em.role_code = r.role_code
+		    where 
+	    		em.emp_no != #{emp_no}
+		    	and ${column} like '%'||#{keyword}||'%'    
+		    )
+		    where rown between #{startNum} and #{endNum}    
 	</select>
 
 	<!-- 관리자 사원 검색 총 카운트 -->
@@ -476,8 +480,21 @@
 		left join
 		dept d on em.dept_code = d.dept_code
 		left join
-		role r on em.role_code = r.role_code
-		where
-		emp_no = #{emp_no}
-	</select>
+		    role r on em.role_code = r.role_code
+		where 
+		    emp_no = #{emp_no}
+    </select>	
+    
+    <update id="updateManage" parameterType="map">
+    	update employee 
+		    set 
+		        phone = #{phone}, 
+		        email = #{email}, 
+		        dept_code = #{dept_code}, 
+		        role_code = #{role_code}, 
+		        photo = #{photo}, 
+		        quit_yn = #{quit_yn},
+		        quit_date = CASE WHEN #{quit_yn} = 'Y' THEN sysdate ELSE quit_date END
+		    WHERE emp_no = #{emp_no}
+    </update>	
 </mapper>

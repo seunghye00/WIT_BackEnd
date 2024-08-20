@@ -214,4 +214,9 @@ public class EmployeeDAO {
 	public Map<String, Object> managementDetail(String emp_no) {
 		return mybatis.selectOne("employee.managementDetail", emp_no);
 	}
+	
+	// 직원 상세 업데이트
+	public void updateManage(Map<String, Object> params) {
+		mybatis.update("employee.updateManage", params);
+	}
 }
