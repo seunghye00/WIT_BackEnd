@@ -18,5 +18,9 @@ public class DeptService {
 	public List<DeptDTO> getList() {
 		return dao.getList();
 	}
-
+	
+	// 부서 타이틀 부서 코드로 변경
+	public String getDeptCode(String deptTitle) {
+		return dao.getDeptCode(deptTitle);
+	}
 }

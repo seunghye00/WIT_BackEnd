@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="container">
-        <%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>
+        <%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp" %>
         <div class="main-content">
             <%@ include file="/WEB-INF/views/Includes/header.jsp" %>
             <div class="contents">
@@ -125,8 +125,9 @@
                 $('#results').empty();
                 if (Array.isArray(data) && data.length > 0) {
                     data.forEach(function(contact) {
+                    	var rowClass = contact.QUIT_DATE ? 'line-through' : '';
                         var $row = $('<div>', {
-                            class: 'rows',
+                        	class: 'rows ' + rowClass,
                             onclick: 'handleRowClick(event, this)',
                             'data-seq': contact.EMP_NO
                         });

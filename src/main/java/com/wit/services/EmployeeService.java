@@ -221,6 +221,7 @@ public class EmployeeService {
 	}
 
 	// 해당 사번을 가진 사원의 이름 조회
+	@Transactional
 	public String getDept(String empNo) {
 		return dao.getDept(empNo);
 	}
@@ -270,5 +271,21 @@ public class EmployeeService {
 	@Transactional
 	public Map<String, Object> managementDetail(String emp_no) {
 		return dao.managementDetail(emp_no);
+	}
+	
+	// 관리자 사원 상세 업데이트
+	@Transactional
+	public void updateManage(String empNo, String photoUrl, String phone, String quit_yn ,String email,String dept_code,String role_code) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("emp_no", empNo);
+		params.put("phone", phone);
+		params.put("email", email);
+		params.put("phone", phone);
+		params.put("dept_code", dept_code);
+		params.put("role_code", role_code);
+		params.put("quit_yn", quit_yn);
+		params.put("photo", photoUrl);
+		
+		dao.updateManage(params);
 	}
 }

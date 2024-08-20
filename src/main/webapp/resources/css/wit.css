@@ -1899,6 +1899,9 @@
 	width: calc(100% / 6);
 }
 
+.manageForm .listBox .rows.line-through {
+    text-decoration: line-through;
+}
 
 .manageDetailForm{
 	display:flex;
@@ -1947,6 +1950,9 @@
 .formCon .photoWrapper label {
 	margin-left:0;
 }
+
+
+
 /* 경원 css end */
 
 /* 민서 css start */
