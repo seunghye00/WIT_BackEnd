@@ -392,7 +392,7 @@ public class EmployeeController {
 
 		List<Map<String, Object>> list = service.getManagementList(emp_no, cpage_num);
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		for (Map<String, Object> item : list) {
 			TIMESTAMP joinTimestamp = (TIMESTAMP) item.get("JOIN_DATE");
@@ -430,7 +430,7 @@ public class EmployeeController {
 
 		List<Map<String, Object>> list = service.selectByManage(emp_no, column, keyword, cpage_num);
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		for (Map<String, Object> item : list) {
 			TIMESTAMP joinTimestamp = (TIMESTAMP) item.get("JOIN_DATE");
 			TIMESTAMP quitTimestamp = (TIMESTAMP) item.get("QUIT_DATE");
