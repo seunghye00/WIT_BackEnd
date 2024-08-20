@@ -262,7 +262,9 @@
 		            and d.dept_title = #{category}
 		        ]]>
 		</if>
-		<![CDATA[order by em.name
+		<![CDATA[
+		and em.quit_yn = 'N'
+		order by em.name
 		) 
 		where rown between #{startNum} and #{endNum}
 		]]>
@@ -310,6 +312,7 @@
 		            and d.dept_title = #{category}
 		        ]]>
 		</if>
+		and em.quit_yn = 'N'
 	</select>
 	<!-- 직원 주소록 검색 -->
 	<select id="searchEmployeeAddressList" parameterType="map"
@@ -391,6 +394,7 @@
 		r.role_code
 		where
 		emp_no != #{emp_no}
+		and em.quit_yn = 'N' 
 	</select>
 
 	<!-- 메신저 주소록 상세 조회 -->
@@ -426,6 +430,7 @@
 		        role r on em.role_code = r.role_code
 		   	where 
             	em.emp_no != #{emp_no}
+            	and em.quit_yn = 'N'
 		    )
 		    where rown between #{startNum} and #{endNum}    
 	</select>
@@ -446,6 +451,7 @@
 		        role r on em.role_code = r.role_code
 		    where 
 	    		em.emp_no != #{emp_no}
+	    		and em.quit_yn = 'N'
 		    	and ${column} like '%'||#{keyword}||'%'    
 		    )
 		    where rown between #{startNum} and #{endNum}    

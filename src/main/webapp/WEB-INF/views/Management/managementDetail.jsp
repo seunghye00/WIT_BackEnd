@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="container">
-        <%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>
+        <%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp" %>
         <div class="main-content">
             <%@ include file="/WEB-INF/views/Includes/header.jsp" %>
             <div class="contents">
@@ -32,7 +32,8 @@
                 </div>
                 <div class="sideContents addressCont">
 						<div class="mainTitle addressTit">사원 정보 상세</div>
-					    <form class="manageDetailForm" id="employeeDetailForm" method="post" action="/employee/update">
+					    <form class="manageDetailForm" id="employeeDetailForm" method="post" action="/employee/updateManage">
+	                       <input type="hidden" id="empNo" name="empNo" value="${employee.EMP_NO}">
 	                       <div class="formCon">
                                <div class="formGroup">
                                    <label for="photo">사진</label>
@@ -40,10 +41,11 @@
                                        <div class="imgBox">
 	                                       <img src="/uploads/${employee.PHOTO}" alt="사진" id="photo">
                                        </div>
-                                       <button type="button" onclick="removePhoto()">삭제</button>
+                                       <button type="button" class="red" onclick="removePhoto()">삭제</button>
                                        <input type="file" id="photoUpload" accept="image/*"
                                            onchange="previewPhoto(event)" disabled>
                                        <label for="photoUpload">등록</label>
+                                       <input type="hidden" id="photoUrl" name="photoUrl">
                                    </div>
                                </div>
 							<div class="formCont">
@@ -81,17 +83,18 @@
 									<div class="formGroup">
 										<label for="birthDate">생년월일</label> <input type="text"
 											id="birthDate" name="birthDate" value="${employee.BIRTHDATE}"
-											readonly>
+											readonly disabled="true">
 									</div>
 									<div class="formGroup">
 										<label for="joinDate">입사일</label> <input type="date"
 											id="joinDate" name="joinDate" value="${employee.JOIN_DATE}"
-											readonly>
+											readonly disabled="true">
 									</div>
 									<div class="formGroup">
 										<label for="quitDate">퇴사일</label> <input type="date"
 											id="quitDate" name="quitDate" value="${employee.QUIT_DATE}"
-											readonly>
+											readonly disabled="true">
+											<input type="hidden" id="hiddenQuitDate" name="quitDate" value="${employee.QUIT_DATE}">
 									</div>
 									<div class="formGroup">
 										<label for="email">이메일</label> <input type="email" id="email"
@@ -103,8 +106,8 @@
 	                       <div class="actions">
 	                           <button type="button" id="editBtn" class="edit">수정</button>
 	                           <button type="submit" id="saveBtn" class="save" style="display:none;" onclick="saveEmployee()">저장</button>
-	                           <button type="button" onclick="window.location.href='/employee/management'">목록</button>
-	                           <button type="button" id="quitOutBtn" style="display:none;" class="quitOutBtn">퇴사</button>
+	                           <button type="button" class="grey" onclick="window.location.href='/employee/management'">목록</button>
+	                           <button type="button" class="red" id="quitOutBtn" style="display:none;" class="quitOutBtn">퇴사</button>
 	                       </div>
                     </form>
                 </div>
@@ -139,74 +142,53 @@
         document.getElementById('photoUpload').value = "";
     }
 	 
-	function saveEmployee() {
-	    var formData = new FormData(document.getElementById('employeeDetailForm'));
-	    var fileInput = document.getElementById('photoUpload');
-	    
-	    // 파일 업로드
-	    if (fileInput.files.length > 0) {
-	        var file = fileInput.files[0];
-	        formData.append("file", file);
-	    }
-	
-	    $.ajax({
-	        url: '/uploadImage',
-	        type: 'POST',
-	        data: formData,
-	        processData: false,
-	        contentType: false,
-	        success: function(response) {
-	            if (response.success) {
-	                // 서버에 저장된 이미지 URL을 폼에 추가하여 저장할 수 있도록 설정
-	                formData.append("photoUrl", response.url);
-	                // 실제 서버에 저장 요청
-	                $.ajax({
-	                    url: '/employee/updateManage',  // 서버의 실제 업데이트 처리 URL
-	                    type: 'POST',
-	                    data: formData,
-	                    processData: false,
-	                    contentType: false,
-	                    success: function(response) {
-	                        alert("저장이 완료되었습니다.");
-	                    },
-	                    error: function(xhr, status, error) {
-	                        console.error('Error:', status, error);
-	                    }
-	                });
-	            } else {
-	                alert("이미지 업로드 실패: " + response.message);
-	            }
-	        },
-	        error: function(xhr, status, error) {
-	            console.error('Error:', status, error);
-	        }
-	    });
-	}
+ 	function saveEmployee() {
+ 	    var formData = new FormData(document.getElementById('employeeDetailForm'));
+ 	    var fileInput = document.getElementById('photoUpload');
+ 	    var photoChanged = fileInput.files.length > 0; // 사용자가 이미지를 변경했는지 여부를 확인
+
+ 	    if (photoChanged) {
+ 	        // 사용자가 이미지를 변경한 경우
+ 	        var file = fileInput.files[0];
+ 	        formData.append("file", file);
+
+ 	        // 이미지 업로드를 먼저 처리
+ 	        $.ajax({
+ 	            url: '/uploadImage',
+ 	            type: 'POST',
+ 	            data: formData,
+ 	            processData: false,
+ 	            contentType: false,
+ 	            success: function(response) {
+ 	                if (response.success) {
+ 	                    // 서버에 저장된 이미지 URL을 폼에 추가하여 저장할 수 있도록 설정
+ 	                    $('#photoUrl').val(response.url);
+ 	                   	document.getElementById('employeeDetailForm').submit(); 
+ 	                } else {
+ 	                    alert("이미지 업로드 실패: " + response.message);
+ 	                }
+ 	            },
+ 	            error: function(xhr, status, error) {
+ 	                console.error('Error:', status, error);
+ 	            }
+ 	        });
+ 	    } else {
+ 	        // 사용자가 이미지를 변경하지 않은 경우
+ 	        submitEmployeeForm(formData); // 이미지를 제외한 나머지 정보를 업데이트
+ 	    }
+ 	}
 	
 	$('#quitOutBtn').click(function() {
 	    // 현재 날짜를 yyyy-mm-dd 형식으로 포맷
-	    var today = new Date().toISOString().split('T')[0];
-	    $('#quitDate').val(today);
+	    if (confirm("정말 퇴사 처리하시겠습니까?")) {
+	    	 var today = new Date().toISOString().split('T')[0];
+	         
+	         // 실제 보여지는 필드에 값 설정 (disabled 상태로 유지)
+	         $('#quitDate').prop('disabled', false).val(today).prop('disabled', true);
 
-	    // 퇴사일을 현재 날짜로 설정한 후 서버에 업데이트 요청
-	    var formData = new FormData();
-	    formData.append('empNo', '${employee.EMP_NO}');
-	    formData.append('quitDate', today);
-
-	    $.ajax({
-	        url: '/employee/terminate',  // 퇴사 처리하는 서버의 URL
-	        type: 'POST',
-	        data: formData,
-	        processData: false,
-	        contentType: false,
-	        success: function(response) {
-	            alert("퇴사 처리가 완료되었습니다.");
-	            $('#saveBtn').show();  // 저장 버튼 표시
-	        },
-	        error: function(xhr, status, error) {
-	            console.error('Error:', status, error);
-	        }
-	    });
+	         // 숨겨진 필드에 값을 설정
+	         $('#hiddenQuitDate').val(today);
+	    }
 	});
 </script>
 </html>

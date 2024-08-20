@@ -13,8 +13,13 @@ public class RoleDAO {
 	@Autowired
 	private SqlSession mybatis;
 	
-	// 부서 목록을 받아오기 위한 메서드
+	// 직급 목록을 받아오기 위한 메서드
 	public List<RoleDTO> getList() {
 		return mybatis.selectList("role.selectAll");
+	}
+	
+	// 직급 타이틀 직급 코드로 변환
+	public String getRoleCode(String roleTitle) {
+		return mybatis.selectOne("role.getRoleCode");
 	}
 }
