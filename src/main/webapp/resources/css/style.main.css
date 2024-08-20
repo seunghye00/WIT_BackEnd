@@ -375,17 +375,17 @@ body {
 }
 
 .leftTop {
-	border-radius: 20px;
-	flex: 1 1 0%;
-	background-color: rgb(255, 255, 255);
-	border: 3px solid #558BCF;
-	padding: 20px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 30px;
+   border-radius: 20px;
+   flex: 1 1 0%;
+   background-color: rgb(255, 255, 255);
+   border: 3px solid #558BCF;
+   padding: 20px;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 20px;
+   justify-content: center;
 }
-
 .leftBottom {
     flex: 1 1 0%;
     border-radius: 20px;
@@ -612,9 +612,8 @@ body {
 }
 
 #clock {
-	font-size: 80px;
+	font-size: 70px;
 	margin-top: 20px;
 	font-family:LABDigital;
 	font-weight: 500;
-	background: #f0f0f0;
 }
