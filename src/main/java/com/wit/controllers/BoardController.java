@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
 import com.wit.commons.BoardConfig;
 import com.wit.dto.BoardDTO;
 import com.wit.dto.BoardFilesDTO;
@@ -99,14 +100,19 @@ public class BoardController {
 		return "Board/writeBoard";
 	}
 	
-	// 신고현황 게시판으로 이동
-	@RequestMapping("reportList")
-	public String reportList(Model model) throws Exception{
+	// 신고 모달창
+	@RequestMapping(value = "/reportList", produces = "application/json; charset=UTF-8")
+	@ResponseBody 
+	public String reportList(Model model, @RequestParam(defaultValue = "0") int board_seq) throws Exception{
 		// 신고된 게시물 목록 조회
-		List<BoardReportDTO> reportedPosts = bserv.getReportedPosts();
-		model.addAttribute("reportedPosts",reportedPosts);
-		return "Board/report";
+		System.out.println(board_seq);
+		List<BoardReportDTO> reportList = bserv.reportList(board_seq);
+		
+		Gson gson= new Gson();
+		String reportLists = gson.toJson(reportList);
+		return reportLists;
 	}
+	
 	
 	// 게시물 등록
 	@RequestMapping("writeProc")
@@ -163,11 +169,21 @@ public class BoardController {
 
 	// 게시물 삭제
 	@RequestMapping("/delete")
-	public String delete(int board_seq) throws Exception {
+	public String delete(int board_seq, int board_code) throws Exception {
 		// 게시물과 첨부 파일 삭제
 		bserv.delete(board_seq);
-		return "redirect:/board/list";
+		return "redirect:/board/list?boardCode="+board_code;
 	}
+	
+	// 게시물 삭제
+		@RequestMapping("/deleteReport")
+		public String deleteReport(int board_seq) throws Exception {
+			// 게시물과 첨부 파일 삭제
+			bserv.delete(board_seq);
+			return "redirect:/board/list?adminReport=true";
+		}
+
+		
 	// 게시물 클릭하면 조회수 올리는 것
 	@RequestMapping("/views")
 	@ResponseBody
@@ -202,6 +218,7 @@ public class BoardController {
 			dos.flush();
 		}
 	}
+	
 	
 	// 예외를 담당하는 메서드 생성
 	@ExceptionHandler(Exception.class)

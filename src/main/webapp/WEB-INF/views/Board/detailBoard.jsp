@@ -61,22 +61,27 @@
 													<ul class="subList">
 														<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
 														</li>
+
 														<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
-														<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
+
+														<c:if test="${employee.role_code == '사장'}">
+															<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
+														</c:if>
 													</ul>
 												</li>
 											</ul>
 										</div>
-
-										<div class="addressListGroup">
-											<ul class="GroupList">
-												<li class="toggleItem">
-													<h3 class="reportList">
-														신고 현황
-													</h3>
-												</li>
-											</ul>
-										</div>
+										<c:if test="${employee.role_code == '사장'}">
+											<div class="addressListGroup">
+												<ul class="GroupList">
+													<li class="toggleItem">
+														<h3 class="reportList">
+															신고 현황
+														</h3>
+													</li>
+												</ul>
+											</div>
+										</c:if>
 									</div>
 
 									<!--자유게시판 영역-->
@@ -124,9 +129,11 @@
 														<c:choose>
 															<c:when test="${board_code=='1'}">
 																<div class="writeReport">
-																	<button id="reportBtn">
-																		<i class='bx bx-message-alt-error'></i> 신고하기
-																	</button>
+																	<c:if test="${board.emp_no != Nickname}">
+																		<button id="reportBtn">
+																			<i class='bx bx-message-alt-error'></i> 신고하기
+																		</button>
+																	</c:if>
 																</div>
 															</c:when>
 														</c:choose>
@@ -153,7 +160,7 @@
 															id="fboardUpd">수정</button>
 														<button type="button" class="btn btn-outline-success"
 															id="fboardDel"
-															onclick="deleteBoard(${board.board_seq})">삭제</button>
+															onclick="deleteBoard(${board.board_seq},${board_code})">삭제</button>
 													</c:if>
 													<button type="button" class="btn btn-outline-primary"
 														onclick="location.href='/board/list?boardCode=${board_code}'">목록으로</button>
@@ -269,8 +276,7 @@
 												<div class="ct">
 													<div class="reporter">
 														<div class="reportNick">신고자 닉네임</div>
-														<input class="reportInput" value="${board.emp_no}"
-															readonly></input>
+														<input class="reportInput" value="${Nickname}" readonly></input>
 													</div>
 													<div class="reportSort">
 														<div class="sort">신고 사유</div>
@@ -325,10 +331,10 @@
 					if (${ bookmark }) { $('#starIcon').attr('class', 'bx bxs-star') }
 
 					// 삭제 기능
-					function deleteBoard(boardSeq) {
+					function deleteBoard(boardSeq,boardCode) {
 						if (confirm("정말로 삭제하시겠습니까?")) {
 							// 사용자에게 삭제 확인을 받았을 때만 삭제 요청
-							location.href = "/board/delete?board_seq=" + boardSeq;
+							location.href = "/board/delete?board_seq=" + boardSeq +"&board_code="+boardCode;
 						}
 					}
 					console.log("Login ID: ${Nickname}");

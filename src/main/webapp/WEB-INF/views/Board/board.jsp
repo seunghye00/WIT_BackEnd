@@ -58,10 +58,12 @@
 													<ul class="subList">
 														<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
 														</li>
+
+														<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+
 														<c:if test="${employee.role_code == '사장'}">
-															<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+															<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
 														</c:if>
-														<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
 													</ul>
 												</li>
 											</ul>
@@ -181,7 +183,7 @@
 															<div class="cols boardView">신고유형</div>
 														</c:when>
 														<c:when test="${adminReport=='true'}">
-															<div class="cols boardView">신고 횟수</div>
+															<div class="cols boardView">누적 신고 횟수</div>
 															<div class="cols boardBtn">
 																게시글 삭제
 															</div>
@@ -232,7 +234,8 @@
 															</c:when>
 															<c:when test="${adminReport=='true'}">
 																<div class="cols boardView">
-																	<span>${board.count}</span>
+																	<span class="thisRList"
+																		data-seq="${board.board_seq}">${board.count}</span>
 																</div>
 																<div class="cols boardWriter">
 																	<button class="deleteBoard"
@@ -254,9 +257,51 @@
 											</div>
 										</div>
 									</div>
+									<!--신고 현황 모달창-->
+									<div id="modal" class="dialog">
+										<div class="tb">
+											<div class="inner">
+												<div class=" top">
+													<div class="title">신고내역</div>
+												</div>
+												<div class="ct">
+													<div class="ctTitle">
+														<div class="reportPer">신고자</div>
+														<div class="reportRes">신고 사유</div>
+														<div class="reportDate">신고 날짜</div>
+													</div>
+
+													<div class="ctContainer"
+														style="display: flex; flex-direction: column;">
+
+													</div>
+
+												</div>
+												<div class="reportControls">
+													<a href="#" class="rClose">
+														<button type="button" class="btn btn-primary"
+															id="reportClose">닫기</button>
+													</a> <a href="#">
+														<button type="button" class="btn btn-danger"
+															id="reportInsert">신고하기</button>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
 								</div>
 						</div>
 				</div>
+				<div class="reporttemp" style="display: none;">
+					<div class="ctCont">
+						<div class="reportPer"></div>
+						<div class="reportRes"></div>
+						<div class="reportDate"></div>
+					</div>
+				</div>
+
 				<script>
 					// 처음에 서버에서 값을 보내줄 때 빈 문자열이 아니면 서버에서 보내준 값으로 설정
 					if (${ searchTarget != "" }) {
@@ -306,6 +351,43 @@
 					$(".reportList").on("click", function () {
 						window.location.href = "/board/list?adminReport=true";
 					});
+
+					// 신고 리스트 모달 열기 및 닫기
+					$('.thisRList').on('click', function () {
+						$.ajax({
+							url: "/board/reportList",
+							data: {
+								board_seq: $(this).data("seq")
+							}
+
+						}).done((resp) => {
+							let ctContainer = $(".ctContainer");
+							ctContainer.html("");
+
+
+							resp.forEach((item) => {
+								let clone = $(".reporttemp").find(".ctCont").clone(true);
+								clone.css({
+									display: "flex",
+									flex: 1
+								})
+								let per = clone.find(".reportPer");
+								let res = clone.find(".reportRes");
+								let date = clone.find(".reportDate");
+
+								per.html(item.emp_no);
+								res.html(item.report_type);
+								date.html(item.report_date);
+								ctContainer.append(clone);
+								console.log(item);
+							})
+							console.log(resp);
+						})
+						$('#modal').css('display', 'block')
+					})
+					$('.rClose').on('click', function () {
+						$('#modal').css('display', 'none')
+					})
 
 					// 검색 버튼 누르면 검색 옵션, 정렬 옵션, 검색 내용 값 넣어주기
 					$("#searchBtn").on("click", function () {
@@ -358,10 +440,10 @@
 
 
 					if (needPrev)
-						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&cpage=" + (startNavi - 1) + "' class='prev " + (needPrev ? "active" : "disabled") + "'><i class='bx bx-chevron-left'></i></a>");
+						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&adminReport=${adminReport}&cpage=" + (startNavi - 1) + "' class='prev " + (needPrev ? "active" : "disabled") + "'><i class='bx bx-chevron-left'></i></a>");
 
 					for (let i = startNavi; i <= endNavi; i++) {
-						let page = $("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&cpage=" + i + "'>" + i + "</a> ");
+						let page = $("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&adminReport=${adminReport}&cpage=" + i + "'>" + i + "</a> ");
 						pageNation.append(page);
 						if (i == cpage) {
 							page.css({
@@ -374,7 +456,7 @@
 						}
 					}
 					if (needNext)
-						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&cpage=" + (endNavi + 1) + "' class='next " + (needNext ? "active" : "disabled") + "' data-page='" + (endNavi + 1) + "'><i class='bx bx-chevron-right'></i></a>");
+						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&adminReport=${adminReport}&cpage=" + (endNavi + 1) + "' class='next " + (needNext ? "active" : "disabled") + "' data-page='" + (endNavi + 1) + "'><i class='bx bx-chevron-right'></i></a>");
 
 
 					// 주소록 토글 이벤트 설정
@@ -393,7 +475,7 @@
 					function deleteBoard(boardSeq) {
 						if (confirm("정말로 삭제하시겠습니까?")) {
 							// 사용자에게 삭제 확인을 받았을 때만 삭제 요청
-							location.href = "/board/delete?board_seq=" + boardSeq;
+							location.href = "/board/deleteReport?board_seq=" + boardSeq;
 						}
 					}
 				</script>
