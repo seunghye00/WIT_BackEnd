@@ -53,7 +53,7 @@ $(document).ready(function() {
                 $('.myImgBox img').attr('src', response.photo);
             }
             if (response.name && response.role_code) {
-                $('.myName a').text(response.name + ' ' + response.role_code);
+                $('.myName a').text(response.role_code + ' ' + response.name);
             }
         },
         error: function(xhr, status, error) {

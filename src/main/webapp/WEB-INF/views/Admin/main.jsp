@@ -32,7 +32,9 @@
 			<div class="contents">
 				<div class="left">
 					<div class="leftTop">
-						<img src="/img/푸바오admin.png" alt="프로필 사진" class="profileImg">
+						<span class="main_profile"> <img src="/img/푸바오.png"
+							alt="프로필 사진" class="profileImg">
+						</span>
 						<div class="dept-role">${employee.dept_code}
 							${employee.role_code}</div>
 						<div class="username">${employee.name}</div>

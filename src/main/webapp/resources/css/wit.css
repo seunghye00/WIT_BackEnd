@@ -260,7 +260,6 @@
 	flex: 1;
 }
 
-
 /* pagenavi css start */
 .boardList .pageNavi {
 	height: 50px;
@@ -1889,12 +1888,12 @@
 }
 
 .manageForm .listBox .rows.line-through {
-    text-decoration: line-through;
+	text-decoration: line-through;
 }
 
-.manageDetailForm{
-	display:flex;
-	flex-direction:column;
+.manageDetailForm {
+	display: flex;
+	flex-direction: column;
 	gap: 40px;
 }
 
@@ -2542,16 +2541,12 @@
 
 .attendance-btn {
 	display: flex;
-	justify-content: space-between;
-	gap: 20px;
-	margin-top: 10px;
 }
 
 .attendance-btn div {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 5px;
 }
 
 /* 근태관리 */
@@ -2644,21 +2639,23 @@
 
 .month_status {
 	width: 100%;
-	/* padding: 20px; */
 	border-radius: 10px;
-	/* margin-top: 30px; */
-}
-
-.Attendance h2 {
-	margin: 5px;
 }
 
 /* 메인페이지 프로필*/
-.profileImg {
-	width: 60%;
+.main_profile {
+	width: 200px;
+	height: 200px;
+	display: block;
+	overflow: hidden;
 	border-radius: 100%;
-	border: 3px solid #fff;
-	transition: all 0.5s ease;
+	border: 3px solid #558BCF;
+}
+
+.profileImg {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 .attendance_icon {
@@ -2667,10 +2664,12 @@
 
 .dept-role {
 	font-weight: bold;
+	font-size: 25px;
 }
 
 .username {
 	font-weight: bold;
+	font-size: 25px;
 }
 
 .start {
@@ -3578,7 +3577,7 @@ span.return {
 }
 
 .eApprModal.apprChoiModal .choiCont .resultAppr .list ul li input:checked
-	~label {
+	 ~label {
 	background-color: #e9e9e9;
 }
 
