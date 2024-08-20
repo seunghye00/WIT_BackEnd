@@ -59,7 +59,14 @@
                             <c:choose>
 								<c:when test="${empty docuList}">
 									<div class="rows emptyDocuList">
-										<p>진행중인 문서가 없습니다.</p>
+										<c:choose>
+											<c:when test="${keyword == null}">
+												<p>반려된 문서가 없습니다.</p>
+											</c:when>
+											<c:otherwise>
+												<p>검색한 결과가 없습니다.</p>
+											</c:otherwise>
+										</c:choose>
 									</div>
 								</c:when>
 								<c:otherwise>

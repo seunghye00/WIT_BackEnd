@@ -12,7 +12,7 @@
 	rel='stylesheet'>
 <link rel="stylesheet" href="/resources/css/style.main.css">
 <link rel="stylesheet" href="/resources/css/mky.css">
-<link rel="stylesheet" href="/resources/css/employee.css">
+<link rel="stylesheet" href="/resources/css/wit.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="/resources/js/employee.js"></script>
 
@@ -88,22 +88,27 @@
 						<h3 class="toggleTit">휴가관리</h3>
 					</a>
 					<div style="padding: 10px;"></div>
-					<a href="/attendance/attendanceDept">
-						<h3 class="toggleTit">부서별 근태현황</h3>
-					</a>
-					<div style="padding: 10px;"></div>
-					<a href="/annualLeave/attendanceDeptVacation">
-						<h3 class="toggleTit">부서별 휴가현황</h3>
-					</a>
+					<!-- 사장일 때만 부서별 근태현황과 부서별 휴가현황을 보여줌 -->
+					<c:if test="${employee.role_code == '사장'}">
+						<a href="/attendance/attendanceDept">
+							<h3 class="toggleTit">부서별 근태현황</h3>
+						</a>
+						<div style="padding: 10px;"></div>
+						<a href="/annualLeave/attendanceDeptVacation">
+							<h3 class="toggleTit">부서별 휴가현황</h3>
+						</a>
+					</c:if>
 				</div>
 				<div class="sideContents AttendanceDept">
 					<h2>부서별 근무현황</h2>
 					<div class="week_selector">
 						<i class="bx bx-chevron-left"
-							onclick="window.location.href='?week=${previousWeek}'"></i> <span>${startDate}
-							~ ${endDate}</span> <i class="bx bx-chevron-right"
-							onclick="window.location.href='?week=${nextWeek}'"></i>
+							onclick="window.location.href='?week=${previousWeek}&deptTitle=${deptTitle}'"></i>
+						<span>${startDate} ~ ${endDate}</span> <i
+							class="bx bx-chevron-right"
+							onclick="window.location.href='?week=${nextWeek}&deptTitle=${deptTitle}'"></i>
 					</div>
+
 					<div class="dept_tabs">
 						<c:forEach var="dept" items="${departments}">
 							<div

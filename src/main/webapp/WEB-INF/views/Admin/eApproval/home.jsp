@@ -33,7 +33,7 @@
 					</div>
 					<%@ include file="/WEB-INF/views/Admin/eApproval/commons/sideToggle.jsp" %>
 				</div>
-				<div class="sideContents eApproval">
+				<div class="sideContents eApproval adminCont">
 					<div class="mainTitle">전자 결재 홈</div>
 					<div class="docuList">
 						<div class="subTitle">
@@ -70,7 +70,7 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="${toDoList}" var="i">
-										<a href="/eApproval/admin/apprDocu?docuSeq=${i.document_seq}">
+										<a href="/eApproval/admin/readDocu?docuSeq=${i.document_seq}&type=toAppr">
 										<div class="rows">
 											<div class="cols">
 												<span><fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" /></span>

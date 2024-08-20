@@ -354,11 +354,11 @@
 
                 let pageNation = $("#pagination");
                 pageNation.empty();
-
+				console.log(response)
                 let cpage = response.cpage;
                 let record_total_count = response.totPage;
-                let record_count_per_page = response.recordCountPerPage;
-                let navi_count_per_page = response.naviCountPerPage;
+                let record_count_per_page = 10;
+                let navi_count_per_page = 5;
                 let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
 
                 let startNavi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;

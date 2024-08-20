@@ -267,7 +267,50 @@
 		where rown between #{startNum} and #{endNum}
 		]]>
 	</select>
-
+	
+	<!-- 직원 주소록 리스트 조회 -->
+	<select id="CountPageAddress" parameterType="map"
+		resultType="int">
+        <![CDATA[
+		    select count(*) 
+		    from 
+		        employee em
+		    left join
+		        dept d on em.dept_code = d.dept_code
+		    left join
+		        role r on em.role_code = r.role_code
+		    where
+		    	1=1
+		    ]]>
+		<if test="chosung != null and chosung != ''">
+		        <![CDATA[
+		            and (
+		                #{chosung} = '전체'
+		                or (#{chosung} = 'ㄱ' and em.name >= '가' and em.name < '나')
+		                or (#{chosung} = 'ㄴ' and em.name >= '나' and em.name < '다')
+		                or (#{chosung} = 'ㄷ' and em.name >= '다' and em.name < '라')
+		                or (#{chosung} = 'ㄹ' and em.name >= '라' and em.name < '마')
+		                or (#{chosung} = 'ㅁ' and em.name >= '마' and em.name < '바')
+		                or (#{chosung} = 'ㅂ' and em.name >= '바' and em.name < '사')
+		                or (#{chosung} = 'ㅅ' and em.name >= '사' and em.name < '아')
+		                or (#{chosung} = 'ㅇ' and em.name >= '아' and em.name < '자')
+		                or (#{chosung} = 'ㅈ' and em.name >= '자' and em.name < '차')
+		                or (#{chosung} = 'ㅊ' and em.name >= '차' and em.name < '카')
+		                or (#{chosung} = 'ㅋ' and em.name >= '카' and em.name < '타')
+		                or (#{chosung} = 'ㅌ' and em.name >= '타' and em.name < '파')
+		                or (#{chosung} = 'ㅍ' and em.name >= '파' and em.name < '하')
+		                or (#{chosung} = 'ㅎ' and em.name >= '하' and em.name < '힣')
+		                or (#{chosung} = 'a-z' and regexp_like(em.name, '^[A-Za-z]'))
+		                or (#{chosung} = '0-9' and regexp_like(em.name, '^[0-9]'))
+		            )
+		        ]]>
+		</if>
+		<if test="category != null and category != ''">
+		        <![CDATA[
+		            and d.dept_title = #{category}
+		        ]]>
+		</if>
+	</select>
 	<!-- 직원 주소록 검색 -->
 	<select id="searchEmployeeAddressList" parameterType="map"
 		resultType="com.wit.dto.EmployeeDTO">
@@ -283,7 +326,9 @@
 	<!-- 주소록 페이지네이션 총 카운트 -->
 	<select id="totalCountPage" resultType="int">
 		select count(*) from
-		employee
+			employee
+		where 
+			emp_no != #{emp_no}
 	</select>
 
 	<!-- 카테고리 목록 가져오기 -->
@@ -364,5 +409,67 @@
 	<select id="getEmployeeName" parameterType="String" resultType="String">
 	    SELECT name FROM employee WHERE emp_no = #{emp_no}
 	</select>
-
+	
+	<!-- 관리자 사원 조회 -->
+    <select id="getManagementList" parameterType="map" resultType="map">
+		select * from (
+		    select 
+		        em.*, 
+		        d.dept_title,
+		        r.role_title,
+		        row_number() over (order by em.name asc) as rown
+		    from 
+		        employee em
+		    left join
+		        dept d on em.dept_code = d.dept_code
+		    left join
+		        role r on em.role_code = r.role_code
+		   	where 
+            	em.emp_no != #{emp_no}
+		    )
+		    where rown between #{startNum} and #{endNum}    
+	</select>
+	
+	<!-- 관리자 사원 검색 조회 -->
+    <select id="selectByManage" parameterType="map" resultType="map">
+		select * from (
+		    select 
+		        em.*, 
+		        d.dept_title,
+		        r.role_title,
+		        row_number() over (order by em.name asc) as rown
+		    from 
+		        employee em
+		    left join
+		        dept d on em.dept_code = d.dept_code
+		    left join
+		        role r on em.role_code = r.role_code
+		    where 
+	    		em.emp_no != #{emp_no}
+		    	and ${column} like '%'||#{keyword}||'%'    
+		    )
+		    where rown between #{startNum} and #{endNum}    
+	</select>
+	
+	<!-- 관리자 사원 검색 총 카운트 -->
+    <select id="totalCountManageSearch" resultType="int">
+        select count(*) from employee where em.emp_no != #{empNo} and ${column} like '%'||#{keyword}||'%'
+    </select>		
+    
+   	<!-- 관리자 사원 상세 -->
+    <select id="managementDetail" resultType="map">
+       	select 
+		    em.*, 
+		    d.dept_title,
+		    r.role_title,
+		    SUBSTR(em.ssn, 1, 6) as birthdate
+		from 
+		    employee em 
+		left join
+		    dept d on em.dept_code = d.dept_code
+		left join
+		    role r on em.role_code = r.role_code
+		where 
+		    emp_no = #{emp_no}
+    </select>		
 </mapper>
