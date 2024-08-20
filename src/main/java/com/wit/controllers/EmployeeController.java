@@ -113,10 +113,11 @@ public class EmployeeController {
 			@RequestParam(defaultValue = "") String searchTxt,
 			@RequestParam(defaultValue = "0") int cpage,
 			@RequestParam(defaultValue = "false") String bookmark,
-			@RequestParam(defaultValue = "false") String report)throws Exception {
+			@RequestParam(defaultValue = "false") String report,
+			@RequestParam(defaultValue = "false") String adminReport)throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
-		List<BoardReportDTO> boardList = bserv.list(searchTxt, searchTarget, sortTarget, cpage,empNo,bookmark,1,report);
-		List<BoardReportDTO> noticeList = bserv.list(searchTxt, searchTarget, sortTarget, cpage,empNo,bookmark,2,report);
+		List<BoardReportDTO> boardList = bserv.list(searchTxt, searchTarget, sortTarget, cpage,empNo,bookmark,1,report,adminReport);
+		List<BoardReportDTO> noticeList = bserv.list(searchTxt, searchTarget, sortTarget, cpage,empNo,bookmark,2,report,adminReport);
 		System.out.println(empNo);
 		model.addAttribute("boardList",boardList);
 		model.addAttribute("noticeList",noticeList);

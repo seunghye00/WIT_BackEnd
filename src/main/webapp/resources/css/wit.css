@@ -256,6 +256,11 @@
 	flex: 1;
 }
 
+.boardList .notiList .rows .boardBtn {
+	flex: 1;
+}
+
+
 /* pagenavi css start */
 .boardList .pageNavi {
 	height: 50px;

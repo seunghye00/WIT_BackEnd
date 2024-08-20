@@ -59,53 +59,28 @@
 													<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
 													</li>
 													<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+													<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
 												</ul>
 											</li>
 										</ul>
 									</div>
 
-									<!-- <div class="addressListPrivate">
-																<ul class="privateList">
-																	<li class="toggleItem">
-																		<h3 class="toggleTit active">
-																			<a href="/board/list">
-																				<h3 class="sideTit">
-																					자유 게시판
-																				</h3>
-																			</a>
-																			<ul class="subList actice">
-																				<li class="newList"><a href="/board/list?boardCode=2">공지 사항</a></li>
-																			</ul>
-																		</h3>
-							
-																	</li>
-																</ul>
-															</div> -->
-
-									<!-- <div class="addressListGroup">
-																<ul class="GroupList">
-																	<li class="toggleItem">
-																		<h3 class="toggle">
-																			<a href="/board/list?bookmark=true">북마크한 게시물</a>
-																		</h3>
-																	</li>
-																</ul>
-															</div> -->
-									<!-- <div class="addressListGroup">
-																<ul class="GroupList">
-																	<li class="toggleItem">
-																		<h3 class="toggle">
-																			<a href="/board/list?report=true">신고한 게시물</a>
-																		</h3>
-																	</li>
-																</ul>
-															</div> -->
+									<div class="addressListGroup">
+										<ul class="GroupList">
+											<li class="toggleItem">
+												<h3 class="reportList">
+													신고 현황
+												</h3>
+											</li>
+										</ul>
+									</div>
 								</div>
 
 								<div class="sideContents board">
 									<form action="/board/writeProc" method="post" enctype="multipart/form-data"
 										id="submitForm">
 										<input type="hidden" name="contents" id="contents">
+										<input type="hidden" name="boardCode" value="${board_code}">
 										<div class="mainTitle">글 작성</div>
 										<div class="writeWrapper">
 											<input class="writeTitle" placeholder="제목을 입력하세요." name="title"></input>
@@ -143,6 +118,11 @@
 						toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
 					})
 				})
+
+				// 신고현황 클릭 시
+				$(".reportList").on("click", function () {
+					window.location.href = "/board/list?adminReport=true";
+				});
 			</script>
 		</body>
 
