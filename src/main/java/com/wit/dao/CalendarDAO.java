@@ -68,6 +68,16 @@ public class CalendarDAO {
 		return mybatis.selectOne("calendar.selectPersonalByCalendarSeq", calendarSeq);
 	}
 	
+	// 부서 캘린더 테이블에 해당 테이블이 존재하는지 확인
+	public int selectDeptByCalendarSeq(int calendarSeq) {
+		return mybatis.selectOne("calendar.selectDeptByCalendarSeq", calendarSeq);
+	}
+	
+	// 전사 일정 테이블에 해당 테이블이 존재하는지 확인
+	public int selectCompanyCalendarSeq(int calendarSeq ) {
+		return mybatis.selectOne("calendar.selectCompanyCalendarSeq", calendarSeq);
+	}
+	
 	// 전사 일정 목록 출력
 	public List<CompanyCalendarDTO> comCalendarList(){
 		return mybatis.selectList("calendar.comCalendarList");
