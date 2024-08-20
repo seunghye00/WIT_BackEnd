@@ -28,7 +28,7 @@
 			<input type="text" id="emp_no" name="emp_no" placeholder="사원번호"
 				required> <input type="password" name="pw"
 				placeholder="패스워드" required>
-			<button type="submit">Login</button>
+			<button type="submit">로그인</button>
 		</form>
 		<div class="employee_container">
 			<!-- 나중에 삭제 할 예정이긴 한데 아직 아무도 건들지 마세요! -->
