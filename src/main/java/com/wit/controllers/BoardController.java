@@ -204,7 +204,7 @@ public class BoardController {
 	@RequestMapping("/download")
 	public void download(String oriName, String sysname, HttpServletResponse response) throws Exception{
 		System.out.println(oriName+":"+sysname);
-		String realPath = "C:/Users/82104/Desktop/uploadFile/"; 
+		String realPath = "C:/Users/Administrator/Desktop/UploadServerFile/"; 
 		File target = new File(realPath + "/" + sysname);
 		
 		oriName = new String(oriName.getBytes(),"ISO-8859-1");

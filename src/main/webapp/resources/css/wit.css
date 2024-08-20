@@ -4235,7 +4235,7 @@ button:nth-child(4) img {
 	background-color: #1268d4;
 }
 
-#confirmBtn {
+.confirmBtn {
 	display: none;
 }
 
