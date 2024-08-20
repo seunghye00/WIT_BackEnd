@@ -9,12 +9,12 @@
    
    <!-- Root Context: defines shared resources visible to all other web components -->
    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
-      <property name="username" value="dev" />
-      <property name="password" value="dev" />
+      <property name="username" value="wit" />
+      <property name="password" value="wit" />
       <property name="driverClassName"
          value="oracle.jdbc.driver.OracleDriver" />
       <property name="jdbcUrl"
-         value="jdbc:oracle:thin:@localhost:1521:xe" />
+         value="jdbc:oracle:thin:@13.125.46.163:1521:xe" />
       <property name="minimumIdle" value="5" />
    </bean>
    

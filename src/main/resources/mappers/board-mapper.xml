@@ -11,9 +11,9 @@
 	<!-- 파라미터타입은 근데 조회에서도 쓸수는 있어 -->
 	<insert id="write" parameterType="com.wit.dto.BoardDTO">
 		INSERT INTO board (board_seq, emp_no, title, contents, write_date,
-		views)
+		views,board_code)
 		VALUES (board_seq.NEXTVAL, #{emp_no}, #{title}, #{contents},
-		sysdate, 0)
+		sysdate, 0, ${board_code})
 
 		<!-- 시퀀스 값 가져오기 -->
 		<selectKey resultType="int" order="AFTER"
@@ -26,47 +26,72 @@
 	<!-- 조인을 통해 작성자 위치에 닉네임을 조회함! -->
 	<!-- 그리고 작성날짜가 최신순인게 맨위로 올라온다! -->
 	<!-- 조인 너무 어려워 밍쥬야... -->
-	<select id="list" resultType="com.wit.dto.BoardDTO">
+	<select id="list" resultType="com.wit.dto.BoardReportDTO">
 		select a.*
-		from
+		from 
 		(SELECT
 		row_number() over(
-		  <choose>
-          <when test="sortTarget == 'board_seq'">
-            order by b.write_date desc
-          </when>
-          <when test="sortTarget == 'views'">
-            order by b.views desc
-          </when>
-          <otherwise>
-            order by b.board_seq desc
-          </otherwise>
-        </choose>
+		<choose>
+			<when test="sortTarget == 'board_seq'">
+				order by b.write_date desc
+			</when>
+			<when test="sortTarget == 'views'">
+				order by b.views desc
+			</when>
+			<otherwise>
+				order by b.board_seq desc
+			</otherwise>
+		</choose>
 		) as rown,
 		b.board_seq, b.title,
-		b.contents, b.write_date, b.views, e.nickname
-		AS emp_no
+		b.contents, b.write_date,
+		b.views,b.board_code, e.nickname AS emp_no
+		<if test="report=='true'">
+			,r.report_type,r.report_date
+		</if>
+
 		FROM
 		board b
 		JOIN employee e ON b.emp_no = e.emp_no
+		<if test="report=='true'">
+			join report r on b.board_seq=r.board_seq
+		</if>
+
+		where b.board_code=${board_code}
 		<if test="searchTarget == 'title'">
-		where b.title like '%'||#{searchTxt}||'%'
+			and b.title like '%'||#{searchTxt}||'%'
 		</if>
 		<if test="searchTarget == 'contents'">
-		where REGEXP_REPLACE( b.contents, '&lt;[^>]+&gt;','') like '%'||#{searchTxt}||'%'
+			and REGEXP_REPLACE( b.contents, '&lt;[^>]+&gt;','') like
+			'%'||#{searchTxt}||'%'
+		</if>
+		<if test="bookmark=='true'">
+			and b.board_seq in (select board_seq from book_mark where
+			emp_no=#{emp_no})
+		</if>
+		<if test="report=='true'">
+			and b.board_seq in (select board_seq from report where emp_no=#{emp_no})
 		</if>
 		) a
 		where rown between ${start} and ${end}
 	</select>
-	
-	<!-- 게시글 개수  -->
+
+	<!-- 게시글 개수 -->
 	<select id="boardCount" resultType="int">
-		select count(*) from board
+		select count(*) from board where board_code=${board_code}
 		<if test="searchTarget == 'title'">
-		where title like '%'||#{searchTxt}||'%'
+			and title like '%'||#{searchTxt}||'%'
 		</if>
 		<if test="searchTarget == 'contents'">
-		where REGEXP_REPLACE( contents, '&lt;[^>]+&gt;','') like '%'||#{searchTxt}||'%'
+			and REGEXP_REPLACE( contents, '&lt;[^>]+&gt;','') like
+			'%'||#{searchTxt}||'%'
+		</if>
+		<if test="bookmark=='true'">
+			and board_seq in (select board_seq from book_mark where
+			emp_no=#{emp_no})
+		</if>
+		<if test="report=='true'">
+			and board_seq in (select board_seq from report where emp_no=#{emp_no})
 		</if>
 	</select>
 

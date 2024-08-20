@@ -20,171 +20,190 @@
 			<body>
 				<!-- 공통영역 -->
 				<div id="container">
-					<div class="sideBar">
-						<div class="top">
-							<i class="bx bx-menu" id="btn"></i>
-						</div>
-						<div class="user">
-							<img src="/resources/img/WIT_logo1.png" alt="로고" class="userImg">
-							<div class="nickName">
-								<p class="bold">Wit Works</p>
-								<p></p>
-							</div>
-						</div>
+					<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>
+						<!-- 공통영역 끝 -->
 
-						<ul>
-							<li><a href="/"> <i class='bx bxs-home-alt-2'></i> <span class="navItem">홈</span></a> <span
-									class="toolTip">홈</span></li>
-							<li><a href="#"> <i class='bx bx-paperclip'></i> <span class="navItem">주소록</span></a> <span
-									class="toolTip">주소록</span></li>
-							<li><a href="/board/list"> <i class="bx bxs-grid-alt"></i>
-									<span class="navItem">게시판</span></a> <span class="toolTip">게시판</span></li>
-							<li><a href="#"> <i class='bx bx-calendar-alt'></i> <span class="navItem">캘린더</span></a>
-								<span class="toolTip">캘린더</span>
-							</li>
-							<li><a href="#"> <i class='bx bxs-message-dots'></i> <span class="navItem">메신저</span></a>
-								<span class="toolTip">메신저</span>
-							</li>
-							<li><a href="#"> <i class='bx bx-clipboard'></i> <span class="navItem">전자결재</span></a> <span
-									class="toolTip">전자결재</span></li>
-							<li><a href="/attendance/attendance"> <i class='bx bxs-briefcase-alt-2'></i> <span
-										class="navItem">근태관리</span></a>
-								<span class="toolTip">근태관리</span>
-							</li>
-							<li><a href="#"> <i class='bx bxs-check-square'></i> <span class="navItem">예약</span></a>
-								<span class="toolTip">예약</span>
-							</li>
-							<li><a href="#"> <i class='bx bx-sitemap'></i> <span class="navItem">조직도</span></a> <span
-									class="toolTip">조직도</span></li>
-						</ul>
-					</div>
-					<!-- 공통영역 끝 -->
-
-					<div class="main-content">
-						<div class="header">
-							<span class="alert"><a href=""><i class='bx bxs-bell'></i></a></span>
-							<!--마이페이지로 이동-->
-							<span class="myName"> <img src="/resources/img/푸바오.png" alt="프로필 사진" class="userImg"> <a
-									href="/employee/mypage">${employee.name}
-									${employee.role_code}</a></span> <span class="logOut"><a
-									href="/employee/logout">LogOut</a></span>
-						</div>
-						<div class="contents">
-							<div class="sideAbout">
-								<div class="sideTxt">
-									<h2 class="sideTit">게시판</h2>
-								</div>
-								<div class="sideBtnBox">
-									<button id="writeBtn" class="plusBtn sideBtn">글 작성</button>
-								</div>
-								<div class="addressListPrivate">
-									<ul class="privateList">
-										<li class="toggleItem">
-											<h3 class="toggle">
-												<a href="board.html">공지사항</a>
-											</h3>
-
-										</li>
-									</ul>
-								</div>
-								<div class="addressListGroup">
-									<ul class="GroupList">
-										<li class="toggleItem">
-											<h3 class="toggle">
-												<a href="free_board.html">자유 게시판</a>
-											</h3>
-
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="sideContents board">
-								<div class="mainTitle">자유 게시판 홈</div>
-								<div class="boardList">
-									<div class="controls">
-										<div class="search">
-											<form action="/board/list" style="display:none" id="searchForm">
-												<input type="hidden" name="searchTarget" class="hiddenInput">
-												<input type="hidden" name="sortTarget" class="hiddenInput">
-												<input type="text" name="searchTxt" placeholder="검색"
-													class="hiddenInput">
-											</form>
-											<select class="form-select" aria-label="Default select example"
-												id="searchTarget">
-												<option selected value="title">제목</option>
-												<option value="contents">내용</option>
-											</select>
-
-											<div class="searchBox">
-												<input type="text" placeholder="검색" value="${searchTxt}" id="searchTxt">
-												<button class="searchBtn" id="searchBtn">
-													<i class='bx bx-search'></i>
-												</button>
-											</div>
+						<div class="main-content">
+							<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
+								<div class="contents">
+									<div class="sideAbout">
+										<div class="sideTxt">
+											<h2 class="sideTit">게시판</h2>
+										</div>
+										<div class="sideBtnBox">
+											<button id="writeBtn" class="plusBtn sideBtn">자유 게시판 글 작성</button>
 										</div>
 
-										<div class="sort">
-											<select class="form-select" aria-label="Default select example"
-												id="sortTarget">
-												<option selected value="board_seq">최신순</option>
-												<option value="views">조회수</option>
-											</select>
+										<div class="addressListGroup">
+											<ul class="GroupList">
+												<li class="toggleItem">
+													<h3 class="toggleTit">
+														자유 게시판
+													</h3>
+													<ul class="subList">
+														<li><a href="/board/list?bookmark=true">북마크한 게시물</a></li>
+														<li><a href="/board/list?report=true">신고한 게시물</a></li>
+														<li><a href="/board/list">자유 게시판으로 이동</a></li>
+													</ul>
+												</li>
+											</ul>
 										</div>
 
-									</div>
-
-									<div class="notiList">
-										<div class="rows notiHeader">
-											<div class="cols boardSeq">
-												<span>No.</span>
-											</div>
-											<div class="cols boardTitle">
-												<span>글 제목</span>
-											</div>
-											<div class="cols boardWriter">
-												<span>작성자</span>
-											</div>
-											<div class="cols boardDate">
-												<span>날짜</span>
-											</div>
-											<div class="cols boardView">조회수</div>
+										<div class="addressListGroup">
+											<ul class="GroupList">
+												<li class="toggleItem">
+													<h3 class="toggleTit">
+														공지 사항
+													</h3>
+													<ul class="subList">
+														<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
+														</li>
+														<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+													</ul>
+												</li>
+											</ul>
 										</div>
-
-										<!-- 게시물 목록 출력 -->
-										<!-- varStatus 를 이용하여 최신 게시물의 no를 1로 했다! -->
-										<!-- 매퍼파일에서 최신순으로 내가 정렬을 해놨는데, 최신순으로 정렬을 했을때 사용가능!~  -->
-										<!-- 이렇게도 할 수 있어 밍쥬야 jsp에서 번호를 수동으로 할당 해주는거래-->
-										<c:forEach var="board" items="${list}" varStatus="status">
-											<div class="rows notiConts">
-												<div class="cols boardSeq">
-													<span>${status.index + 1}</span>
-												</div>
-												<div class="cols boardTitle" onclick="toDetail(this)"
-													data-seq="${board.board_seq}">
-													<span>${board.title}</span>
-												</div>
-												<div class="cols boardWriter">
-													<!-- 여기서 조인해서 emp_no 자리에 닉네임이 나오게끔 했어! -->
-													<span>${board.emp_no}</span>
-												</div>
-												<div class="cols boardDate">
-													<fmt:formatDate value="${board.write_date}" pattern="yyyy-MM-dd" />
-												</div>
-												<div class="cols boardView">
-													<span>${board.views}</span>
-												</div>
-											</div>
-										</c:forEach>
 									</div>
 
+									<div class="sideContents board">
+										<c:choose>
+											<c:when test="${board_code=='1'}">
+												<c:choose>
+													<c:when test="${report=='true'}">
+														<div class="mainTitle">신고글 홈</div>
+													</c:when>
+													<c:when test="${bookmark=='false'}">
+														<div class="mainTitle">자유 게시판 홈</div>
+													</c:when>
+													<c:when test="${bookmark=='true'}">
+														<div class="mainTitle">북마크 홈</div>
+													</c:when>
+												</c:choose>
+											</c:when>
+											<c:when test="${board_code=='2'}">
+												<div class="mainTitle">공지 사항 홈</div>
+											</c:when>
 
-									<div class="pagination">
+										</c:choose>
 
+										<div class="boardList">
+											<div class="controls">
+												<div class="search">
+													<form action="/board/list" style="display:none" id="searchForm">
+														<input type="hidden" name="searchTarget" class="hiddenInput">
+														<input type="hidden" name="sortTarget" class="hiddenInput">
+														<input type="text" name="searchTxt" placeholder="검색"
+															class="hiddenInput">
+														<input type="text" name="bookmark" id="bookmark">
+														<input type="text" name="boardCode" id="board_code" value="1">
+														<input type="text" name="report" id="report" value="false">
+													</form>
+													<select class="form-select" aria-label="Default select example"
+														id="searchTarget">
+														<option selected value="title">제목</option>
+														<option value="contents">내용</option>
+													</select>
+
+													<div class="searchBox">
+														<input type="text" placeholder="검색" value="${searchTxt}"
+															id="searchTxt">
+														<button class="searchBtn" id="searchBtn">
+															<i class='bx bx-search'></i>
+														</button>
+													</div>
+												</div>
+
+												<div class="sort">
+													<select class="form-select" aria-label="Default select example"
+														id="sortTarget">
+														<option selected value="board_seq">최신순</option>
+														<option value="views">조회수</option>
+													</select>
+												</div>
+
+											</div>
+
+											<div class="notiList">
+												<div class="rows notiHeader">
+													<div class="cols boardSeq">
+														<span>No.</span>
+													</div>
+													<div class="cols boardTitle">
+														<span>글 제목</span>
+													</div>
+													<div class="cols boardWriter">
+														<span>작성자</span>
+													</div>
+													<div class="cols boardDate">
+														<span>날짜</span>
+													</div>
+													<c:choose>
+														<c:when test="${report=='true'}">
+															<div class="cols boardView">신고유형</div>
+														</c:when>
+														<c:otherwise>
+															<div class="cols boardView">조회수</div>
+														</c:otherwise>
+													</c:choose>
+
+												</div>
+
+												<!-- 게시물 목록 출력 -->
+												<!-- varStatus 를 이용하여 최신 게시물의 no를 1로 했다! -->
+												<!-- 매퍼파일에서 최신순으로 내가 정렬을 해놨는데, 최신순으로 정렬을 했을때 사용가능!~  -->
+												<!-- 이렇게도 할 수 있어 밍쥬야 jsp에서 번호를 수동으로 할당 해주는거래-->
+												<c:forEach var="board" items="${list}" varStatus="status">
+													<div class="rows notiConts">
+														<div class="cols boardSeq">
+															<span>${status.index + 1}</span>
+														</div>
+														<div class="cols boardTitle" onclick="toDetail(this)"
+															data-seq="${board.board_seq}">
+															<span>${board.title}</span>
+														</div>
+														<div class="cols boardWriter">
+															<!-- 여기서 조인해서 emp_no 자리에 닉네임이 나오게끔 했어! -->
+															<span>${board.emp_no}</span>
+														</div>
+														<c:choose>
+															<c:when test="${report=='true'}">
+																<div class="cols boardDate">
+																	<fmt:formatDate value="${board.report_date}"
+																		pattern="yyyy-MM-dd" />
+																</div>
+															</c:when>
+															<c:otherwise>
+																<div class="cols boardDate">
+																	<fmt:formatDate value="${board.write_date}"
+																		pattern="yyyy-MM-dd" />
+																</div>
+															</c:otherwise>
+														</c:choose>
+
+														<c:choose>
+															<c:when test="${report=='true'}">
+																<div class="cols boardView">
+																	<span>${board.report_type}</span>
+																</div>
+															</c:when>
+															<c:otherwise>
+																<div class="cols boardView">
+																	<span>${board.views}</span>
+																</div>
+															</c:otherwise>
+														</c:choose>
+
+													</div>
+												</c:forEach>
+											</div>
+
+
+											<div class="pagination" id="pagination">
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
 						</div>
-					</div>
 				</div>
 				<script>
 					// 처음에 서버에서 값을 보내줄 때 빈 문자열이 아니면 서버에서 보내준 값으로 설정
@@ -192,12 +211,23 @@
 						document.getElementById('searchTarget').value = "${ searchTarget }";
 					}
 
-					// 처음에 서버에서 값을 보내줄 때 빈 문자열이 아니면 서버에서 보내준 값으로 설정
 					if (${ sortTarget != "" }) {
 						document.getElementById('sortTarget').value = "${ sortTarget }";
 					}
 
+					if (${ bookmark != "false" }) {
+						document.getElementById('bookmark').value = "${ bookmark }";
+					}
 
+					if (${ board_code != "1" }) {
+						document.getElementById('board_code').value = "${ board_code }";
+					}
+
+					if (${ report != "false" }) {
+						document.getElementById('report').value = "${ report }";
+					}
+
+					// 글작성 버튼 누르면 글 작성 페이지로 이동
 					document.getElementById('writeBtn').addEventListener('click',
 						function () {
 							window.location.href = '/board/write';
@@ -210,7 +240,7 @@
 							}
 
 						}).done(function (response) {
-							window.location.href = "${pageContext.request.contextPath}/board/detail?board_seq=" + $(e).data("seq")
+							window.location.href = "${pageContext.request.contextPath}/board/detail?boardCode=${board_code}&board_seq=" + $(e).data("seq")
 						})
 
 					}
@@ -263,17 +293,39 @@
 						needNext = false;
 					}
 
+
+
 					if (needPrev)
-						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&cpage=" + (startNavi - 1) + "' class='prev " + (needPrev ? "active" : "disabled") + "'><i class='bx bx-chevron-left'></i></a>");
+						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&cpage=" + (startNavi - 1) + "' class='prev " + (needPrev ? "active" : "disabled") + "'><i class='bx bx-chevron-left'></i></a>");
 
 					for (let i = startNavi; i <= endNavi; i++) {
-						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&cpage=" + i + "'>" + i + "</a> ");
+						let page = $("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&cpage=" + i + "'>" + i + "</a> ");
+						pageNation.append(page);
+						if (i == cpage) {
+							page.css({
+								backgroundColor: '#558BCF',
+								color: 'white',
+								'border-radius': '100%',
+								width: '40px',
+								'text-align': 'center'
+							})
+						}
 					}
 					if (needNext)
-						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&cpage=" + (endNavi + 1) + "' class='next " + (needNext ? "active" : "disabled") + "' data-page='" + (endNavi + 1) + "'><i class='bx bx-chevron-right'></i></a>");
+						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&cpage=" + (endNavi + 1) + "' class='next " + (needNext ? "active" : "disabled") + "' data-page='" + (endNavi + 1) + "'><i class='bx bx-chevron-right'></i></a>");
 
 
+					// 주소록 토글 이벤트 설정
+					const toggleItems = document.querySelectorAll('.toggleItem')
+					toggleItems.forEach(function (toggleItem) {
+						const toggleTit = toggleItem.querySelector('.toggleTit')
+						const subList = toggleItem.querySelector('.subList')
 
+						$(toggleTit).on('click', function () {
+							subList.classList.toggle('active')
+							toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
+						})
+					})
 				</script>
 			</body>
 

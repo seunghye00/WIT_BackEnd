@@ -83,15 +83,23 @@
 						</ul>
 					</div>
 					<div style="padding: 10px;"></div>
-					<a href="/attendance/attendance_vacation">
-						<h3 class="toggleTit">휴가 관리</h3>
+					<a href="/annualLeave/attendanceVacation">
+						<h3 class="toggleTit">휴가관리</h3>
+					</a>
+					<div style="padding: 10px;"></div>
+					<a href="/attendance/attendanceDept">
+						<h3 class="toggleTit">부서별 근태현황</h3>
+					</a>
+					<div style="padding: 10px;"></div>
+					<a href="/annualLeave/attendanceDeptVacation">
+						<h3 class="toggleTit">부서별 휴가현황</h3>
 					</a>
 				</div>
 				<div class="sideContents Attendance">
-					<h2>월간 근무현황</h2>
+					<h2>월간 근태현황</h2>
 					<div class="Attendance_container">
 						<div class="month_status">
-							<h3>월간 근무현황</h3>
+							<h3>월간 근태현황</h3>
 							<div class="month_row month_header">
 								<div class="month_col">
 									<span>근무일</span>

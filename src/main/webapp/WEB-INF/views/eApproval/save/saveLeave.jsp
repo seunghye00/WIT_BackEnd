@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
 <script defer src="/js/hsh.js"></script>
+<script defer src="/js/file.js"></script>
 <script defer src="/js/wit.js"></script>
 </head>
 
@@ -29,12 +30,12 @@
 						<h2 class="sideTit">전자 결재</h2>
 					</div>
 					<div class="sideBtnBox">
-						<button class="plusBtn sideBtn disabled">새 결재 진행</button>
+						<button class="plusBtn sideBtn"  id="startApprBtn">새 결재 진행</button>
 						<%@ include file="/WEB-INF/views/eApproval/commons/newWriteModal.jsp" %>
 					</div>
 					<%@ include file="/WEB-INF/views/eApproval/commons/sideToggle.jsp"%>
 				</div>
-				<div class="sideContents eApprWrite">
+				<div class="sideContents eApprWrite eApprSaved">
 					<div class="mainTitle">임시 저장 문서 ( 휴가 신청서 )</div>
 					<div class="document">
 						<div class="choiBox">
@@ -49,19 +50,21 @@
 										<tbody>
 											<tr>
 												<th>기안자</th>
-												<td>${empInfo.name}</td>
+												<td>${writerInfo.name}</td>
 											</tr>
 											<tr>
 												<th>소속</th>
-												<td>${empInfo.dept_title}</td>
+												<td>${writerInfo.dept_title}</td>
 											</tr>
 											<tr>
-												<th>기안일</th>
-												<td>${today}</td>
+												<th>작성일</th>
+												<td>
+													<fmt:formatDate value="${docuInfo.write_date}" pattern="yyyy-MM-dd HH:mm" />
+												</td>
 											</tr>
 											<tr>
 												<th>문서번호</th>
-												<td></td>
+												<td>${docuInfo.document_seq}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -80,32 +83,36 @@
 											<tr>
 												<th>직급</th>
 												<c:forEach items="${apprList}" var="i">
-													<c:set var="apprInfo" value="${fn:split(i, ' ')}" />
-													<td>${apprInfo[2]}</td>
+													<td>${i.role_title}</td>
 												</c:forEach>
 											</tr>
 											<tr>
 												<th>결재자</th>
 												<c:forEach items="${apprList}" var="i">
-													<c:set var="apprInfo" value="${fn:split(i, ' ')}" />
-													<td>${apprInfo[1]}<input type="hidden" name="apprList"
-														value="${apprInfo[0]}">
+													<td>
+														<c:if test="${i.status eq '결재 완료'}">
+															<img src="/img/icon/stamp.png" alt="approvedStamp"><br>
+														</c:if>
+														${i.name}
 													</td>
 												</c:forEach>
 											</tr>
 											<tr>
 												<th>결재일</th>
-												<td></td>
-												<td></td>
-												<td></td>
+												<c:forEach items="${apprList}" var="i">
+													<td>
+														<fmt:formatDate value="${i.approved_date}" pattern="yyyy-MM-dd HH:mm" />
+													</td>
+												</c:forEach>
 											</tr>
 										</tbody>
 									</table>
 								</div>
 							</div>
 							<div class="docuWrite docuLeave">
-								<form id="docuContForm">
+								<form id="docuContForm" action="/eApproval/update" method="post">
 									<input type="hidden" name="docu_code" value="M2">
+									<input type="hidden" name="document_seq" value="${docuInfo.document_seq}" id="docuSeq">
 									<table>
 										<thead>
 											<tr>
@@ -118,36 +125,45 @@
 														<option value="5">병가</option>
 												</select></td>
 												<th>기간 및 일시</th>
-												<td colspan="2"><input type="date" id="startLeaveDay" name="start_date" min="${today}"> <span>~</span>
-													<input type="date" id="endLeaveDay" name="end_date" min="${today}"></td>
+												<td colspan="2"><input type="date" id="startLeaveDay" name="start_date" min="${today}" value="${docuDetail.start_date}"> <span>~</span>
+													<input type="date" id="endLeaveDay" name="end_date" min="${today}" value="${docuDetail.end_date}" ></td>
 												<th>긴급</th>
 												<td>
 													<div>
-														<input type="checkbox" id="emerCheck" value="Y"
-															name="emer_yn"> <label for="emerCheck">긴급
-															문서</label>
+														<input type="hidden" id="emerChecked" name="emer_yn" value="N">
+														<input type="checkbox" id="emerCheck" <c:if test="${docuInfo.emer_yn eq 'Y'}">checked</c:if>> 
+														<label for="emerCheck">긴급 문서</label>
 													</div>
 												</td>
 											</tr>
 											<tr>
 												<th>반차 여부</th>
-												<td colspan="2"><span> <input type="checkbox"
-														id="startDay"> <label for="startDay">시작일</label>
-												</span> ( <span><input type="checkbox" id="startDayAM">
-														<label for="startDayAM">오전</label></span> <span><input
-														type="checkbox" id="startDayPM"> <label
-														for="startDayPM">오후</label></span> ) <br> <span> <input
-														type="checkbox" id="endDay"> <label for="endDay">종료일</label>
-												</span> ( <span><input type="checkbox" id="endDayAM">
-														<label for="endDayAM">오전</label></span> <span><input
-														type="checkbox" id="endDayPM"> <label
-														for="endDayPM">오후</label></span> )</td>
-												<th>연차 일수</th>
-												<td colspan="3"><span> 잔여 연차 :&nbsp;&nbsp;<input class="readOnly"
-														type="text" readonly>
-												</span> <span> 신청 연차 :&nbsp;&nbsp;<input type="text" class="readOnly"
-														readonly>
-												</span></td>
+												<td colspan="2">
+                                                	<span>
+                                                		<input type="checkbox" id="startDay" <c:if test="${docuDetail.start_day_checked eq 'Y'}">checked</c:if> disabled>
+                                                		<label for="startDay">시작일</label>
+													</span> ( 
+													<span>
+														<input type="checkbox" id="startDayAM" <c:if test="${docuDetail.start_day_am_checked eq 'Y'}">checked</c:if> disabled>
+														<label for="startDayAM">오전</label>
+													</span> 
+													<span>
+														<input type="checkbox" id="startDayPM" <c:if test="${docuDetail.start_day_pm_checked eq 'Y'}">checked</c:if> disabled>
+														<label for="startDayPM">오후</label>
+													</span> ) <br> 
+													<span> 
+														<input type="checkbox" id="endDay" <c:if test="${docuDetail.end_day_checked eq 'Y'}">checked</c:if> disabled>
+														<label for="endDay">종료일</label>
+													</span> ( 
+													<span>
+														<input type="checkbox" id="endDayAM" <c:if test="${docuDetail.end_day_am_checked eq 'Y'}">checked</c:if> disabled>
+														<label for="endDayAM">오전</label>
+													</span> 
+													<span>
+														<input type="checkbox" id="endDayPM" <c:if test="${docuDetail.end_day_pm_checked eq 'Y'}">checked</c:if> disabled>
+														<label for="endDayPM">오후</label>
+													</span> )
+												</td>
 											</tr>
 											<tr>
 												<th>제목</th>

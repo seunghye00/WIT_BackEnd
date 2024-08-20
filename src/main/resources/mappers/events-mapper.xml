@@ -4,6 +4,8 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="events">
+
+	<!-- 이벤트 추가 -->
 	<insert id="insert" parameterType="com.wit.dto.EventsDTO">
 		insert into events
 		values (
@@ -39,15 +41,22 @@
     <foreach item="item" index="index" collection="list" open="(" separator="," close=")"> 
         #{item}
     </foreach> 
-</select>
+	</select>
 	
+	<!-- 이벤트 삭제 -->
 	<delete id="delete">
 		delete from events where events_seq = #{events_seq}
 	</delete>
 	
+	<!-- 이벤트 수정 -->
 	<update id="updateBySeq">
 		update events set title = #{title}, start_date = #{start_date}, end_date = #{end_date}, calendar_seq = #{calendar_seq},
 		location = #{location}, content = #{content} where events_seq = #{events_seq}
 	</update>
+	
+	<!-- 삭제한 calendar_seq를 가진 이벤트 삭제 -->
+	<delete id="deleteEventsByCalendarSeq">
+		delete from events where calendar_seq = ${calendarSeq}
+	</delete>
 
 </mapper>

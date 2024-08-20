@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="meetingRoom">
+	<!-- 회의실 목록을 조회하기 위한 쿼리문 -->
+	<select id="selectAll" resultType="com.wit.dto.MeetingRoomDTO">
+		select room_seq, name from meeting_room where status = #{status}
+	</select>
+	
+	<!-- 해당 회의실의 정보를 조회하기 위한 쿼리문 -->
+	<select id="selectBySeq" resultType="com.wit.dto.MeetingRoomDTO">
+		select * from meeting_room where room_seq = #{roomSeq}
+	</select>
+	
+	<!-- 회의실 예약 정보를 입력하기 위한 쿼리문 -->
+	<insert id="insert">
+		insert into room_booking values (room_booking_seq.nextval, #{emp_no}, #{dept_title}, #{room_seq}, #{start_date}, #{end_date}, #{purpose})
+	</insert>
+	
+	<!-- 해당 회의실의 모든 회의실 예약 정보를 조회하기 위한 쿼리문 -->
+	<select id="selectAllBySeq" resultType="com.wit.dto.RoomBookingDTO">
+		select r.*, e.name emp_name, m.name room_name, m.location 
+		from room_booking r 
+		join meeting_room m on r.room_seq = m.room_seq
+		join employee e on r.emp_no = e.emp_no
+		where r.room_seq = #{roomSeq}
+	</select>
+	
+	<!-- 회의실 예약 시간이 겹치는 지 확인하기 위한 쿼리문 -->
+	<select id="checkBooking" resultType="int">
+		select count(*) from room_booking 
+		where 
+			room_seq = #{room_seq} and
+			( (start_date between #{start_date} and #{end_date}) or
+			 (end_date between #{start_date} and #{end_date}) or
+			 (start_date &lt;= #{start_date} and end_date >= #{end_date}) )
+	</select>
+	
+	<!-- 해당 사원의 모든 회의실 예약 정보를 조회하기 위한 쿼리문 -->
+	<select id="selectAllByEmpNo" resultType="com.wit.dto.RoomBookingDTO">
+		select * from (
+			select r.*, e.name emp_name, m.name room_name, m.location,
+				row_number() over (order by start_date desc) as rn
+			from room_booking r 
+			join meeting_room m on r.room_seq = m.room_seq
+			join employee e on r.emp_no = e.emp_no
+			where r.emp_no = #{empNo}
+		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
+	
+	<!-- 해당 사원의 모든 회의실 예약 갯수를 조회하기 위한 쿼리문 -->
+	<select id="getCountBookingList" resultType="int">
+		select count(*) 
+		from room_booking 
+		where emp_no = #{empNo}
+	</select>
+	
+	<!-- 해당 사원의 검색한 회의실 예약 정보를 조회하기 위한 쿼리문 -->
+	<select id="selectSearchListByEmpNo" resultType="com.wit.dto.RoomBookingDTO">
+		select * from (
+			select r.*, e.name emp_name, m.name room_name, m.location,
+				row_number() over (order by start_date desc) as rn
+			from room_booking r 
+			join meeting_room m on r.room_seq = m.room_seq
+			join employee e on r.emp_no = e.emp_no
+			where r.emp_no = #{empNo}
+			and upper(purpose) like upper('%'||#{keyword}||'%') 
+		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
+	</select>
+	
+	<!-- 해당 사원의 검색한 회의실 예약 갯수를 조회하기 위한 쿼리문 -->
+	<select id="getSearchCountBookingList" resultType="int">
+		select count(*) 
+		from room_booking 
+		where emp_no = #{empNo}
+		and upper(purpose) like upper('%'||#{keyword}||'%') 
+	</select>
+</mapper>

@@ -505,6 +505,10 @@ body {
     color: #333;
 }
 
+.pagination a.disabled {
+    cursor: default;
+}
+
 .pagination a.active {
     background-color: #558BCF;
     color: white;

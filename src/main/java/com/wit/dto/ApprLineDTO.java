@@ -101,4 +101,10 @@ public class ApprLineDTO {
 	public ApprLineDTO() {
 		super();
 	}
+	public ApprLineDTO(int document_seq, String emp_no, String comments) {
+		super();
+		this.document_seq = document_seq;
+		this.emp_no = emp_no;
+		this.comments = comments;
+	}
 }

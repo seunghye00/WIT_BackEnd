@@ -86,7 +86,6 @@ public class ChatRoomController {
     @ResponseBody
     public String markAsRead(String chatRoomSeq, String messageSeq) {
         try {
-            System.out.println("Marking messages as read: " + messageSeq); // 디버깅 로그 추가
             chatServ.markMessagesAsRead(chatRoomSeq, messageSeq);
             return "success";
         } catch (Exception e) {

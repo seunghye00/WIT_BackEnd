@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wit.commons.AttendanceConfig;
 import com.wit.dto.AttendanceDTO;
+import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.services.AttendanceService;
+
+import java.sql.Date;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -115,18 +119,6 @@ public class AttendanceController {
 		return "Attendance/attendanceMonth";
 	}
 
-	// 휴가관리 페이지로 이동
-	@RequestMapping("/attendance_vacation")
-	public String attendance_vacation(Model model) {
-		String empNo = (String) session.getAttribute("loginID");
-
-		EmployeeDTO employee = service.employeeInfo(empNo);
-
-		model.addAttribute("employee", employee);
-
-		return "Attendance/attendanceVacation";
-	}
-
 	// 출근 및 퇴근 시간 조회(메인 페이지)
 	@RequestMapping(value = "/times", produces = "application/json;charset=UTF-8")
 	@ResponseBody
@@ -147,4 +139,46 @@ public class AttendanceController {
 
 		return response;
 	}
+
+	// 부서별 근태현황 (관리자)
+	@RequestMapping("/attendanceDept")
+	public String attendanceDept(@RequestParam(value = "deptTitle", defaultValue = "인사부") String deptTitle,
+			@RequestParam(value = "startDate", required = false) Date startDate,
+			@RequestParam(value = "endDate", required = false) Date endDate, Model model) {
+		String empNo = (String) session.getAttribute("loginID");
+
+		// 부서 리스트 가져오기
+		List<DeptDTO> departments = service.getDepartments();
+		model.addAttribute("departments", departments);
+
+		EmployeeDTO employee = service.employeeInfo(empNo);
+
+		// 날짜가 없을 경우 현재 주로 설정하는 로직 추가
+		if (startDate == null || endDate == null) {
+			startDate = Date.valueOf(LocalDate.now().with(DayOfWeek.MONDAY));
+			endDate = Date.valueOf(LocalDate.now().with(DayOfWeek.SATURDAY));
+		}
+
+		// 디버깅용 출력
+		System.out.println("deptTitle: " + deptTitle);
+		System.out.println("startDate: " + startDate);
+		System.out.println("endDate: " + endDate);
+
+		List<Map<String, Object>> attendanceData = service.deptAtd(deptTitle, startDate, endDate);
+
+		// attendanceData 출력
+		System.out.println("attendanceData size: " + attendanceData.size());
+		for (Map<String, Object> attendanceItem : attendanceData) {
+			System.out.println("Attendance Item: " + attendanceItem);
+		}
+
+		model.addAttribute("attendanceData", attendanceData);
+		model.addAttribute("deptTitle", deptTitle);
+		model.addAttribute("startDate", startDate);
+		model.addAttribute("endDate", endDate);
+		model.addAttribute("employee", employee);
+
+		return "Admin/Attendance/attendanceDept";
+	}
+
 }

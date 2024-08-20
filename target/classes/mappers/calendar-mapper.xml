@@ -14,8 +14,7 @@
 	<select id="perCalendarList" resultType="com.wit.dto.PersonalCalendarDTO">
 		select * from personal_calendar where emp_no = #{empNo} 
 	</select>
-	
-	
+		
 	<!-- 개인 캘린더 추가 -->
 	<insert id="insertPerCalendar"
 		parameterType="com.wit.dto.PersonalCalendarDTO">
@@ -31,6 +30,7 @@
 		#{calendarSeq}
 	</delete>
 	
+	
 	<!-- 부서 캘린더 출력 -->
 	<select id="depCalendarList" resultType="com.wit.dto.DepartmentCalendarDTO">
 		select * from department_calendar d
@@ -38,7 +38,7 @@
 		where e.emp_no = #{empNo} 
 	</select>
 	
-	<!-- 부서 캘린더 추가 -->
+	<!-- 부서 캘린더 추가 (각 부서 부장만 가능) -->
 	<insert id="insertDepCalendar"
 		parameterType="com.wit.dto.DepartmentCalendarDTO">
 		insert into department_calendar 			
@@ -47,13 +47,13 @@
 				(calendar_seq, calendar_name, dept_code) values (calendar_seq.nextval, #{calendar_name}, #{dept_code})
 			</when>
 			<otherwise>
+				(calendar_seq, calendar_name, dept_code, default_yn)
 				values (calendar_seq.nextval, #{calendar_name}, #{dept_code}, #{default_yn})
 			</otherwise>
-		</choose>
-		 
+		</choose>	 
 	</insert>
 	
-	<!-- 부서 캘린더 삭제 -->
+	<!-- 부서 캘린더 삭제 (각 부서 부장만 가능) -->
 	<delete id="deleteDepCalendar">
 		delete from department_calendar where calendar_seq =
 		#{calendarSeq}
@@ -61,9 +61,14 @@
 
 	<!-- 직원 정보 조회 -->
 	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
-		SELECT name, role_code
+		SELECT name, role_code, dept_code
 		FROM Employee
 		WHERE emp_no = #{empNo}
+	</select>
+	
+	<!-- 개인 캘린더 테이블에 해당 캘린더 존재 여부 확인  -->
+	<select id="selectPersonalByCalendarSeq" resultType="int">
+		select count(*) from personal_calendar where calendar_seq = #{calendarSeq}
 	</select>
 
 </mapper>

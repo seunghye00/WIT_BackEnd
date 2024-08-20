@@ -15,35 +15,33 @@ public class CalendarDAO {
 
 	@Autowired
 	private SqlSession mybatis;
-	
-	
+
 	// 개인 캘린더 출력
 	public List<PersonalCalendarDTO> perCalendarList(String empNo) {
 		return mybatis.selectList("calendar.perCalendarList", empNo);
 	}
-	
-	
+
 	// 개인 캘린더 추가
 	public int insertPerCalendar(PersonalCalendarDTO dto) {
 		return mybatis.insert("calendar.insertPerCalendar", dto);
 	}
-	
+
 	// 개인 캘린더 삭제
 	public int deletePerCalendar(int calendarSeq) {
 		return mybatis.delete("calendar.deletePerCalendar", calendarSeq);
 	}
-	
+
 	// 부서 캘린더 출력
-		public List<DepartmentCalendarDTO> depCalendarList(String empNo) {
-			return mybatis.selectList("calendar.depCalendarList", empNo);
-		}
-	
-	// 부서 캘린더 추가
+	public List<DepartmentCalendarDTO> depCalendarList(String empNo) {
+		return mybatis.selectList("calendar.depCalendarList", empNo);
+	}
+
+	// 부서 캘린더 추가 (각 부서 부장만 가능)
 	public int insertDepCalendar(DepartmentCalendarDTO dto) {
 		return mybatis.insert("calendar.insertDepCalendar", dto);
 	}
-	
-	// 부서 캘린더 삭제
+
+	// 부서 캘린더 삭제 (각 부서 부장만 가능)
 	public int deleteDepCalendar(int calendarSeq) {
 		return mybatis.delete("calendar.deleteDepCalendar", calendarSeq);
 	}
@@ -55,6 +53,11 @@ public class CalendarDAO {
 
 	// 직원 기본 캘린더 추가
 	public void insertPerDefaultCalendar(String empNo) {
-		mybatis.insert("calendar.insertPerDefaultCalendar", empNo);		
+		mybatis.insert("calendar.insertPerDefaultCalendar", empNo);
+	}
+
+	// 개인 캘린더 테이블에 해당 테이블이 존재하는지 확인
+	public int selectPersonalByCalendarSeq(int calendarSeq) {
+		return mybatis.selectOne("calendar.selectPersonalByCalendarSeq", calendarSeq);
 	}
 }

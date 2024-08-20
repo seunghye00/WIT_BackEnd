@@ -21,6 +21,12 @@ public class ChatRoomService {
     // 개인 채팅방 생성
     @Transactional
     public String createPrivateChat(String emp_no1, String empNo2) {
+        // 채팅방이 이미 존재하는지 확인
+        int chatRoomCount = dao.isPrivateChatRoomExists(emp_no1, empNo2);
+        
+        if (chatRoomCount > 0) {
+            return "chat_room_exists";  // 이미 채팅방이 존재하면, 별도의 처리로 넘어갈 수 있습니다.
+        }
     	// 채팅방 생성
         Map<String, Object> params = new HashMap<>();
         params.put("roomType", "1:1");
@@ -98,16 +104,21 @@ public class ChatRoomService {
     // 채팅방 나가기
     @Transactional
     public String exitChatRoom(int chatRoomSeq, String empNo) {
-        // 1:1 채팅방인지 확인
-        Map<String, Object> params = new HashMap<>();
-        params.put("chatRoomSeq", chatRoomSeq);
-        params.put("empNo", empNo);
-        String chatRoomCode = dao.getChatRoomCode(params);
-
-        if ("1:1".equals(chatRoomCode)) {
-            dao.deleteChatRoom(chatRoomSeq);
-        }
+    	// 채팅방 멤버 삭제
         dao.deleteChatRoomMember(chatRoomSeq, empNo);
+
+        // 채팅방에 남아 있는 멤버 수 확인
+        int memberCount = dao.getChatRoomMemberCount(chatRoomSeq);
+        if (memberCount <= 1) {
+            // 채팅방에 남은 멤버가 1명 이하인 경우, 채팅방과 모든 멤버 삭제
+            // 남아 있는 멤버가 있는지 확인하고 있으면 삭제
+            if (memberCount == 1) {
+                dao.deleteChatRoomMember(chatRoomSeq, dao.getLastRemainingMember(chatRoomSeq));
+            }
+            dao.deleteChatRoom(chatRoomSeq);
+            return "success";
+        }
+
         return "success";
     }
 }

@@ -52,58 +52,89 @@ $(document).ready(function () {
         D3: '03',
         D4: '04',
         D5: '05',
-    }
+    };
 
     function generateEmployeeID(year, deptCode, entryOrder) {
         // 년도, 부서 코드, 입사 순서 (두 자리) 합쳐서 사원번호 생성
-        return year + '-' + deptCode + entryOrder.toString().padStart(2, '0')
+        return year + '-' + deptCode + entryOrder.toString().padStart(2, '0');
     }
 
     $('#generate_id_button').on('click', function () {
         // 현재 연도의 4자리 추출
-        var currentYear = new Date().getFullYear().toString()
+        var currentYear = new Date().getFullYear().toString();
         // 선택된 부서 코드
-        var deptSelectVal = $('#dept_select').val()
+        var deptSelectVal = $('#dept_select').val();
+        // 선택된 직급 코드
+        var roleSelectVal = $('#role_select').val();
         // 부서 코드 매핑
-        var deptCode = departmentCodes[deptSelectVal]
-
-        if (deptCode && deptCode !== '') {
-            $.ajax({
-                url: '/employee/highestEmployeeID',
-                method: 'post',
-                data: { dept: deptSelectVal },
-                success: function (highestID) {
-                    // 기본 순서는 1
-                    var entryOrder = 1
-
-                    if (highestID) {
-                        var parts = highestID.split('-')
-                        if (parts.length === 2) {
-                            // 부서 코드 이후의 입사 순서만 추출
-                            var lastEntryOrder = parseInt(parts[1].substring(2))
-                            entryOrder = lastEntryOrder + 1
-                        }
-                    }
-
-                    // 사원번호 생성
-                    var employeeID = generateEmployeeID(
-                        currentYear,
-                        deptCode,
-                        entryOrder
-                    )
-                    // 생성된 사원번호를 입력 필드에 설정
-                    $('#employee_id').val(employeeID)
-                },
-                error: function (error) {
-                    console.error('Error fetching highest employee ID:', error)
-                    alert('사원번호를 생성하는 데 문제가 발생했습니다.')
-                },
-            })
-        } else {
-            // 부서가 선택되지 않은 경우 경고 메시지 표시
-            alert('부서를 선택하세요.')
+        var deptCode = departmentCodes[deptSelectVal];
+  
+        // 부서가 선택되었는지 확인
+        if (!deptCode) {
+            alert('부서를 선택하세요.');
+            return;
         }
-    })
+
+        // 직급이 선택되었는지 확인
+        if (!roleSelectVal) {
+            alert('직급을 선택하세요.');
+            return;
+        }
+
+        // 사원번호 생성 로직
+        $.ajax({
+            url: '/employee/highestEmployeeID',
+            method: 'post',
+            data: { dept: deptSelectVal },
+            success: function (highestID) {
+                // 기본 순서는 1
+                var entryOrder = 1;
+
+                if (highestID) {
+                    var parts = highestID.split('-');
+                    if (parts.length === 2) {
+                        // 부서 코드 이후의 입사 순서만 추출
+                        var lastEntryOrder = parseInt(parts[1].substring(2));
+                        entryOrder = lastEntryOrder + 1;
+                    }
+                }
+
+                // 사원번호 생성
+                var employeeID = generateEmployeeID(
+                    currentYear,
+                    deptCode,
+                    entryOrder
+                );
+                // 생성된 사원번호를 입력 필드에 설정
+                $('#employee_id').val(employeeID);
+            },
+            error: function (error) {
+                console.error('Error fetching highest employee ID:', error);
+                alert('사원번호를 생성하는 데 문제가 발생했습니다.');
+            },
+        });
+    });
+
+    // 회원가입 버튼 클릭 이벤트
+    $('#register_button').on('click', function (e) {
+        var employeeID = $('#employee_id').val().trim();
+        var name = $('#name').val().trim();
+
+        // 사원번호가 생성되지 않았을 때
+        if (!employeeID) {
+            alert('사원번호를 생성하세요.');
+            e.preventDefault();
+            return;
+        }
+
+        // 이름이 입력되지 않았을 때
+        if (!name) {
+            alert('이름을 입력하세요.');
+            e.preventDefault();
+            return;
+        }
+
+    });
 
     // 사용자 첫 로그인시 팝업 업데이트 정규표현식
     // 소문자,숫자,특수문자 를 사용하여 최소 10자리
