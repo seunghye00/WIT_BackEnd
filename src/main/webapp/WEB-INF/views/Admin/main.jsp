@@ -44,12 +44,10 @@
 						<h3 id="clock"></h3>
 						<div class="attendance-btn">
 							<div class="start">
-								<img src="/img/출퇴근.png" alt="출근" class="attendance_icon">
 								<button type="button" id="start_button">출근</button>
 								<span class="check-time" id="start_time_display">00:00</span>
 							</div>
 							<div class="end">
-								<img src="/img/출퇴근.png" alt="퇴근" class="attendance_icon">
 								<button type="button" id="end_button">퇴근</button>
 								<span class="check-time" id="end_time_display">00:00</span>
 							</div>
