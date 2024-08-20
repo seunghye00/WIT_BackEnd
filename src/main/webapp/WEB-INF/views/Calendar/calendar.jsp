@@ -89,7 +89,7 @@
 											name="calendar_${dto.calendar_seq}"
 											class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
 											<c:if test="${dto.default_yn == 'Y'}">checked</c:if>>
-											<label for="calendar_${dto.calendar_seq}">${dto.calendar_name}</label>
+											<label for="calendar_${dto.calendar_seq}">(${dto.dept_title}) ${dto.calendar_name}</label>
 											<!-- 회의 일정(기본), 부서원 생일(기본)에는 삭제 버튼 없음 기본 생성자는 default='Y' -->
 											<c:if
 												test="${employee.role_code eq 'R2' and dto.default_yn ne 'Y'}">

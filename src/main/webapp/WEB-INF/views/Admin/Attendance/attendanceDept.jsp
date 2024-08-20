@@ -100,10 +100,12 @@
 					<h2>부서별 근무현황</h2>
 					<div class="week_selector">
 						<i class="bx bx-chevron-left"
-							onclick="window.location.href='?week=${previousWeek}'"></i> <span>${startDate}
-							~ ${endDate}</span> <i class="bx bx-chevron-right"
-							onclick="window.location.href='?week=${nextWeek}'"></i>
+							onclick="window.location.href='?week=${previousWeek}&deptTitle=${deptTitle}'"></i>
+						<span>${startDate} ~ ${endDate}</span> <i
+							class="bx bx-chevron-right"
+							onclick="window.location.href='?week=${nextWeek}&deptTitle=${deptTitle}'"></i>
 					</div>
+
 					<div class="dept_tabs">
 						<c:forEach var="dept" items="${departments}">
 							<div
