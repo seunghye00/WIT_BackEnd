@@ -260,7 +260,6 @@
 	flex: 1;
 }
 
-
 /* pagenavi css start */
 .boardList .pageNavi {
 	height: 50px;
@@ -1889,12 +1888,12 @@
 }
 
 .manageForm .listBox .rows.line-through {
-    text-decoration: line-through;
+	text-decoration: line-through;
 }
 
-.manageDetailForm{
-	display:flex;
-	flex-direction:column;
+.manageDetailForm {
+	display: flex;
+	flex-direction: column;
 	gap: 40px;
 }
 
@@ -1942,20 +1941,21 @@
 	margin-left: 0;
 }
 
-#viewContactModal .formGroup .photoWrapper  {
+#viewContactModal .formGroup .photoWrapper {
 	width: 100px;
 	height: 120px;
 	overflow: hidden;
-	border-radius:8px;
-    border: 1px solid #ccc;
+	border-radius: 8px;
+	border: 1px solid #ccc;
 }
-#viewContactModal .formGroup .photoWrapper img  {
+
+#viewContactModal .formGroup .photoWrapper img {
 	object-fit: cover;
 	width: 100%;
 	height: 100%;
 	border: none;
-	margin-right:0;
-	border-radius:unset;
+	margin-right: 0;
+	border-radius: unset;
 }
 
 /* 경원 css end */
@@ -2536,9 +2536,10 @@
 }
 
 .check-time {
-	font-family:LABDigital;
+	font-family: LABDigital;
 	color: #777;
 	font-size: 20px;
+	margin-top: 5px;
 }
 
 .attendance-btn {
@@ -2657,18 +2658,18 @@
 
 /* 메인페이지 프로필*/
 .main_profile {
-   width: 200px;
-   height: 200px;
-   display: block;
-   overflow: hidden;
-   border-radius: 100%;
-   border: 3px solid #558BCF;
+	width: 200px;
+	height: 200px;
+	display: block;
+	overflow: hidden;
+	border-radius: 100%;
+	border: 3px solid #558BCF;
 }
 
 .profileImg {
-   width: 100%;
-   height: 100%;
-   object-fit: cover;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 .attendance_icon {
@@ -3590,7 +3591,7 @@ span.return {
 }
 
 .eApprModal.apprChoiModal .choiCont .resultAppr .list ul li input:checked
-	~label {
+	 ~label {
 	background-color: #e9e9e9;
 }
 
