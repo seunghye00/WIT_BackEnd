@@ -78,6 +78,6 @@ public class VehicleBookingDAO {
 		Map<String, Object> params = new HashMap<>();
 		params.put("empNo", empNo);
 		params.put("keyword", keyword);
-		return mybatis.selectOne("vehicleBooking.getCountSearchBookingList", empNo);
+		return mybatis.selectOne("vehicleBooking.getCountSearchBookingList", params);
 	}
 }

@@ -35,20 +35,20 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService service;
-	
+
 	// 생성된 사번으로 사원의 기본 캘린더를 생성시켜주기 위해 불러옴.
 	@Autowired
 	private CalendarService cService;
 
 	@Autowired
 	private HttpSession session;
-	
+
 	@Autowired
 	private BoardService bserv;
-	
+
 	@Autowired
 	private DeptService deptServ;
-	
+
 	@Autowired
 	private RoleService roleServ;
 
@@ -74,7 +74,7 @@ public class EmployeeController {
 	public String register(EmployeeDTO dto) throws Exception {
 		int result = service.register(dto);
 		if (result == 1) {
-			// 회원가입 성공 시 해당 회원의 기본 개인 캘린더 추가 
+			// 회원가입 성공 시 해당 회원의 기본 개인 캘린더 추가
 			cService.insertPerDefaultCalendar(dto.getEmp_no());
 			return "redirect:/";
 		} else {
@@ -101,42 +101,43 @@ public class EmployeeController {
 		} else {
 			// 로그인 실패 처리
 			response.put("success", false);
+			response.put("message", "ID 및 PW를 확인 해주세요.");
 		}
 		return response;
 	}
 
 	// 메인 페이지로 이동
 	@RequestMapping("/main")
-	public String main(Model model,
-			@RequestParam(defaultValue = "") String searchTarget,
-			@RequestParam(defaultValue = "views") String sortTarget,
-			@RequestParam(defaultValue = "") String searchTxt,
-			@RequestParam(defaultValue = "0") int cpage,
-			@RequestParam(defaultValue = "false") String bookmark,
-			@RequestParam(defaultValue = "false") String report)throws Exception {
+	public String main(Model model, @RequestParam(defaultValue = "") String searchTarget,
+			@RequestParam(defaultValue = "views") String sortTarget, @RequestParam(defaultValue = "") String searchTxt,
+			@RequestParam(defaultValue = "0") int cpage, @RequestParam(defaultValue = "false") String bookmark,
+			@RequestParam(defaultValue = "false") String report,
+			@RequestParam(defaultValue = "false") String adminReport) throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
-		List<BoardReportDTO> boardList = bserv.list(searchTxt, searchTarget, sortTarget, cpage,empNo,bookmark,1,report);
-		List<BoardReportDTO> noticeList = bserv.list(searchTxt, searchTarget, sortTarget, cpage,empNo,bookmark,2,report);
+		List<BoardReportDTO> boardList = bserv.list(searchTxt, searchTarget, sortTarget, cpage, empNo, bookmark, 1,
+				report, adminReport);
+		List<BoardReportDTO> noticeList = bserv.list(searchTxt, searchTarget, sortTarget, cpage, empNo, bookmark, 2,
+				report, adminReport);
 		System.out.println(empNo);
-		model.addAttribute("boardList",boardList);
-		model.addAttribute("noticeList",noticeList);
-		
-	    // 직원 정보 가져오기
-	    EmployeeDTO employee = service.employeeInfo(empNo);
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("noticeList", noticeList);
 
-	    if (employee != null) {
-	        model.addAttribute("employee", employee);
+		// 직원 정보 가져오기
+		EmployeeDTO employee = service.employeeInfo(empNo);
 
-	        // 사장님(CEO)이라면 Admin 페이지로 이동
-	        if ("사장".equals(employee.getRole_code())) {
-	            return "Admin/main";
-	        } else {
-	            // 다른 직급이라면 User 페이지로 이동
-	            return "User/main";
-	        }
-	    } else {
-	        return "redirect:/";
-	    }
+		if (employee != null) {
+			model.addAttribute("employee", employee);
+
+			// 사장님(CEO)이라면 Admin 페이지로 이동
+			if ("사장".equals(employee.getRole_code())) {
+				return "Admin/main";
+			} else {
+				// 다른 직급이라면 User 페이지로 이동
+				return "User/main";
+			}
+		} else {
+			return "redirect:/";
+		}
 	}
 
 	// 추가 정보 업데이트
@@ -239,7 +240,7 @@ public class EmployeeController {
 
 		List<Map<String, Object>> list = service.getEmployeeList(chosung, category, cpage_num);
 
-		//List<Map<String, Object>> categoryList = service.getCategories();
+		// List<Map<String, Object>> categoryList = service.getCategories();
 
 		int totPage = service.CountPageAddress(chosung, category, cpage_num);
 		// List<Map<String, Object>> categoryList = service.getCategories(emp_no);
@@ -363,20 +364,20 @@ public class EmployeeController {
 	public List<EmployeeDTO> getListByDept(String deptCode) throws Exception {
 		return service.getListByDept(deptCode);
 	}
-	
-	//  메신저 emp_no 이름으로 변경
+
+	// 메신저 emp_no 이름으로 변경
 	@ResponseBody
 	@RequestMapping("/getEmployeeName")
 	public String getEmployeeName(String emp_no) throws Exception {
 		return service.getEmployeeName(emp_no);
 	}
-	
+
 	// 관리자 사원 관리
 	@RequestMapping("/management")
 	public String management(Model model, String cpage) throws Exception {
 		return "Management/management";
 	}
-	
+
 	// 관리자 사원 관리
 	@ResponseBody
 	@RequestMapping("/manageLoad")
@@ -391,7 +392,7 @@ public class EmployeeController {
 
 		List<Map<String, Object>> list = service.getManagementList(emp_no, cpage_num);
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		for (Map<String, Object> item : list) {
 			TIMESTAMP joinTimestamp = (TIMESTAMP) item.get("JOIN_DATE");
@@ -411,25 +412,25 @@ public class EmployeeController {
 		response.put("totPage", totPage);
 		response.put("cpage", cpage_num);
 		response.put("naviCountPerPage", BoardConfig.naviCountPerPage);
-		response.put("recordCountPerPage",  BoardConfig.recordCountPerPage);
+		response.put("recordCountPerPage", BoardConfig.recordCountPerPage);
 		response.put("manageList", list);
 		return response;
 	}
-	
+
 	// 관리자 검색 검색
 	@ResponseBody
-	@RequestMapping("/manageSearch") 
+	@RequestMapping("/manageSearch")
 	public Map<String, Object> manageSearch(String column, String keyword, Model model, String cpage) throws Exception {
 		String emp_no = (String) session.getAttribute("loginID");
-		
+
 		if (cpage == null) {
 			cpage = "1";
 		}
 		int cpage_num = Integer.parseInt(cpage);
-		
+
 		List<Map<String, Object>> list = service.selectByManage(emp_no, column, keyword, cpage_num);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		for (Map<String, Object> item : list) {
 			TIMESTAMP joinTimestamp = (TIMESTAMP) item.get("JOIN_DATE");
 			TIMESTAMP quitTimestamp = (TIMESTAMP) item.get("QUIT_DATE");
@@ -444,12 +445,12 @@ public class EmployeeController {
 			}
 		}
 		int totPage = service.totalCountManageSearch(emp_no, column, keyword);
-		
+
 		Map<String, Object> response = new HashMap<>();
 		response.put("totPage", totPage);
 		response.put("cpage", cpage_num);
 		response.put("naviCountPerPage", BoardConfig.naviCountPerPage);
-		response.put("recordCountPerPage",  BoardConfig.recordCountPerPage);
+		response.put("recordCountPerPage", BoardConfig.recordCountPerPage);
 		response.put("manageList", list);
 //		List<EmployeeDTO> list = serv.selectByCon(column,keyword,cpage_num);
 //		int totPage = serv.totalCountPageSearch(column,keyword);
@@ -458,14 +459,14 @@ public class EmployeeController {
 //		model.addAttribute("cpage", cpage_num);
 		return response;
 	}
-	
+
 	// 관리자 사원 관리 상세
 	@RequestMapping("/managementDetail")
 	public String managementDetail(Model model, String empNo) throws Exception {
-		
+
 		Map<String, Object> manageDetail = service.managementDetail(empNo);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		List<DeptDTO> departments = deptServ.getList();
 		List<RoleDTO> roles = roleServ.getList();
 		// 날짜 형식 변환
@@ -480,13 +481,13 @@ public class EmployeeController {
 			Timestamp quitDate = quitTimestamp.timestampValue();
 			manageDetail.put("QUIT_DATE", sdf.format(quitDate));
 		}
-		
+
 		model.addAttribute("employee", manageDetail);
 		model.addAttribute("departments", departments);
 		model.addAttribute("roles", roles);
 		return "Management/managementDetail";
 	}
-	
+
 	// 관리자 사원 관리 상세
 	@RequestMapping("/updateManage")
 	public String updateManage(String empNo, String photoUrl, String deptTitle, String roleTitle, String phone, String quitDate, String email) throws Exception {
@@ -506,5 +507,5 @@ public class EmployeeController {
 		e.printStackTrace();
 		return "error";
 	}
-	
+
 }

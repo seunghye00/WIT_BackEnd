@@ -60,4 +60,11 @@ public class BoardDAO {
 	public EmployeeDTO employeeInfo(String emp_no) {
 		return mybatis.selectOne("board.employeeInfo", emp_no);
 	}
+	
+	// 신고된 게시물 조회
+	public List<BoardReportDTO> getReportedPosts() {
+		return mybatis.selectList("board.getReportedPosts");
+	}
+	
+	
 }

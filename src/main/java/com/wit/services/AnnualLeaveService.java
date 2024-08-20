@@ -1,6 +1,7 @@
 package com.wit.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import com.wit.commons.AttendanceConfig;
 import com.wit.dao.AnnualLeaveDAO;
 import com.wit.dao.EApprovalDAO;
 import com.wit.dto.AnnualLeaveDTO;
+import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.LeaveRequestDTO;
 
@@ -17,7 +19,7 @@ public class AnnualLeaveService {
 
 	@Autowired
 	private AnnualLeaveDAO dao;
-	
+
 	@Autowired
 	private EApprovalDAO eDao;
 
@@ -59,5 +61,24 @@ public class AnnualLeaveService {
 		int start = (cpage - 1) * recordCountPerPage + 1;
 		int end = cpage * recordCountPerPage;
 		return dao.selectAnnualLeaveRequests(empNo, start, end);
+	}
+
+	// 부서별 휴가현황 (관리자)
+	public List<Map<String, Object>> selectAnnualLeaveRequestsByDept(String deptTitle, String searchTxt, int cpage) {
+		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
+		int start = (cpage - 1) * recordCountPerPage + 1;
+		int end = cpage * recordCountPerPage;
+
+		return dao.selectAnnualLeaveRequestsByDept(deptTitle, searchTxt, start, end);
+	}
+
+	// 검색된 연간 휴가 내역의 총 레코드 수 조회
+	public int annualLeaveRecordCountByDept(String deptTitle, String searchTxt) {
+		return dao.annualLeaveRecordCountByDept(deptTitle, searchTxt);
+	}
+
+	// 부서 리스트 조회
+	public List<DeptDTO> getDepartments() {
+		return dao.getDepartments();
 	}
 }
