@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div id="personEventModal" class="modal">
-	<div class="modalContent">
+	<div class="modalContent calendarCont">
 		<h1>
 			일정 내용<span class="modalClose" id="eventModalClose">&times;</span>
 		</h1>

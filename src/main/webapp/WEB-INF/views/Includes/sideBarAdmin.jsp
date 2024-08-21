@@ -22,7 +22,7 @@
 		<li><a href="/calendar/calendar"> <i
 				class='bx bx-calendar-alt'></i> <span class="navItem">캘린더</span></a> <span
 			class="toolTip">캘린더</span></li>
-		<li><a href="/attendance//attendanceDept"> <i
+		<li><a href="/attendance/attendance"> <i
 				class='bx bxs-briefcase-alt-2'></i> <span class="navItem">근태관리</span></a>
 			<span class="toolTip">근태관리</span></li>
 		<li><a href="/reservation/admin/home?type=meetingRoom&cPage=1"> <i class='bx bxs-check-square'></i> <span

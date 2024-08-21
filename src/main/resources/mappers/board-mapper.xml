@@ -170,7 +170,7 @@
 	</update>
 	
 	<!-- 신고 내역 리스트 -->
-	<select id="reportList" resultType="com.wit.dto.BoardReportDTO">
+	<select id="reportList" resultType="map">
 		select 
 		r.board_seq, r.report_type, r.report_date, em.name as emp_no
 		from board b  
