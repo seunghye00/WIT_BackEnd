@@ -188,6 +188,11 @@ public class EApprovalDAO {
 		return mybatis.selectOne("eApproval.getCountSearchWriteList", params);
 	}
 
+	// 해당 사원이 기안한 문서 목록 중 진행 중인 문서의 총 갯수를 조회하기 위한 메서드
+	public int getCountWriteListByIng(String empNo) {
+		return mybatis.selectOne("eApproval.getCountWriteListByIng", empNo);
+	}
+
 	// 해당 사원이 기안한 문서 목록을 검색 후 조회하기 위한 메서드
 	public List<DocuInfoListDTO> searchWriteList(String empNo, String docuCode, String keyword, int cPage) {
 		Map<String, Object> params = new HashMap<>();
@@ -266,6 +271,11 @@ public class EApprovalDAO {
 		params.put("docuCode", docuCode);
 		params.put("keyword", keyword);
 		return mybatis.selectOne("eApproval.getCountSearchViewList", params);
+	}
+
+	// 해당 사원이 참조자인 문서 목록 중 읽지 않은 문서의 총 갯수를 넘겨주기 위한 메서드
+	public int getCountBeforeViewList(String empNo) {
+		return mybatis.selectOne("eApproval.getCountBeforeViewList", empNo);
 	}
 
 	// 해당 사원이 참조자인 문서 목록을 검색 후 넘겨주기 위한 메서드
