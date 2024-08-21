@@ -159,21 +159,26 @@
 	    </div>
 	</div>
     <script>
-    let btn = document.querySelector("#btn")
-    let sideBar = document.querySelector(".sideBar")
     let currentChosung  = '전체';
     let currentCategory = '전체';
-    
-    btn.onclick = function () {
-        sideBar.classList.toggle("active");
-    };
     
     $(document).ready(function() {
     	loadCategoriesGroup();
         $('.toolBar a').off('click').on('click', handleToolBarClick);
         $('#searchForm').off('submit').on('submit', handleSearchFormSubmit);
     });
-   
+ 	// 토글 이벤트 설정
+    const toggleItems = $('.toggleItem');
+    toggleItems.each(function() {
+    	const toggleItem = $(this);
+        const toggleTit = toggleItem.find('.toggleTit');
+        const subList = toggleItem.find('.subList');
+
+        toggleTit.on('click', function() {
+        	subList.toggleClass('active');
+            toggleTit.toggleClass('active'); // 이미지 회전을 위해 클래스 추가
+        });
+    });
     function loadGroupPage(params = { cpage: 1 }, url = '/employee/groupAddressTool') {
         $.ajax({
             url: url,
