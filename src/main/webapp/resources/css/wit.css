@@ -2643,7 +2643,7 @@
 	display: flex;
 	padding: 10px 0;
 	border-bottom: 1px solid #ddd;
-	height: 50px;
+	height: 55px;
 	align-items: center;
 	justify-content: center;
 }
@@ -2792,6 +2792,8 @@
 	border-bottom: 1px solid #ccc;
 	padding: 10px 0;
 	border-radius: 10px;
+	height: 55px;
+	align-items: center;
 }
 
 .header_row span, .attendance_row span {
@@ -2807,7 +2809,7 @@
 
 #pnavi {
 	position: relative;
-	top: 55%;
+	top: 50%;
 }
 
 /* 민서 css end */
