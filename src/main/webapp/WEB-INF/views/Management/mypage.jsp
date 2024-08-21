@@ -132,10 +132,11 @@
 			sideBar.classList.toggle("active");
 		};
 
+		// 원래 닉네임을 저장
+		let originalNickname = "${employee.nickname}";
+
 		// 닉네임 중복 체크여부 확인
 		let nicknameChecked = false;
-		// 사용자 현재 닉네임 저장
-		const originalNickname = "${employee.nickname}";
 
 		// 수정을 위한 함수
 		function toggleEdit() {
@@ -151,6 +152,11 @@
 					.querySelector('input[name="nickname"]');
 			if (nicknameField) {
 				nicknameField.readOnly = !isEditing;
+				
+				// 취소 버튼을 눌렀을 때 닉네임을 원래대로 복원
+				if (!isEditing) {
+					nicknameField.value = originalNickname;
+				}
 			}
 		}
 	</script>
