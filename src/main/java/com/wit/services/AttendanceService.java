@@ -206,12 +206,19 @@ public class AttendanceService {
 	}
 
 	// 부서별 근태현황(관리자)
-	public List<Map<String, Object>> deptAtd(String deptTitle, Date startDate, Date endDate) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("deptTitle", deptTitle);
-		params.put("startDate", startDate);
-		params.put("endDate", endDate);
-		return dao.deptAtd(params);
+	public List<Map<String, Object>> deptAtd(String deptTitle, Date startDate, Date endDate, int start, int end) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("deptTitle", deptTitle);
+	    params.put("startDate", startDate);
+	    params.put("endDate", endDate);
+	    params.put("start", start);
+	    params.put("end", end);
+	    return dao.deptAtd(params);
+	}
+
+	// 부서별 근태현황 레코드 수 조회
+	public int deptAtdRecordCount(String deptTitle, Date startDate, Date endDate) {
+	    return dao.deptAtdRecordCount(deptTitle, startDate, endDate);
 	}
 
 	// 부서 조회

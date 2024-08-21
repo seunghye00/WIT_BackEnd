@@ -85,10 +85,20 @@ public class AttendanceDAO {
 		return mybatis.selectOne("attendance.employeeInfo", emp_no);
 	}
 
-	// 부서별 근태현황(관리자)
+	// 부서별 근태현황(관리자) 조회 (페이징 적용)
 	public List<Map<String, Object>> deptAtd(Map<String, Object> params) {
-		return mybatis.selectList("attendance.deptAtd", params);
+	    return mybatis.selectList("attendance.deptAtd", params);
 	}
+
+	// 부서별 근태현황 레코드 수 조회
+	public int deptAtdRecordCount(String deptTitle, Date startDate, Date endDate) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("deptTitle", deptTitle);
+	    params.put("startDate", startDate);
+	    params.put("endDate", endDate);
+	    return mybatis.selectOne("attendance.deptAtdRecordCount", params);
+	}
+
 
 	// 부서 조회
 	public List<DeptDTO> getAllDepartments() {
