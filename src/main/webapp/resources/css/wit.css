@@ -774,6 +774,40 @@
 	flex-direction: column;
 }
 
+.dialog .ct .ctTitle {
+	flex: 1;
+	display: flex;
+}
+
+.dialog .ct .ctTitle .reportPer {
+	flex: 1;
+}
+
+.dialog .ct .ctTitle .reportRes {
+	flex: 2;
+}
+
+.dialog .ct .ctTitle .reportDate {
+	flex: 2;
+}
+
+.dialog .ct .ctCont {
+	flex: 1;
+	display: flex;
+}
+
+.dialog .ct .ctCont .reportPer {
+	flex: 1;
+}
+
+.dialog .ct .ctCont .reportRes {
+	flex: 2;
+}
+
+.dialog .ct .ctCont .reportDate {
+	flex: 2;
+}
+
 .dialog .ct .reporter, .dialog .ct .reportSort {
 	flex: 1;
 	display: flex;
@@ -1918,7 +1952,8 @@
 	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 60px;;
+	gap: 60px;
+	;
 }
 
 .formCon .photoWrapper {
@@ -2697,6 +2732,7 @@
 /* 관리자 근태현황 */
 .dept_tabs {
 	display: flex;
+	padding: 5px;
 }
 
 .dept_tab {
@@ -2719,18 +2755,23 @@
 	color: white;
 }
 
+.dept_tab.active a {
+	color: white;
+	font-weight: bold;
+}
+
 .week_selector {
 	display: flex;
 	justify-content: flex-end;
 	margin-bottom: 10px;
 	font-size: 20px;
 	font-weight: bold;
+	cursor: pointer;
 }
 
 .attendance_table {
 	width: 100%;
 	font-size: 18px;
-	margin: auto;
 }
 
 .header_row {
@@ -4165,7 +4206,7 @@ span.return {
 	background-color: #1268d4;
 }
 
-#confirmBtn {
+.confirmBtn {
 	display: none;
 }
 

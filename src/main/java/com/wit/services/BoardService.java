@@ -124,8 +124,13 @@ public class BoardService {
 	}
 	
 	// 신고 목록 조회 메서드 
-	public List<BoardReportDTO> getReportedPosts() throws Exception{
-		return bdao.getReportedPosts();
+//	public List<BoardReportDTO> getReportedPosts() throws Exception{
+//		return bdao.getReportedPosts();
+//	}
+	
+	// 신고 내역 리스트 조회
+	public List<BoardReportDTO> reportList(int board_seq) throws Exception{
+		return bdao.reportList(board_seq);
 	}
 	
 	// 직원 정보 조회 메소드 추가

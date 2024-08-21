@@ -235,6 +235,10 @@
 </div>
 		<!-- 개인 캘린더 event 클릭 시 모달 -->
 		<%@ include file="/WEB-INF/views/Calendar/Modal.jsp"%>
+		<!-- 전사 일정 event 클릭 시 모달 -->
+		<%@ include file="/WEB-INF/views/Calendar/companyModal.jsp"%>
+		<!-- 임원 일정 event 클릭 시 모달 -->
+		<%@ include file="/WEB-INF/views/Calendar/executiveModal.jsp"%>
 	</div>
 
 	<!-- 부서 캘린더 event 클릭 시 모달 -->
@@ -246,7 +250,7 @@
 			<div class="eventCheck">
 				<form id="deptEventEditForm" action="/events/editEvent"
 					method="post">
-					<input type="hidden" name="events_seq" id="eventSeq">
+					<input type="hidden" name="events_seq" class="eventSeq">
 					<ul>
 						<li><span>일정명</span>
 							<div>
@@ -296,8 +300,8 @@
 						<li><c:choose>
 								<c:when test="${employee.role_code eq 'R2'}">
 									<div class="btns">
-										<button type="button" id="editBtn">수정</button>
-										<button type="submit" id="confirmBtn" class="okBtn">확인</button>
+										<button type="button" id="deptEditBtn">수정</button>
+										<button type="submit" id="deptConfirmBtn" class="confirmBtn">확인</button>
 										<button type="button" class="deleteBtn" id="eventDel">삭제</button>
 										<button type="button" class="cancelBtn editCancelBtn">취소</button>
 									</div>
@@ -443,44 +447,160 @@
 			});
 		}
 	})
-        // 이벤트 클릭해서 수정 버튼 눌렀을 시
+        // 개인 이벤트 클릭해서 수정 버튼 눌렀을 시
         $('#editBtn').on('click', function () {
             let $inputs = $('.eventCheck input, .eventCheck select, .eventCheck textarea');
             $inputs.prop('disabled', false);
             $('#editBtn').hide();
             $('.deleteBtn').hide();
-            $('#confirmBtn').show();
+            $('#perConfirmBtn').show();
             $('.cancelBtn').show();
         });
 
-        // 이벤트 모달창에서 X버튼 눌렀을 시
-        $('#eventModalClose').on('click', function () {
-            location.reload();
-        })
 
-        $('#confirmBtn').on('click', function (e) {
+        $('#perConfirmBtn').on('click', function (e) {
         // 확인 버튼 클릭 시
-        e.preventDefault(); // 기본 폼 제출을 방지합니다.
+        // 기본 폼 제출을 방지
+        e.preventDefault(); 
 
         	let startDate = $('#eventStartDate').val();
         	let startTime = $('#eventStartTime').val();
         	let endDate = $('#eventEndDate').val();
         	let endTime = $('#eventEndTime').val();
-        	// 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듭니다.
+        	// 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
             let dateTimeLocal = startDate + 'T' + startTime;
             let dateTime = new Date(dateTimeLocal);
-            let timestamp = dateTime.getTime(); // 밀리초 단위의 타임스탬프
+        	// 밀리초 단위의 타임스탬프
+            let timestamp = dateTime.getTime(); 
             
             $(".editStartAt").val(timestamp);
             
             dateTimeLocal = endDate + 'T' + endTime;
             dateTime = new Date(dateTimeLocal);
-            timestamp = dateTime.getTime(); // 밀리초 단위의 타임스탬프
+         	// 밀리초 단위의 타임스탬프
+            timestamp = dateTime.getTime(); 
             
             $(".editEndAt").val(timestamp);
 
-        // 폼을 제출합니다.
-        $('#eventEditForm').submit(); // 폼을 제출하여 서버로 데이터를 전송합니다.
+         // 폼을 제출하여 서버로 데이터를 전송
+        $('#eventEditForm').submit(); 
+    });
+        
+     // 부서 이벤트 클릭해서 수정 버튼 눌렀을 시
+        $('#deptEditBtn').on('click', function () {
+            let $inputs = $('.eventCheck input, .eventCheck select, .eventCheck textarea');
+            $inputs.prop('disabled', false);
+            $('#deptEditBtn').hide();
+            $('.deleteBtn').hide();
+            $('#deptConfirmBtn').show();
+            $('.cancelBtn').show();
+        });
+
+
+        $('#deptConfirmBtn').on('click', function (e) {
+        // 확인 버튼 클릭 시
+        // 기본 폼 제출을 방지
+        e.preventDefault(); 
+
+        	let startDate = $('#eventStartDate').val();
+        	let startTime = $('#eventStartTime').val();
+        	let endDate = $('#eventEndDate').val();
+        	let endTime = $('#eventEndTime').val();
+        	// 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
+            let dateTimeLocal = startDate + 'T' + startTime;
+            let dateTime = new Date(dateTimeLocal);
+         	// 밀리초 단위의 타임스탬프
+            let timestamp = dateTime.getTime(); 
+            
+            $(".editStartAt").val(timestamp);
+            
+            dateTimeLocal = endDate + 'T' + endTime;
+            dateTime = new Date(dateTimeLocal);
+         	// 밀리초 단위의 타임스탬프
+            timestamp = dateTime.getTime(); 
+            
+            $(".editEndAt").val(timestamp);
+
+         // 폼을 제출하여 서버로 데이터를 전송
+        $('#deptEventEditForm').submit(); 
+    });
+        
+        // 전사 이벤트 클릭해서 수정 버튼 눌렀을 시
+        $('#companyEditBtn').on('click', function () {
+            let $inputs = $('.eventCheck input, .eventCheck select, .eventCheck textarea');
+            $inputs.prop('disabled', false);
+            $('#companyEditBtn').hide();
+            $('.deleteBtn').hide();
+            $('#companyConfirmBtn').show();
+            $('.cancelBtn').show();
+        });
+
+
+        $('#companyConfirmBtn').on('click', function (e) {
+        // 확인 버튼 클릭 시
+        // 기본 폼 제출을 방지
+        e.preventDefault(); 
+
+        	let startDate = $('#eventStartDate').val();
+        	let startTime = $('#eventStartTime').val();
+        	let endDate = $('#eventEndDate').val();
+        	let endTime = $('#eventEndTime').val();
+        	// 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
+            let dateTimeLocal = startDate + 'T' + startTime;
+            let dateTime = new Date(dateTimeLocal);
+         	// 밀리초 단위의 타임스탬프
+            let timestamp = dateTime.getTime(); 
+            
+            $(".editStartAt").val(timestamp);
+            
+            dateTimeLocal = endDate + 'T' + endTime;
+            dateTime = new Date(dateTimeLocal);
+         	// 밀리초 단위의 타임스탬프
+            timestamp = dateTime.getTime(); 
+            
+            $(".editEndAt").val(timestamp);
+
+         // 폼을 제출하여 서버로 데이터를 전송
+        $('#companyEventEditForm').submit();
+    });
+        
+     // 임원 이벤트 클릭해서 수정 버튼 눌렀을 시
+        $('#executiveEditBtn').on('click', function () {
+            let $inputs = $('.eventCheck input, .eventCheck select, .eventCheck textarea');
+            $inputs.prop('disabled', false);
+            $('#executiveEditBtn').hide();
+            $('.deleteBtn').hide();
+            $('#executiveConfirmBtn').show();
+            $('.cancelBtn').show();
+        });
+
+
+        $('#executiveConfirmBtn').on('click', function (e) {
+        // 확인 버튼 클릭 시
+        // 기본 폼 제출을 방지
+        e.preventDefault(); 
+
+        	let startDate = $('#eventStartDate').val();
+        	let startTime = $('#eventStartTime').val();
+        	let endDate = $('#eventEndDate').val();
+        	let endTime = $('#eventEndTime').val();
+        	// 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
+            let dateTimeLocal = startDate + 'T' + startTime;
+            let dateTime = new Date(dateTimeLocal);
+         	// 밀리초 단위의 타임스탬프
+            let timestamp = dateTime.getTime(); 
+            
+            $(".editStartAt").val(timestamp);
+            
+            dateTimeLocal = endDate + 'T' + endTime;
+            dateTime = new Date(dateTimeLocal);
+         	// 밀리초 단위의 타임스탬프
+            timestamp = dateTime.getTime(); 
+            
+            $(".editEndAt").val(timestamp);
+
+         // 폼을 제출하여 서버로 데이터를 전송
+        $('#executiveEventEditForm').submit(); 
     });
 
         $('.cancelBtn').on('click', function () {
@@ -488,13 +608,13 @@
         })
         
         // 이벤트 모달창에서 삭제 버튼 눌렀을 시
-        $('#eventDel').on('click', function (){
+        $('.deleteBtn').on('click', function (){
             
             let eventDeleteConfirm = confirm('정말로 이 캘린더를 삭제하시겠습니까?');
             
             if (eventDeleteConfirm) {
                 // 사용자가 확인을 클릭한 경우 삭제 요청을 서버로 전송
-            	let eventSeq = $('#eventSeq').val();
+            	let eventSeq = $('.eventSeq').val();
             	console.log(eventSeq);
             	location.href = "/events/del_event?eventSeq=" + eventSeq;
             }        	
@@ -507,8 +627,8 @@
             })
         })
 
-    // 예시: 새로운 캘린더가 추가될 때 updateSelectOptions 호출
-    // 실제 구현에 따라 이벤트 리스너를 추가할 수 있습니다.
+
+    // 실제 구현에 따라 이벤트 리스너를 추가할 수 있음.
     $('#sideMyAdd').on('click', function() {
     	// 새로운 캘린더를 추가한 후 셀렉트 옵션 업데이트
         updateSelectOptions('.choiEvent');
@@ -657,7 +777,7 @@
                     let eventEndTime = eventEndKST.toISOString().split('T')[1].substring(0, 5);
                     
                     $('.eventName').val(eventTitle);
-                    $('#eventSeq').val(eventSeq);
+                    $('.eventSeq').val(eventSeq);
                     $('.eventStartDate').val(eventStartDate);
                     $('.eventStartTime').val(eventStartTime);
                     $('.eventEndDate').val(eventEndDate);
@@ -676,7 +796,6 @@
         	        }).done((resp)=>{  	        	
         	        	if (resp.type == 'personal') {
         	                $("#personEventModal").show();
-
         	                $("#personEventModal .modalClose").off("click").on("click", function (event) {
         	                    event.preventDefault();
         	                    $("#personEventModal").find('input[type="text"], input[type="date"], input[type="time"], textarea').val('');
@@ -685,9 +804,8 @@
         	                    $("#personEventModal").hide();
         	                });
 
-        	            } else {
+        	            } else if(resp.type == 'dept'){
         	                $("#deptEventModal").show();
-
         	                $("#deptEventModal .modalClose").off("click").on("click", function (event) {
         	                    event.preventDefault();
         	                    $("#deptEventModal").find('input[type="text"], input[type="date"], input[type="time"], textarea').val('');
@@ -695,6 +813,23 @@
         	                    $(".eventLocation").val('');
         	                    $("#deptEventModal").hide();
         	                });
+        	            } else if(resp.type == 'company'){
+        	            		$("#companyEventModal").show();
+            	                $("#companyEventModal .modalClose").off("click").on("click", function (event) {
+            	                    event.preventDefault();
+            	                    $("#companyEventModal").find('input[type="text"], input[type="date"], input[type="time"], textarea').val('');
+            	                    // 장소 필드 초기화
+            	                    $(".eventLocation").val('');
+            	                    $("#companyEventModal").hide();
+        	            	});
+        	            }else{
+        	            	$("#executiveEventModal").show();
+        	            	$("#executiveEventModal .modalClose").off("click").on("click", function (event) {
+        	            		event.preventDefault();
+        	            		$("#executiveEventModal").find('input[type="text"], input[type="date"], input[type="time"], textarea').val('');
+        	            		$(".eventLocation").val('');
+        	            		$("#executiveEventModal").hide();      	            	
+        	            });
         	            }
         	        }).fail((jqXHR, textStatus, errorThrown) => {
         	            console.error('AJAX 요청 실패:', textStatus, errorThrown);

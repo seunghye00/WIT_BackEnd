@@ -56,14 +56,15 @@ public class BoardDAO {
 	public void update(BoardDTO dto) {
 		mybatis.update("board.update",dto);
 	}
+	
 	// 직원 정보 조회
 	public EmployeeDTO employeeInfo(String emp_no) {
 		return mybatis.selectOne("board.employeeInfo", emp_no);
 	}
 	
-	// 신고된 게시물 조회
-	public List<BoardReportDTO> getReportedPosts() {
-		return mybatis.selectList("board.getReportedPosts");
+	// 신고 내역 리스트 조회
+	public List<BoardReportDTO> reportList(int board_seq){
+		return mybatis.selectList("board.reportList",board_seq);
 	}
 	
 	

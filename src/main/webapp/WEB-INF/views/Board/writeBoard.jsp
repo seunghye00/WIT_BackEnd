@@ -58,22 +58,27 @@
 												<ul class="subList">
 													<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
 													</li>
+
 													<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
-													<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
+
+													<c:if test="${employee.role_code == '사장'}">
+														<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
+													</c:if>
 												</ul>
 											</li>
 										</ul>
 									</div>
-
-									<div class="addressListGroup">
-										<ul class="GroupList">
-											<li class="toggleItem">
-												<h3 class="reportList">
-													신고 현황
-												</h3>
-											</li>
-										</ul>
-									</div>
+									<c:if test="${employee.role_code == '사장'}">
+										<div class="addressListGroup">
+											<ul class="GroupList">
+												<li class="toggleItem">
+													<h3 class="reportList">
+														신고 현황
+													</h3>
+												</li>
+											</ul>
+										</div>
+									</c:if>
 								</div>
 
 								<div class="sideContents board">
