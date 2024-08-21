@@ -102,6 +102,8 @@ $('#addMeetingReserv').on('click', function () {
     const startDateTime = new Date(startDateTimeString);
 	const endDateTime = new Date(endDateTimeString);
 	
+	const pathName = window.location.pathname;
+	
 	if(confirm('예약 내용은 수정&삭제가 불가능합니다.')){
 		// 입력한 날짜에 다른 예약이 존재하는지 검사
 		$.ajax({
@@ -118,7 +120,7 @@ $('#addMeetingReserv').on('click', function () {
 			// 서버에서 검사 후 등록 여부 알람
 			if (resp.result == "등록 완료") {
 				alert('예약이 완료되었습니다.');
-				location.href = "/reservation/meetingRoom?roomSeq=" + $('#roomSeq').val();
+				location.href = pathName + "?roomSeq=" + $('#roomSeq').val();
 			} else if(resp.result == "불가능") {
 				alert('예약 일정을 다시 확인해주세요.\n같은 장소를 동시에 사용하는 것은 불가능합니다.');
 				$('#startTime').focus();
