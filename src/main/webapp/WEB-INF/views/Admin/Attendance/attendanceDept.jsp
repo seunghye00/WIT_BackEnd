@@ -43,7 +43,6 @@
 							</li>
 						</ul>
 					</div>
-					<div style="padding: 10px;"></div>
 					<a href="/annualLeave/attendanceVacation">
 						<h3 class="toggleTit">휴가관리</h3>
 					</a>
@@ -62,11 +61,13 @@
 				<div class="sideContents AttendanceDept">
 					<h2>부서별 근무현황</h2>
 					<div class="week_selector">
+					<span>
 						<i class="bx bx-chevron-left"
 							onclick="window.location.href='?week=${previousWeek}&deptTitle=${deptTitle}'"></i>
-						<span>${startDate} ~ ${endDate}</span> <i
+						${startDate} ~ ${endDate} <i
 							class="bx bx-chevron-right"
 							onclick="window.location.href='?week=${nextWeek}&deptTitle=${deptTitle}'"></i>
+							</span>
 					</div>
 
 					<div class="dept_tabs">

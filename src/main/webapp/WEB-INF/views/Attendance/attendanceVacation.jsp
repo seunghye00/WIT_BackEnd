@@ -44,7 +44,6 @@
 							</li>
 						</ul>
 					</div>
-					<div style="padding: 10px;"></div>
 					<a href="/annualLeave/attendanceVacation">
 						<h3 class="toggleTit">휴가관리</h3>
 					</a>

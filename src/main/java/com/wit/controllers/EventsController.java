@@ -30,10 +30,9 @@ public class EventsController {
 	// 이벤트 저장
 	@RequestMapping("/save_event")
 	public String saveEvent(EventsDTO dto, @RequestParam("start_at") long startDate, @RequestParam("end_at") long endDate) {
-		// 임시 데이터 => 추후 수정 !!!!
 		String emp_no = (String)session.getAttribute("loginID");
 		dto.setEmp_no(emp_no);
-				
+						
 		// 밀리초 단위의 타임스탬프를 Timestamp 객체로 변환
 		dto.setStart_date(new Timestamp(startDate));
 		dto.setEnd_date(new Timestamp(endDate));
@@ -59,11 +58,9 @@ public class EventsController {
 	// 이벤트 수정
 	@RequestMapping("/editEvent")
 	public String editEvent(EventsDTO dto, @RequestParam("editStartAt") long eventStartDate, @RequestParam("editEndAt") long eventEndDate) throws Exception{
+		
 		dto.setStart_date(new Timestamp(eventStartDate));
-		System.out.println(eventStartDate);
 		dto.setEnd_date(new Timestamp(eventEndDate));
-		System.out.println(dto.getCalendar_seq());
-		System.out.println(dto.getLocation());
 		service.updateBySeq(dto);
 		return "redirect:/calendar/calendar";
 	}

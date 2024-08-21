@@ -85,6 +85,16 @@
 		select count(*) from personal_calendar where calendar_seq = #{calendarSeq}
 	</select>
 	
+	<!-- 부서 캘린더 테이블에 해당 캘린더 존재 여부 확인 -->
+	<select id="selectDeptByCalendarSeq" resultType="int">
+		select count(*) from department_calendar where calendar_seq = #{calendarSeq}
+	</select>
+	
+	<!-- 전사 일정 테이블에 해당 캘린더 존재 여부 확인 -->
+	<select id="selectCompanyCalendarSeq" resultType="int">
+		select count(*) from company_calendar where calendar_seq = #{calendarSeq}
+	</select>
+	
 	<!-- 전사 일정 목록 출력 -->
 	<select id="comCalendarList" resultType="com.wit.dto.CompanyCalendarDTO">
 		select * from company_calendar

@@ -43,7 +43,6 @@
 							</li>
 						</ul>
 					</div>
-					<div style="padding: 10px;"></div>
 					<a href="/annualLeave/attendanceVacation">
 						<h3 class="toggleTit">휴가관리</h3>
 					</a>
@@ -92,7 +91,8 @@
 							</div>
 						</c:forEach>
 					</div>
-					<div class="pagination">
+					<div style="padding: 10px;"></div>
+					<div class="pagination" id="pnavi">
 						<!-- 이전 페이지로 이동 -->
 						<a
 							href="?deptTitle=${deptTitle}&searchTxt=${searchTxt}&cpage=${cpage > 1 ? cpage - 1 : 1}"

@@ -82,8 +82,12 @@ public class CalendarService {
 		System.out.println(dao.selectPersonalByCalendarSeq(calendarSeq));
 		if(dao.selectPersonalByCalendarSeq(calendarSeq) > 0) {
 			return "personal";
-		} else {
+		} else if(dao.selectDeptByCalendarSeq(calendarSeq) > 0){
 			return "dept";
+		} else if(dao.selectCompanyCalendarSeq(calendarSeq) > 0) {
+			return "company";
+		}else {
+			return "executive";
 		}
 	}
 	
