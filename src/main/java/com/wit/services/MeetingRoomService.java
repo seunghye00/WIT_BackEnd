@@ -15,6 +15,11 @@ public class MeetingRoomService {
 	@Autowired
 	private MeetingRoomDAO dao;
 
+	// 모든 회의실 목록을 넘겨주기 위한 메서드
+	public List<MeetingRoomDTO> getMeetingRoomList() {
+		return dao.getMeetingRoomList();
+	}
+	
 	// 예약 가능한 회의실 목록을 넘겨주기 위한 메서드
 	public List<MeetingRoomDTO> getMeetingRoomList(String status) {
 		return dao.getMeetingRoomList(status);
@@ -58,5 +63,25 @@ public class MeetingRoomService {
 	// 해당 사원의 검색한 회의실 예약 정보 갯수를 조회하기 위한 메서드
 	public int getCountSearchRoomBookingList(String empNo, String keyword) {
 		return dao.getCountSearchRoomBookingList(empNo, keyword);
+	}
+
+	// 해당 항목의 상태를 변경하기 위한 메서드
+	public void updateStatus(int seq, String status) {
+		dao.updateStatus(seq, status);	
+	}
+
+	// 해당 항목의 안내 사항을 변경하기 위한 메서드
+	public void updateGuideLines(int seq, String guideLines) {
+		dao.updateGuideLines(seq, guideLines);
+	}
+
+	// 해당 항목 삭제
+	public void deleteBySeq(int seq) {
+		dao.deleteBySeq(seq);	
+	}
+
+	// 항목 추가
+	public void addRoom(MeetingRoomDTO dto) {
+		dao.addRoom(dto);
 	}
 }

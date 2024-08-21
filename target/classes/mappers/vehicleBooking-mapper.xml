@@ -22,7 +22,7 @@
 	
 	<!-- 차량 목록 조회 -->
 	<select id="getVehicleList" resultType="com.wit.dto.VehiclesDTO">
-		select vehicle_seq, name from vehicles
+		select * from vehicles
 	</select>
 	
 	<!-- 차량별 예약 조회 -->
@@ -81,11 +81,31 @@
 		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
 	</select>
 	
-	<!-- 해당 사원의 모든 회의실 예약 갯수를 조회하기 위한 쿼리문 -->
+	<!-- 해당 사원의 모든 차량 예약 갯수를 조회하기 위한 쿼리문 -->
 	<select id="getCountSearchBookingList" resultType="int">
 		select count(*) 
 		from vehicle_booking
 		where emp_no = #{empNo}
 		and upper(purpose) like upper('%'||#{keyword}||'%') 
 	</select>
+	
+	<!-- 해당 항목의 상태를 변경하기 위한 쿼리문 -->
+	<update id="updateStatus">
+		update vehicles set status = #{status} where vehicle_seq = ${seq}
+	</update>
+	
+	<!-- 해당 항목의 예약 안내 사항을 변경하기 위한 쿼리문 -->
+	<update id="updateGuideLines">
+		update vehicles set guidelines = #{guideLines} where vehicle_seq = ${seq}
+	</update>
+	
+	<!-- 해당 항목을 삭제하기 위한 쿼리문 -->
+	<delete id="deleteBySeq">
+		delete from vehicles where vehicle_seq = #{seq}
+	</delete>
+	
+	<!-- 항목 추가를 위한 쿼리문 -->
+	<insert id="addVehicle">
+		insert into vehicles values (vehicle_seq.nextval, #{name}, #{license_plate}, '예약 가능', #{guidelines})
+	</insert>
 </mapper>

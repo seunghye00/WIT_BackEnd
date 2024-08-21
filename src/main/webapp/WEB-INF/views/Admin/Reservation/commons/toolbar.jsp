@@ -5,12 +5,12 @@
 	<ul>
 		<c:choose>
 			<c:when test="${type eq 'meetingRoom'}">
-				<li><a href="/reservation/home?type=meetingRoom&cPage=1" class="active">회의실</a></li>
-				<li><a href="/reservation/home?type=vehicle&cPage=1">차량</a></li>
+				<li><a href="/reservation/admin/home?type=meetingRoom&cPage=1" class="active">회의실</a></li>
+				<li><a href="/reservation/admin/home?type=vehicle&cPage=1">차량</a></li>
 			</c:when>
 			<c:otherwise>
-				<li><a href="/reservation/home?type=meetingRoom&cPage=1">회의실</a></li>
-				<li><a href="/reservation/home?type=vehicle&cPage=1" class="active">차량</a></li>
+				<li><a href="/reservation/admin/home?type=meetingRoom&cPage=1">회의실</a></li>
+				<li><a href="/reservation/admin/home?type=vehicle&cPage=1" class="active">차량</a></li>
 			</c:otherwise>
 		</c:choose>
 	</ul>

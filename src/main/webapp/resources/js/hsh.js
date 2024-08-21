@@ -1052,14 +1052,13 @@ function goToSearchList(keyword){
 	const docuCode = $('#docuCode').val();
 	const type = $('#listType').val();
 
-	// 현재 페이지의 URL pathname 값 중 마지막 단어만 변수에 저장
+	// 현재 페이지의 URL pathname 값 변수에 저장
 	const pathName = window.location.pathname;
-	const docuList = pathName.split('/').pop();
 	
 	// 변수에 저장된 값을 서버에 전송
 	if (docuCode == ''){
-		location.href = '/eApproval/' + docuList + '?type=' + type + '&keyword=' + keyword + '&cPage=1';
+		location.href = pathName + '?type=' + type + '&keyword=' + keyword + '&cPage=1';
 		return;
 	}
-	location.href = '/eApproval/' + docuList + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=1';
+	location.href = pathName + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=1';
 }

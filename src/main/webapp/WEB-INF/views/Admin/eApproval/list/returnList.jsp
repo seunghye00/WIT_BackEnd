@@ -19,7 +19,7 @@
 
 <body>
     <div class="container">
-        <%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>	
+        <%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp" %>	
         <div class="main-content">
             <%@ include file="/WEB-INF/views/Includes/header.jsp"%>
             <div class="contents">
