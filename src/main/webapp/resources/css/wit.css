@@ -4128,6 +4128,9 @@ button:nth-child(4) img {
 	top: -3px;
 	cursor: pointer;
 }
+.compCalendar{
+	padding-top: 30px;
+}
 
 /* 날짜 박스 눌렀을 시 */
 .modalClose {
