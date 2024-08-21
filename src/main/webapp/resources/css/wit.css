@@ -2612,12 +2612,16 @@
 	margin-bottom: 10px;
 	gap: 150px;
 	/* padding: 35px; */
+	position: relative;
+	top: -75px;
 }
 
 .status_container, .hours_container, .week_status, .vacation_status {
 	width: 100%;
 	/* padding: 20px; */
 	border-radius: 10px;
+	position: relative;
+	top: -5px;
 }
 
 .vacation_container {
@@ -2799,6 +2803,11 @@
 	position: relative;
 	left: 78%;
 	margin-bottom: 5px;
+}
+
+#pnavi {
+	position: relative;
+	top: 55%;
 }
 
 /* 민서 css end */

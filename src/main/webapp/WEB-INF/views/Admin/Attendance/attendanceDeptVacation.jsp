@@ -92,7 +92,7 @@
 						</c:forEach>
 					</div>
 					<div style="padding: 10px;"></div>
-					<div class="pagination">
+					<div class="pagination" id="pnavi">
 						<!-- 이전 페이지로 이동 -->
 						<a
 							href="?deptTitle=${deptTitle}&searchTxt=${searchTxt}&cpage=${cpage > 1 ? cpage - 1 : 1}"
