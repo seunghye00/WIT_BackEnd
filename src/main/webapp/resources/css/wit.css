@@ -5025,9 +5025,7 @@ button:nth-child(4) img {
 }
 
 .rightTop .eApprBox .eApprRows .eApprCols .docuNum {
-	background-color: #ff9aa4;
-    font-size: 14px;
-    margin-left: 5px;
-    padding: 5px 9px;
-    border-radius: 50px;
+	color: #dc3545;
+	font-size: 16px;
+	padding: 5px 9px;
 }
