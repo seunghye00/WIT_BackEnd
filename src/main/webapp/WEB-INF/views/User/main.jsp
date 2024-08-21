@@ -44,12 +44,12 @@
 						<h3 id="clock"></h3>
 						<div class="attendance-btn">
 							<div class="start">
-								<span class="check-time" id="start_time_display">00:00</span>
 								<button type="button" id="start_button"><i class="bx bxs-id-card"></i>출근</button>
+								<span class="check-time" id="start_time_display">00:00</span>
 							</div>
 							<div class="end">
-								<span class="check-time" id="end_time_display">00:00</span>
 								<button type="button" id="end_button"><i class='bx bxs-home'></i>퇴근</button>
+								<span class="check-time" id="end_time_display">00:00</span>
 							</div>
 						</div>
 					</div>
