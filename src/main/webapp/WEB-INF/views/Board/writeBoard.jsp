@@ -28,92 +28,91 @@
 						<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>
 					</c:otherwise>
 				</c:choose>
-					<!-- 공통영역 끝 -->
+				<!-- 공통영역 끝 -->
 
-					<div class="main-content">
-						<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
-							<div class="contents">
-								<div class="sideAbout">
-									<div class="sideTxt">
-										<h2 class="sideTit">게시판</h2>
-									</div>
-									<div class="sideBtnBox">
-										<button id="writeBtn" class="plusBtn sideBtn">자유 게시판 글 작성</button>
-									</div>
+				<div class="main-content">
+					<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
+						<div class="contents">
+							<div class="sideAbout">
+								<div class="sideTxt">
+									<h2 class="sideTit">게시판</h2>
+								</div>
+								<div class="sideBtnBox">
+									<button id="writeBtn" class="plusBtn sideBtn">자유 게시판 글 작성</button>
+								</div>
 
-									<div class="addressListPrivate">
-										<ul class="GroupList">
-											<li class="toggleItem">
-												<h3 class="toggleTit">
-													자유 게시판
-												</h3>
-												<ul class="subList">
-													<li><a href="/board/list?bookmark=true">북마크한 게시물</a></li>
-													<li><a href="/board/list?report=true">신고한 게시물</a></li>
-													<li><a href="/board/list">자유 게시판으로 이동</a></li>
-												</ul>
-											</li>
-										</ul>
-									</div>
-
-									<div class="addressListPrivate">
-										<ul class="GroupList">
-											<li class="toggleItem">
-												<h3 class="toggleTit">
-													공지 사항
-												</h3>
-												<ul class="subList">
-													<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
-													</li>
-
-													<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
-
-													<c:if test="${employee.role_code == '사장'}">
-														<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
-													</c:if>
-												</ul>
-											</li>
-										</ul>
-									</div>
-									<c:if test="${employee.role_code == '사장'}">
-										<div class="addressListGroup">
-											<ul class="GroupList">
-												<li class="toggleItem">
-													<h3 class="reportList">
-														신고 현황
-													</h3>
-												</li>
+								<div class="addressListPrivate">
+									<ul class="GroupList">
+										<li class="toggleItem">
+											<h3 class="toggleTit">
+												자유 게시판
+											</h3>
+											<ul class="subList">
+												<li><a href="/board/list?bookmark=true">북마크한 게시물</a></li>
+												<li><a href="/board/list?report=true">신고한 게시물</a></li>
+												<li><a href="/board/list">자유 게시판으로 이동</a></li>
 											</ul>
-										</div>
-									</c:if>
+										</li>
+									</ul>
 								</div>
 
-								<div class="sideContents board">
-									<form action="/board/writeProc" method="post" enctype="multipart/form-data"
-										id="submitForm">
-										<input type="hidden" name="contents" id="contents">
-										<input type="hidden" name="boardCode" value="${board_code}">
-										<div class="mainTitle">글 작성</div>
-										<div class="writeWrapper">
-											<input class="writeTitle" placeholder="제목을 입력하세요." name="title"></input>
-											<div class="writeCont">
-												<div id="summernote"></div>
-											</div>
-											<div class="docuFiles">
-												<label for="file">🔗 파일 선택</label> <input type="file" id="file" multiple
-													name="files"> <span class="uploadFiles"></span>
-											</div>
-											<div class="writeBtns">
-												<button type="button" class="btn btn-secondary" id="writeList"
-													onclick="location.href='/board/list'">뒤로가기</button>
-												<button type="submit" class="btn btn-primary"
-													id="writeInsert">등록하기</button>
-											</div>
-										</div>
-									</form>
+								<div class="addressListPrivate">
+									<ul class="GroupList">
+										<li class="toggleItem">
+											<h3 class="toggleTit">
+												공지 사항
+											</h3>
+											<ul class="subList">
+												<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
+												</li>
+
+												<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+
+												<c:if test="${employee.role_code == '사장'}">
+													<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
+												</c:if>
+											</ul>
+										</li>
+									</ul>
 								</div>
+								<c:if test="${employee.role_code == '사장'}">
+									<div class="addressListGroup">
+										<ul class="GroupList">
+											<li class="toggleItem">
+												<h3 class="reportList">
+													신고 현황
+												</h3>
+											</li>
+										</ul>
+									</div>
+								</c:if>
 							</div>
-					</div>
+
+							<div class="sideContents board">
+								<form action="/board/writeProc" method="post" enctype="multipart/form-data"
+									id="submitForm">
+									<input type="hidden" name="contents" id="contents">
+									<input type="hidden" name="boardCode" value="${board_code}">
+									<div class="mainTitle">글 작성</div>
+									<div class="writeWrapper">
+										<input class="writeTitle" placeholder="제목을 입력하세요." name="title"></input>
+										<div class="writeCont">
+											<div id="summernote"></div>
+										</div>
+										<div class="docuFiles">
+											<label for="file">🔗 파일 선택</label> <input type="file" id="file" multiple
+												name="files"> <span class="uploadFiles"></span>
+										</div>
+										<div class="writeBtns">
+											<button type="button" class="btn btn-secondary" id="writeList"
+												onclick="location.href='/board/list'">뒤로가기</button>
+											<button type="button" class="btn btn-primary" id="writeInsert">등록하기</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+				</div>
 			</div>
 			<script>
 				var filesLength = ${ filesSize };
@@ -135,6 +134,33 @@
 				$(".reportList").on("click", function () {
 					window.location.href = "/board/list?adminReport=true";
 				});
+
+				// 게시글 등록 버튼 클릭 시
+				$("#writeInsert").on("click", function () {
+					let title = $(".writeTitle").val().trim(); // 공백 제거
+					let contentHtml = $('#summernote').summernote('code'); // HTML 코드 가져오기
+					let contentText = $('<div>').html(contentHtml).text().trim(); // HTML 태그를 제거하고 텍스트만 추출
+
+					if (title === '') {
+						alert("제목을 입력해 주세요.");
+					}
+					else if (title.length > 25) {
+						alert("최대 제목 길이를 초과했습니다.");
+					}
+					else if (contentText === '') {
+						alert("내용을 입력해 주세요.");
+					}
+					else if (contentHtml.length > 1000) {
+						alert("최대 내용 길이를 초과했습니다.");
+					} else {
+						$("#submitForm").submit();
+					}
+
+					// 디버깅용: 제목과 내용 로그 출력
+					console.log("제목:", title);
+					console.log("내용:", contentText);
+				});
+
 			</script>
 		</body>
 

@@ -16,6 +16,56 @@ $(document).ready(function () {
                 onInit: function () {
                     // summernote 초기화 후 note-statusbar 요소 제거
                     $('.note-statusbar').remove()
+                    // $(this).on('keydown', function (e) {
+                    //     if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+                    //         const tempDiv = document.createElement('div')
+                    //         var content = $('#summernote').summernote('code')
+                    //         tempDiv.innerHTML = content
+                    //         // 이미지 태그가 있는지 검사
+                    //         const images = tempDiv.getElementsByTagName('img')
+                    //         if (images.length > 0) {
+                    //             e.preventDefault() // 이미지가 포함된 붙여넣기를 막음
+                    //         } else {
+                    //             // 이미지가 없다면 다른 콘텐츠는 허용
+                    //             $('#summernote').summernote(
+                    //                 'code',
+                    //                 tempDiv.innerHTML
+                    //             )
+                    //         }
+                    //     }
+                    // })
+                },
+                onImageUpload: function (files) {
+                    let file = files[0]
+                    let formData = new FormData()
+                    formData.append('file', file)
+                    $.ajax({
+                        url: `/board/uploadImg?boardSeq=-1`, // 이미지를 저장할 서버 URL
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function (resp) {
+                            console.log(resp)
+                            // 서버에서 받은 이미지 URL을 에디터에 삽입
+                            $('#summernote').summernote(
+                                'insertImage',
+                                `/uploads/board/images/` + resp
+                            )
+
+                            // 추가적인 정보가 필요하다면, 이를 사용하여 다른 작업 수행
+                            //    const width = resp.width
+                            //  const height = resp.height
+                            // 예: 이미지 크기 조절, 추가 데이터 처리 등
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error(
+                                '이미지 업로드 실패:',
+                                textStatus,
+                                errorThrown
+                            )
+                        },
+                    })
                 },
             },
         })
