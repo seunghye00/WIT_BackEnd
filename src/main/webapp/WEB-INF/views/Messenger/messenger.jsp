@@ -28,14 +28,15 @@
                         <button class="toggleBtn" onclick="toggleView('chat')"
                             style="display: inline-block;">채팅방</button>
                         <button class="toggleBtn" onclick="toggleView('address')" style="display: none;">주소록</button>
+                         <button id="createGroup" class="toggleBtn createChatBtn" onclick="toggleCheckboxes()"><i
+                                    class='bx bx-user-plus'></i></button>
                     </div>
                     <ul class="chatList" id="chatList" style="display: none;">
 					    <!-- AJAX로 동적 채팅방 목록이 추가될 예정 -->
 					</ul>
                     <ul class="addressList" id="addressList">
                         <li>
-                            <button class="toggleBtn createChatBtn" onclick="toggleCheckboxes()"><i
-                                    class='bx bx-user-plus'></i></button>
+                           
                         </li>
                       	<!-- AJAX를 통해 데이터를 불러와 여기에 추가할 예정 -->
                     </ul>

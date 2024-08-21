@@ -49,7 +49,7 @@
 		AND d.status = '완료'
 		AND TO_CHAR(lr.start_date, 'YYYY') =
 		TO_CHAR(SYSDATE, 'YYYY')
-		ORDER BY lr.start_date DESC
+		ORDER BY lr.start_date ASC
 		)
 		WHERE rnum BETWEEN
 		#{start} AND #{end}

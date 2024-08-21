@@ -288,9 +288,6 @@
 													<a href="#" class="rClose">
 														<button type="button" class="btn btn-primary"
 															id="reportClose">닫기</button>
-													</a> <a href="#">
-														<button type="button" class="btn btn-danger"
-															id="reportInsert">신고하기</button>
 													</a>
 												</div>
 											</div>
@@ -371,6 +368,13 @@
 							let ctContainer = $(".ctContainer");
 							ctContainer.html("");
 
+							function formatDate(dateString) {
+								const date = new Date(dateString);
+								const year = date.getFullYear();
+								const month = date.getMonth() + 1; // Months are zero-based
+								const day = date.getDate();
+								return `${year}.${month}.${day}`;
+							}
 
 							resp.forEach((item) => {
 								let clone = $(".reporttemp").find(".ctCont").clone(true);
@@ -382,11 +386,14 @@
 								let res = clone.find(".reportRes");
 								let date = clone.find(".reportDate");
 
+
+								let formattedDate = formatDate(item.report_date);
+
+
 								per.html(item.emp_no);
 								res.html(item.report_type);
-								date.html(item.report_date);
+								date.html(formattedDate);
 								ctContainer.append(clone);
-								console.log(item);
 							})
 							console.log(resp);
 						})

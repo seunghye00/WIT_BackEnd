@@ -65,6 +65,7 @@ public class ChatEndpoint {
 
             // JSON 응답 객체를 생성합니다.
             JsonObject response = new JsonObject();
+            response.addProperty("type", "loginID"); // 'loginID' 타입을 명시적으로 추가
             response.addProperty("loginID", userName);
 
             // 채팅 내역을 JSON으로 변환하여 응답에 추가합니다.
@@ -94,15 +95,26 @@ public class ChatEndpoint {
         String sender = sessionUserMap.get(session);
         String userName = cServ.getUserNameByLoginID(sender);
 
-        // 메시지 DB에 저장 및 chat_seq 반환
-        int chatSeq;
+        // 채팅방 멤버 수 가져오기
+        int memberCount;
         try {
-            chatSeq = cServ.insert(chatRoomSeq, sender, jsonMessage.get("message").getAsString(), 1);  // read_count를 1로 설정
+            memberCount = cServ.getChatRoomMemberCount(chatRoomSeq);
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
 
+        // 메시지 DB에 저장 및 chat_seq 반환
+        int chatSeq;
+        try {
+            // read_count는 채팅방 멤버수 - 1 (본인을 제외한 수)
+            chatSeq = cServ.insert(chatRoomSeq, sender, jsonMessage.get("message").getAsString(), memberCount - 1);
+            System.out.println("Generated chatSeq: " + chatSeq); // chatSeq 값을 출력해 확인
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        
         // 메시지 데이터 생성
         JsonObject data = new JsonObject();
         data.addProperty("chat_seq", chatSeq);  // chat_seq를 포함
@@ -112,27 +124,28 @@ public class ChatEndpoint {
         data.addProperty("message", jsonMessage.get("message").getAsString());
         data.addProperty("send_time", currentTime);
         data.addProperty("type", "chat");
-        data.addProperty("read_count", 1);  // 기본적으로 1로 설정
+        data.addProperty("read_count", memberCount - 1);
 
         // 메시지 전송
         synchronized (chatRooms.get(chatRoomSeq)) {
             for (Session client : chatRooms.get(chatRoomSeq)) {
-                try {
-                    String recipient = sessionUserMap.get(client);
-                    if (recipient != null && !recipient.equals(sender)) {
-                        // 읽음 처리는 여기서 하지 않고 클라이언트 측에서 메시지를 수신했을 때 처리
-                        if (client.isOpen()) {
-                            // 여전히 read_count를 1로 유지
-                        	 JsonObject notification = new JsonObject();
-                             notification.addProperty("type", "notification");
-                             notification.addProperty("message", userName + "님이 메시지를 보냈습니다.");
-                             client.getBasicRemote().sendText(notification.toString());
-                        }
+            	try {
+            	    String recipient = sessionUserMap.get(client);
+            	    System.out.println(recipient);
+            	    if (recipient != null && !recipient.equals(sender)) {
+                        // 클라이언트가 메시지를 읽으면 read_count를 감소시키도록 설정
+                        cServ.decreaseReadCount(chatRoomSeq, chatSeq, recipient);
                     }
-                    client.getBasicRemote().sendText(data.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        	        if (client.isOpen()) {
+        	            client.getBasicRemote().sendText(data.toString());
+        	            System.out.println("되는지 확인용");
+        	        } else {
+        	            System.out.println("Client session is closed or not available");
+        	        }
+            	} catch (Exception e) {
+            	    e.printStackTrace();
+            	    System.out.println("Exception occurred: " + e.getMessage());
+            	}
             }
         }
         
@@ -144,7 +157,6 @@ public class ChatEndpoint {
             for (Map<String, Object> user : unreadUsers) {
                 String receiverName = (String) user.get("RECEIVER");
                 String senderName = (String) user.get("SENDER");
-                System.out.println(user);
                 if (!sender.equals(receiverName)) { // 보낸 사람을 제외하고
                     GlobalChatEndpoint.notifyUnreadMessage(receiverName, senderName + "님이 새 메시지를 보냈습니다.");
                 }
@@ -178,7 +190,32 @@ public class ChatEndpoint {
         long currentTimeMillis = System.currentTimeMillis();
         return new SimpleDateFormat("HH:mm").format(currentTimeMillis);
     }
+    
+    public void markMessageAsRead(String chatRoomSeq, int chatSeq, String userName) {
+        // DB에서 read_count를 감소시키고, 새 값을 반환함
+        int updatedReadCount = cServ.decreaseReadCount(chatRoomSeq, chatSeq, userName);
 
+        // 읽음 처리된 메시지에 대해 모든 클라이언트에 새로운 read_count 전송
+        broadcastUpdatedReadCount(chatRoomSeq, chatSeq, updatedReadCount);
+    }
+    
+    private void broadcastUpdatedReadCount(String chatRoomSeq, int chatSeq, int updatedReadCount) {
+        JsonObject data = new JsonObject();
+        data.addProperty("chat_room_seq", chatRoomSeq);
+        data.addProperty("chat_seq", chatSeq);
+        data.addProperty("updated_read_count", updatedReadCount);
+
+        synchronized (chatRooms.get(chatRoomSeq)) {
+            for (Session client : chatRooms.get(chatRoomSeq)) {
+                try {
+                    client.getBasicRemote().sendText(data.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
     // 사용자 상태 변경을 브로드캐스트하는 메소드
     public void broadcastUserStatus(String chatRoomSeq, String loginID, String status) {
         JsonObject statusMessage = new JsonObject();

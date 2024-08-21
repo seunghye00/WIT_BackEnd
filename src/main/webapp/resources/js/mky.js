@@ -45,6 +45,7 @@ function toggleView(view) {
     const chatList = document.getElementById('chatList')
     const addressList = document.getElementById('addressList')
     const sideTitle = document.getElementById('sideTitle')
+    const createGroup = document.getElementById('createGroup')
     const chatButton = document.querySelector(
         '.toggleBtn[onclick="toggleView(\'chat\')"]'
     )
@@ -58,12 +59,14 @@ function toggleView(view) {
         sideTitle.innerText = '채팅방' // 제목을 '채팅방'으로 변경
         chatButton.style.display = 'none' // '채팅방' 버튼 숨기기
         addressButton.style.display = 'inline-block' // '주소록' 버튼 보이기
+        createGroup.style.display = 'none' // '주소록' 버튼 보이기
     } else {
         chatList.style.display = 'none' // 채팅방 리스트 숨기기
         addressList.style.display = 'block' // 주소록 리스트 보이기
         sideTitle.innerText = '주소록' // 제목을 '주소록'으로 변경
         chatButton.style.display = 'inline-block' // '채팅방' 버튼 보이기
         addressButton.style.display = 'none' // '주소록' 버튼 숨기기
+        createGroup.style.display = 'inline-block' // '주소록' 버튼 보이기
     }
 }
 
@@ -76,7 +79,8 @@ function showProfile(event, emp_no) {
         data: { emp_no: emp_no },
         success: function(employee) {
             // 프로필 정보를 업데이트
-            $('#profilePopup .profileTit img').attr('src', '/uploads/1723616460518_13.jpg'); // 이미지 경로는 실제 데이터에 맞게 수정
+            console.log(employee);
+            $('#profilePopup .profileTit img').attr('src', employee.PHOTO); // 이미지 경로는 실제 데이터에 맞게 수정
             $('#profilePopup .profileTit span').text(employee.NAME);
             $('#profileDept').text(employee.DEPT_TITLE);
             $('#profileRole').text(employee.ROLE_TITLE);
@@ -198,6 +202,7 @@ function showChatRoomPopup(chatRoomSeq) {
         method: 'GET',
         data: { chat_room_seq: chatRoomSeq },
         success: function(response) {
+        	console.log(response);
         	// 기존 내용을 지운 후 새로운 내용을 추가
             var $chatRoomDetails = $('#chatRoomPopup .chatRoomDetails ul');
             $chatRoomDetails.empty();  // 기존 내용을 지웁니다.
@@ -369,34 +374,35 @@ function startChat() {
         webSocket.close();
     }
     
-    webSocket = new WebSocket('ws://192.168.1.4/chat/' + chat_room_seq);
+    webSocket = new WebSocket('ws://13.125.46.163/chat/' + chat_room_seq);
     webSocket.onopen = function (event) {
         console.log("WebSocket is open now.");
     };
     
     webSocket.onmessage = function (event) {
         let data = JSON.parse(event.data);
-        if (data.loginID) {
-            // 서버에서 보낸 로그인 ID 저장
-            currentLoginID = data.loginID;
-
-            // 이전 채팅 내역 처리
-            data.chatHistory.forEach(function (chat) {
-                appendMessage(chat, chat.sender === currentLoginID ? 'sent' : 'received');
-            });
-        } else if (data.type === "chat") {
-            // 채팅 메시지 처리
-            appendMessage(data, data.sender === currentLoginID ? 'sent' : 'received');
-            
-            // 읽음 처리 호출 (메시지 전송자가 현재 사용자가 아닌 경우에만 호출)
-            if (data.sender !== currentLoginID && data.read_count !== 0) {
-                markMessageAsRead(data.chat_room_seq, data.chat_seq);
-                displayUnreadMessageNotification(data);
-            }
-        } else if (data.type === "status") {
-            // 사용자 상태 메시지 처리 (입장 및 퇴장)
-            displayStatusMessage(data);
-        }
+	    console.log(data);  // 전체 데이터를 확인
+	
+	    if (data.type === "loginID") {
+	        // 서버에서 보낸 로그인 ID 저장
+	        currentLoginID = data.loginID;
+	
+	        // 이전 채팅 내역 처리
+	        data.chatHistory.forEach(function (chat) {
+	            appendMessage(chat, chat.sender === currentLoginID ? 'sent' : 'received');
+	        });
+	    } else if (data.type === "chat") {
+	        // 채팅 메시지 처리
+	        appendMessage(data, data.sender === currentLoginID ? 'sent' : 'received');
+	        
+	        // 읽음 처리 호출 (메시지 전송자가 현재 사용자가 아닌 경우에만 호출)
+	        if (data.sender !== currentLoginID && data.read_count !== 0) {
+	            markMessageAsRead(data.chat_room_seq, data.chat_seq);
+	        }
+	    } else if (data.type === "status") {
+	        // 사용자 상태 메시지 처리 (입장 및 퇴장)
+	        displayStatusMessage(data);
+	    }
     };
     
 
@@ -425,6 +431,8 @@ function loadChatMessages(chat_room_seq) {
 
 // 메시지를 화면에 추가하고, 읽음 처리하는 함수
 function appendMessage(data, type) {
+	console.log(data);
+	console.log(type);
     let chatBody = $("#chatBody");
     let mbox = $("<div>").addClass("text_box");
     let id_Box = $("<div>").addClass("sender");
@@ -443,9 +451,11 @@ function appendMessage(data, type) {
         message.addClass("sent");
     }
     
-    // 만약 메시지가 읽히지 않은 상태라면 `unread` 클래스를 추가합니다.
-    if (data.read_count === 1) {
-    	readBox.append(data.read_count);
+    // `read_count`를 반영하여 보여줌
+    if (data.read_count > 0) {
+        readBox.text(data.read_count);
+    } else {
+        readBox.hide(); // read_count가 0이면 숨김
     }
 
     subBox.append(readBox);
@@ -455,11 +465,6 @@ function appendMessage(data, type) {
     chatBody.append(message);
     // 스크롤을 최신 메시지로 이동
     chatBody.scrollTop(chatBody[0].scrollHeight);
-    
-    // 메시지가 화면에 표시되었을 때 읽음 처리 요청을 서버로 보냅니다.
-  	if (type === "received" && data.read_count === 1) {
-        markMessageAsRead(data.chat_room_seq, data.chat_seq); // chat_seq를 서버로 전송하여 읽음 처리
-    }
 }
 
 function displayStatusMessage(data) {
@@ -655,19 +660,22 @@ function addEmojiToMessageInput(imgElement) {
 // 메시지를 읽었을 때 서버로 읽음 처리 요청을 보내는 함수
 function markMessageAsRead(chatRoomSeq, messageSeq) {
     $.ajax({
-        url: '/chatroom/markAsRead',
+        url: '/chatroom/updateReadCount',  // 이 URL이 실제로 존재해야 합니다.
         method: 'POST',
         data: {
             chatRoomSeq: chatRoomSeq,
             messageSeq: messageSeq
         },
         success: function(response) {
-            if (response === 'success') {
+            if (response.status === 'success') {
+                const updatedReadCount = response.updated_read_count;
+                let readBox = $('div.message').find('.readBox');
 
-                // 메시지의 readBox를 숨기거나 0으로 설정하여 읽음 상태를 반영
-                $('div.message').find('.readBox').filter(function() {
-                    return $(this).text() === '1';
-                }).text('0').hide(); // 또는 `remove()`로 완전히 제거할 수 있습니다.
+                if (updatedReadCount > 0) {
+                    readBox.text(updatedReadCount);
+                } else {
+                    readBox.remove(); // read_count가 0이 되면 readBox를 제거
+                }
             }
         },
         error: function(error) {
