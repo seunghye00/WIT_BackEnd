@@ -48,7 +48,7 @@
 							<div class="form-row">
 								<div class="form-group">
 									<span>이름</span> <input type="text" value="${employee.name}"
-										readonly>
+										readonly disabled="true">
 								</div>
 								<div class="form-group">
 									<span>닉네임</span> <input type="text" name="nickname"
@@ -60,42 +60,42 @@
 							<div class="form-row">
 								<div class="form-group">
 									<span>생년월일</span> <input type="text" value="${employee.ssn}"
-										readonly>
+										readonly disabled="true">
 								</div>
 								<div class="form-group">
 									<span>휴대폰</span> <input type="text" value="${employee.phone}"
-										readonly>
+										readonly disabled="true">
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="form-group">
 									<span>이메일</span> <input type="text" value="${employee.email}"
-										readonly>
+										readonly disabled="true">
 								</div>
 								<div class="form-group">
 									<span>주소</span> <input type="text" value="${employee.address}"
-										readonly>
+										readonly disabled="true">
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="form-group">
 									<span>상세주소</span> <input type="text"
-										value="${employee.detail_address}" readonly>
+										value="${employee.detail_address}" readonly disabled="true">
 								</div>
 								<div class="form-group">
 									<span>입사일</span> <input type="text"
 										value="<fmt:formatDate value='${employee.join_date}' pattern='yyyy년 MM월 dd일' />"
-										readonly>
+										readonly disabled="true">
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="form-group">
 									<span>부서</span> <input type="text"
-										value="${employee.dept_code}" readonly>
+										value="${employee.dept_code}" readonly disabled="true">
 								</div>
 								<div class="form-group">
 									<span>직급</span> <input type="text"
-										value="${employee.role_code}" readonly>
+										value="${employee.role_code}" readonly disabled="true">
 								</div>
 							</div>
 							<div class="form-row hidden" id="passwordRow">
