@@ -20,7 +20,14 @@
 
 		<body>
 			<div id="container">
-				<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>
+				<c:choose>
+					<c:when test="${employee.role_code eq '사장'}">
+						<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp" %>
+					</c:when>
+					<c:otherwise>
+						<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>
+					</c:otherwise>
+				</c:choose>
 					<!-- 공통영역 끝 -->
 
 					<div class="main-content">
@@ -34,7 +41,7 @@
 										<button id="writeBtn" class="plusBtn sideBtn">자유 게시판 글 작성</button>
 									</div>
 
-									<div class="addressListGroup">
+									<div class="addressListPrivate">
 										<ul class="GroupList">
 											<li class="toggleItem">
 												<h3 class="toggleTit">
@@ -49,7 +56,7 @@
 										</ul>
 									</div>
 
-									<div class="addressListGroup">
+									<div class="addressListPrivate">
 										<ul class="GroupList">
 											<li class="toggleItem">
 												<h3 class="toggleTit">
