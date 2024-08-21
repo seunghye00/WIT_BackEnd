@@ -399,7 +399,9 @@
 		r.role_code
 		where
 		emp_no != #{emp_no}
-		and em.quit_yn = 'N' 
+		and em.quit_yn = 'N'
+		and em.role_code != 'R1' 
+		order by name asc
 	</select>
 
 	<!-- 메신저 주소록 상세 조회 -->
