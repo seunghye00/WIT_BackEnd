@@ -151,7 +151,9 @@
 
 												<div class="detailBott">
 													<!-- 수정 및 삭제버튼 jstl 사용! -->
-													<c:if test="${board.emp_no eq Nickname}">
+													<!--본인 작성 or 관리자 버튼 보이게-->
+													<c:if
+														test="${board.emp_no eq Nickname || employee.role_code == '사장'}">
 														<button type="button" class="btn btn-outline-success"
 															id="fboardCom" style="display:none">완료</button>
 														<button type="button" class="btn btn-ouline-success"
@@ -235,7 +237,8 @@
 																</div>
 
 																<div class="replyBtn">
-																	<c:if test="${reply.emp_no eq Nickname}">
+																	<c:if
+																		test="${reply.emp_no eq Nickname || employee.role_code == '사장'}">
 																		<!-- 수정 아이콘-->
 																		<img src="/resources/img/pen-to-square-solid.svg"
 																			class="updateReply">
@@ -331,10 +334,10 @@
 					if (${ bookmark }) { $('#starIcon').attr('class', 'bx bxs-star') }
 
 					// 삭제 기능
-					function deleteBoard(boardSeq,boardCode) {
+					function deleteBoard(boardSeq, boardCode) {
 						if (confirm("정말로 삭제하시겠습니까?")) {
 							// 사용자에게 삭제 확인을 받았을 때만 삭제 요청
-							location.href = "/board/delete?board_seq=" + boardSeq +"&board_code="+boardCode;
+							location.href = "/board/delete?board_seq=" + boardSeq + "&board_code=" + boardCode;
 						}
 					}
 					console.log("Login ID: ${Nickname}");
