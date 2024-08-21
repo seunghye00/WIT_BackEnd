@@ -230,16 +230,24 @@
 			documents d
 		join
 			document_list dl on d.docu_code = dl.docu_code
-		join
-			approvals_line a on d.document_seq = a.document_seq
 		where
-			a.approval_order = 3 and d.status != '임시 저장' and d.emp_no = #{empNo}
+			d.status != '임시 저장' and d.emp_no = #{empNo}
 			<if test="keyword != null">
 				and upper(title) like upper('%'||#{keyword}||'%') 
 			</if>  
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
+	</select>
+	
+	<!-- 해당 사원이 기안한 문서 목록 중 진행 중인 문서의 총 갯수를 조회하기 위한 쿼리문 -->
+	<select id="getCountWriteListByIng" resultType="int">
+		select
+			count(*)
+		from
+			documents
+		where
+			status = '진행중' and emp_no = #{empNo}
 	</select>
 
 	<!-- 해당 사원의 기안 문서 목록을 검색 후 조회하는 쿼리문 -->
@@ -399,12 +407,24 @@
 			document_list dl on d.docu_code = dl.docu_code
 		join
 			reference_line r on d.document_seq = r.document_seq
+		where r.emp_no = #{empNo}
 			<if test="keyword != null">
 				and upper(title) like upper('%'||#{keyword}||'%') 
 			</if> 
 			<if test="docuCode != null">
 				and d.docu_code = #{docuCode}
 			</if>
+	</select>
+	
+	<!-- 해당 사원이 참조자인 문서 목록 중 읽지 않은 문서의 총 갯수를 조회하기 위한 쿼리문 -->
+	<select id="getCountBeforeViewList" resultType="int">
+		select
+			count(*)
+		from
+			documents d
+		join
+			reference_line r on d.document_seq = r.document_seq
+		where r.emp_no = #{empNo} and r.read_yn = 'N'
 	</select>
 
 	<!-- 해당 사원이 참조자인 문서 목록을 검색 후 조회하는 쿼리문 -->

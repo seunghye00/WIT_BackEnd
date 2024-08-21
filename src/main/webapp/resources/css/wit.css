@@ -4954,3 +4954,38 @@ span.return {
 }
 
 /* 승혜 & 원희 css end */
+
+/* 메인 페이지 전자 결재 영역 */
+.rightTop .eApprBox {
+	height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.rightTop .eApprBox .eApprRows {
+	flex: 1;
+	display: flex;
+}
+
+.rightTop .eApprBox .eApprRows:first-child {
+    border-bottom: 1px solid #c1c1c1;
+}
+
+.rightTop .eApprBox .eApprRows .eApprCols {
+	flex: 1;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rightTop .eApprBox .eApprRows .eApprCols:first-child {
+	border-right: 1px solid #c1c1c1;
+}
+
+.rightTop .eApprBox .eApprRows .eApprCols .docuNum {
+	background-color: #ff9aa4;
+    font-size: 14px;
+    margin-left: 5px;
+    padding: 5px 9px;
+    border-radius: 50px;
+}
