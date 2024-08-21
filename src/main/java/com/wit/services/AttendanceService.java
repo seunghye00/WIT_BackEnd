@@ -91,11 +91,11 @@ public class AttendanceService {
 		}
 
 		// 이미 퇴근 기록이 있는지 확인
-		if (existingRecord.getEnd_time() != null && !existingRecord.getEnd_time().trim().isEmpty()) {
-			response.put("message", "이미 퇴근 기록이 있습니다.");
-			response.put("endTime", existingRecord.getEnd_time());
-			return response;
-		}
+//		if (existingRecord.getEnd_time() != null && !existingRecord.getEnd_time().trim().isEmpty()) {
+//			response.put("message", "이미 퇴근 기록이 있습니다.");
+//			response.put("endTime", existingRecord.getEnd_time());
+//			return response;
+//		}
 
 		// 현재 시간을 HH:mm 형식으로 포맷
 		String endTime = now.toLocalTime().format(timeFormatter);
