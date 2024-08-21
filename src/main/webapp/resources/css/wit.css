@@ -1571,6 +1571,7 @@
 
 .message.sent a {
 	color: white;
+	text-decoration: underline;
 }
 
 .message.received {
@@ -1881,6 +1882,7 @@
 .chatRoomDetails ul {
 	display: flex;
 	gap: 10px;
+	flex-wrap: wrap;
 }
 
 .chatRoomPopupBtn {

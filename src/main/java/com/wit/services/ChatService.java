@@ -24,8 +24,8 @@ public class ChatService {
     
     // 메시지를 읽음 처리
     @Transactional
-    public void markMessagesAsRead(String chatRoomSeq, String name) {
-        dao.updateReadCount(chatRoomSeq, name);
+    public boolean markMessagesAsRead(String chatRoomSeq,int messageSeq, String name) {
+        return dao.checkIfAlreadyRead(chatRoomSeq, messageSeq, name);
     }
     
     // 채팅 메시지 입력

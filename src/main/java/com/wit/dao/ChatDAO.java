@@ -23,11 +23,16 @@ public class ChatDAO {
     }
     
     // 메시지를 읽음 처리
-    public void updateReadCount(String chatRoomSeq, String name) {
+    public boolean checkIfAlreadyRead(String chatRoomSeq, int messageSeq, String name) {
         Map<String, Object> params = new HashMap<>();
         params.put("chat_room_seq", Integer.parseInt(chatRoomSeq));
+        params.put("message_seq", messageSeq);
         params.put("name", name);
-        mybatis.update("chat.updateReadCount", params);
+        // selectOne의 결과를 Integer로 캐스팅
+        Integer count = (Integer) mybatis.selectOne("chat.checkIfAlreadyRead", params);
+        
+        // count가 null이 아니고 0보다 큰지 확인
+        return count != null && count > 0;    
     }
     
     // 채팅 내역 출력

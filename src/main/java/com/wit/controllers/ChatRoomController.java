@@ -60,8 +60,8 @@ public class ChatRoomController {
     // 채팅방 상세 조회
     @RequestMapping("details")
     @ResponseBody
-    public List<Map<String, Object>> getDetailChatRooms(int chat_room_seq) {
-        String empNo = (String) session.getAttribute("loginID");
+    public Map<String, Object> getDetailChatRooms(int chat_room_seq) {
+    	String empNo = (String) session.getAttribute("loginID");
         return serv.getDetailChatRooms(chat_room_seq, empNo);
     }
 
@@ -86,14 +86,20 @@ public class ChatRoomController {
     @RequestMapping("updateReadCount")
     @ResponseBody
     public Map<String, Object> updateReadCount(
-        @RequestParam("chatRoomSeq") String chatRoomSeq, 
-        @RequestParam("messageSeq") String messageSeq) {
-    	String userName = (String) session.getAttribute("loginID");
+        String chatRoomSeq, String messageSeq) {
+        String userName = (String) session.getAttribute("loginID");
         Map<String, Object> result = new HashMap<>();
         try {
-            int updatedReadCount = chatServ.decreaseReadCount(chatRoomSeq, Integer.parseInt(messageSeq), userName);
-            result.put("status", "success");
-            result.put("updated_read_count", updatedReadCount);
+            // 사용자가 이미 읽었는지 확인
+            boolean isAlreadyRead = chatServ.markMessagesAsRead(chatRoomSeq, Integer.parseInt(messageSeq), userName);
+            if (!isAlreadyRead) {
+                int updatedReadCount = chatServ.decreaseReadCount(chatRoomSeq, Integer.parseInt(messageSeq), userName);
+                result.put("status", "success");
+                result.put("updated_read_count", updatedReadCount);
+            } else {
+                result.put("status", "already_read");
+                result.put("updated_read_count", 0);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             result.put("status", "error");
