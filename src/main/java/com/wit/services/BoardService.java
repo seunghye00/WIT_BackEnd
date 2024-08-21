@@ -130,7 +130,7 @@ public class BoardService {
 	
 	// 신고 내역 리스트 조회
 	public List<BoardReportDTO> reportList(int board_seq) throws Exception{
-		return bdao.reportList(board_seq);
+		return bdao.reportList(board_seq); 
 	}
 	
 	// 직원 정보 조회 메소드 추가

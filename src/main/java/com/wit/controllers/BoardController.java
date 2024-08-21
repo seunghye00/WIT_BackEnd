@@ -107,7 +107,7 @@ public class BoardController {
 		// 신고된 게시물 목록 조회
 		System.out.println(board_seq);
 		List<BoardReportDTO> reportList = bserv.reportList(board_seq);
-		
+		 
 		Gson gson= new Gson();
 		String reportLists = gson.toJson(reportList);
 		return reportLists;
