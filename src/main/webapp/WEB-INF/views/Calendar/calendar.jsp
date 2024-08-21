@@ -18,7 +18,14 @@
 <body>
 	<!-- 공통영역 -->
 	<div class="container">
-		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
+			<c:choose>
+				<c:when test="${employee.role_code eq 'R1'}">
+					<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp"%>
+				</c:when>
+				<c:otherwise>
+					<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
+		        </c:otherwise>
+			</c:choose>
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
 			<div class="contents">
