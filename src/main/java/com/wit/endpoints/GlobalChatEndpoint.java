@@ -35,8 +35,6 @@ public class GlobalChatEndpoint {
         // 세션을 동기화된 Set에 추가하고 로그인 ID를 매핑
         sessions.add(session);
         sessionUserMap.put(session, loginID);
-
-        System.out.println("Session opened for user: " + loginID);
     }
 
     // 클라이언트로부터 메시지를 수신할 때 호출
@@ -68,8 +66,6 @@ public class GlobalChatEndpoint {
         // 세션과 로그인 ID 매핑 제거
         sessions.remove(session);
         sessionUserMap.remove(session);
-
-        System.out.println("Session closed for user: " + sessionUserMap.get(session));
     }
 
     // WebSocket 연결에서 에러가 발생할 때 호출
@@ -104,21 +100,17 @@ public class GlobalChatEndpoint {
 //    }
     public static void notifyUnreadMessage(String loginID, String notificationMessage) {
         if (loginID == null) {
-            System.out.println("Error: loginID is null, cannot send notification.");
             return;  // loginID가 null이면 알림을 보내지 않음
         }
 
-        System.out.println("Attempting to notify user: " + loginID);
         synchronized (sessions) {
             sessions.forEach(session -> {
                 String sessionLoginID = sessionUserMap.get(session);
-                System.out.println("Checking session for loginID: " + sessionLoginID);
                 if (sessionLoginID != null && loginID.equals(sessionLoginID)) {
                     try {
                         JsonObject notification = new JsonObject();
                         notification.addProperty("type", "notification");
                         notification.addProperty("message", notificationMessage);
-                        System.out.println("Sending notification to " + loginID + ": " + notificationMessage);
                         session.getBasicRemote().sendText(notification.toString());
                     } catch (Exception e) {
                         e.printStackTrace();

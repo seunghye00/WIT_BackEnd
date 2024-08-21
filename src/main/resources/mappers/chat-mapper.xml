@@ -14,10 +14,13 @@
 	</select>
 	
 	<!-- 채팅 입력 -->
-	<insert id="insertChat">
-		insert into chat(chat_seq, chat_room_seq, name, sender, message, send_time, read_count) values(chat_seq.NEXTVAL, #{chat_room_seq}, #{name}, #{sender}, #{message}, SYSDATE, #{read_count})
+	<insert id="insertChat" parameterType="com.wit.dto.ChatDTO">
+	    <selectKey keyProperty="chat_seq" resultType="int" order="BEFORE">
+	        SELECT chat_seq.NEXTVAL FROM DUAL
+	    </selectKey>
+	    insert into chat(chat_seq, chat_room_seq, name, sender, message, send_time, read_count) 
+	    values(#{chat_seq}, #{chat_room_seq}, #{name}, #{sender}, #{message}, SYSDATE, #{read_count})
 	</insert>
-	
 	<!-- 메시지를 읽음 처리 -->
     <update id="updateReadCount">
         UPDATE chat
@@ -36,5 +39,32 @@
 		WHERE c.read_count = 1 
 		  AND c.name != crm.emp_no
 		  AND c.chat_room_seq = #{chat_room_seq}    
-  </select>
+ 	 </select>
+ 	 
+ 	 <!-- 읽지 않은 사용자 목록 조회 -->
+    <select id="getChatRoomMemberCount" resultType="int">
+		select count(*) 
+		    from 
+		        chat c 
+		    join chat_room_member crm 
+		        on c.chat_room_seq = crm.chat_room_seq 
+		    where 
+		        crm.chat_room_seq = #{chat_room_seq}    
+ 	 </select>
+ 	 
+ 	 <!-- read_count 감소 -->
+    <update id="decreaseReadCount">
+        UPDATE chat
+        SET read_count = read_count - 1
+        WHERE chat_room_seq = #{chat_room_seq}
+        AND chat_seq = #{chat_seq}
+        AND read_count > 0
+    </update>
+    
+    <!-- 감소된 read_count 조회 -->
+    <select id="getReadCount" resultType="int">
+        SELECT read_count
+        FROM chat
+        WHERE chat_seq = #{chat_seq}
+    </select>
 </mapper>

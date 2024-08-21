@@ -18,7 +18,8 @@ public class ChatDAO {
 
     // 채팅 입력
     public int insertChat(ChatDTO dto) {
-        return mybatis.insert("chat.insertChat", dto);
+        mybatis.insert("chat.insertChat", dto);
+        return dto.getChat_seq();
     }
     
     // 메시지를 읽음 처리
@@ -37,5 +38,20 @@ public class ChatDAO {
     // 읽지 않은 사용자 목록 조회
     public List<Map<String, Object>> getUnreadUsers(int chatRoomSeq) {
         return mybatis.selectList("chat.getUnreadUsers", chatRoomSeq);
+    }
+    
+    // 채팅방 멤버 수 조회
+    public int getChatRoomMemberCount(int chat_room_seq) {
+        return mybatis.selectOne("chatRoom.getChatRoomMemberCount", chat_room_seq);
+    }
+    
+    // read_count 감소
+    public int decreaseReadCount(int chatRoomSeq, int chatSeq, String userName) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chat_room_seq", chatRoomSeq);
+        params.put("chat_seq", chatSeq);
+        params.put("user_name", userName);
+        mybatis.update("chat.decreaseReadCount", params);
+        return mybatis.selectOne("chat.getReadCount", chatSeq); // 감소된 read_count 값을 반환
     }
 }

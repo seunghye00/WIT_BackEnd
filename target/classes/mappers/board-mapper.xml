@@ -57,6 +57,7 @@
 		</if>
 		<if test="adminReport=='true'">
 			,r.count
+<!-- 			,r.count, r.report_type, r.report_date -->
 		</if>
 
 		FROM
@@ -167,24 +168,14 @@
 		update board set title=#{title} ,
 		contents=#{contents}, write_date=sysdate where board_seq=${board_seq}
 	</update>
-
-	<!-- 신고된 게시물 조회 -->
-	<select id="getReportedPosts"
-		resultType="com.wit.dto.BoardReportDTO">
-		select
-		b.board_seq,
-		b.title,
-		count(r.board_seq) AS report_count
-		from
-		board b
-		left join
-		report r
-		on
-		b.board_seq = r.board_seq
-		group by
-		b.board_seq , b.title
-		having
-		count(r.board_seq) > 0
+	
+	<!-- 신고 내역 리스트 -->
+	<select id="reportList" resultType="com.wit.dto.BoardReportDTO">
+		select 
+		r.board_seq, r.report_type, r.report_date, em.name as emp_no
+		from board b  
+		join report r on b.board_seq = r.board_seq  
+		join employee em on r.emp_no = em.emp_no
+		where r.board_seq = ${board_seq}
 	</select>
-
 </mapper>

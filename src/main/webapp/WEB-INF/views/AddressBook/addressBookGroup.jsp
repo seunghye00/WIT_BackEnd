@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/resources/css/style.main.css">
 <link rel="stylesheet" href="/resources/css/wit.css">
 <script defer src="/resources/js/mky.js"></script>
+<script defer src="/resources/js/header.js"></script>
 </head>
 <body>
     <div class="container">
