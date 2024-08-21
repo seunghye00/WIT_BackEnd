@@ -91,6 +91,7 @@
 							</div>
 						</c:forEach>
 					</div>
+					<div style="padding: 10px;"></div>
 					<div class="pagination">
 						<!-- 이전 페이지로 이동 -->
 						<a
