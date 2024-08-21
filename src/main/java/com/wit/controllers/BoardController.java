@@ -4,7 +4,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,6 +33,8 @@ import com.wit.services.BoardService;
 import com.wit.services.BookMarkService;
 import com.wit.services.FileService;
 import com.wit.services.ReplyService;
+
+import oracle.sql.TIMESTAMP;
 
 @Controller
 @RequestMapping("/board")
@@ -103,14 +109,25 @@ public class BoardController {
 	// 신고 모달창
 	@RequestMapping(value = "/reportList", produces = "application/json; charset=UTF-8")
 	@ResponseBody 
-	public String reportList(Model model, @RequestParam(defaultValue = "0") int board_seq) throws Exception{
+	public Map<String, Object> reportList(Model model, @RequestParam(defaultValue = "0") int board_seq) throws Exception{
 		// 신고된 게시물 목록 조회
 		System.out.println(board_seq);
-		List<BoardReportDTO> reportList = bserv.reportList(board_seq);
+		List<Map<String, Object>> reportList = bserv.reportList(board_seq);
 		 
-		Gson gson= new Gson();
-		String reportLists = gson.toJson(reportList);
-		return reportLists;
+		// 날짜 형식을 지정
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        
+        for (Map<String, Object> item : reportList) {
+			TIMESTAMP reportTimestamp = (TIMESTAMP) item.get("REPORT_DATE");
+
+			if (reportTimestamp != null) {
+				Timestamp ReportDate = reportTimestamp.timestampValue();
+				item.put("REPORT_DATE", sdf.format(ReportDate));
+			}
+		}
+        Map<String, Object> response = new HashMap<>();
+        response.put("reportList", reportList);
+		return response;
 	}
 	
 	
