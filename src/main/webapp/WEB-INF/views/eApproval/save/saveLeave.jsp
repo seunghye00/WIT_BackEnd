@@ -123,10 +123,12 @@
 														<option value="3">조퇴</option>
 														<option value="4">경조사</option>
 														<option value="5">병가</option>
-												</select></td>
+													</select>
 												<th>기간 및 일시</th>
-												<td colspan="2"><input type="date" id="startLeaveDay" name="start_date" min="${today}" value="${docuDetail.start_date}"> <span>~</span>
-													<input type="date" id="endLeaveDay" name="end_date" min="${today}" value="${docuDetail.end_date}" ></td>
+												<td colspan="2"><input type="date" id="startLeaveDay"
+													name="startDate" value="${docuDetail.start_date}" readonly>
+													<span>~</span> <input type="date" id="endLeaveDay"
+													name="endDate" value="${docuDetail.end_date}" readonly></td>
 												<th>긴급</th>
 												<td>
 													<div>
@@ -140,27 +142,27 @@
 												<th>반차 여부</th>
 												<td colspan="2">
                                                 	<span>
-                                                		<input type="checkbox" id="startDay" <c:if test="${docuDetail.start_day_checked eq 'Y'}">checked</c:if> disabled>
+                                                		<input type="checkbox" id="startDay" <c:if test="${docuDetail.start_day_checked eq 'Y'}">checked</c:if>>
                                                 		<label for="startDay">시작일</label>
 													</span> ( 
 													<span>
-														<input type="checkbox" id="startDayAM" <c:if test="${docuDetail.start_day_am_checked eq 'Y'}">checked</c:if> disabled>
+														<input type="checkbox" id="startDayAM" <c:if test="${docuDetail.start_day_am_checked eq 'Y'}">checked</c:if>>
 														<label for="startDayAM">오전</label>
 													</span> 
 													<span>
-														<input type="checkbox" id="startDayPM" <c:if test="${docuDetail.start_day_pm_checked eq 'Y'}">checked</c:if> disabled>
+														<input type="checkbox" id="startDayPM" <c:if test="${docuDetail.start_day_pm_checked eq 'Y'}">checked</c:if>>
 														<label for="startDayPM">오후</label>
 													</span> ) <br> 
 													<span> 
-														<input type="checkbox" id="endDay" <c:if test="${docuDetail.end_day_checked eq 'Y'}">checked</c:if> disabled>
+														<input type="checkbox" id="endDay" <c:if test="${docuDetail.end_day_checked eq 'Y'}">checked</c:if>>
 														<label for="endDay">종료일</label>
 													</span> ( 
 													<span>
-														<input type="checkbox" id="endDayAM" <c:if test="${docuDetail.end_day_am_checked eq 'Y'}">checked</c:if> disabled>
+														<input type="checkbox" id="endDayAM" <c:if test="${docuDetail.end_day_am_checked eq 'Y'}">checked</c:if>>
 														<label for="endDayAM">오전</label>
 													</span> 
 													<span>
-														<input type="checkbox" id="endDayPM" <c:if test="${docuDetail.end_day_pm_checked eq 'Y'}">checked</c:if> disabled>
+														<input type="checkbox" id="endDayPM" <c:if test="${docuDetail.end_day_pm_checked eq 'Y'}">checked</c:if>>
 														<label for="endDayPM">오후</label>
 													</span> )
 												</td>

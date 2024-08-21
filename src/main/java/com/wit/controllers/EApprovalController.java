@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -354,6 +356,16 @@ public class EApprovalController {
 			serv.updatePropDocu(wDTO);
 			break;
 		case "M2":
+			// 문자열을 Date 타입으로 변환 후 저장
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			if(lrDTO.getStartDate() != "") {
+			    Date startDate = new Date(format.parse(lrDTO.getStartDate()).getTime());
+			    lrDTO.setStart_date(startDate);
+			}
+			if(lrDTO.getEndDate() != "") {
+				Date endDate = new Date(format.parse(lrDTO.getEndDate()).getTime());
+				lrDTO.setEnd_date(endDate);
+			}
 			serv.updateLeaveDocu(lrDTO);
 			break;
 		case "M3":
@@ -623,7 +635,7 @@ public class EApprovalController {
 	@RequestMapping("delDocu")
 	public String delDocu(int docuSeq) throws Exception {
 		serv.delDocu(docuSeq);
-		return "redirect:/eApproval/privateList?type=save";
+		return "redirect:/eApproval/privateList?type=save&cPage=1";
 	}
 
 	// 전자 결재 작성페이지로 이동 시 노출할 데이터를 담아서 전달하는 메서드
@@ -783,6 +795,17 @@ public class EApprovalController {
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
 
+		// 문자열을 Date 타입으로 변환 후 저장
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		if(subDTO.getStartDate() != "") {
+		    Date startDate = new Date(format.parse(subDTO.getStartDate()).getTime());
+		    subDTO.setStart_date(startDate);
+		}
+		if(subDTO.getEndDate() != "") {
+			Date endDate = new Date(format.parse(subDTO.getEndDate()).getTime());
+		    subDTO.setEnd_date(endDate);
+		}
+		
 		// 현재 요청된 URL을 확인
 		String currentUrl = request.getRequestURI();
 

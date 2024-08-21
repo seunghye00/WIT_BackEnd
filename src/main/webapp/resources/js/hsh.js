@@ -209,11 +209,13 @@ $('#startApprBtn').on('click', () => {
         });
         
 		// 결재선 선택 모달창에서 완료 버튼 클릭 시        
-        $('.done').on('click', (e) => {
+        $('.done').off('click').on('click', (e) => {
     	
     		if($('#firAppr input').length == 0 || $('#secAppr input').length == 0 || $('#thirAppr input').length == 0){
     			alert('결재선 등록을 완료해주세요.');
-    			return;
+        		e.preventDefault();  // 폼 제출 방지
+        		e.stopPropagation(); // 이벤트 전파 방지
+        		return false;  // 이후 코드 실행 방지
     		}
     	
     		// 폼을 동적으로 생성
@@ -248,7 +250,7 @@ $('#startApprBtn').on('click', () => {
     });
     // 취소 버튼 클릭 시 페이지 새로고침
     $('.cancel').on('click', () => location.reload())
-})
+});
 
 // 모달창에서 체크박스의 다중 선택을 방지하는 함수
 function noMultiClick(e, modal) {
@@ -344,11 +346,21 @@ $('.delDocu').on('click', () => {
 	}
 });
 
-
 // 결재 문서 작성 페이지에서 취소 버튼 클릭 시 이전 페이지로 이동
 $('.cancelWrite').on('click', () => {
 	if(confirm('정말로 작성을 취소하시겠습니까 ?')){
-		window.history.back();
+		// 이전 페이지의 Url을 변수에 저장
+		const previousUrl = document.referrer;
+
+		// URL 객체를 생성하여 pathname과 search를 추출
+		if (previousUrl) {
+    		const urlObj = new URL(previousUrl);
+    		const pathAndQuery = urlObj.pathname + urlObj.search;
+
+			location.href = pathAndQuery;
+		} else {
+   		 	console.log("이전 페이지 정보가 없습니다.");
+		}
 	}
 });
 
@@ -582,7 +594,7 @@ $('.leaveWrite').on('click', () => {
 });
 
 // 문서 작성 페이지에서 임시 저장 버튼 클릭 시
-$('.docuSaveBtn').on('click', function() {
+$('.docuSaveBtn').off('click').on('click', function() {
 	// 선택한 파일 내역은 저장되지 않도록 제어
 	if(confirm('임시 저장 시 파일 내역은 저장되지 않습니다.')){	
 		// 해당 버튼이 가진 클래스 이름을 검사해서 문서를 구분 후 해당 url을 담은 메서드 호출
@@ -724,6 +736,7 @@ function sendFormData(choiUrl) {
      	// 임시 저장 시 임시 저장함 페이지로 이동
      	if(choiUrl.includes('temp')){
      		location.href = '/eApproval/privateList?type=save&cPage=1'; 
+     		return;
      	}
      	// 결재 요청 시 등록된 파일이 존재할 때만 데이터 전송
      	if(addedFiles.length > 0){
