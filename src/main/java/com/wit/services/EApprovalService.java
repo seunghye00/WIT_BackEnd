@@ -93,7 +93,7 @@ public class EApprovalService {
 	// 해당 문서의 참조 라인 정보를 넘겨주기 위한 메서드
 	public List<RefeLineDTO> getRefeLine(int docuSeq) {
 		List<RefeLineDTO> list = dao.getRefeLine(docuSeq);
-		for(RefeLineDTO dto : list) {
+		for (RefeLineDTO dto : list) {
 			String empNo = dto.getEmp_no();
 			dto.setName(eDao.getName(empNo));
 			dto.setRole_title(eDao.getRole(empNo));
@@ -145,9 +145,10 @@ public class EApprovalService {
 	public void updateApprLine(int docuSeq, int i, String status) {
 		dao.updateApprLine(docuSeq, i, status);
 	}
-	
+
 	// 해당 사원의 문서함 중 결재 대기 or 결재 예정 문서 목록을 검색 후 문서 종류에 따라 넘겨주기 위한 메서드
-	public List<DocuInfoListDTO> searchListByType(String empNo, String status, String docuCode, String keyword, int cPage) {
+	public List<DocuInfoListDTO> searchListByType(String empNo, String status, String docuCode, String keyword,
+			int cPage) {
 		return dao.searchListByType(empNo, status, docuCode, keyword, cPage);
 	}
 
@@ -186,6 +187,11 @@ public class EApprovalService {
 		return dao.getCountSearchWriteList(empNo, docuCode, keyword);
 	}
 
+	// 해당 사원이 기안한 문서 목록 중 진행 중인 문서의 총 갯수를 넘겨주기 위한 메서드
+	public int getCountWriteListByIng(String empNo) {
+		return dao.getCountWriteListByIng(empNo);
+	}
+
 	// 해당 사원이 임시 저장한 문서 목록 중 검색 후의 총 갯수를 넘겨주기 위한 메서드
 	public int getCountSearchSaveList(String empNo, String docuCode, String keyword) {
 		return dao.getCountSearchSaveList(empNo, docuCode, keyword);
@@ -204,6 +210,11 @@ public class EApprovalService {
 	// 해당 사원이 참조자인 문서 목록 중 검색 후의 총 갯수를 넘겨주기 위한 메서드
 	public int getCountSearchViewList(String empNo, String docuCode, String keyword) {
 		return dao.getCountSearchViewList(empNo, docuCode, keyword);
+	}
+
+	// 해당 사원이 참조자인 문서 목록 중 읽지 않은 문서의 총 갯수를 넘겨주기 위한 메서드
+	public int getCountBeforeViewList(String empNo) {
+		return dao.getCountBeforeViewList(empNo);
 	}
 
 	// 해당 문서의 참조자인 해당 사원의 읽음 여부와 읽은 시간을 업데이트 하기 위한 메서드

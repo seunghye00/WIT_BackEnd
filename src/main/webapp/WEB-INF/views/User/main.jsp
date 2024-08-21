@@ -206,8 +206,31 @@
 				</div>
 				<div class="right">
 					<div class="rightTop">
-						전자결재영역 <i class='bx bx-file bx-flip-horizontal'
-							style='color: #558bcf'></i>
+						<a href="/eApproval/home">
+							전자 결재&nbsp;<i class='bx bx-home' style='color: #558bcf'></i> 
+						</a>
+						<div class="eApprBox">
+							<div class="eApprRows">
+								<div class="eApprCols">
+									결재 대기&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
+									<span class="docuNum">${todoNum}</span>
+								</div>
+								<div class="eApprCols">
+									참조&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i> 
+									<span class="docuNum">${refeNum}</span>
+								</div>	
+							</div>
+							<div class="eApprRows">
+								<div class="eApprCols">
+									기안 진행중&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
+									<span class="docuNum">${apprNum}</span>
+								</div>
+								<div class="eApprCols">
+									임시 저장&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
+									<span class="docuNum">${saveNum}</span>
+								</div>	
+							</div>
+						</div>
 					</div>
 					<div class="rightBottom">
 						<div id="calendar" class="calendar"></div>

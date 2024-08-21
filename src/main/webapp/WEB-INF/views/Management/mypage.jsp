@@ -17,14 +17,21 @@
 </head>
 
 <body>
-
 	<div class="container">
 		<!-- 공통영역 -->
-		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
+		<c:choose>
+			<c:when test="${employee.role_code == '사장'}">
+				<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp"%>
+			</c:when>
+			<c:otherwise>
+				<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
+			</c:otherwise>
+		</c:choose>
 		<!-- 공통영역 끝 -->
+
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
-			
+
 			<div class="contents">
 				<div class="sideAbout">
 					<div class="sideTxt">
@@ -36,7 +43,7 @@
 					<div class="form-container">
 						<form id="updateForm">
 							<div class="form-group-photo">
-								<span>프로필</span> <img src="/resources/img/푸바오.png" alt="푸바오 이미지">
+								<span>프로필</span> <img src="${employee.photo}" alt="프로필 이미지">
 							</div>
 							<div class="form-row">
 								<div class="form-group">

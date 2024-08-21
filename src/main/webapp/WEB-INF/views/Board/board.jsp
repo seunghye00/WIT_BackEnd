@@ -365,37 +365,28 @@
 							}
 
 						}).done((resp) => {
-							let ctContainer = $(".ctContainer");
-							ctContainer.html("");
-
-							function formatDate(dateString) {
-								const date = new Date(dateString);
-								const year = date.getFullYear();
-								const month = date.getMonth() + 1; // Months are zero-based
-								const day = date.getDate();
-								return `${year}.${month}.${day}`;
-							}
-
-							resp.forEach((item) => {
-								let clone = $(".reporttemp").find(".ctCont").clone(true);
-								clone.css({
-									display: "flex",
-									flex: 1
-								})
-								let per = clone.find(".reportPer");
-								let res = clone.find(".reportRes");
-								let date = clone.find(".reportDate");
-
-
-								let formattedDate = formatDate(item.report_date);
-
-
-								per.html(item.emp_no);
-								res.html(item.report_type);
-								date.html(formattedDate);
-								ctContainer.append(clone);
-							})
-							console.log(resp);
+							var data = resp.reportList;
+							if (Array.isArray(data) && data.length > 0) {
+								let ctContainer = $(".ctContainer");
+					            ctContainer.html(""); // 기존 내용을 지우기
+								data.forEach(function(contact) {
+			                    	console.log(contact);
+									let clone = $(".reporttemp").find(".ctCont").clone(true);
+									clone.css({
+										display: "flex",
+										flex: 1
+									})
+									let per = clone.find(".reportPer");
+									let res = clone.find(".reportRes");
+									let date = clone.find(".reportDate");
+									per.html(contact.EMP_NO);
+									res.html(contact.REPORT_TYPE);
+									date.html(contact.REPORT_DATE);
+									ctContainer.append(clone);
+			                    });
+			                } else {
+			                	$(".ctContainer").append('<div class="noData">데이터 없음</div>');
+			                }
 						})
 						$('#modal').css('display', 'block')
 					})

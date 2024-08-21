@@ -170,12 +170,12 @@
 	</update>
 	
 	<!-- 신고 내역 리스트 -->
-	<select id="reportList" resultType="com.wit.dto.BoardReportDTO">
+	<select id="reportList" resultType="map">
 		select 
 		r.board_seq, r.report_type, r.report_date, em.name as emp_no
 		from board b  
 		join report r on b.board_seq = r.board_seq  
 		join employee em on r.emp_no = em.emp_no
 		where r.board_seq = ${board_seq}
-	</select>
+	</select> 
 </mapper>

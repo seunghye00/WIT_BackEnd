@@ -24,6 +24,7 @@ import com.wit.dto.RoleDTO;
 import com.wit.services.BoardService;
 import com.wit.services.CalendarService;
 import com.wit.services.DeptService;
+import com.wit.services.EApprovalService;
 import com.wit.services.EmployeeService;
 import com.wit.services.RoleService;
 
@@ -51,6 +52,9 @@ public class EmployeeController {
 
 	@Autowired
 	private RoleService roleServ;
+	
+	@Autowired
+	private EApprovalService eServ;
 
 	// 관리자 회원가입 폼으로 이동
 	@RequestMapping("/register_form")
@@ -121,7 +125,13 @@ public class EmployeeController {
 		System.out.println(empNo);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("noticeList", noticeList);
-
+		
+		// 전자 결재 영역에서 필요한 데이터를 model 객체에 저장
+		model.addAttribute("todoNum", eServ.getCountSearchListByType(empNo, "결재 대기", null, null));
+		model.addAttribute("refeNum", eServ.getCountBeforeViewList(empNo));
+		model.addAttribute("apprNum", eServ.getCountWriteListByIng(empNo));
+		model.addAttribute("saveNum", eServ.getCountSearchSaveList(empNo, null, null));
+		
 		// 직원 정보 가져오기
 		EmployeeDTO employee = service.employeeInfo(empNo);
 
