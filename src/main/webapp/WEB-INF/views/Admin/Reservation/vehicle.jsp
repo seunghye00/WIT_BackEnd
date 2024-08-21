@@ -37,7 +37,7 @@
 										등록된 안내 사항이 없습니다.
 									</c:when>
 									<c:otherwise>
-										<textarea>${vehicleInfo.guidelines}</textarea>
+										<textarea readonly>${vehicleInfo.guidelines}</textarea>
 									</c:otherwise>
 								</c:choose>
 							</span>
@@ -55,7 +55,7 @@
             <div class="modalContent">
                 <h1>차량 예약<span class="modalClose">&times</span></h1>
                 <div class="calendarAdd">
-                <form id="vehicleForm" action="/reservation/saveVehicle" method="post">
+                <form id="vehicleForm" action="/reservation/admin/saveVehicle" method="post">
                     <ul>
                         <li>
                             <span>차량 명</span>

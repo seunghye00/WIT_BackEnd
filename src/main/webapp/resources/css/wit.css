@@ -3766,9 +3766,9 @@ span.return {
 	border-radius: 10px;
 	font-size: 18px;
 	position: absolute;
-	top: 13vh;
-	left: 22vw;
-	width: 540px;
+	top: 8vh;
+	left: 15vw;
+	width: 753px;
 	height: 435px;
 	padding: 30px 25px;
 	z-index: 2;
@@ -4421,16 +4421,40 @@ span.return {
 	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
 	padding: 15px;
 	border-radius: 10px;
-	font-size: 16px;
 	position: absolute;
 	width: max-content;
 	top: 38px;
 	left: -2px;
+	font-size: 16px;
+	background-color: #fff;
+}
+
+.reservation .infoBox textarea {
+    padding: 5px 0;
+    min-width: 500px;
+    min-height: 150px;
+    overflow-y: auto;
+    font-size: 16px;
+    border: none;
+}
+
+.reservation .infoBox textarea::-webkit-scrollbar {
+	width: 10px;
+}
+
+.reservation .infoBox textarea::-webkit-scrollbar-thumb {
+	background: rgb(255, 204, 214);
+	border-radius: 10px;
+}
+
+.reservation .infoBox textarea::-webkit-scrollbar-track {
+	background: rgba(222, 151, 165, 0.1);
 }
 
 #roomInfo:checked ~.infoBox, 
 #vehicleInfo:checked ~.infoBox {
 	display: block;
+	z-index: 10000;
 }
 
 /* 차량 & 회의실 관리 페이지 */
@@ -4439,6 +4463,17 @@ span.return {
 	flex: 1;
 	flex-direction: column;
 	gap: 10px;
+}
+
+.reservationControll .reservList .toolBar {
+	position: relative;
+}
+
+.reservationControll .reservList .toolBar #addRoomList,
+.reservationControll .reservList .toolBar #addVehicleList {
+	position: absolute;
+	right: 5px;
+    bottom: 17px;
 }
 
 .reservationControll .reservList .controllBox {
@@ -4450,13 +4485,35 @@ span.return {
 .reservationControll .reservList .controllBox .listBox{
 	flex: 3;
 	border-bottom: 2px solid #888888;
-	overflow-y: auto;
+	height: 577px;
 }
 
 .reservationControll .reservList .controllBox .listBox a {
 	flex: 1;
     display: flex;
     max-height: 56px;
+}
+
+.reservationControll .reservList .controllBox .dataBox {
+	max-height: 525px;
+	overflow-y: auto;
+}
+
+.reservationControll .reservList .controllBox .dataBox::-webkit-scrollbar {
+	width: 10px;
+}
+
+.reservationControll .reservList .controllBox .dataBox::-webkit-scrollbar-thumb {
+	background: rgb(255, 204, 214);
+	border-radius: 10px;
+}
+
+.reservationControll .reservList .controllBox .dataBox::-webkit-scrollbar-track {
+	background: rgba(222, 151, 165, 0.1);
+}
+
+.reservationControll .reservList .controllBox .rows {
+	min-height: 52px;
 }
 
 .reservationControll .reservList .controllBox .rows:last-child {
@@ -4468,8 +4525,13 @@ span.return {
     font-weight: bolder;
 }
 
-.reservationControll .reservList .controllBox .rows .cols{
+.reservationControll .reservList .controllBox .rows .cols {
 	width: 50%;
+}
+
+.reservationControll .reservList .controllBox .rows .cols:nth-child(4),
+.reservationControll .reservList .controllBox .rows .cols:nth-child(5) {
+	width: 20%;
 }
 
 .reservationControll .reservList .controllBox .guidelinesBox{
@@ -4533,16 +4595,74 @@ span.return {
 .reservationControll .reservList .controllBox.updateStatus .rows .cols span.unavailable {
 	color: #dc3545;
 }
+.addTargetModal {
+	display: none;
+	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
+	border: 1px solid #555;
+	width: 396px;
+    height: 447px;
+	position: absolute;
+	top: -3px;
+	left: 394px;
+	border-radius: 10px;
+	background: #fff;
+	padding: 30px 20px;
+	flex-direction: column;
+	gap: 15px;
+}
+
+#addRoomModal {
+	height: 520px;
+}
+
+.addTargetModal h1 {
+	flex: 1;
+}
+
+.addTargetModal h1 span.closeModal{
+	cursor: pointer;
+	color: gray;
+	float: right;
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.addTargetModal .addTargetInfo {
+	flex: 9;
+}
+
+.addTargetModal .addTargetInfo ul {
+	flex-direction: column;
+	gap: 10px;
+	border-bottom: unset;
+}
+
+.addTargetModal .addTargetInfo input {
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #555;
+    margin: 5px 0;
+    width: 100%;
+}
+
+.addTargetModal .addTargetInfo textarea {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #555;
+    margin: 5px 0;
+    width: 100%;
+    height: 100px;
+    overflow-y: auto;
+	resize: none;
+}
+
+.addTargetModal .addTargetInfo .btns {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+}
 
 /* 차량 & 회의실 예약 페이지 */
-.sideContents.reservation {
-	gap: 20px;
-}
-
-.sideContents.meetingRooms {
-	gap: unset;
-}
-
 .sideContents.reservation .mainTitle {
 	align-items: flex-end;
 	gap: 10px;
@@ -4613,7 +4733,6 @@ span.return {
 	width: 100%;
 	height: 100%;
 	overflow: auto;
-	background-color: rgb(0, 0, 0);
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -4623,7 +4742,7 @@ span.return {
 	padding: 30px 35px;
 	border: 1px solid #fefefe;
 	width: 35%;
-	height: 84%;
+	height: 75%;
 	display: flex;
 	border-radius: 25px;
 	flex-direction: column;

@@ -162,10 +162,10 @@ $('#updateGuideLines').on('click', function(){
 
     const trimmedGuideLines = guideLines.trim(); // 앞뒤 공백을 제거합니다
 
-    // 안내 사항이 기본값이거나 비어있으면 경고
-    if (trimmedGuideLines === '등록된 안내 사항이 없습니다.' || trimmedGuideLines === '') {
-        alert('안내 사항을 먼저 입력해주세요');
-        guideLineElement.focus();
+    // 안내 사항이 기본값이면 경고
+    if (trimmedGuideLines === '등록된 안내 사항이 없습니다.') {
+        alert('안내 사항을 먼저 수정해주세요');
+        $('#guideLine').focus();
         return;
     }
 	
@@ -185,4 +185,66 @@ $('#updateGuideLines').on('click', function(){
 	
 		location.href = '/reservation/admin/updateGuideLines?target=' + type + '&seq=' + seq + '&guideLines=' + encodedGuideLines;	
 	}
+});
+
+$('#addRoomList').on('click', function (){
+	$('.addTargetModal').css('display', 'flex');
+});
+
+$('#addRoom').on('click', function(){
+		
+	if($('#name').val() == ''){
+		alert('회의실 명을 먼저 입력해주세요');
+		$('#name').focus();
+		return;
+	}
+		
+	if($('#location').val() == ''){
+		alert('회의실 위치를 먼저 입력해주세요');
+		$('#location').focus();
+		return;
+	}
+	console.log($('#capacity').val());
+	if($('#capacity').val() == 0){
+		alert('수용 인원을 먼저 입력해주세요');
+		$('#capacity').focus();
+		return;
+	}
+		
+	$('#addRoomForm').submit();
+});
+
+// input 태그의 입력 문자열 길이를 제어하는 메서드
+function handleOnInput(e, maxLength) {
+	if ($(e).val().length > maxLength) {
+    	alert($(e).data('label') + "의 글자 수는 " + maxLength + "자까지만 입력 가능 합니다.");
+        $(e).val($(e).val().substr(0, maxLength - 1));
+    }
+}
+
+$('#addVehicleList').on('click', function (){
+	$('.addTargetModal').css('display', 'flex');
+});
+
+	
+$('.closeModal').on('click', function(){
+	console.log('test');
+	$('.addTargetModal').hide();
+});
+
+$('#addVehicle').on('click', function(){
+	
+	if($('#name').val() == ''){
+		alert('차량 명을 먼저 입력해주세요');
+		$('#name').focus();
+		return;
+	}
+		
+	if($('#license_plate').val() == ''){
+		alert('차량 번호를 먼저 입력해주세요');
+		$('#license_plate').focus();
+		return;
+	}
+		
+	$('#addVehicleForm').submit();
 });

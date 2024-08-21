@@ -95,4 +95,14 @@ public class MeetingRoomDAO {
 		params.put("guideLines", guideLines);
 		mybatis.update("meetingRoom.updateGuideLines", params);
 	}
+
+	// 해당 항목 삭제
+	public void deleteBySeq(int seq) {
+		mybatis.delete("meetingRoom.deleteBySeq", seq);
+	}
+
+	// 항목 추가
+	public void addRoom(MeetingRoomDTO dto) {
+		mybatis.insert("meetingRoom.addRoom", dto);
+	}
 }

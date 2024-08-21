@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wit.commons.BoardConfig;
 import com.wit.dto.EmployeeInfoDTO;
+import com.wit.dto.MeetingRoomDTO;
 import com.wit.dto.RoomBookingDTO;
 import com.wit.dto.VehicleBookingDTO;
+import com.wit.dto.VehiclesDTO;
 import com.wit.services.EmployeeService;
 import com.wit.services.MeetingRoomService;
 import com.wit.services.VehicleBookingService;
@@ -141,6 +143,28 @@ public class ReservController {
 		return "redirect:/reservation/admin/bookingControll?type=" + target + "&seq= " + seq + "&purpose=notice";
 	}
 
+	// 예약 항목 삭제
+	@RequestMapping("admin/deleteTarget")
+	public String deleteTarget(String target, int seq) throws Exception {
+		if (target.equals("meetingRoom")) {
+			mServ.deleteBySeq(seq);
+		} else if (target.equals("vehicle")) {
+			vService.deleteBySeq(seq);
+		}
+		return "redirect:/reservation/admin/bookingControll?type=" + target + "&purpose=controll";
+	}
+
+	// 예약 항목 추가
+	@RequestMapping("admin/add")
+	public String addTarget(String target, MeetingRoomDTO mDTO, VehiclesDTO vDTO) throws Exception {
+		if (target.equals("meetingRoom")) {
+			mServ.addRoom(mDTO);
+		} else if (target.equals("vehicle")) {
+			vService.addVehicle(vDTO);
+		}
+		return "redirect:/reservation/admin/bookingControll?type=" + target + "&purpose=controll";
+	}
+
 	// 회의실 예약 페이지로 이동
 	@RequestMapping(value = { "admin/meetingRoom", "meetingRoom" })
 	public String reservMeetingRoom(int roomSeq, HttpServletRequest request, Model model) throws Exception {
@@ -198,9 +222,7 @@ public class ReservController {
 		model.addAttribute("meetingRooms", mServ.getMeetingRoomList("예약 가능"));
 		model.addAttribute("vehicles", vService.getVehicleList("예약 가능"));
 		model.addAttribute("vehicleInfo", vService.getVehicleInfo(vehicleSeq));
-		
-		System.out.println(vService.getVehicleInfo(vehicleSeq).getGuidelines());
-		
+
 		// 현재 요청된 URL을 확인 후 이동 경로 설정
 		String currentUrl = request.getRequestURI();
 		if (currentUrl.equals("/reservation/admin/vehicle")) {
@@ -210,9 +232,9 @@ public class ReservController {
 	}
 
 	// 차량 예약 데이터 등록
-	@RequestMapping("saveVehicle")
+	@RequestMapping(value = { "admin/saveVehicle", "saveVehicle" })
 	public String saveVehicle(VehicleBookingDTO dto, @RequestParam("vehicleStartAt") long startDate,
-			@RequestParam("vehicleEndAt") long endDate, Model model) {
+			@RequestParam("vehicleEndAt") long endDate, HttpServletRequest request, Model model) {
 
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
@@ -227,6 +249,12 @@ public class ReservController {
 
 		int result = vService.saveVehicle(dto);
 
+		
+		// 현재 요청된 URL을 확인 후 이동 경로 설정
+		String currentUrl = request.getRequestURI();
+		if (currentUrl.equals("/reservation/admin/saveVehicle")) {
+			return "redirect:/reservation/admin/vehicle?vehicleSeq=" + dto.getVehicle_seq();
+		}
 		if (result == 1) {
 			return "redirect:/reservation/vehicle?vehicleSeq=" + dto.getVehicle_seq();
 		}

@@ -92,4 +92,14 @@
 	<update id="updateGuideLines">
 		update meeting_room set guidelines = #{guideLines} where room_seq = ${seq}
 	</update>
+	
+	<!-- 해당 항목을 삭제하기 위한 쿼리문 -->
+	<delete id="deleteBySeq">
+		delete from meeting_room where room_seq = #{seq}
+	</delete>
+	
+	<!-- 항목 추가를 위한 쿼리문 -->
+	<insert id="addRoom">
+		insert into meeting_room values (room_seq.nextval, #{name}, #{location}, #{capacity}, '예약 가능', #{guidelines})
+	</insert>
 </mapper>

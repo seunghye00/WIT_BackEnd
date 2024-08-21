@@ -98,4 +98,14 @@
 	<update id="updateGuideLines">
 		update vehicles set guidelines = #{guideLines} where vehicle_seq = ${seq}
 	</update>
+	
+	<!-- 해당 항목을 삭제하기 위한 쿼리문 -->
+	<delete id="deleteBySeq">
+		delete from vehicles where vehicle_seq = #{seq}
+	</delete>
+	
+	<!-- 항목 추가를 위한 쿼리문 -->
+	<insert id="addVehicle">
+		insert into vehicles values (vehicle_seq.nextval, #{name}, #{license_plate}, '예약 가능', #{guidelines})
+	</insert>
 </mapper>

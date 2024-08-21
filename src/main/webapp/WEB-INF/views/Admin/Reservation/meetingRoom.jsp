@@ -35,7 +35,7 @@
 										등록된 안내 사항이 없습니다.
 									</c:when>
 									<c:otherwise>
-										<textarea>${meetingRoomInfo.guidelines}</textarea>
+										<textarea readonly>${meetingRoomInfo.guidelines}</textarea>
 									</c:otherwise>
 								</c:choose>
 							</span>

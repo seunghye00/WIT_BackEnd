@@ -74,4 +74,14 @@ public class MeetingRoomService {
 	public void updateGuideLines(int seq, String guideLines) {
 		dao.updateGuideLines(seq, guideLines);
 	}
+
+	// 해당 항목 삭제
+	public void deleteBySeq(int seq) {
+		dao.deleteBySeq(seq);	
+	}
+
+	// 항목 추가
+	public void addRoom(MeetingRoomDTO dto) {
+		dao.addRoom(dto);
+	}
 }

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>예약</title>
+<title>예약 항목 관리</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
@@ -48,6 +48,7 @@
 											</div>
 										</c:when>
 										<c:otherwise>
+										<div class="dataBox">
 											<c:forEach items="${meetingRooms}" var="i">
 												<a href="/reservation/admin/bookingControll?type=meetingRoom&seq=${i.room_seq}&purpose=notice">
 												<div class="rows ${target.room_seq eq i.room_seq ? 'active' : ''}">
@@ -60,6 +61,7 @@
 												</div>
 												</a>
 											</c:forEach>
+										</div>
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -102,6 +104,9 @@
 										<div class="cols">
 											<span>상태 변경</span>
 										</div>
+										<div class="cols">
+											<span>삭제</span>
+										</div>
 									</div>
 									<c:choose>
 										<c:when test="${empty allList}">
@@ -110,6 +115,7 @@
 											</div>
 										</c:when>
 										<c:otherwise>
+										<div class="dataBox">
 											<c:forEach items="${allList}" var="i">
 												<div class="rows">
 													<div class="cols">
@@ -124,12 +130,20 @@
 													<div class="cols">
 														<span>
 															<a href="/reservation/admin/updateStatus?target=meetingRoom&seq=${i.room_seq}&status=${i.status}">
-																<button>변경</button>
+																<button class="green">변경</button>
+															</a>
+														</span>
+													</div>
+													<div class="cols">
+														<span>
+															<a href="/reservation/admin/deleteTarget?target=meetingRoom&seq=${i.room_seq}">
+																<button class="red">삭제</button>
 															</a>
 														</span>
 													</div>
 												</div>
 											</c:forEach>
+										</div>
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -153,6 +167,7 @@
 											</div>
 										</c:when>
 										<c:otherwise>
+										<div class="dataBox">
 											<c:forEach items="${vehicles}" var="i">
 											<a href="/reservation/admin/bookingControll?type=vehicle&seq=${i.vehicle_seq}&purpose=notice">
 												<div class="rows ${target.vehicle_seq eq i.vehicle_seq ? 'active' : ''}">
@@ -165,6 +180,7 @@
 												</div>
 											</a>
 											</c:forEach>
+										</div>
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -207,6 +223,9 @@
 										<div class="cols">
 											<span>상태 변경</span>
 										</div>
+										<div class="cols">
+											<span>삭제</span>
+										</div>
 									</div>
 									<c:choose>
 										<c:when test="${empty allList}">
@@ -215,6 +234,7 @@
 											</div>
 										</c:when>
 										<c:otherwise>
+										<div class="dataBox">
 											<c:forEach items="${allList}" var="i">
 												<div class="rows">
 													<div class="cols">
@@ -229,12 +249,20 @@
 													<div class="cols">
 														<span>
 															<a href="/reservation/admin/updateStatus?target=vehicle&seq=${i.vehicle_seq}&status=${i.status}">
-																<button>변경</button>
+																<button class="green">변경</button>
+															</a>
+														</span>
+													</div>
+													<div class="cols">
+														<span>
+															<a href="/reservation/admin/deleteTarget?target=vehicle&seq=${i.vehicle_seq}">
+																<button class="red">삭제</button>
 															</a>
 														</span>
 													</div>
 												</div>
 											</c:forEach>
+											</div>
 										</c:otherwise>
 									</c:choose>
 								</div>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.wit.dao.VehicleBookingDAO;
 import com.wit.dto.EmployeeDTO;
+import com.wit.dto.MeetingRoomDTO;
 import com.wit.dto.VehicleBookingDTO;
 import com.wit.dto.VehiclesDTO;
 
@@ -15,12 +16,12 @@ public class VehicleBookingService {
 
 	@Autowired
 	private VehicleBookingDAO dao;
-	
+
 	// 차량 목록을 넘겨주기 위한 메서드
 	public List<VehiclesDTO> getVehicleList() {
 		return dao.getVehicleList();
 	}
-	
+
 	// 해당 차량 정보 넘겨주기 위한 메서드
 	public VehiclesDTO getVehicleInfo(int vehicleSeq) {
 		return dao.getVehicleInfo(vehicleSeq);
@@ -32,7 +33,7 @@ public class VehicleBookingService {
 	}
 
 	// 차량 예약 정보 조회
-	public List<VehicleBookingDTO> getAllVehicleBooking(String vehicleSeq){
+	public List<VehicleBookingDTO> getAllVehicleBooking(String vehicleSeq) {
 		return dao.getAllVehicleBooking(vehicleSeq);
 	}
 
@@ -60,7 +61,7 @@ public class VehicleBookingService {
 	public List<VehiclesDTO> getSearchVehicleBookingByEmpNo(String empNo, String keyword, int cPage) {
 		return dao.getSearchVehicleBookingByEmpNo(empNo, keyword, cPage);
 	}
-	
+
 	// 해당 사원의 검색한 차량 예약 정보 목록 총 갯수 조회
 	public int getCountSearchVehicleList(String empNo, String keyword) {
 		return dao.getCountSearchVehicleList(empNo, keyword);
@@ -68,12 +69,21 @@ public class VehicleBookingService {
 
 	// 해당 항목의 상태를 변경
 	public void updateStatus(int seq, String status) {
-		System.out.println("서비스");
 		dao.updateStatus(seq, status);
 	}
 
 	// 해당 항목의 안내 사항을 변경하기 위한 메서드
 	public void updateGuideLines(int seq, String guideLines) {
 		dao.updateGuideLines(seq, guideLines);
+	}
+
+	// 해당 항목 삭제
+	public void deleteBySeq(int seq) {
+		dao.deleteBySeq(seq);
+	}
+
+	// 항목 추가
+	public void addVehicle(VehiclesDTO dto) {
+		dao.addVehicle(dto);
 	}
 }
