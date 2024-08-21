@@ -4,9 +4,14 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="meetingRoom">
-	<!-- 회의실 목록을 조회하기 위한 쿼리문 -->
+	<!-- 모든 회의실 목록을 조회하기 위한 쿼리문 -->
 	<select id="selectAll" resultType="com.wit.dto.MeetingRoomDTO">
-		select room_seq, name from meeting_room where status = #{status}
+		select * from meeting_room
+	</select>
+
+	<!-- 예약 가능한 회의실 목록을 조회하기 위한 쿼리문 -->
+	<select id="selectAllByStatus" resultType="com.wit.dto.MeetingRoomDTO">
+		select * from meeting_room where status = #{status}
 	</select>
 	
 	<!-- 해당 회의실의 정보를 조회하기 위한 쿼리문 -->
@@ -77,4 +82,24 @@
 		where emp_no = #{empNo}
 		and upper(purpose) like upper('%'||#{keyword}||'%') 
 	</select>
+	
+	<!-- 해당 항목의 상태를 변경하기 위한 쿼리문 -->
+	<update id="updateStatus">
+		update meeting_room set status = #{status} where room_seq = ${seq}
+	</update>
+	
+	<!-- 해당 항목의 예약 안내 사항을 변경하기 위한 쿼리문 -->
+	<update id="updateGuideLines">
+		update meeting_room set guidelines = #{guideLines} where room_seq = ${seq}
+	</update>
+	
+	<!-- 해당 항목을 삭제하기 위한 쿼리문 -->
+	<delete id="deleteBySeq">
+		delete from meeting_room where room_seq = #{seq}
+	</delete>
+	
+	<!-- 항목 추가를 위한 쿼리문 -->
+	<insert id="addRoom">
+		insert into meeting_room values (room_seq.nextval, #{name}, #{location}, #{capacity}, '예약 가능', #{guidelines})
+	</insert>
 </mapper>

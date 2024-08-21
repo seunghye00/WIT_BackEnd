@@ -20,16 +20,16 @@
 </head>
 <body>
 	<div class="container">
-		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
+		<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp"%>
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
 			<div class="contents">
-				<%@ include file="/WEB-INF/views/Reservation/commons/sideToggle.jsp"%>
+				<%@ include file="/WEB-INF/views/Admin/Reservation/commons/sideToggle.jsp"%>
 				<div class="sideContents reservation">
 					<div class="mainTitle">예약 관리 홈</div>
 					<div class="reservList">
 						<div class="subTitle">나의 예약 현황</div>
-						<%@ include file="/WEB-INF/views/Reservation/commons/toolbar.jsp"%>
+						<%@ include file="/WEB-INF/views/Admin/Reservation/commons/toolbar.jsp"%>
 						<c:choose>
 							<c:when test="${type eq 'meetingRoom'}">
 								<div class="listBox roomList">
@@ -154,7 +154,7 @@
 								</div>
 							</c:otherwise>
 						</c:choose>
-						<%@ include file="/WEB-INF/views/Reservation/commons/pagination.jsp"%>
+						<%@ include file="/WEB-INF/views/Admin/Reservation/commons/pagination.jsp"%>
 					</div>
 				</div>
 			</div>
