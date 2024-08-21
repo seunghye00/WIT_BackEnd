@@ -80,7 +80,7 @@ public class EmployeeController {
 		if (result == 1) {
 			// 회원가입 성공 시 해당 회원의 기본 개인 캘린더 추가
 			cService.insertPerDefaultCalendar(dto.getEmp_no());
-			return "redirect:/";
+			return "/Management/management";
 		} else {
 			return "/Management/register";
 		}

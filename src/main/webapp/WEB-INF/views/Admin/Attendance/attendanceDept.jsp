@@ -28,7 +28,7 @@
 			</c:otherwise>
 		</c:choose>
 		<!-- 공통영역 끝 -->
-		
+
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
 
@@ -98,6 +98,25 @@
 								<span>${attendanceItem.SATURDAY}</span>
 							</div>
 						</c:forEach>
+					</div>
+					<div class="pagination">
+						<!-- 이전 페이지로 이동 -->
+						<a
+							href="?deptTitle=${deptTitle}&week=${startDate}&cpage=${cpage > 1 ? cpage - 1 : 1}"
+							class="prev"> <i class='bx bx-chevron-left'></i>
+						</a>
+
+						<!-- 페이지 번호 -->
+						<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
+							<a href="?deptTitle=${deptTitle}&week=${startDate}&cpage=${i}"
+								class="${i == cpage ? 'active' : ''}"> ${i} </a>
+						</c:forEach>
+
+						<!-- 다음 페이지로 이동 -->
+						<a
+							href="?deptTitle=${deptTitle}&week=${startDate}&cpage=${cpage + 1 > pageTotalCount ? pageTotalCount : cpage + 1}"
+							class="next"> <i class='bx bx-chevron-right'></i>
+						</a>
 					</div>
 				</div>
 			</div>
