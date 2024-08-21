@@ -22,12 +22,12 @@
 		<li><a href="/calendar/calendar"> <i
 				class='bx bx-calendar-alt'></i> <span class="navItem">캘린더</span></a> <span
 			class="toolTip">캘린더</span></li>
-		<li><a href="/eApproval/admin/home"> <i class='bx bx-clipboard'></i> <span
-				class="navItem">전자결재</span></a> <span class="toolTip">전자결재</span></li>
 		<li><a href="/attendance//attendanceDept"> <i
 				class='bx bxs-briefcase-alt-2'></i> <span class="navItem">근태관리</span></a>
 			<span class="toolTip">근태관리</span></li>
 		<li><a href="/reservation/admin/home?type=meetingRoom&cPage=1"> <i class='bx bxs-check-square'></i> <span
 				class="navItem">예약</span></a> <span class="toolTip">예약</span></li>
+		<li><a href="/eApproval/admin/home"> <i class='bx bx-clipboard'></i> <span
+				class="navItem">전자결재</span></a> <span class="toolTip">전자결재</span></li>
 	</ul>
 </div>
