@@ -63,7 +63,7 @@ public class BoardDAO {
 	}
 	
 	// 신고 내역 리스트 조회
-	public List<BoardReportDTO> reportList(int board_seq){
+	public List<Map<String, Object>> reportList(int board_seq){
 		return mybatis.selectList("board.reportList",board_seq);
 	}
 	
