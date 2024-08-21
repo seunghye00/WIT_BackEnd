@@ -216,10 +216,10 @@ public class AttendanceService {
 	    return dao.deptAtd(params);
 	}
 
-	// 부서별 근태현황 레코드 수 조회
-	public int deptAtdRecordCount(String deptTitle, Date startDate, Date endDate) {
-	    return dao.deptAtdRecordCount(deptTitle, startDate, endDate);
-	}
+    // 부서의 총 직원 수를 가져옴
+    public int getDeptEmployeeCount(String deptTitle) {
+        return dao.getDeptEmployeeCount(deptTitle);
+    }
 
 	// 부서 조회
 	public List<DeptDTO> getDepartments() {

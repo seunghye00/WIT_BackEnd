@@ -174,16 +174,16 @@ public class AttendanceController {
 		LocalDate previousWeek = startDate.minusWeeks(1);
 		LocalDate nextWeek = startDate.plusWeeks(1);
 
-		// 전체 레코드 수 조회
-		int recordTotalCount = service.deptAtdRecordCount(deptTitle, Date.valueOf(startDate), Date.valueOf(endDate));
-		
+		// 부서의 총 직원 수를 가져옴
+		int recordTotalCount = service.getDeptEmployeeCount(deptTitle);
+		System.out.println("레코드 토탈 카운트 :" + recordTotalCount);
 		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
-		System.out.println("레코드 카운트 펄페이지 : " + recordCountPerPage);
+		System.out.println("레코드 카운트 펄 페이지 :" + recordCountPerPage);
 		int naviCountPerPage = AttendanceConfig.naviCountPerPage;
-		System.out.println("네비 카운트 펄페이지 : " + naviCountPerPage);
+		System.out.println("네비 카운트 펄 페이지 :" + naviCountPerPage);
 
+		// 전체 페이지 수 계산
 		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
-		System.out.println("페이지 토탈 카운트 : " + pageTotalCount);
 
 		// 현재 페이지 번호가 총 페이지 수를 넘지 않도록 설정
 		if (cpage > pageTotalCount) {

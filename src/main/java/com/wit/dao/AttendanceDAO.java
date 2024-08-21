@@ -90,15 +90,10 @@ public class AttendanceDAO {
 	    return mybatis.selectList("attendance.deptAtd", params);
 	}
 
-	// 부서별 근태현황 레코드 수 조회
-	public int deptAtdRecordCount(String deptTitle, Date startDate, Date endDate) {
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("deptTitle", deptTitle);
-	    params.put("startDate", startDate);
-	    params.put("endDate", endDate);
-	    return mybatis.selectOne("attendance.deptAtdRecordCount", params);
-	}
-
+    // 부서의 총 직원 수를 가져옴
+    public int getDeptEmployeeCount(String deptTitle) {
+        return mybatis.selectOne("attendance.getDeptEmployeeCount", deptTitle);
+    }
 
 	// 부서 조회
 	public List<DeptDTO> getAllDepartments() {
