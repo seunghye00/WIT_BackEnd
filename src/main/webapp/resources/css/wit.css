@@ -4856,6 +4856,10 @@ span.return {
 	gap: 10px;
 }
 
+.modalContent.calendarCont {
+	height: 84%;
+}
+
 .modalClose {
 	color: gray;
 	float: right;

@@ -164,7 +164,7 @@
 		</div>
 		<!-- 날짜 박스 눌렀을 시 모달 -->
 		<div id="calendarModal" class="modal">
-    <div class="modalContent">
+    <div class="modalContent calendarCont">
         <h1>
             일정등록<span class="modalClose">&times;</span>
         </h1>
@@ -250,7 +250,7 @@
 
 	<!-- 부서 캘린더 event 클릭 시 모달 -->
 	<div id="deptEventModal" class="modal">
-		<div class="modalContent">
+		<div class="modalContent calendarCont">
 			<h1>
 				일정 내용<span class="modalClose" id="eventModalClose">&times;</span>
 			</h1>
