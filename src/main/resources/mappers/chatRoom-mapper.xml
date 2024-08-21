@@ -19,13 +19,13 @@
 
     <!-- 채팅방 생성 -->
     <insert id="createChatRoom">
-        INSERT INTO chat_room (chat_room_seq, room_type, created_date)
+        INSERT INTO chat_room 
         VALUES (chat_room_seq.NEXTVAL, #{roomType}, SYSDATE)
     </insert>
 
     <!-- 그룹채팅방 생성 -->
     <insert id="createGroupChat">
-        INSERT INTO chat_room (chat_room_seq, room_type, created_date)
+        INSERT INTO chat_room
         VALUES (chat_room_seq.NEXTVAL, 'GROUP', SYSDATE)
     </insert>
 	
@@ -66,7 +66,7 @@
         JOIN chat_room_member crm ON e.emp_no = crm.emp_no
         JOIN chat_room cr ON cr.chat_room_seq = crm.chat_room_seq
         WHERE cr.chat_room_seq = #{chatRoomSeq}
-        and e.emp_no = #{empNo}
+        and e.emp_no != #{empNo}
     </select>
     
     <!-- 채팅방 타이틀 수정 -->
