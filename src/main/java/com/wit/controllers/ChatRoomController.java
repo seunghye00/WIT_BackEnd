@@ -1,5 +1,6 @@
 package com.wit.controllers;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,16 +83,22 @@ public class ChatRoomController {
         return result;
     }
     
-    @RequestMapping("markAsRead")
+    @RequestMapping("updateReadCount")
     @ResponseBody
-    public String markAsRead(String chatRoomSeq, String messageSeq) {
+    public Map<String, Object> updateReadCount(
+        @RequestParam("chatRoomSeq") String chatRoomSeq, 
+        @RequestParam("messageSeq") String messageSeq) {
+    	String userName = (String) session.getAttribute("loginID");
+        Map<String, Object> result = new HashMap<>();
         try {
-            chatServ.markMessagesAsRead(chatRoomSeq, messageSeq);
-            return "success";
+            int updatedReadCount = chatServ.decreaseReadCount(chatRoomSeq, Integer.parseInt(messageSeq), userName);
+            result.put("status", "success");
+            result.put("updated_read_count", updatedReadCount);
         } catch (Exception e) {
             e.printStackTrace();
-            return "error";
+            result.put("status", "error");
         }
+        return result;
     }
     
     // 예외를 담당하는 메서드 생성

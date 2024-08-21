@@ -19,6 +19,7 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
 <script src="/resources/js/employee.js"></script>
+
 </head>
 
 <body class="membership_body">

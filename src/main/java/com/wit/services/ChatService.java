@@ -27,16 +27,17 @@ public class ChatService {
     public void markMessagesAsRead(String chatRoomSeq, String name) {
         dao.updateReadCount(chatRoomSeq, name);
     }
+    
     // 채팅 메시지 입력
     @Transactional
-    public int insert(String chatRoomSeq, String name, String message, int read_count) throws Exception {
+    public int insert(String chatRoomSeq, String name, String message, int read_count)  {
         String sender = userv.getUserNameByLoginID(name);
         return dao.insertChat(new ChatDTO(0, Integer.parseInt(chatRoomSeq), name, sender, message, null, read_count));
     }
     
     // 특정 채팅방의 채팅 내역 출력
     @Transactional
-    public List<ChatDTO> chatListByRoom(String chat_room_seq) throws Exception {
+    public List<ChatDTO> chatListByRoom(String chat_room_seq) {
         return dao.chatListByRoom(Integer.parseInt(chat_room_seq));
     }
     
@@ -47,8 +48,22 @@ public class ChatService {
     }
     
      // 읽지 않은 사용자 목록 조회
+    @Transactional
     public List<Map<String, Object>> getUnreadUsers(int chatRoomSeq) {
         return dao.getUnreadUsers(chatRoomSeq);
     }
-
+    
+    // 채팅방 멤버 수 조회
+    @Transactional
+    public int getChatRoomMemberCount(String chat_room_seq) {
+    	return dao.getChatRoomMemberCount(Integer.parseInt(chat_room_seq));
+    }
+    
+    // read_count 감소
+    @Transactional
+    public int decreaseReadCount(String chatRoomSeq, int chatSeq, String userName) {
+        int result = dao.decreaseReadCount(Integer.parseInt(chatRoomSeq), chatSeq, userName);
+        System.out.println("Decreased read count for chatSeq " + chatSeq + ": " + result);
+        return result;
+    }
 }
