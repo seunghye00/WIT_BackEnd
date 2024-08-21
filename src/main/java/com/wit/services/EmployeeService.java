@@ -196,9 +196,9 @@ public class EmployeeService {
 
 	// 주소록 검색값 레코드 조회
 	@Transactional
-	public List<Map<String, Object>> selectByCon(String keyword, int cpage) {
+	public List<Map<String, Object>> selectByCon(String keyword, int cpage, String dept_code) {
 		return dao.selectByCon(keyword, cpage * BoardConfig.recordCountPerPage - (BoardConfig.recordCountPerPage - 1),
-				cpage * BoardConfig.recordCountPerPage);
+				cpage * BoardConfig.recordCountPerPage, dept_code);
 	}
 
 	// 메신저 주소록 조회

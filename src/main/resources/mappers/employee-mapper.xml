@@ -380,7 +380,11 @@
 		        left join
 		            dept d on em.dept_code = d.dept_code
 		        where 
-		            em.name like '%' || #{keyword} || '%'
+		            em.name like '%' || #{keyword} || '%']]>
+			    <if test="dept_code != '전체'">
+	                <![CDATA[and em.dept_code = #{dept_code}]]>
+	            </if>
+	    <![CDATA[
 		    )
 		    where rown between #{startNum} and #{endNum}
 		]]>
@@ -466,7 +470,7 @@
 
 	<!-- 관리자 사원 검색 총 카운트 -->
 	<select id="totalCountManageSearch" resultType="int">
-		select count(*) from employee where em.emp_no != #{empNo} and ${column} like
+		select count(*) from employee where emp_no != #{emp_no} and ${column} like
 		'%'||#{keyword}||'%'
 	</select>
 

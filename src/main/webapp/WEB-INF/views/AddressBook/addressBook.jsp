@@ -47,8 +47,9 @@
                 <div class="sideContents addressCont">
                     <div class="mainTitle addressTit">전체 주소록</div>
                     <form class="searchBox" id="searchForm" action="/addressbook/search">
-                        <input type="text" id="searchInput" placeholder="검색" name="keyword">
-                        <button class="searchBtn" type="submit" >
+                        <input type="text" id="searchInput" placeholder="이름으로 검색" name="keyword">
+                        <input type="hidden" id="searchCate" name="category_id" value="">
+                        <button class="searchBtn" type="submit">
                             <i class='bx bx-search'></i>
                         </button>
                     </form>
@@ -136,7 +137,7 @@
 	                    <div class="formGroup">
 	                        <label for="photo">사진</label>
 	                        <div class="photoWrapper">
-	                            <img src="placeholder.jpg" alt="사진" id="photo">
+	                            <img src="" alt="사진" id="photo">
 	                            <button type="button" onclick="removePhoto('photo', 'photoUpload')">삭제</button>
 	                            <input type="file" id="photoUpload" name="photo" accept="image/*" onchange="previewPhoto(event, 'photo')"> 
 	                            <label for="photoUpload">등록</label>
@@ -197,7 +198,7 @@
 	                    <div class="formGroup">
 	                        <label for="editPhoto">사진</label>
 	                        <div class="photoWrapper">
-	                            <img src="placeholder.jpg" alt="사진" id="editPhoto">
+	                            <img src="" alt="사진" id="editPhoto">
 	                            <button type="button" onclick="removePhoto('editPhoto', 'editPhotoUpload')">삭제</button>
 	                            <input type="file" id="editPhotoUpload" name="photo" accept="image/*" onchange="previewPhoto(event, 'editPhoto')"> 
 	                            <label for="editPhotoUpload">등록</label>
@@ -283,6 +284,15 @@
         </div>
     </div>
     <script>
+ 	// sidebar 공통요소 script
+    let btn = $('#btn');
+    let sideBar = $('.sideBar');
+
+    btn.on('click', function() {
+    	sideBar.toggleClass('active');
+    });
+
+    
     let currentChosung  = '전체';
     let currentCategory = '전체';
  	// 토글 이벤트 설정
@@ -360,7 +370,6 @@
 
                 let pageNation = $("#pagination");
                 pageNation.empty();
-				console.log(response)
                 let cpage = response.cpage;
                 let record_total_count = response.totPage;
                 let record_count_per_page = 10;
@@ -421,8 +430,9 @@
                 let categoryList = $('.privateList .subList');
                 categoryList.empty();
                 categoryList.append('<li><a href="javascript:;" onclick="loadCategoryData(\'전체\')" class="active">전체</a></li>');
+                
                 categories.forEach(function(category) {
-                    categoryList.append('<li><a href="javascript:;" onclick="loadCategoryData(\'' + category.CATEGORY_NAME + '\')">' + category.CATEGORY_NAME + '</a><button onclick="showEditCategoryPopup(\'' + category.CATEGORY_NAME + '\')"><i class="bx bx-edit"></i></button></li>');
+                    categoryList.append('<li><a href="javascript:;" onclick="loadCategoryData(\'' + category.CATEGORY_NAME + '\', ' + category.CATEGORY_ID +')">' + category.CATEGORY_NAME + '</a><button onclick="showEditCategoryPopup(\'' + category.CATEGORY_NAME + '\')"><i class="bx bx-edit"></i></button></li>');
                 });
                 categoryList.append('<li class="newList"><a href="javascript:;" onclick="showAddCategoryPopup()"><i class="bx bx-plus-medical"></i><span>연락처 주소록 추가</span></a></li>');
                 loadPage();
@@ -433,8 +443,13 @@
         });
     }
 
-    function loadCategoryData(category) {
+    function loadCategoryData(category, categoryId) {
         currentCategory = category;
+        if(categoryId == null ) {
+        	$('#searchCate').val("0");
+        } else {        	
+	        $('#searchCate').val(categoryId);
+        }
         $('.mainTitle').text(category + " 주소록");
         $('.subList a').removeClass('active');
         $('.subList a').each(function() {
@@ -480,6 +495,7 @@
         event.preventDefault();
         let category = $('#newCategoryInput').val();
         addCategory(category);
+        $('#newCategoryInput').val("");  // 입력 필드 초기화
         closeAddCategoryPopup();
     }
 
@@ -572,7 +588,7 @@
 	    document.getElementById('editPosition').value = contact.position !== null && contact.position !== undefined ? contact.position : '-';
 	    document.getElementById('editAddress').value = contact.address !== null && contact.address !== undefined ? contact.address : '-';
 	
-	    if (contact.photo && contact.photo !== 'default.jpg') {
+	    if (contact.photo && contact.photo !== '/uploads/default.png') {
 	        const encodedPhoto = encodeURIComponent(contact.photo);
 	        document.getElementById('editPhoto').src = '/uploads/' + encodedPhoto;
 	    } else {
@@ -650,13 +666,17 @@
 	    loadPage({ chosung: chosung, cpage: 1, category: currentCategory }, '/addressbook/addressTool');
 	}
 	
-	function handleSearchFormSubmit(event) {
+	 function handleSearchFormSubmit(event) {
 	    event.preventDefault();
 	    var keyword = $('#searchInput').val();
+	    var category_id = $('#searchCate').val(); // hidden input에서 category_id 값을 가져옴
+	    
 	    $('.toolBar a').removeClass('active');
 	    $('.toolBar a:first').addClass('active');
 	    currentChosung = '전체';
-	    loadPage({ keyword: keyword, cpage: 1 }, '/addressbook/search');
+	    
+	    // category_id 값을 함께 전달
+	    loadPage({ keyword: keyword, cpage: 1, category_id: category_id }, '/addressbook/search');
 	}
 	
 	// 주소록 등록 / 수정 유효성 검사

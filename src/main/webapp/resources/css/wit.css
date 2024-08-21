@@ -970,7 +970,7 @@
 }
 
 .subList li:not(:last-child) {
-	padding-bottom: 8px;
+	padding-bottom: 16px;
 }
 
 .subList li {
@@ -987,6 +987,7 @@
 	background-color: unset;
 	border: none;
 	color: #333;
+	padding: 0;
 }
 
 /* 주소록 메인 콘텐츠 */
