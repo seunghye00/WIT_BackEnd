@@ -374,7 +374,7 @@ function startChat() {
         webSocket.close();
     }
     
-    webSocket = new WebSocket('ws://192.168.1.4/chat/' + chat_room_seq);
+    webSocket = new WebSocket('ws://13.125.46.163/chat/' + chat_room_seq);
     webSocket.onopen = function (event) {
         console.log("WebSocket is open now.");
     };
