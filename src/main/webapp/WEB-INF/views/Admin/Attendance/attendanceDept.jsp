@@ -19,8 +19,16 @@
 <body>
 	<div class="container">
 		<!-- 공통영역 -->
-		<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp"%>
+		<c:choose>
+			<c:when test="${employee.role_code == '사장'}">
+				<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp"%>
+			</c:when>
+			<c:otherwise>
+				<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
+			</c:otherwise>
+		</c:choose>
 		<!-- 공통영역 끝 -->
+		
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
 
@@ -61,13 +69,11 @@
 				<div class="sideContents AttendanceDept">
 					<h2>부서별 근무현황</h2>
 					<div class="week_selector">
-					<span>
-						<i class="bx bx-chevron-left"
+						<span> <i class="bx bx-chevron-left"
 							onclick="window.location.href='?week=${previousWeek}&deptTitle=${deptTitle}'"></i>
-						${startDate} ~ ${endDate} <i
-							class="bx bx-chevron-right"
+							${startDate} ~ ${endDate} <i class="bx bx-chevron-right"
 							onclick="window.location.href='?week=${nextWeek}&deptTitle=${deptTitle}'"></i>
-							</span>
+						</span>
 					</div>
 
 					<div class="dept_tabs">
