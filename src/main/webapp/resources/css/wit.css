@@ -287,6 +287,7 @@
 	/* background-color: aquamarine; */
 	display: flex;
 	flex-direction: column;
+	max-width: 900px;
 }
 
 .boardDetail .detail .detailTop {
@@ -350,6 +351,8 @@
 	margin: 10px 0 10px 0;
 	padding: 20px;
 	border-radius: 10px;
+	overflow-wrap: break-word;
+	overflow: auto;
 }
 
 /* board & fboard buttons css start */
@@ -363,8 +366,8 @@
 }
 
 .boardDetail img {
-	width: 16px;
-	height: 16px;
+	/* width: 16px;
+	height: 16px; */
 }
 
 /*수정 버튼*/
@@ -428,6 +431,11 @@
 	display: flex;
 	justify-content: flex-end;
 	gap: 10px;
+}
+
+.boardDetail .replyBtn img {
+	width: 16px;
+	height: 16px;
 }
 
 .replyWrapper .replyBtn #replyInst {
@@ -498,6 +506,7 @@
 	flex-direction: column;
 	padding: 20px;
 	border-radius: 10px;
+	max-width: 1400px;
 }
 
 .writeWrapper .writeTitle {
@@ -1404,22 +1413,20 @@
 }
 
 .chatList::-webkit-scrollbar,
-.addressList::-webkit-scrollbar{
-    height: 5px;
+.addressList::-webkit-scrollbar {
+	height: 5px;
 	width: 10px;
 }
 
 .chatList::-webkit-scrollbar-thumb,
-.addressList::-webkit-scrollbar-thumb
-{
-    background: rgb(174 214 254);
-    border-radius: 10px;
+.addressList::-webkit-scrollbar-thumb {
+	background: rgb(174 214 254);
+	border-radius: 10px;
 }
 
 .chatList::-webkit-scrollbar-track,
-.addressList::-webkit-scrollbar-track
-{
-    background: rgb(234 243 251);
+.addressList::-webkit-scrollbar-track {
+	background: rgb(234 243 251);
 }
 
 .chatList li,
@@ -1504,21 +1511,21 @@
 	transition: padding-bottom 0.3s;
 	max-height: 100%;
 }
-.chatBody::-webkit-scrollbar{
-    height: 5px;
+
+.chatBody::-webkit-scrollbar {
+	height: 5px;
 	width: 10px;
 }
 
-.chatBody::-webkit-scrollbar-thumb
-{
-    background: rgb(84 139 207);
-    border-radius: 10px;
+.chatBody::-webkit-scrollbar-thumb {
+	background: rgb(84 139 207);
+	border-radius: 10px;
 }
 
-.chatBody::-webkit-scrollbar-track
-{
-    background: rgb(255 255 255 / 0%);
+.chatBody::-webkit-scrollbar-track {
+	background: rgb(255 255 255 / 0%);
 }
+
 .message {
 	margin-bottom: 10px;
 	max-width: 70%;
