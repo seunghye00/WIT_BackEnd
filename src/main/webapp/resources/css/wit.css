@@ -2709,12 +2709,14 @@
 }
 
 .vacation_status{
-	top: -29%;
+	top: 9%;
 }
 
 .vacation_container {
 	width: 35%;
 	border-radius: 10px;
+	position: fixed;
+	top: 20%;
 }
 
 .status_row, .hours_row {
