@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,7 +33,7 @@ public class ChatEndpoint {
 
     // 각 세션과 해당 세션의 사용자 로그인 ID를 매핑하는 맵
     private static final ConcurrentHashMap<Session, String> sessionUserMap = new ConcurrentHashMap<>();
-
+    
     // 각 세션과 해당 세션이 속한 채팅방의 chatRoomSeq를 매핑하는 맵
     private static final ConcurrentHashMap<Session, String> sessionChatRoomMap = new ConcurrentHashMap<>();
 
@@ -49,13 +48,29 @@ public class ChatEndpoint {
 
     @OnOpen
     public void onConnect(Session session, EndpointConfig config) {
-        // WebSocket 연결이 열리면 HttpSession을 가져와서 사용자 로그인 ID를 저장
-        this.hSession = (HttpSession) config.getUserProperties().get("hSession");
-        String loginID = (String) this.hSession.getAttribute("loginID");
+        try {
+            // WebSocket 연결이 열리면 HttpSession을 가져와서 사용자 로그인 ID를 저장
+            this.hSession = (HttpSession) config.getUserProperties().get("hSession");
+            if (hSession == null) {
+                throw new IllegalStateException("HttpSession이 null입니다.");
+            }
+            
+            String loginID = (String) this.hSession.getAttribute("loginID");
+            if (loginID == null) {
+                throw new IllegalStateException("로그인 ID가 null입니다.");
+            }
 
-        // 세션을 전체 세션 Set에 추가하고, 사용자 맵에 로그인 ID 매핑
-        sessions.add(session);
-        sessionUserMap.put(session, loginID);
+            // 세션을 전체 세션 Set에 추가하고, 사용자 맵에 로그인 ID 매핑
+            sessions.add(session);
+            sessionUserMap.put(session, loginID);
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                session.close();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        }
     }
 
     @OnMessage
@@ -67,81 +82,50 @@ public class ChatEndpoint {
             String chatRoomSeq = jsonMessage.get("chatRoomSeq").getAsString();
             sessionChatRoomMap.put(session, chatRoomSeq);
 
-            // 먼저 loginID 메시지를 보냅니다.
-            JsonObject loginIDResponse = new JsonObject();
+            // 로그인 ID 메시지를 보냄
             String loginID = sessionUserMap.get(session);
-            loginIDResponse.addProperty("type", "loginID");
-            loginIDResponse.addProperty("loginID", loginID);
-            try {
-                session.getBasicRemote().sendText(loginIDResponse.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            sendLoginIDMessage(session, loginID);
 
-            // 그 후 chatHistory 메시지를 보냅니다.
+            // 채팅 기록을 클라이언트에게 전송
             List<ChatDTO> chatList = cServ.chatListByRoom(chatRoomSeq);
-            JsonObject response = new JsonObject();
-            response.addProperty("type", "chatHistory");
-            response.add("chatHistory", gson.toJsonTree(chatList));
-            try {
-                session.getBasicRemote().sendText(response.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            sendChatHistoryMessage(session, chatList);
+
         } else if ("chat".equals(type)) {
             String chatRoomSeq = sessionChatRoomMap.get(session);
             processChatMessage(session, chatRoomSeq, jsonMessage);
+        } else if ("read".equals(type)) {
+            String chatRoomSeq = jsonMessage.get("chatRoomSeq").getAsString();
+            int chatSeq = jsonMessage.get("chatSeq").getAsInt();
+            String userName = jsonMessage.get("userName").getAsString();
+            System.out.println(userName+ " 되는지 보자");
+            // 메시지 읽음 처리
+            int updatedReadCount = cServ.decreaseReadCount(chatRoomSeq, chatSeq, userName);
+            if (updatedReadCount >= 0) {
+                broadcastReadCountUpdate(chatRoomSeq, chatSeq, updatedReadCount);
+            }
         }
     }
 
     private void processChatMessage(Session session, String chatRoomSeq, JsonObject jsonMessage) {
-    	// 로그인 ID 가져오기
         String sender = sessionUserMap.get(session);
         if (sender == null) {
-            System.out.println("Sender is null. Session: " + session);
             return;
         }
 
-        // 사용자의 이름 가져오기
         String userName = cServ.getUserNameByLoginID(sender);
         if (userName == null) {
-            System.out.println("UserName is null. Sender: " + sender);
             return;
         }
 
-        // 채팅방 멤버 수 가져오기
-        int memberCount;
-        try {
-            memberCount = cServ.getChatRoomMemberCount(chatRoomSeq);
-            if (memberCount == 0) {
-                System.out.println("Member count is zero or invalid for chatRoomSeq: " + chatRoomSeq);
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-        
-        // 메시지를 DB에 저장하고 chat_seq를 반환받음
-        int chatSeq;
-        try {
-            String messageContent = jsonMessage.get("message").getAsString();
-            if (messageContent == null || messageContent.isEmpty()) {
-                System.out.println("Message content is null or empty.");
-                return;
-            }
-
-            chatSeq = cServ.insert(chatRoomSeq, sender, messageContent, memberCount - 1);
-            if (chatSeq <= 0) {
-                System.out.println("Failed to insert chat message. ChatSeq: " + chatSeq);
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        int memberCount = cServ.getChatRoomMemberCount(chatRoomSeq);
+        if (memberCount == 0) {
             return;
         }
 
-        // 클라이언트로 보낼 데이터 생성
+        int chatSeq = cServ.insert(chatRoomSeq, sender, jsonMessage.get("message").getAsString(), memberCount - 1);
+        if (chatSeq <= 0) {
+            return;
+        }
         JsonObject data = new JsonObject();
         data.addProperty("chat_seq", chatSeq);
         data.addProperty("chat_room_seq", chatRoomSeq);
@@ -151,50 +135,27 @@ public class ChatEndpoint {
         data.addProperty("type", "chat");
         data.addProperty("name", sender);
         data.addProperty("read_count", memberCount - 1);
-        // 해당 채팅방에 있는 모든 세션에 메시지 전송
+
         synchronized (sessions) {
             for (Session client : sessions) {
-                String recipientChatRoomSeq = sessionChatRoomMap.get(client);
-                if (chatRoomSeq.equals(recipientChatRoomSeq)) {
-                    try {
-                        String recipient = sessionUserMap.get(client);
-                        if (recipient != null && !recipient.equals(sender)) {
-                            int updatedReadCount = cServ.decreaseReadCount(chatRoomSeq, chatSeq, recipient);
-                            broadcastReadCountUpdate(chatRoomSeq, chatSeq, updatedReadCount);
-                        }
-                        if (client.isOpen()) {
+                try {
+                	if (client.isOpen()) {
+                        // 자신에게는 알림 플래그 없이 메시지 전송
+                        if (session.equals(client)) {
+                            client.getBasicRemote().sendText(data.toString());
+                        } else {
+                            // 다른 사용자에게는 알림 플래그 추가
+                            data.addProperty("isNotification", true);
                             client.getBasicRemote().sendText(data.toString());
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
-
-        // 메시지를 받지 않은 사용자에게 알림 전송
-        if (!sender.equals(userName)) {  // 이 조건 추가
-            sendUnreadNotifications(chatRoomSeq, userName);
-        }    
     }
-
-    private void sendUnreadNotifications(String chatRoomSeq, String sender) {
-        try {
-            int chatRoomSeqInt = Integer.parseInt(chatRoomSeq);
-            List<Map<String, Object>> unreadUsers = cServ.getUnreadUsers(chatRoomSeqInt);
-
-            for (Map<String, Object> user : unreadUsers) {
-                String receiverName = (String) user.get("RECEIVER");
-                System.out.println(receiverName.equals(sender));
-                if (!sender.equals(receiverName)) {
-                    notifyUnreadMessage(receiverName, sender + "님이 새 메시지를 보냈습니다.");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+  
     @OnClose
     public void onClose(Session session) {
         // WebSocket 연결이 닫힐 때, 세션을 제거
@@ -217,29 +178,29 @@ public class ChatEndpoint {
         long currentTimeMillis = System.currentTimeMillis();
         return new SimpleDateFormat("HH:mm").format(currentTimeMillis);
     }
-
-    // 특정 사용자에게 알림 메시지를 전송하는 메서드
-    public static void notifyUnreadMessage(String loginID, String notificationMessage) {
-        if (loginID == null) {
-            return;
-        }
-
-        synchronized (sessions) {
-            for (Session session : sessions) {
-                String sessionLoginID = sessionUserMap.get(session);
-                if (sessionLoginID != null && loginID.equals(sessionLoginID)) {
-                    try {
-                        JsonObject notification = new JsonObject();
-                        notification.addProperty("type", "notification");
-                        notification.addProperty("message", notificationMessage);
-                        session.getBasicRemote().sendText(notification.toString());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+    
+    private void sendLoginIDMessage(Session session, String loginID) {
+        JsonObject loginIDResponse = new JsonObject();
+        loginIDResponse.addProperty("type", "loginID");
+        loginIDResponse.addProperty("loginID", loginID);
+        try {
+            session.getBasicRemote().sendText(loginIDResponse.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+    private void sendChatHistoryMessage(Session session, List<ChatDTO> chatList) {
+        JsonObject response = new JsonObject();
+        response.addProperty("type", "chatHistory");
+        response.add("chatHistory", gson.toJsonTree(chatList));
+        try {
+            session.getBasicRemote().sendText(response.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     
     private void broadcastReadCountUpdate(String chatRoomSeq, int chatSeq, int updatedReadCount) {
         JsonObject data = new JsonObject();
@@ -262,3 +223,4 @@ public class ChatEndpoint {
         }
     }
 }
+

@@ -23,16 +23,8 @@ public class ChatDAO {
     }
     
     // 메시지를 읽음 처리
-    public boolean checkIfAlreadyRead(String chatRoomSeq, int messageSeq, String name) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("chat_room_seq", Integer.parseInt(chatRoomSeq));
-        params.put("message_seq", messageSeq);
-        params.put("name", name);
-        // selectOne의 결과를 Integer로 캐스팅
-        Integer count = (Integer) mybatis.selectOne("chat.checkIfAlreadyRead", params);
-        
-        // count가 null이 아니고 0보다 큰지 확인
-        return count != null && count > 0;    
+    public int getUpdatedReadCount(Map<String, Object> params) {
+        return mybatis.selectOne("chat.getUpdatedReadCount", params);
     }
     
     // 채팅 내역 출력
@@ -41,13 +33,13 @@ public class ChatDAO {
     }
     
     // 읽지 않은 사용자 목록 조회
-    public List<Map<String, Object>> getUnreadUsers(int chatRoomSeq) {
-        return mybatis.selectList("chat.getUnreadUsers", chatRoomSeq);
+    public List<Map<String, Object>> getUnreadUsers(Map<String, Object> params) {
+        return mybatis.selectList("chat.getUnreadUsers", params);
     }
     
     // 채팅방 멤버 수 조회
     public int getChatRoomMemberCount(int chat_room_seq) {
-        return mybatis.selectOne("chatRoom.getChatRoomMemberCount", chat_room_seq);
+        return mybatis.selectOne("chat.getChatRoomMemberCount", chat_room_seq);
     }
     
     // read_count 감소
@@ -58,5 +50,37 @@ public class ChatDAO {
         params.put("user_name", userName);
         mybatis.update("chat.decreaseReadCount", params);
         return mybatis.selectOne("chat.getReadCount", chatSeq); // 감소된 read_count 값을 반환
+    }
+    
+    // 메시지를 읽음 처리
+    public boolean checkIfAlreadyRead(String chatRoomSeq, int messageSeq, String name) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chat_room_seq", Integer.parseInt(chatRoomSeq));
+        params.put("message_seq", messageSeq);
+        params.put("name", name);
+        int count = mybatis.selectOne("chat.checkIfAlreadyRead", params);
+        return count > 0;
+    }
+    
+    // 메시지를 읽음 처리
+    public List<ChatDTO> getUnreadMessages(int chatRoomSeq, String userName) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chatRoomSeq", chatRoomSeq);
+        params.put("userName", userName);
+        return mybatis.selectList("chat.getUnreadMessages", params);
+    }
+    
+    // 특정 메시지의 현재 read_count 값을 반환
+    public int getReadCount(int chatSeq) {
+        return mybatis.selectOne("chat.getReadCount", chatSeq);
+    }
+    
+    // read_receivers 필드에 사용자 ID를 추가하는 메서드 (DAO에서 처리)
+    public void addReaderToMessage(String chatRoomSeq, int chatSeq, String userName) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chat_room_seq", chatRoomSeq);
+        params.put("chat_seq", chatSeq);
+        params.put("userName", userName);
+        mybatis.update("chat.addReaderToMessage", params);
     }
 }

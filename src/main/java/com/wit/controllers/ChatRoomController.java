@@ -83,28 +83,19 @@ public class ChatRoomController {
         return result;
     }
     
-    @RequestMapping("updateReadCount")
+    @RequestMapping("/checkReadCount")
     @ResponseBody
-    public Map<String, Object> updateReadCount(
-        String chatRoomSeq, String messageSeq) {
-        String userName = (String) session.getAttribute("loginID");
-        Map<String, Object> result = new HashMap<>();
+    public Map<String, Object> checkReadCount(String chatRoomSeq, String chatSeq) {
+        Map<String, Object> response = new HashMap<>();
         try {
-            // 사용자가 이미 읽었는지 확인
-            boolean isAlreadyRead = chatServ.markMessagesAsRead(chatRoomSeq, Integer.parseInt(messageSeq), userName);
-            if (!isAlreadyRead) {
-                int updatedReadCount = chatServ.decreaseReadCount(chatRoomSeq, Integer.parseInt(messageSeq), userName);
-                result.put("status", "success");
-                result.put("updated_read_count", updatedReadCount);
-            } else {
-                result.put("status", "already_read");
-                result.put("updated_read_count", 0);
-            }
+            int updatedReadCount = chatServ.getUpdatedReadCount(chatRoomSeq, Integer.parseInt(chatSeq));
+            response.put("status", "success");
+            response.put("updated_read_count", updatedReadCount);
         } catch (Exception e) {
+            response.put("status", "error");
             e.printStackTrace();
-            result.put("status", "error");
         }
-        return result;
+        return response;
     }
     
     // 예외를 담당하는 메서드 생성

@@ -47,54 +47,47 @@ function initializeWebSocket() {
 	webSocket.onmessage = function(event) {
 	    try {
 	        let data = JSON.parse(event.data);
-	        console.log(data);
-	
-	        // 메시지 타입에 따른 처리
-	        if (data.type === "readCountUpdate") {
-            	updateReadCountOnClient(data.chatRoomSeq, data.chatSeq, data.updatedReadCount);
-        	} else if (data.type === 'notification') {
-	            console.log("Notification message:", data.message);
-	            showNotificationModal(data.message); // 알림이 오면 모달 자동 띄우기
-	            console.log(data);
-	        } else if (data.type === "loginID") {
+			console.log(data);
+            if (data.type == "readCountUpdate") {
+	            updateReadCountOnClient(data.chatRoomSeq, data.chatSeq, data.updatedReadCount);
+	        }
+	        if (data.type == "loginID") {
 	            if (data.loginID) {
 	                currentLoginID = data.loginID;
 	                console.log("LoginID set:", currentLoginID);
 	            } else {
 	                console.log("Invalid loginID data");
 	            }
-	
-	        } else if (data.type === "chatHistory") {
+	        }
+	        if (data.type == "chatHistory") {
 	            if (currentLoginID && Array.isArray(data.chatHistory)) {
 	                data.chatHistory.forEach(function(chat) {
 	                    appendMessage(chat, chat.name === currentLoginID ? 'sent' : 'received');
 	                });
-	                chatHistoryLoaded = true; // Chat history loaded flag
 	            } else {
 	                console.log("chatHistory received before loginID is set or invalid chatHistory data");
 	            }
-	
-	        } else if (data.type === "chat") {
-	            if (data.chat_room_seq && data.chat_seq && data.message) {
+	        } 
+	        if (data.type == "chat") {
+	            if (data.chat_room_seq == currentChatRoomSeq) {
 	                appendMessage(data, data.name === currentLoginID ? 'sent' : 'received');
-	                if (data.sender !== currentLoginID && data.read_count !== 0) {
-	                    markMessageAsRead(data.chat_room_seq, data.chat_seq);
-	                }
+	                 // 자신이 보낸 메시지는 읽음 처리하지 않도록 조건 추가
+	             	if (data.name !== currentLoginID) {
+					    console.log("markMessageAsRead called for chatSeq:", data.chat_seq);
+					    markMessageAsRead(data.chat_room_seq, data.chat_seq);
+					}
 	            } else {
-	                console.log("Invalid chat message data");
+	                showNotificationModal(`${data.sender}님이 새 메시지를 보냈습니다`);
+	                console.log("Ignoring message for chat room:", data.chat_room_seq);
 	            }
-	
-	        } else if (data.type === "status") {
+	        }
+	        if (data.type == "status") {
 	            displayStatusMessage(data);
-	
-	        } else {
-	            console.log("Unexpected message type:", data.type);
 	        }
 	    } catch (error) {
 	        console.error("Error processing WebSocket message:", error);
 	    }
 	};
-
 
     webSocket.onerror = function(error) {
         console.log("WebSocket error observed:", error);
@@ -183,7 +176,6 @@ function loadChatMessages(chat_room_seq) {
 
 // 메시지를 화면에 추가하고, 읽음 처리하는 함수
 function appendMessage(data, type) {
-	console.log(type);
     let chatBody = $("#chatBody");
     let mbox = $("<div>").addClass("text_box");
     let id_Box = $("<div>").addClass("sender");
@@ -204,9 +196,12 @@ function appendMessage(data, type) {
         message.addClass("sent");
     }
     
+    // `chatSeq`를 메시지에 데이터 속성으로 저장 (나중에 읽음 수 업데이트 시 사용)
+    message.attr("data-chat-seq", data.chat_seq);
     // `read_count`를 반영하여 보여줌
     if (data.read_count > 0) {
         readBox.text(data.read_count);
+        readBox.show();
     } else {
         readBox.hide(); // read_count가 0이면 숨김
     }
@@ -219,6 +214,9 @@ function appendMessage(data, type) {
 
     // 스크롤을 최신 메시지로 이동
     chatBody.scrollTop(chatBody[0].scrollHeight);
+    
+    // append 후에 readCountUpdate가 있을 경우 바로 업데이트
+    checkAndUpdateReadCount(data.chat_room_seq, data.chat_seq);
 }
 
 function displayStatusMessage(data) {
@@ -254,30 +252,16 @@ function sendMessage() {
 }
 
 // 메시지를 읽었을 때 서버로 읽음 처리 요청을 보내는 함수
-function markMessageAsRead(chatRoomSeq, messageSeq) {
-    $.ajax({
-        url: '/chatroom/updateReadCount',
-        method: 'POST',
-        data: {
-            chatRoomSeq: chatRoomSeq,
-            messageSeq: messageSeq
-        },
-        success: function(response) {
-            if (response.status === 'success') {
-                const updatedReadCount = response.updated_read_count;
-                let readBox = $('div.message').find('.readBox');
-
-                if (updatedReadCount > 0) {
-                    readBox.text(updatedReadCount);
-                } else {
-                    readBox.remove(); // read_count가 0이 되면 readBox를 제거
-                }
-            }
-        },
-        error: function(error) {
-            console.error("Error marking message as read:", error);
-        }
+// 사용자가 메시지를 읽었을 때 호출되는 함수
+function markMessageAsRead(chatRoomSeq, chatSeq) {
+    console.log(`markMessageAsRead called for chatSeq: ${chatSeq}, chatRoomSeq: ${chatRoomSeq}`);
+    const message = JSON.stringify({
+        type: "read",
+        chatRoomSeq: chatRoomSeq,
+        chatSeq: chatSeq,
+        userName: currentLoginID
     });
+    webSocket.send(message);
 }
 
 // 여기서부터는 채팅 이외의 다른 UI 요소와 관련된 코드입니다.
@@ -403,6 +387,7 @@ function loadChatList() {
             chatList.empty(); // 기존 목록 초기화
 
             response.forEach(function(chatRoom) {
+            	console.log(chatRoom);
                 var $listItem = $('<li>');
                 var $link = $('<a>', {
                     href: 'javascript:;',
@@ -770,7 +755,45 @@ function addEmojiToMessageInput(imgElement) {
 
 function updateReadCountOnClient(chatRoomSeq, chatSeq, updatedReadCount) {
     let messageElement = document.querySelector(`.message[data-chat-seq="${chatSeq}"] .readBox`);
+    
     if (messageElement) {
-        messageElement.textContent = updatedReadCount;
+        if (updatedReadCount > 0) {
+            messageElement.textContent = updatedReadCount;
+            messageElement.style.display = 'block';
+        } else {
+            messageElement.style.display = 'none';
+        }
+    } else {
+        setTimeout(() => updateReadCountOnClient(chatRoomSeq, chatSeq, updatedReadCount), 100);
     }
+}
+
+
+
+// 메시지의 읽음 상태를 서버에 확인하고, 필요시 업데이트하는 함수
+function checkAndUpdateReadCount(chatRoomSeq, chatSeq) {
+    $.ajax({
+        url: '/chatroom/checkReadCount',
+        method: 'POST',
+        data: {
+            chatRoomSeq: chatRoomSeq,
+            chatSeq: chatSeq
+        },
+        success: function(response) {
+            if (response.status === 'success') {
+                const updatedReadCount = response.updated_read_count;
+                let readBox = $(`.message[data-chat-seq="${chatSeq}"] .readBox`);
+
+                if (updatedReadCount > 0) {
+                    readBox.text(updatedReadCount);
+                    readBox.show();
+                } else {
+                    readBox.hide();
+                }
+            }
+        },
+        error: function(error) {
+            console.error("Error checking read count:", error);
+        }
+    });
 }
