@@ -239,8 +239,10 @@
 }
 
 .boardList .notiList .rows .boardTitle {
+	cursor: pointer;
 	flex: 2;
 }
+
 
 .boardList .notiList .rows .boardWriter {
 	flex: 1;
@@ -308,10 +310,12 @@
 }
 
 .boardDetail .detail .detailTop .top .topTitle {
-	flex: 7;
+	/* flex: 7; */
 	font-size: 20px;
 	display: flex;
 	align-items: center;
+	overflow: hidden;
+	width: 400px;
 }
 
 .boardDetail .detail .detailTop .top .topFile {
@@ -729,6 +733,14 @@
 	gap: 10px;
 }
 
+.dialog .inner .top {
+	gap: 10px;
+}
+
+.dialog .inner .top .titleTxt {
+	font-size: 12px;
+}
+
 .dialog {
 	display: none;
 	position: fixed;
@@ -758,6 +770,7 @@
 
 .dialog .top {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	/* justify-content: center; */
 	border-bottom: 1px solid #ddd;
@@ -788,6 +801,8 @@
 	font-weight: bold;
 	text-align: center;
 	align-items: center;
+	padding: 10px;
+	background-color: #eee;
 }
 
 .dialog .ct .ctTitle .reportPer {
@@ -807,6 +822,7 @@
 	display: flex;
 	text-align: center;
 	align-items: center;
+	padding: 10px;
 }
 
 .dialog .ct .ctCont .reportPer {
@@ -4135,7 +4151,8 @@ button:nth-child(4) img {
 	top: -3px;
 	cursor: pointer;
 }
-.compCalendar{
+
+.compCalendar {
 	padding-top: 30px;
 }
 
@@ -5010,8 +5027,8 @@ button:nth-child(4) img {
 /* 메인 페이지 전자 결재 영역 */
 .rightTop .eApprBox {
 	height: 100%;
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .rightTop .eApprBox .eApprRows {
@@ -5020,14 +5037,14 @@ button:nth-child(4) img {
 }
 
 .rightTop .eApprBox .eApprRows:first-child {
-    border-bottom: 1px solid #c1c1c1;
+	border-bottom: 1px solid #c1c1c1;
 }
 
 .rightTop .eApprBox .eApprRows .eApprCols {
 	flex: 1;
 	display: flex;
-    justify-content: center;
-    align-items: center;
+	justify-content: center;
+	align-items: center;
 }
 
 .rightTop .eApprBox .eApprRows .eApprCols:first-child {
