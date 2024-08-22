@@ -65,8 +65,18 @@
 									<li><a href="/board/list?bookmark=true&boardCode=2">북마크한
 											게시물</a></li>
 
-									<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+													<li><a href="/board/list?boardCode=2">공지 사항으로
+															이동</a>
+													</li>
 
+													<c:if test="${employee.role_code == '사장'}">
+														<li><a href="/board/write?boardCode=2">공지 사항 글
+																작성</a></li>
+													</c:if>
+												</ul>
+											</li>
+										</ul>
+									</div>
 									<c:if test="${employee.role_code == '사장'}">
 										<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
 									</c:if>
@@ -393,6 +403,13 @@
 						$("#searchForm").submit();
 					})
 
+					// 엔터키로 검색 가능하게 추가
+					$("#searchTxt").on("keypress", function (event) {
+						if (event.keyCode === 13) { // Enter 키의 keyCode는 13
+							$("#searchBtn").click();
+						}
+					});
+
 					// 정렬 옵션이 바뀌면 정렬 옵션값 넣어주고, 
 					// 검색 옵션, 검색 내용 값은 맨 처음 서버에서 보내준 초기값으로 설정해준다!
 					// 왜냐하면, 검색 버튼을 누르기 전이기 때문에 변한 값을 넣어주면 안된다!
@@ -458,7 +475,6 @@
 					toggleItems.forEach(function (toggleItem) {
 						const toggleTit = toggleItem.querySelector('.toggleTit')
 						const subList = toggleItem.querySelector('.subList')
-
 						$(toggleTit).on('click', function () {
 							subList.classList.toggle('active')
 							toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
