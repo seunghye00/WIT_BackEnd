@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>메인 페이지</title>
+<title>Wit Works</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <script
@@ -32,8 +32,8 @@
 			<div class="contents">
 				<div class="left">
 					<div class="leftTop">
-						<span class="main_profile"> <img src="/img/푸바오.png"
-							alt="프로필 사진" class="profileImg">
+						<span class="main_profile"> <img src="${employee.photo}"
+							alt="프로필 이미지" class="profileImg">
 						</span>
 						<div class="dept-role">${employee.dept_code}
 							${employee.role_code}</div>

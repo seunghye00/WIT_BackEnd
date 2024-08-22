@@ -12,17 +12,17 @@
 				<ul>
 					<li><span>일정명</span>
 						<div>
-							<input type="text" class="eventName" name="title" disabled>
+							<input type="text" class="eventName" id="perEventName" name="title" disabled>
 						</div></li>
 					<li><span>일정기간</span>
 						<div>
-							<input type="date" id="eventStartDate"
+							<input type="date" id="perEventStartDate"
 								class="eventStartDate startDate dateInput" name="editStartDate" disabled>
-							<input type="time" id="eventStartTime"
+							<input type="time" id="perEventStartTime"
 								class="eventStartTime startDate dateInput" name="editStartTime" disabled>
-							~ <input type="date" id="eventEndDate" class="eventEndDate endDate dateInput"
+							~ <input type="date" id="perEventEndDate" class="eventEndDate endDate dateInput"
 								name="editEndDate" disabled> <input type="time"
-								id="eventEndTime" class="eventEndTime endDate dateInput" name="editEndTime"
+								id="perEventEndTime" class="eventEndTime endDate dateInput" name="editEndTime"
 								disabled>
 						</div></li>
 					<li><span>내 캘린더</span>
@@ -35,11 +35,11 @@
 						</div></li>
 					<li><span>장소</span>
 						<div>
-							<input type="text" class="eventLocation" name="location" disabled>
+							<input type="text" class="eventLocation" id="perEventLocation" name="location" disabled>
 						</div></li>
 					<li><span>내용</span>
 						<div>
-							<textarea class="eventText" name="content" disabled></textarea>
+							<textarea class="eventText" name="content" id="perEventText" disabled></textarea>
 						</div></li>
 					<li>
 						<div class="btns">
@@ -50,8 +50,8 @@
 						</div>
 					</li>
 				</ul>
-				<input type="hidden" name="editStartAt" class="editStartAt"> <input
-					type="hidden" name="editEndAt" class="editEndAt">
+				<input type="hidden" name="editStartAt" class="editStartAt" id="perEditStartAt"> <input
+					type="hidden" name="editEndAt" class="editEndAt" id="perEditEndAt">
 			</form>
 		</div>
 	</div>

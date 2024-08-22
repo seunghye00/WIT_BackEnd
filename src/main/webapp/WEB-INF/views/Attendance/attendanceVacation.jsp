@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>메인 페이지</title>
+<title>휴가관리</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <script
@@ -109,9 +109,11 @@
 									<span>일수</span>
 								</div>
 							</div>
-							<c:forEach var="request" items="${leaveRequests}">
+							<c:forEach var="request" items="${leaveRequests}"
+								varStatus="status">
 								<div class="vacation_row">
-									<div class="vacation_col">${request.document_seq}</div>
+									<div class="vacation_col">${((cpage - 1) * 10) + status.count}
+									</div>
 									<div class="vacation_col">${request.leave_type}</div>
 									<div class="vacation_col">${request.start_date}~
 										${request.end_date}</div>
@@ -123,19 +125,19 @@
 					<div class="pagination">
 						<!-- 이전 페이지로 이동 -->
 						<a
-							href="/annualLeave/attendance_vacation?cpage=${cpage > 1 ? cpage - 1 : 1}"
+							href="/annualLeave/attendanceVacation?cpage=${cpage > 1 ? cpage - 1 : 1}"
 							class="prev"> <i class='bx bx-chevron-left'></i>
 						</a>
 
 						<!-- 페이지 번호 -->
 						<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
-							<a href="/annualLeave/attendance_vacation?cpage=${i}"
+							<a href="/annualLeave/attendanceVacation?cpage=${i}"
 								class="${i == cpage ? 'active' : ''}">${i}</a>
 						</c:forEach>
 
 						<!-- 다음 페이지로 이동 -->
 						<a
-							href="/annualLeave/attendance_vacation?cpage=${cpage < pageTotalCount ? cpage + 1 : pageTotalCount}"
+							href="/annualLeave/attendanceVacation?cpage=${cpage + 1 > pageTotalCount ? pageTotalCount : cpage + 1}"
 							class="next"> <i class='bx bx-chevron-right'></i>
 						</a>
 					</div>
