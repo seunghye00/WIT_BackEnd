@@ -85,11 +85,19 @@ public class ChatEndpoint {
             // 로그인 ID 메시지를 보냄
             String loginID = sessionUserMap.get(session);
             sendLoginIDMessage(session, loginID);
-
+            
             // 채팅 기록을 클라이언트에게 전송
             List<ChatDTO> chatList = cServ.chatListByRoom(chatRoomSeq);
             sendChatHistoryMessage(session, chatList);
-
+            // 이전 메시지 처리 (보낸 사람을 제외, 이미 읽은 사람도 제외)
+            for (ChatDTO chat : chatList) {
+                if (!loginID.equals(chat.getName())) {
+                    int updatedReadCount = cServ.decreaseReadCountBefore(chatRoomSeq, chat.getChat_seq(), loginID, chat.getName());
+                    if (updatedReadCount >= 0) {
+                        broadcastReadCountUpdate(chatRoomSeq, chat.getChat_seq(), updatedReadCount);
+                    }
+                }
+            }
         } else if ("chat".equals(type)) {
             String chatRoomSeq = sessionChatRoomMap.get(session);
             processChatMessage(session, chatRoomSeq, jsonMessage);
@@ -100,9 +108,7 @@ public class ChatEndpoint {
             System.out.println(userName+ " 되는지 보자");
             // 메시지 읽음 처리
             int updatedReadCount = cServ.decreaseReadCount(chatRoomSeq, chatSeq, userName);
-            if (updatedReadCount >= 0) {
-                broadcastReadCountUpdate(chatRoomSeq, chatSeq, updatedReadCount);
-            }
+            broadcastReadCountUpdate(chatRoomSeq, chatSeq, updatedReadCount);
         }
     }
 

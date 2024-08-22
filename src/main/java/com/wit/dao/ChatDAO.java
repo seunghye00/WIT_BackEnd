@@ -83,4 +83,23 @@ public class ChatDAO {
         params.put("userName", userName);
         mybatis.update("chat.addReaderToMessage", params);
     }
+    
+    // 메시지내역 처리 null인지 값 확인
+    public boolean isReadReceiversNull(String chatRoomSeq, int chatSeq) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chat_room_seq", chatRoomSeq);
+        params.put("chat_seq", chatSeq);
+        int result = mybatis.selectOne("chat.isReadReceiversNull", params);
+        return result == 1;
+    }
+    
+    // 메시지내역 처리 null 통과 이후 처리
+    public boolean isUserInReadReceivers(String chatRoomSeq, int chatSeq, String userName) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chat_room_seq", chatRoomSeq);
+        params.put("chat_seq", chatSeq);
+        params.put("userName", userName);
+        int result = mybatis.selectOne("chat.isUserInReadReceivers", params);
+        return result == 1;
+    }
 }

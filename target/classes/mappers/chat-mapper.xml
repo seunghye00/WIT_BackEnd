@@ -73,5 +73,24 @@
 	    WHERE chat_room_seq = #{chat_room_seq}
 	    AND chat_seq = #{chat_seq}
 	</update>
+	
+	<!-- 메시지내역 처리 null인지 값 확인  -->
+	<select id="isReadReceiversNull" parameterType="map" resultType="int">
+	    SELECT CASE 
+	        WHEN read_receivers IS NULL OR read_receivers = ' ' THEN 1 
+	        ELSE 0 
+	    END
+	    FROM chat
+	    WHERE chat_room_seq = #{chat_room_seq}
+	    AND chat_seq = #{chat_seq}
+	</select>
+	
+	<!-- 메시지내역 처리 null 통과 이후 처리  -->
+	<select id="isUserInReadReceivers" parameterType="map" resultType="int">
+	    SELECT CASE WHEN INSTR(read_receivers, #{userName}) > 0 THEN 1 ELSE 0 END
+	    FROM chat
+	    WHERE chat_room_seq = #{chat_room_seq}
+	    AND chat_seq = #{chat_seq}
+	</select>
 </mapper>
 
