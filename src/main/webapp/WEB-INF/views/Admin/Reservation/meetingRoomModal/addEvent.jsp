@@ -9,32 +9,27 @@
 		</h1>
 		<div class="calendarAdd">
 			<ul>
-				<li>
-					<span>회의실 명</span>
+				<li><span>회의실 명</span>
 					<div>
 						<input type="text" value="${meetingRoomInfo.name}" readonly>
-					</div>
-				</li>
-				<li>
-					<span>예약 기간</span>
+					</div></li>
+				<li><span>예약 기간</span>
 					<div>
 						<input type="date" class="dateInput" id="bookingDate" readonly>&nbsp;&nbsp;
-						<input type="time" class="dateInput" id="startTime" min="10:00" max="17:00" value="10:00">&nbsp;&nbsp;~&nbsp;&nbsp;
-						<input type="time" class="dateInput" id="endTime" min="10:00" max="17:00" value="11:00">
-					</div>
-				</li>
-				<li>
-					<span>장소</span>
+						<input type="time" class="dateInput" id="startTime" min="10:00"
+							max="17:00" value="10:00">&nbsp;&nbsp;~&nbsp;&nbsp; <input
+							type="time" class="dateInput" id="endTime" min="10:00"
+							max="17:00" value="11:00">
+					</div></li>
+				<li><span>장소</span>
 					<div>
-						<input type="text" class="eventLocation" value="${meetingRoomInfo.location}" readonly>
-					</div>
-				</li>
-				<li>
-					<span>예약 목적</span>
+						<input type="text" class="eventLocation"
+							value="${meetingRoomInfo.location}" readonly>
+					</div></li>
+				<li><span>예약 목적</span>
 					<div>
 						<textarea id="purpose"></textarea>
-					</div>
-				</li>
+					</div></li>
 				<li>
 					<div class="btns">
 						<button id="addMeetingReserv" type="button">완료</button>

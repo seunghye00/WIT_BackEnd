@@ -108,9 +108,9 @@
 													<c:when test="${i.status eq '완료'}">
 														<span class="done">${i.status}</span>
 													</c:when>
-													<c:otherwise>
+													<c:when test="${i.status eq '반려'}">
 														<span class="return">${i.status}</span>
-													</c:otherwise>
+													</c:when>
 												</c:choose>
 											</div>
 										</div>

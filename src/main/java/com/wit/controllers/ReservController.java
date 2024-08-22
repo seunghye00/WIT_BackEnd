@@ -54,7 +54,7 @@ public class ReservController {
 		model.addAttribute("meetingRooms", mServ.getMeetingRoomList("예약 가능"));
 		model.addAttribute("vehicles", vService.getVehicleList("예약 가능"));
 		model.addAttribute("type", type);
-
+		
 		if (type.equals("meetingRoom")) {
 			if (keyword == null) {
 				model.addAttribute("listType", "all");
@@ -168,15 +168,28 @@ public class ReservController {
 	// 회의실 예약 페이지로 이동
 	@RequestMapping(value = { "admin/meetingRoom", "meetingRoom" })
 	public String reservMeetingRoom(int roomSeq, HttpServletRequest request, Model model) throws Exception {
+		
 		// 회의실 & 차량 목록 및 선택한 회의실의 정보를 조회해서 model 객체에 담아 JSP로 전달
 		model.addAttribute("meetingRooms", mServ.getMeetingRoomList("예약 가능"));
 		model.addAttribute("vehicles", vService.getVehicleList("예약 가능"));
-		model.addAttribute("meetingRoomInfo", mServ.getMeetingRoomInfo(roomSeq));
+		MeetingRoomDTO dto = mServ.getMeetingRoomInfo(roomSeq);
+		
+		
 		// 현재 요청된 URL을 확인 후 이동 경로 설정
 		String currentUrl = request.getRequestURI();
+		
 		if (currentUrl.equals("/reservation/admin/meetingRoom")) {
+			if(dto == null || dto.getStatus().equals("예약 불가능")) {
+				return "redirect:/reservation/admin/home?type=meetingRoom&cPage=1";
+			}
+			model.addAttribute("meetingRoomInfo", dto);
 			return "Admin/Reservation/meetingRoom";
 		}
+		
+		if(dto == null || dto.getStatus().equals("예약 불가능")) {
+			return "redirect:/reservation/home?type=meetingRoom&cPage=1";
+		}
+		model.addAttribute("meetingRoomInfo", dto);
 		return "Reservation/meetingRoom";
 	}
 
@@ -221,14 +234,24 @@ public class ReservController {
 	public String reservVehicle(int vehicleSeq, HttpServletRequest request, Model model) throws Exception {
 		model.addAttribute("meetingRooms", mServ.getMeetingRoomList("예약 가능"));
 		model.addAttribute("vehicles", vService.getVehicleList("예약 가능"));
-		model.addAttribute("vehicleInfo", vService.getVehicleInfo(vehicleSeq));
-
+		VehiclesDTO dto = vService.getVehicleInfo(vehicleSeq);
+		
+		
 		// 현재 요청된 URL을 확인 후 이동 경로 설정
 		String currentUrl = request.getRequestURI();
 		if (currentUrl.equals("/reservation/admin/vehicle")) {
+			if(dto == null || dto.getStatus().equals("예약 불가능")) {
+				return "redirect:/reservation/admin/home?type=meetingRoom&cPage=1";
+			}
+			model.addAttribute("vehicleInfo", dto);
 			return "Admin/Reservation/vehicle";
 		}
-		return "Reservation/vehicle";
+		
+		if(dto == null || dto.getStatus().equals("예약 불가능")) {
+			return "redirect:/reservation/home?type=meetingRoom&cPage=1";
+		}
+		model.addAttribute("vehicleInfo", dto);
+		return "Reservation/vehicle";	
 	}
 
 	// 차량 예약 데이터 등록

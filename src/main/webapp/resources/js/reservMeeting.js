@@ -203,7 +203,7 @@ $(document).ready(function() {
 
             $("#eventModal").show();
             $(".modalClose").on("click", function () {
-            	$("#eventModal").hide();
+            	location.reload();
             });
         },
         events: function(fetchInfo, successCallback, failureCallback) {
@@ -269,3 +269,12 @@ $(document).ready(function() {
   calendar.render();
 });
 
+// 모달 외부 클릭 시 닫기
+$(window).click(function(event) {
+	if ($(event.target).is($('#reservModal')[0])) {
+		location.reload();
+	}
+	if ($(event.target).is($('#eventModal')[0])) {
+		$('#eventModal').hide();
+	}
+});

@@ -122,8 +122,8 @@
 														<option value="공가">공가</option>
 												</select></td>
 												<th>기간 및 일시</th>
-												<td colspan="2"><input type="date" id="startLeaveDay" name="start_date" min="${today}"> <span>~</span>
-													<input type="date" id="endLeaveDay" name="end_date" min="${today}"></td>
+												<td colspan="2"><input type="date" id="startLeaveDay" name="startDate" min="${today}"> <span>~</span>
+													<input type="date" id="endLeaveDay" name="endDate" min="${today}"></td>
 												<th>긴급</th>
 												<td>
 													<div>
@@ -173,7 +173,7 @@
                                                 		<input class="readOnly" type="text" value="${remaingLeaves}" id="remainingLeaves" readonly>
                                                     </span> 
                                                     <span> 신청 연차 :&nbsp;&nbsp;
-                                                    	<input type="text" id="applyLeaves" name="request_leave_days" class="readOnly" readonly>
+                                                    	<input type="text" id="applyLeaves" name="request_leave_days" class="readOnly" value="0" readonly>
                                                     </span>
                                                 </td>
 											</tr>
