@@ -2928,6 +2928,12 @@
 	top: 50%;
 }
 
+#atd_dept_navi {
+	position: fixed;
+	top: 91%;
+	left: 58%;
+}
+
 /* 민서 css end */
 
 /* 승혜 css start */
