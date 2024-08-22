@@ -112,7 +112,8 @@
 							<c:forEach var="request" items="${leaveRequests}"
 								varStatus="status">
 								<div class="vacation_row">
-									<div class="vacation_col">${status.count}</div>
+									<div class="vacation_col">${((cpage - 1) * 10) + status.count}
+									</div>
 									<div class="vacation_col">${request.leave_type}</div>
 									<div class="vacation_col">${request.start_date}~
 										${request.end_date}</div>
