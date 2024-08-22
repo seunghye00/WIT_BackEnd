@@ -39,5 +39,4 @@ public class EventsDAO {
 	public int deleteEventsByCalendarSeq(int calendarSeq) {
 		return mybatis.delete("events.deleteEventsByCalendarSeq", calendarSeq);
 	}
-	
 }
