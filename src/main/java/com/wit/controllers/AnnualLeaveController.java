@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.wit.services.AnnualLeaveService;
 import com.wit.commons.AttendanceConfig;
+import com.wit.commons.AttendanceVactionConfig;
 import com.wit.dto.AnnualLeaveDTO;
 import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
@@ -44,9 +45,9 @@ public class AnnualLeaveController {
 		int recordTotalCount = service.annualLeaveRecordCount(empNo);
 
 		// 페이징 처리 로직
-		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
+		int recordCountPerPage = AttendanceVactionConfig.recordCountPerPage;
 		System.out.println("레코드 카운트 펄페이지 : " + recordCountPerPage);
-		int naviCountPerPage = AttendanceConfig.naviCountPerPage;
+		int naviCountPerPage = AttendanceVactionConfig.naviCountPerPage;
 		System.out.println("네비 카운트 펄페이지 : " + naviCountPerPage);
 
 		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);

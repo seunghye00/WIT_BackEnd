@@ -109,9 +109,9 @@
 									<span>일수</span>
 								</div>
 							</div>
-							<c:forEach var="request" items="${leaveRequests}">
+							<c:forEach var="request" items="${leaveRequests}" varStatus="status">
 								<div class="vacation_row">
-									<div class="vacation_col">${request.document_seq}</div>
+									<div class="vacation_col">${status.count}</div>
 									<div class="vacation_col">${request.leave_type}</div>
 									<div class="vacation_col">${request.start_date}~
 										${request.end_date}</div>

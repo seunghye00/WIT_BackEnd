@@ -99,7 +99,7 @@
 							</div>
 						</c:forEach>
 					</div>
-					<div class="pagination">
+					<div class="pagination" id="atd_dept_navi">
 						<!-- 이전 페이지로 이동 -->
 						<a
 							href="?deptTitle=${deptTitle}&week=${startDate}&cpage=${cpage > 1 ? cpage - 1 : 1}"
