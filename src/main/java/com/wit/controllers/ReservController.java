@@ -253,7 +253,7 @@ public class ReservController {
 		model.addAttribute("vehicleInfo", dto);
 		return "Reservation/vehicle";	
 	}
-
+	
 	// 차량 예약 데이터 등록
 	@RequestMapping(value = { "admin/saveVehicle", "saveVehicle" })
 	public String saveVehicle(VehicleBookingDTO dto, @RequestParam("vehicleStartAt") long startDate,

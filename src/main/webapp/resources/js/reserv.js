@@ -266,3 +266,13 @@ document.getElementById('vehicleForm').addEventListener('submit', function (even
             // 모든 검증을 통과한 후 폼 제출
             event.target.submit();
         });
+        
+// 모달 외부 클릭 시 닫기
+$(window).click(function(e) {
+	if ($(e.target).is($('#reservModal')[0])) {
+		location.reload();
+	}
+	if ($(e.target).is($('#eventModal')[0])) {
+		$('#eventModal').hide();
+	}
+});
