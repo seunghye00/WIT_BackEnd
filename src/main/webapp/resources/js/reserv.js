@@ -13,6 +13,20 @@ $('#purpose').on('input', function() {
     }
 });
 
+// input date 오늘 이전 날짜 선택 불가
+    // 현재 날짜를 가져오기
+    const today = new Date();
+        
+    // 오늘 날짜
+    today.setDate(today.getDate());
+
+    // 내일 날짜를 YYYY-MM-DD 형식으로 변환
+    const formattedTomorrow = today.toISOString().split('T')[0];
+
+    // startDate와 endDate 입력 필드의 min 속성을 설정
+    document.getElementById('startDate').setAttribute('min', formattedTomorrow);
+    document.getElementById('endDate').setAttribute('min', formattedTomorrow);
+
 $('#addBtn').on('click', function () {
    // 입력 필드값 변수에 저장
    let eventName = $('#eventName').val();
@@ -86,7 +100,7 @@ $(document).ready(function() {
     });
 
     if (isEventInRange) {
-        alert('선택한 날짜에 이미 이벤트가 있거나 기간 내에 포함됩니다. 다른 날짜를 선택해주세요.');
+        alert('예약이 이미 마감된 날짜 입니다.');
     } else {
         // 선택한 날짜에 이벤트가 없고, 오늘 이후일 경우 예약 모달을 보여줌
         $('.startDate').val(info.dateStr);
