@@ -137,8 +137,8 @@
 								<span class="uploadFiles">
 								<c:if test="${!empty files}">
 									<c:forEach items="${files}" var="i">
-										<a href="/eApproval/downloadFiles?sysname=${i.sysname}&oriname=${i.oriname}">
-											<span>${i.oriname}</span>
+										<a href="/eApproval/downloadFiles?fileSeq=${i.document_files_seq}">
+    										<span>${i.oriname}</span>
 										</a>
 									</c:forEach>
 								</c:if>

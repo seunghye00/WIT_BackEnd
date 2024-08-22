@@ -273,3 +273,19 @@ function handleOnInput(e, maxLength) {
         $(e).val($(e).val().substr(0, maxLength - 1));
     }
 }
+
+// 모달 외부 클릭 시 닫기
+$(window).click(function(event) {
+	if ($(event.target).is($('#commModalBack')[0])) {
+		$('#commModalBack').hide();
+		return;
+	}
+	if ($(event.target).is($('#apprModalBack')[0])) {
+		$('#apprModalBack').hide();
+		return;
+	}
+	if ($(event.target).is($('#returnModalBack')[0])) {
+		$('#returnModalBack').hide();
+		return;
+	}
+});

@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -229,8 +231,11 @@ public class EApprovalController {
 			ApprLineDTO dto = list.get(i);
 			if (dto.getEmp_no().equals(empNo)) {
 				dto.setComments(comments);
+				if(comments == null) {
+					dto.setComments("반려로 인해 자동 결재 처리되었습니다.");
+				}
 				serv.insertComments(dto);
-				serv.updateApprLineAll(docuSeq, i + 1);
+				serv.updateApprLineAll(docuSeq, i + 1, "반려");
 				// 문서 상태 업데이트
 				serv.updateDocuStatus(docuSeq, "반려");
 				break;
@@ -309,7 +314,7 @@ public class EApprovalController {
 			if (dto.getEmp_no().equals(empNo)) {
 				dto.setComments(comments);
 				serv.insertComments(dto);
-				serv.updateApprLineAll(docuSeq, i + 1);
+				serv.updateApprLineAll(docuSeq, i + 1, "전결");
 				// 문서 상태 업데이트
 				serv.updateDocuStatus(docuSeq, "완료");
 				if (applyLeaves != null) {
@@ -354,6 +359,16 @@ public class EApprovalController {
 			serv.updatePropDocu(wDTO);
 			break;
 		case "M2":
+			// 문자열을 Date 타입으로 변환 후 저장
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			if(lrDTO.getStartDate() != "") {
+			    Date startDate = new Date(format.parse(lrDTO.getStartDate()).getTime());
+			    lrDTO.setStart_date(startDate);
+			}
+			if(lrDTO.getEndDate() != "") {
+				Date endDate = new Date(format.parse(lrDTO.getEndDate()).getTime());
+				lrDTO.setEnd_date(endDate);
+			}
 			serv.updateLeaveDocu(lrDTO);
 			break;
 		case "M3":
@@ -623,7 +638,7 @@ public class EApprovalController {
 	@RequestMapping("delDocu")
 	public String delDocu(int docuSeq) throws Exception {
 		serv.delDocu(docuSeq);
-		return "redirect:/eApproval/privateList?type=save";
+		return "redirect:/eApproval/privateList?type=save&cPage=1";
 	}
 
 	// 전자 결재 작성페이지로 이동 시 노출할 데이터를 담아서 전달하는 메서드
@@ -783,6 +798,17 @@ public class EApprovalController {
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
 
+		// 문자열을 Date 타입으로 변환 후 저장
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		if(subDTO.getStartDate() != "") {
+		    Date startDate = new Date(format.parse(subDTO.getStartDate()).getTime());
+		    subDTO.setStart_date(startDate);
+		}
+		if(subDTO.getEndDate() != "") {
+			Date endDate = new Date(format.parse(subDTO.getEndDate()).getTime());
+		    subDTO.setEnd_date(endDate);
+		}
+		
 		// 현재 요청된 URL을 확인
 		String currentUrl = request.getRequestURI();
 
@@ -845,11 +871,15 @@ public class EApprovalController {
 
 	// 해당 파일을 다운로드하기 위한 메서드
 	@RequestMapping("downloadFiles")
-	public void download(String oriname, String sysname, HttpServletResponse response) throws Exception {
-
+	public void download(int fileSeq, HttpServletResponse response) throws Exception {
+		// 파일 SEQ로 파일 정보 조회 후 변수에 저장
+		DocuFilesDTO dto = fServ.getFileBySeq(fileSeq);
+		String sysname = dto.getSysname();
+		String oriname = dto.getOriname();
+		
 		String realPath = session.getServletContext().getRealPath("eApproval/upload");
 		File target = new File(realPath + "/" + sysname);
-
+		
 		oriname = new String(oriname.getBytes(), "ISO-8859-1");
 		response.setHeader("content-Disposition", "attachment;filename=\"" + oriname + "\"");
 

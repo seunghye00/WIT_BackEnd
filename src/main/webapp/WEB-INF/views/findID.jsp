@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>사번 찾기</title>
+<title>ID 찾기</title>
 <link rel="stylesheet" href="/resources/css/wit.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="/resources/js/employee.js"></script>

@@ -1314,7 +1314,7 @@
 .modal {
 	display: none;
 	position: fixed;
-	z-index: 1;
+	z-index: 5;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -2598,7 +2598,7 @@
 #updateForm {
 	display: flex;
 	flex-direction: column;
-	gap: 25px;
+	gap: 30px;
 	position: relative;
 }
 
@@ -2611,8 +2611,6 @@
 	width: 100px;
 	height: 100px;
 	border: 1px solid #ccc;
-	margin-left: 10px;
-	margin-bottom: 20px;
 	border-radius: 10px;
 }
 
@@ -2865,19 +2863,23 @@
 	margin: auto;
 }
 
-/* .Attendance {
-    gap: 10px;
-} */
-.Attendance_sections,
+.Attendance_sections {
+	display: flex;
+	width: 65%;
+	margin-bottom: 10px;
+	gap: 150px;
+	position: fixed;
+	top: 21%;
+}
+
 .Attendance_vacation {
 	display: flex;
 	width: 100%;
 	justify-content: space-between;
 	margin-bottom: 10px;
 	gap: 150px;
-	/* padding: 35px; */
 	position: relative;
-	top: -75px;
+	top: -55%;
 }
 
 .status_container,
@@ -2885,16 +2887,25 @@
 .week_status,
 .vacation_status {
 	width: 100%;
-	/* padding: 20px; */
 	border-radius: 10px;
 	position: relative;
 	top: -5px;
 }
 
+.week_status{
+	top: 7%;
+}
+
+.vacation_status{
+	top: 8%;
+	font-size: 18px;
+}
+
 .vacation_container {
-	width: 35%;
-	/* padding: 20px; */
+	width: 30%;
 	border-radius: 10px;
+	position: fixed;
+	top: 20%;
 }
 
 .status_row,
@@ -2920,7 +2931,7 @@
 	display: flex;
 	padding: 10px 0;
 	border-bottom: 1px solid #ddd;
-	height: 55px;
+/* 	height: 55px; */
 	align-items: center;
 	justify-content: center;
 }
@@ -2963,7 +2974,7 @@
 	width: 70%;
 	border-radius: 10px;
 	position: fixed;
-	top: 20%;
+	top: 21%;
 }
 
 .Attendance h2 {
@@ -3097,6 +3108,19 @@
 .sideContents .mainTitle {
 	flex: unset;
 	align-items: flex-start;
+}
+
+/* 모달창 배경 */
+.modalBack {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    z-index: 1; /* 모달이 모든 요소 위에 표시되도록 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.1); /* 배경색 투명도 */
 }
 
 /* 버튼 */
@@ -3290,6 +3314,13 @@ span.return {
 	color: #fff;
 	padding: 5px;
 }
+.eApproval .docuList .listBox.apprDocuList .rows:not(.listHeader) .cols:last-child,
+.eApproval .docuList .listBox.leaveDocuList .rows:not(.listHeader) .cols:last-child,
+.eApproval .docuList .listBox.latenessDocuList .rows:not(.listHeader) .cols:last-child,
+.eApproval .docuList .listBox.viewList .rows:not(.listHeader) .cols:last-child {
+	padding-left: 55px;
+	justify-content: flex-start;
+}
 
 .eApproval.adminCont .docuList .listBox .rows:not(.listHeader) .cols:last-child span {
 	color: #333;
@@ -3323,6 +3354,7 @@ span.return {
 	border: 1px solid #555;
 	min-width: 117px;
 	width: max-content;
+	max-height: 200px;
 	min-height: 63px;
 	position: absolute;
 	top: -3px;
@@ -3330,6 +3362,21 @@ span.return {
 	border-radius: 10px;
 	background: #fff;
 	padding: 20px;
+	overflow-y: auto;
+	text-align: center;
+}
+
+.eApprWrite .document .choiBox .refeModal::-webkit-scrollbar {
+	width: 10px;
+}
+
+.eApprWrite .document .choiBox .refeModal::-webkit-scrollbar-thumb {
+	background: #777;
+	border-radius: 10px;
+}
+
+.eApprWrite .document .choiBox .refeModal::-webkit-scrollbar-track {
+	background: #e6e6e6;
 }
 
 .eApprWrite.eApprSaved .document .choiBox .refeModal {
@@ -3642,7 +3689,7 @@ td {
 
 /* 전자 결재 모달창 ( 새 결재 진행 ) - 문서 양식 선택 */
 .eApprModal {
-	display: none;
+	display: flex;
 	flex-direction: column;
 	border: 1px solid black;
 	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
@@ -3707,7 +3754,6 @@ td {
 
 /* 전자 결재 모달창 ( 새 결재 진행 ) - 결재선 선택 */
 .eApprModal.apprChoiModal {
-	display: none;
 	width: 745px;
 	height: 560px;
 }
@@ -3998,15 +4044,13 @@ button:nth-child(4) img {
 /* 전자 결재 문서 결재 & 반려 모달창 */
 .returnModal,
 .apprModal {
-	display: none;
+	display: flex;
 	border: 1px solid black;
 	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
 	background-color: #fff;
 	border-radius: 10px;
 	font-size: 18px;
-	position: absolute;
-	top: 13vh;
-	left: 22vw;
+	margin: 15% auto; /* 화면 중앙에 위치 */
 	width: 400px;
 	height: 260px;
 	padding: 30px 25px;
@@ -4065,19 +4109,16 @@ button:nth-child(4) img {
 
 /* 전자 결재 문서 코멘트 모달창 */
 .commModal {
-	display: none;
+	display: flex;
 	border: 1px solid black;
 	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
 	background-color: #fff;
 	border-radius: 10px;
 	font-size: 18px;
-	position: absolute;
-	top: 8vh;
-	left: 15vw;
+	margin: 15% auto; /* 화면 중앙에 위치 */
 	width: 753px;
 	height: 435px;
 	padding: 30px 25px;
-	z-index: 2;
 	flex-direction: column;
 	align-items: center;
 	gap: 15px;
@@ -4126,6 +4167,10 @@ button:nth-child(4) img {
 	align-items: center;
 	max-height: 100px;
 	overflow-y: auto;
+}
+
+.commModal .commList .apprList .comm.autoComm {
+	color: red;
 }
 
 .commModal .commList .apprList .comm::-webkit-scrollbar {
@@ -4558,6 +4603,10 @@ button:nth-child(4) img {
 
 /* 승혜 & 원희 css start */
 /* 예약 관리 메인 화면 */
+.reservation.reservHome {
+	gap: 10px;
+}
+
 .reservation .reservList {
 	flex: 9;
 	display: flex;
@@ -4767,7 +4816,7 @@ button:nth-child(4) img {
 #roomInfo:checked~.infoBox,
 #vehicleInfo:checked~.infoBox {
 	display: block;
-	z-index: 10000;
+	z-index: 2;
 }
 
 /* 차량 & 회의실 관리 페이지 */
@@ -4776,6 +4825,7 @@ button:nth-child(4) img {
 	flex: 1;
 	flex-direction: column;
 	gap: 10px;
+	padding: 0 30px;
 }
 
 .reservationControll .reservList .toolBar {
@@ -4909,24 +4959,12 @@ button:nth-child(4) img {
 	color: #dc3545;
 }
 
-.addTargetModal {
-	display: none;
-	box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.3);
-	border: 1px solid #555;
-	width: 396px;
-	height: 447px;
-	position: absolute;
-	top: -3px;
-	left: 394px;
-	border-radius: 10px;
-	background: #fff;
-	padding: 30px 20px;
-	flex-direction: column;
-	gap: 15px;
+#addRoomModal form, #addVehicleModal form {
+	height: 100%;
 }
 
-#addRoomModal {
-	height: 520px;
+.addTargetModal {
+	display: flex;
 }
 
 .addTargetModal h1 {
@@ -5040,16 +5078,7 @@ button:nth-child(4) img {
 
 /* 예약 페이지 모달창 */
 .modal {
-	display: none;
-	position: fixed;
-	z-index: 10000;
-	padding-top: 100px;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.4);
+	padding-top: unset;
 }
 
 .modalContent {
@@ -5063,8 +5092,24 @@ button:nth-child(4) img {
 	border-radius: 25px;
 	flex-direction: column;
 	position: relative;
-	top: 2vh;
 	gap: 10px;
+}
+
+.modal#reservModal .modalContent {
+	height: 66%;
+    top: 17vh;
+}
+
+.modal#addRoomModal .modalContent {
+	width: 24%;
+    height: 58%;
+    top: 20vh;
+}
+
+.modal#addVehicleModal .modalContent {
+	width: 24%;
+    height: 49%;
+    top: 24vh;
 }
 
 .modalContent.calendarCont {
@@ -5122,6 +5167,19 @@ button:nth-child(4) img {
 	border: 1px solid #ccc;
 }
 
+.modal .calendarAdd textarea::-webkit-scrollbar {
+	width: 10px;
+}
+
+.modal .calendarAdd textarea::-webkit-scrollbar-thumb {
+	background: #777;
+	border-radius: 10px;
+}
+
+.modal .calendarAdd textarea::-webkit-scrollbar-track {
+	background: #e6e6e6;
+}
+
 .modal .calendarAdd .btns {
 	display: flex;
 	justify-content: center;
@@ -5130,8 +5188,8 @@ button:nth-child(4) img {
 
 /* 이벤트 클릭 시 */
 .modal#eventModal .modalContent {
-	height: 78%;
-	top: 5vh;
+	height: 70%;
+	top: 15vh;
 }
 
 .modal#eventModal .modalContent ul li:nth-child(2) input {

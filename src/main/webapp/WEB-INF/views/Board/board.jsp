@@ -1,70 +1,69 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-		<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-			<!DOCTYPE html>
-			<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<!DOCTYPE html>
+<html>
 
-			<head>
-				<meta charset="UTF-8">
-				<title>자유게시판</title>
-				<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-					integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-					crossorigin="anonymous" referrerpolicy="no-referrer" />
-				<link rel="stylesheet" href="/resources/css/style.main.css">
-				<link rel="stylesheet" href="/resources/css/wit.css">
-				<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-				<script src="/resources/js/boards.js"></script>
-			</head>
+<head>
+<meta charset="UTF-8">
+<title>자유게시판</title>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
+	rel='stylesheet'>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+	integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/resources/css/style.main.css">
+<link rel="stylesheet" href="/resources/css/wit.css">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="/resources/js/boards.js"></script>
+</head>
 
-			<body>
-				<!-- 공통영역 -->
-				<div id="container">
-					<c:choose>
-						<c:when test="${employee.role_code eq '사장'}">
-							<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp" %>
-						</c:when>
-						<c:otherwise>
-							<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>
-						</c:otherwise>
-					</c:choose>
-					<!-- 공통영역 끝 -->
+<body>
+	<!-- 공통영역 -->
+	<div id="container">
+		<c:choose>
+			<c:when test="${employee.role_code eq '사장'}">
+				<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp"%>
+			</c:when>
+			<c:otherwise>
+				<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
+			</c:otherwise>
+		</c:choose>
+		<!-- 공통영역 끝 -->
 
-					<div class="main-content">
-						<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
-							<div class="contents">
-								<div class="sideAbout">
-									<div class="sideTxt">
-										<h2 class="sideTit">게시판</h2>
-									</div>
-									<div class="sideBtnBox">
-										<button id="writeBtn" class="plusBtn sideBtn">자유 게시판 글 작성</button>
-									</div>
+		<div class="main-content">
+			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
+			<div class="contents">
+				<div class="sideAbout">
+					<div class="sideTxt">
+						<h2 class="sideTit">게시판</h2>
+					</div>
+					<div class="sideBtnBox">
+						<button id="writeBtn" class="plusBtn sideBtn">자유 게시판 글 작성</button>
+					</div>
 
-									<div class="addressListPrivate">
-										<ul class="GroupList">
-											<li class="toggleItem">
-												<h3 class="toggleTit">
-													자유 게시판
-												</h3>
-												<ul class="subList">
-													<li><a href="/board/list?bookmark=true">북마크한 게시물</a></li>
-													<li><a href="/board/list?report=true">신고한 게시물</a></li>
-													<li><a href="/board/list">자유 게시판으로 이동</a></li>
-												</ul>
-											</li>
-										</ul>
-									</div>
+					<div class="addressListPrivate">
+						<ul class="GroupList">
+							<li class="toggleItem">
+								<h3 class="toggleTit">자유 게시판</h3>
+								<ul class="subList">
+									<li><a href="/board/list?bookmark=true">북마크한 게시물</a></li>
+									<li><a href="/board/list?report=true">신고한 게시물</a></li>
+									<li><a href="/board/list">자유 게시판으로 이동</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 
-									<div class="addressListPrivate">
-										<ul class="GroupList">
-											<li class="toggleItem">
-												<h3 class="toggleTit">
-													공지 사항
-												</h3>
-												<ul class="subList">
-													<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
-													</li>
+					<div class="addressListPrivate">
+						<ul class="GroupList">
+							<li class="toggleItem">
+								<h3 class="toggleTit">공지 사항</h3>
+								<ul class="subList">
+									<li><a href="/board/list?bookmark=true&boardCode=2">북마크한
+											게시물</a></li>
 
 													<li><a href="/board/list?boardCode=2">공지 사항으로
 															이동</a>
@@ -79,236 +78,234 @@
 										</ul>
 									</div>
 									<c:if test="${employee.role_code == '사장'}">
-										<div class="addressListGroup">
-											<ul class="GroupList">
-												<li class="toggleItem">
-													<h3 class="reportList">
-														신고 현황
-													</h3>
-												</li>
-											</ul>
-										</div>
+										<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
 									</c:if>
-								</div>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<c:if test="${employee.role_code == '사장'}">
+						<div class="addressListGroup">
+							<ul class="GroupList">
+								<li class="toggleItem">
+									<h3 class="reportList">신고 현황</h3>
+								</li>
+							</ul>
+						</div>
+					</c:if>
+				</div>
 
-								<div class="sideContents board">
+				<div class="sideContents board">
+					<c:choose>
+						<c:when test="${adminReport == 'true'}">
+							<div class="mainTitle">신고 현황 홈</div>
+						</c:when>
+						<c:otherwise>
+							<c:choose>
+								<c:when test="${board_code=='1'}">
 									<c:choose>
-										<c:when test="${adminReport == 'true'}">
-											<div class="mainTitle">신고 현황 홈</div>
+										<c:when test="${report=='true'}">
+											<div class="mainTitle">신고글 홈</div>
+										</c:when>
+										<c:when test="${bookmark=='false'}">
+											<div class="mainTitle">자유 게시판 홈</div>
+										</c:when>
+										<c:when test="${bookmark=='true'}">
+											<div class="mainTitle">북마크 홈</div>
+										</c:when>
+									</c:choose>
+								</c:when>
+								<c:when test="${board_code=='2'}">
+									<c:choose>
+										<c:when test="${bookmark == 'true'}">
+											<div class="mainTitle">북마크 홈</div>
 										</c:when>
 										<c:otherwise>
-											<c:choose>
-												<c:when test="${board_code=='1'}">
-													<c:choose>
-														<c:when test="${report=='true'}">
-															<div class="mainTitle">신고글 홈</div>
-														</c:when>
-														<c:when test="${bookmark=='false'}">
-															<div class="mainTitle">자유 게시판 홈</div>
-														</c:when>
-														<c:when test="${bookmark=='true'}">
-															<div class="mainTitle">북마크 홈</div>
-														</c:when>
-													</c:choose>
-												</c:when>
-												<c:when test="${board_code=='2'}">
-													<c:choose>
-														<c:when test="${bookmark == 'true'}">
-															<div class="mainTitle">북마크 홈</div>
-														</c:when>
-														<c:otherwise>
-															<div class="mainTitle">공지 사항 홈</div>
-														</c:otherwise>
-													</c:choose>
-												</c:when>
-											</c:choose>
+											<div class="mainTitle">공지 사항 홈</div>
+										</c:otherwise>
+									</c:choose>
+								</c:when>
+							</c:choose>
+						</c:otherwise>
+					</c:choose>
+
+
+
+					<div class="boardList">
+						<div class="controls">
+							<div class="search">
+								<form action="/board/list" style="display: none" id="searchForm">
+									<input type="hidden" name="searchTarget" class="hiddenInput">
+									<input type="hidden" name="sortTarget" class="hiddenInput">
+									<input type="text" name="searchTxt" placeholder="검색"
+										class="hiddenInput"> <input type="text"
+										name="bookmark" id="bookmark"> <input type="text"
+										name="boardCode" id="board_code" value="1"> <input
+										type="text" name="report" id="report" value="false"> <input
+										type="text" name="adminReport" id="adminReport" value="false">
+								</form>
+								<select class="form-select" aria-label="Default select example"
+									id="searchTarget">
+									<option selected value="title">제목</option>
+									<option value="contents">내용</option>
+								</select>
+
+								<div class="searchBox">
+									<input type="text" placeholder="검색" value="${searchTxt}"
+										id="searchTxt">
+									<button class="searchBtn" id="searchBtn">
+										<i class='bx bx-search'></i>
+									</button>
+								</div>
+							</div>
+
+							<div class="sort">
+								<select class="form-select" aria-label="Default select example"
+									id="sortTarget">
+									<option selected value="board_seq">최신순</option>
+									<c:choose>
+										<c:when test="${adminReport=='true'}">
+											<option value="views">신고 횟수</option>
+										</c:when>
+										<c:otherwise>
+											<option value="views">조회수</option>
 										</c:otherwise>
 									</c:choose>
 
+								</select>
+							</div>
 
+						</div>
 
-									<div class="boardList">
-										<div class="controls">
-											<div class="search">
-												<form action="/board/list" style="display:none" id="searchForm">
-													<input type="hidden" name="searchTarget" class="hiddenInput">
-													<input type="hidden" name="sortTarget" class="hiddenInput">
-													<input type="text" name="searchTxt" placeholder="검색"
-														class="hiddenInput">
-													<input type="text" name="bookmark" id="bookmark">
-													<input type="text" name="boardCode" id="board_code" value="1">
-													<input type="text" name="report" id="report" value="false">
-													<input type="text" name="adminReport" id="adminReport"
-														value="false">
-												</form>
-												<select class="form-select" aria-label="Default select example"
-													id="searchTarget">
-													<option selected value="title">제목</option>
-													<option value="contents">내용</option>
-												</select>
-
-												<div class="searchBox">
-													<input type="text" placeholder="검색" value="${searchTxt}"
-														id="searchTxt">
-													<button class="searchBtn" id="searchBtn">
-														<i class='bx bx-search'></i>
-													</button>
-												</div>
-											</div>
-
-											<div class="sort">
-												<select class="form-select" aria-label="Default select example"
-													id="sortTarget">
-													<option selected value="board_seq">최신순</option>
-													<c:choose>
-														<c:when test="${adminReport=='true'}">
-															<option value="views">신고 횟수</option>
-														</c:when>
-														<c:otherwise>
-															<option value="views">조회수</option>
-														</c:otherwise>
-													</c:choose>
-
-												</select>
-											</div>
-
-										</div>
-
-										<div class="notiList">
-											<div class="rows notiHeader">
-												<div class="cols boardSeq">
-													<span>No.</span>
-												</div>
-												<div class="cols boardTitle">
-													<span>글 제목</span>
-												</div>
-												<div class="cols boardWriter">
-													<span>작성자</span>
-												</div>
-												<div class="cols boardDate">
-													<span>날짜</span>
-												</div>
-												<c:choose>
-													<c:when test="${report=='true'}">
-														<div class="cols boardView">신고유형</div>
-													</c:when>
-													<c:when test="${adminReport=='true'}">
-														<div class="cols boardView">누적 신고 횟수</div>
-														<div class="cols boardBtn">
-															게시글 삭제
-														</div>
-													</c:when>
-													<c:otherwise>
-														<div class="cols boardView">조회수</div>
-													</c:otherwise>
-												</c:choose>
-
-											</div>
-
-											<!-- 게시물 목록 출력 -->
-											<!-- varStatus 를 이용하여 최신 게시물의 no를 1로 했다! -->
-											<!-- 매퍼파일에서 최신순으로 내가 정렬을 해놨는데, 최신순으로 정렬을 했을때 사용가능!~  -->
-											<!-- 이렇게도 할 수 있어 밍쥬야 jsp에서 번호를 수동으로 할당 해주는거래-->
-											<c:forEach var="board" items="${list}" varStatus="status">
-												<div class="rows notiConts">
-													<div class="cols boardSeq">
-														<span>${status.index + 1}</span>
-													</div>
-													<div class="cols boardTitle" onclick="toDetail(this)"
-														data-seq="${board.board_seq}">
-														<span>${board.title}</span>
-													</div>
-													<div class="cols boardWriter">
-														<!-- 여기서 조인해서 emp_no 자리에 닉네임이 나오게끔 했어! -->
-														<span>${board.emp_no}</span>
-													</div>
-													<c:choose>
-														<c:when test="${report=='true'}">
-															<div class="cols boardDate">
-																<fmt:formatDate value="${board.report_date}"
-																	pattern="yyyy-MM-dd" />
-															</div>
-														</c:when>
-														<c:otherwise>
-															<div class="cols boardDate">
-																<fmt:formatDate value="${board.write_date}"
-																	pattern="yyyy-MM-dd" />
-															</div>
-														</c:otherwise>
-													</c:choose>
-													<c:choose>
-														<c:when test="${report=='true'}">
-															<div class="cols boardView">
-																<span>${board.report_type}</span>
-															</div>
-														</c:when>
-														<c:when test="${adminReport=='true'}">
-															<div class="cols boardView">
-																<span class="thisRList"
-																	data-seq="${board.board_seq}">${board.count}</span>
-															</div>
-															<div class="cols boardWriter">
-																<button class="deleteBoard"
-																	onclick="deleteBoard(${board.board_seq})">삭제</button>
-															</div>
-														</c:when>
-														<c:otherwise>
-															<div class="cols boardView">
-																<span>${board.views}</span>
-															</div>
-														</c:otherwise>
-													</c:choose>
-												</div>
-											</c:forEach>
-										</div>
-
-
-										<div class="pagination" id="pagination">
-										</div>
-									</div>
+						<div class="notiList">
+							<div class="rows notiHeader">
+								<div class="cols boardSeq">
+									<span>No.</span>
 								</div>
-								<!--신고 현황 모달창-->
-								<div id="modal" class="dialog">
-									<div class="tb">
-										<div class="inner">
-											<div class=" top">
-												<div class="title">신고내역</div>
-											</div>
-											<div class="ct">
-												<div class="ctTitle">
-													<div class="reportPer">신고자</div>
-													<div class="reportRes">신고 사유</div>
-													<div class="reportDate">신고 날짜</div>
-												</div>
-
-												<div class="ctContainer" style="display: flex; flex-direction: column;">
-
-												</div>
-
-											</div>
-											<div class="reportControls">
-												<a href="#" class="rClose">
-													<button type="button" class="btn btn-primary"
-														id="reportClose">닫기</button>
-												</a>
-											</div>
-										</div>
-									</div>
+								<div class="cols boardTitle">
+									<span>글 제목</span>
 								</div>
-
+								<div class="cols boardWriter">
+									<span>작성자</span>
+								</div>
+								<div class="cols boardDate">
+									<span>날짜</span>
+								</div>
+								<c:choose>
+									<c:when test="${report=='true'}">
+										<div class="cols boardView">신고유형</div>
+									</c:when>
+									<c:when test="${adminReport=='true'}">
+										<div class="cols boardView">누적 신고 횟수</div>
+										<div class="cols boardBtn">게시글 삭제</div>
+									</c:when>
+									<c:otherwise>
+										<div class="cols boardView">조회수</div>
+									</c:otherwise>
+								</c:choose>
 
 							</div>
+
+							<!-- 게시물 목록 출력 -->
+							<!-- varStatus 를 이용하여 최신 게시물의 no를 1로 했다! -->
+							<!-- 매퍼파일에서 최신순으로 내가 정렬을 해놨는데, 최신순으로 정렬을 했을때 사용가능!~  -->
+							<!-- 이렇게도 할 수 있어 밍쥬야 jsp에서 번호를 수동으로 할당 해주는거래-->
+							<c:forEach var="board" items="${list}" varStatus="status">
+								<div class="rows notiConts">
+									<div class="cols boardSeq">
+										<span>${((cpage - 1) * 10) + (status.index + 1)}</span>
+									</div>
+									<div class="cols boardTitle" onclick="toDetail(this)"
+										data-seq="${board.board_seq}">
+										<span>${board.title}</span>
+									</div>
+									<div class="cols boardWriter">
+										<!-- 여기서 조인해서 emp_no 자리에 닉네임이 나오게끔 했어! -->
+										<span>${board.emp_no}</span>
+									</div>
+									<c:choose>
+										<c:when test="${report=='true'}">
+											<div class="cols boardDate">
+												<fmt:formatDate value="${board.report_date}"
+													pattern="yyyy-MM-dd" />
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div class="cols boardDate">
+												<fmt:formatDate value="${board.write_date}"
+													pattern="yyyy-MM-dd" />
+											</div>
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${report=='true'}">
+											<div class="cols boardView">
+												<span>${board.report_type}</span>
+											</div>
+										</c:when>
+										<c:when test="${adminReport=='true'}">
+											<div class="cols boardView">
+												<span class="thisRList" data-seq="${board.board_seq}">${board.count}</span>
+											</div>
+											<div class="cols boardWriter">
+												<button class="deleteBoard"
+													onclick="deleteBoard(${board.board_seq})">삭제</button>
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div class="cols boardView">
+												<span>${board.views}</span>
+											</div>
+										</c:otherwise>
+									</c:choose>
+								</div>
+							</c:forEach>
+						</div>
+
+
+						<div class="pagination" id="pagination"></div>
 					</div>
 				</div>
-				<div class="reporttemp" style="display: none;">
-					<div class="ctCont">
-						<div class="reportPer"></div>
-						<div class="reportRes"></div>
-						<div class="reportDate"></div>
+				<!--신고 현황 모달창-->
+				<div id="modal" class="dialog">
+					<div class="tb">
+						<div class="inner">
+							<div class=" top">
+								<div class="title">신고내역</div>
+							</div>
+							<div class="ct">
+								<div class="ctTitle">
+									<div class="reportPer">신고자</div>
+									<div class="reportRes">신고 사유</div>
+									<div class="reportDate">신고 날짜</div>
+								</div>
+
+								<div class="ctContainer"
+									style="display: flex; flex-direction: column;"></div>
+
+							</div>
+							<div class="reportControls">
+								<a href="#" class="rClose">
+									<button type="button" class="btn btn-primary" id="reportClose">닫기</button>
+								</a>
+							</div>
+						</div>
 					</div>
 				</div>
 
-				<script>
+
+			</div>
+		</div>
+	</div>
+	<div class="reporttemp" style="display: none;">
+		<div class="ctCont">
+			<div class="reportPer"></div>
+			<div class="reportRes"></div>
+			<div class="reportDate"></div>
+		</div>
+	</div>
+
+	<script>
 					// 처음에 서버에서 값을 보내줄 때 빈 문자열이 아니면 서버에서 보내준 값으로 설정
 					if (${ searchTarget != "" }) {
 						document.getElementById('searchTarget').value = "${ searchTarget }";
@@ -492,6 +489,6 @@
 						}
 					}
 				</script>
-			</body>
+</body>
 
-			</html>
+</html>

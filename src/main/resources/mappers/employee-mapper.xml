@@ -67,7 +67,8 @@
 		SELECT
 		e.name AS NAME,
 		r.role_title AS ROLE_CODE,
-		d.dept_title AS DEPT_CODE
+		d.dept_title AS DEPT_CODE,
+		e.photo AS PHOTO
 		FROM
 		Employee e
 		JOIN

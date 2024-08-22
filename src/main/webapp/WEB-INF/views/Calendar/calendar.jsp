@@ -169,7 +169,7 @@
 		</div>
 		<!-- 날짜 박스 눌렀을 시 모달 -->
 		<div id="calendarModal" class="modal">
-    <div class="modalContent calendarCont">
+    	<div class="modalContent calendarCont">
         <h1>
             일정등록<span class="modalClose">&times;</span>
         </h1>
@@ -255,7 +255,7 @@
 
 	<!-- 부서 캘린더 event 클릭 시 모달 -->
 	<div id="deptEventModal" class="modal">
-		<div class="modalContent modalContent">
+		<div class="modalContent calendarCont">
 			<h1>
 				일정 내용<span class="modalClose" id="eventModalClose">&times;</span>
 			</h1>
@@ -266,17 +266,17 @@
 					<ul>
 						<li><span>일정명</span>
 							<div>
-								<input type="text" class="eventName" name="title" disabled>
+								<input type="text" class="eventName" id="deptEventName" name="title" disabled>
 							</div></li>
 						<li><span>일정기간</span>
 							<div>
-								<input type="date" id="eventStartDate"
+								<input type="date" id="deptEventStartDate"
 									class="eventStartDate startDate dateInput" name="editStartDate"
-									disabled> <input type="time" id="eventStartTime"
+									disabled> <input type="time" id="deptEventStartTime"
 									class="eventStartTime startDate dateInput" name="editStartTime"
-									disabled> ~ <input type="date" id="eventEndDate"
+									disabled> ~ <input type="date" id="deptEventEndDate"
 									class="eventEndDate endDate dateInput" name="editEndDate"
-									disabled> <input type="time" id="eventEndTime"
+									disabled> <input type="time" id="deptEventEndTime"
 									class="eventEndTime endDate dateInput" name="editEndTime"
 									disabled>
 							</div></li>
@@ -302,12 +302,12 @@
 							</div></li>
 						<li><span>장소</span>
 							<div>
-								<input type="text" class="eventLocation" name="location"
+								<input type="text" class="eventLocation" id="deptEventLocation" name="location"
 									disabled>
 							</div></li>
 						<li><span>내용</span>
 							<div>
-								<textarea class="eventText" name="content" disabled></textarea>
+								<textarea class="eventText" id="deptEventText" name="content" disabled></textarea>
 							</div></li>
 						<li><c:choose>
 								<c:when test="${employee.role_code eq 'R2'}">
@@ -323,13 +323,13 @@
 								</c:otherwise>
 							</c:choose></li>
 					</ul>
-					<input type="hidden" name="editStartAt" class="editStartAt">
-					<input type="hidden" name="editEndAt" class="editEndAt">
+					<input type="hidden" name="editStartAt" class="editStartAt" id="deptEditStartAt">
+					<input type="hidden" name="editEndAt" class="editEndAt" id="deptEditEndAt">
 				</form>
 			</div>
 		</div>
 	</div>
-	</div>
+	
 
 	<!-- sidebar 공통요소 script -->
 	<script>
@@ -351,9 +351,35 @@
                 toggleTit.classList.toggle('active'); // 이미지 회전을 위해 클래스 추가
             });
         });
+        
+        
+        // input date 오늘 이전 날짜 선택 불가
+     	// 현재 날짜를 가져오기
+        const today = new Date();
+        
+        // 오늘 날짜
+        today.setDate(today.getDate());
+
+        // 내일 날짜를 YYYY-MM-DD 형식으로 변환
+        const formattedTomorrow = today.toISOString().split('T')[0];
+
+        // startDate와 endDate 입력 필드의 min 속성을 설정
+        document.getElementById('startDate').setAttribute('min', formattedTomorrow);
+        document.getElementById('endDate').setAttribute('min', formattedTomorrow);
+        document.getElementById('perEventStartDate').setAttribute('min', formattedTomorrow);
+        document.getElementById('perEventEndDate').setAttribute('min', formattedTomorrow);
+        document.getElementById('deptEventStartDate').setAttribute('min', formattedTomorrow);
+        document.getElementById('deptEventEndDate').setAttribute('min', formattedTomorrow);
+        document.getElementById('compEventStartDate').setAttribute('min', formattedTomorrow);
+        document.getElementById('compEventEndDate').setAttribute('min', formattedTomorrow);
+        document.getElementById('execEventStartDate').setAttribute('min', formattedTomorrow);
+        document.getElementById('execEventEndDate').setAttribute('min', formattedTomorrow);
 		
+    
         // 내 캘린더 추가 버튼
-        $('.myCalendarAdd').on('click', function () {
+        $('.myCalendarAdd').on('click', function (e) {
+        	// 클릭 이벤트 전파 중지
+        	e.stopPropagation();
             $('.myCalendarPopup').show();
         })
         
@@ -369,45 +395,50 @@
         		alert("캘린더 이름을 입력해주세요.");
         	}        	
         });
+        
+     	// 팝업 외부 클릭 시 팝업 닫기
+        $(document).on('click', function(e){
+        	if(!$(e.target).closest('.myCalendarPopup, myCalendarAdd').length){
+        		// 팝업 닫기
+        		$('.myCalendarPopup').hide();
+        	}
+        });
 		
         // 내 캘린더 팝업 x 버튼
         $('.myPopupClose').on('click', function () {
             $('.myCalendarPopup').hide();
         })
 	
-	//개인 캘린더 x 버튼
-	$(document).on('click', '.sidePerSelectDel', function(){
-		// 클릭된 버튼의 data-seq 속성 값을 가져오기
-		let calendarSeq = $(this).data('seq');
-		// 클릭된 버튼 자체를 저장
-		let $this = $(this);
-		
-		let deleteConfirm = confirm('정말로 이 캘린더를 삭제하시겠습니까?');
-		
-		if(deleteConfirm){
-			// 사용자가 확인을 클릭한 경우 삭제 요청을 서버로 전송
-			$.ajax({
-				url: '/calendar/deletePerCalendar',
-				type:"POST",
-				data: {calendarSeq: calendarSeq},
-				sucess: function(response){
-					if(response.success){
-						$('#calendar').fullCalendar('refetchEvents');
-						// 삭제가 성공했으면 해당 항목을 DOM에서 제거
-						$this.closet('li').remove();
-					}else{
-						alert('삭제 실패');
-					}
-				},
-				error: function(){
-					alert('삭제 요청 중 오류 발생');
-				}
-			});
-		}
-	})
+		// 개인 캘린더 x 버튼
+		$(document).on('click', '.sidePerSelectDel', function(){
+		    let calendarSeq = $(this).data('seq');
+		    let deleteConfirm = confirm('정말로 이 캘린더를 삭제하시겠습니까?');
+		    
+		    if (deleteConfirm) {
+		        $.ajax({
+		            url: '/calendar/deletePerCalendar',
+		            type: "POST",
+		            data: { calendarSeq: calendarSeq },
+		            success: function(response) {
+		                if (response.success) {
+		                    alert('캘린더가 성공적으로 삭제되었습니다.');
+		                 // 삭제 후 페이지를 다시 로드하여 최신 상태 반영
+		                    location.reload(); 
+		                } else {
+		                    alert('삭제 실패');
+		                }
+		            },
+		            error: function() {
+		                alert('삭제 요청 중 오류 발생');
+		            }
+		        });
+		    }
+		});
 	
         // 부서 캘린더 추가 버튼
-        $('.deptCalendarAdd').on('click', function () {
+        $('.deptCalendarAdd').on('click', function (e) {
+        		// 클릭 이벤트 전파 중지
+        		e.stopPropagation(); 
             $('.deptCalendarPopup').show();
         })
         
@@ -424,45 +455,52 @@
         	}
         });
         
-     	// 내 캘린더 팝업 x 버튼
+        $(document).on('click', function(e){
+        	if(!$(e.target).closest('.deptCalendarPopup, deptCalendarAdd').length){
+        		// 팝업 닫기
+        		$('.deptCalendarPopup').hide();
+        	}
+        }) 
+        
+     	// 부서 캘린더 팝업 x 버튼
         $('.deptPopupClose').on('click', function () {
             $('.deptCalendarPopup').hide();
         })
-		
+		        
         // 부서 캘린더 x 버튼
-        $(document).on('click', '.sideDepSelectDel', function() {
-	    // 클릭된 버튼의 data-seq 속성 값을 가져오기
-	    let calendarSeq = $(this).data('seq');
-	    // 클릭된 버튼 자체를 저장
-	    let $this = $(this);
-	    
-	    let deleteConfirm = confirm('정말로 이 캘린더를 삭제하시겠습니까?');
-	    
-	    if (deleteConfirm) {
-	        // 사용자가 확인을 클릭한 경우 삭제 요청을 서버로 전송
-	        $.ajax({
-	            url: '/calendar/deleteDepCalendar',
-	            type: 'POST',
-	            data: { calendarSeq: calendarSeq },
-	            success: function(response) {
-	            	if(response.success){
-						$('#calendar').fullCalendar('refetchEvents');
-						// 삭제가 성공했으면 해당 항목을 DOM에서 제거
-						$this.closet('li').remove();
-					}else{
-						alert('삭제 실패');
-					}
-				},
-				error: function(){
-					alert('삭제 요청 중 오류 발생');
-				}
-			});
-		}
-	})
+        $(document).on('click', '.sideDepSelectDel', function(){
+    let calendarSeq = $(this).data('seq');
+    let deleteConfirm = confirm('정말로 이 캘린더를 삭제하시겠습니까?');
+    
+    if (deleteConfirm) {
+        $.ajax({
+            url: '/calendar/deleteDepCalendar',
+            type: "POST",
+            data: { calendarSeq: calendarSeq },
+            success: function(response) {
+                if (response.success) {
+                    alert('캘린더가 성공적으로 삭제되었습니다.');
+                 // 삭제 후 페이지를 다시 로드하여 최신 상태 반영
+                    location.reload(); 
+                } else {
+                    alert('삭제 실패');
+                }
+            },
+            error: function() {
+                alert('삭제 요청 중 오류 발생');
+            }
+        });
+    }
+});
         // 개인 이벤트 클릭해서 수정 버튼 눌렀을 시
         $('#editBtn').on('click', function () {
             let $inputs = $('.eventCheck input, .eventCheck select, .eventCheck textarea');
             $inputs.prop('disabled', false);
+            
+         // 수정 모드에서 선택된 값 확인
+         // 현재 선택된 값
+            let selectedCalendar = $('.choiEvent option:selected').val();
+            
             $('#editBtn').hide();
             $('.deleteBtn').hide();
             $('#perConfirmBtn').show();
@@ -472,75 +510,117 @@
 
         $('#perConfirmBtn').on('click', function (e) {
         // 확인 버튼 클릭 시
-        // 기본 폼 제출을 방지
-        e.preventDefault(); 
+        e.preventDefault(); // 기본 폼 제출을 방지
 
-        	let startDate = $('#eventStartDate').val();
-        	let startTime = $('#eventStartTime').val();
-        	let endDate = $('#eventEndDate').val();
-        	let endTime = $('#eventEndTime').val();
-        	// 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
-            let dateTimeLocal = startDate + 'T' + startTime;
-            let dateTime = new Date(dateTimeLocal);
-        	// 밀리초 단위의 타임스탬프
-            let timestamp = dateTime.getTime(); 
-            
-            $(".editStartAt").val(timestamp);
-            
-            dateTimeLocal = endDate + 'T' + endTime;
-            dateTime = new Date(dateTimeLocal);
-         	// 밀리초 단위의 타임스탬프
-            timestamp = dateTime.getTime(); 
-            
-            $(".editEndAt").val(timestamp);
+            // 각 입력 값 가져오기
+            let eventName = $('#perEventName').val() ? $('#perEventName').val().trim() : '';
+            let startDate = $('#perEventStartDate').val() ? $('#perEventStartDate').val().trim() : '';
+            let startTime = $('#perEventStartTime').val() ? $('#perEventStartTime').val().trim() : '';
+            let endDate = $('#perEventEndDate').val() ? $('#perEventEndDate').val().trim() : '';
+            let endTime = $('#perEventEndTime').val() ? $('#perEventEndTime').val().trim() : '';
+            let selectedCalendar = $('.choiEvent option:selected').val() ? $('.choiEvent option:selected').val().trim() : '';  // 변경된 값 그대로 사용
+            let location = $('#perEventLocation').val() ? $('#perEventLocation').val().trim() : '';
+            let content = $('#perEventText').val() ? $('#perEventText').val().trim() : '';
 
+            // 모든 필드 비어있는지 체크
+            if (!eventName || !startDate || !startTime || !endDate || !endTime || !selectedCalendar || !location || !content) {
+                alert('모든 필드를 입력해 주세요.'); // alert을 띄움
+                console.log("폼 제출 중단: 빈 필드가 있습니다."); // 디버깅용 로그
+                return; // 빈 필드가 있을 경우 폼 제출 중단
+            }
+
+            // 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
+            let startDateTimeLocal = startDate + 'T' + startTime;
+            let startDateTime = new Date(startDateTimeLocal);
+            let startTimestamp = startDateTime.getTime(); 
+            
+
+            let endDateTimeLocal = endDate + 'T' + endTime;
+            let endDateTime = new Date(endDateTimeLocal);
+            let endTimestamp = endDateTime.getTime();
+            
+         // 종료일이 시작일보다 빠를 수 없도록 검증
+            if (startTimestamp > endTimestamp) {
+                alert('종료일은 시작일보다 빠를 수 없습니다. 기간을 다시 입력해주세요.');
+                return;
+            }
+            
+            $("#perEditStartAt").val(startTimestamp);
+            $("#perEditEndAt").val(endTimestamp);
          // 폼을 제출하여 서버로 데이터를 전송
         $('#eventEditForm').submit(); 
     });
         
-     // 부서 이벤트 클릭해서 수정 버튼 눌렀을 시
+        
+        
+     // 부서 이벤트 수정 버튼 클릭 시
         $('#deptEditBtn').on('click', function () {
             let $inputs = $('.eventCheck input, .eventCheck select, .eventCheck textarea');
-            $inputs.prop('disabled', false);
-            $('#deptEditBtn').hide();
-            $('.deleteBtn').hide();
-            $('#deptConfirmBtn').show();
-            $('.cancelBtn').show();
+            $inputs.prop('disabled', false); // 모든 입력 필드의 disabled 속성을 false로 설정
+
+            // 수정 모드에서 선택된 값 확인
+            let selectedCalendar = $('.choiEvent option:selected').val(); // 현재 선택된 값
+            console.log("수정 모드에서 선택된 캘린더:", selectedCalendar); // 디버깅을 위한 로그
+
+            $('#deptEditBtn').hide(); // 수정 버튼 숨김
+            $('.deleteBtn').hide(); // 삭제 버튼 숨김
+            $('#deptConfirmBtn').show(); // 확인 버튼 보임
+            $('.cancelBtn').show(); // 취소 버튼 보임
         });
 
-
+     // 확인 버튼 클릭 시
         $('#deptConfirmBtn').on('click', function (e) {
-        // 확인 버튼 클릭 시
-        // 기본 폼 제출을 방지
-        e.preventDefault(); 
+            e.preventDefault(); // 기본 폼 제출을 방지
 
-        	let startDate = $('#eventStartDate').val();
-        	let startTime = $('#eventStartTime').val();
-        	let endDate = $('#eventEndDate').val();
-        	let endTime = $('#eventEndTime').val();
-        	// 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
-            let dateTimeLocal = startDate + 'T' + startTime;
-            let dateTime = new Date(dateTimeLocal);
-         	// 밀리초 단위의 타임스탬프
-            let timestamp = dateTime.getTime(); 
-            
-            $(".editStartAt").val(timestamp);
-            
-            dateTimeLocal = endDate + 'T' + endTime;
-            dateTime = new Date(dateTimeLocal);
-         	// 밀리초 단위의 타임스탬프
-            timestamp = dateTime.getTime(); 
-            
-            $(".editEndAt").val(timestamp);
+            // 각 입력 값 가져오기
+            let eventName = $('#deptEventName').val() ? $('#deptEventName').val().trim() : '';
+            let startDate = $('#deptEventStartDate').val() ? $('#deptEventStartDate').val().trim() : '';
+            let startTime = $('#deptEventStartTime').val() ? $('#deptEventStartTime').val().trim() : '';
+            let endDate = $('#deptEventEndDate').val() ? $('#deptEventEndDate').val().trim() : '';
+            let endTime = $('#deptEventEndTime').val() ? $('#deptEventEndTime').val().trim() : '';
+            let selectedCalendar = $('.choiEvent option:selected').val() ? $('.choiEvent option:selected').val().trim() : '';  // 변경된 값 그대로 사용
+            let location = $('#deptEventLocation').val() ? $('#deptEventLocation').val().trim() : '';
+            let content = $('#deptEventText').val() ? $('#deptEventText').val().trim() : '';
 
-         // 폼을 제출하여 서버로 데이터를 전송
-        $('#deptEventEditForm').submit(); 
-    });
+            // 모든 필드 비어있는지 체크
+            if (!eventName || !startDate || !startTime || !endDate || !endTime || !selectedCalendar || !location || !content) {
+                alert('모든 필드를 입력해 주세요.'); // alert을 띄움
+                console.log("폼 제출 중단: 빈 필드가 있습니다."); // 디버깅용 로그
+                return; // 빈 필드가 있을 경우 폼 제출 중단
+            }
+
+         // 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
+            let startDateTimeLocal = startDate + 'T' + startTime;
+            let startDateTime = new Date(startDateTimeLocal);
+            let startTimestamp = startDateTime.getTime(); 
+            
+
+            let endDateTimeLocal = endDate + 'T' + endTime;
+            let endDateTime = new Date(endDateTimeLocal);
+            let endTimestamp = endDateTime.getTime();
+            
+         // 종료일이 시작일보다 빠를 수 없도록 검증
+            if (startTimestamp > endTimestamp) {
+                alert('종료일은 시작일보다 빠를 수 없습니다. 기간을 다시 입력해주세요.');
+                return;
+            }
+            
+            $("#deptEditStartAt").val(startTimestamp);
+            $("#deptEditEndAt").val(endTimestamp);
+            
+            // 폼을 제출하여 서버로 데이터를 전송
+            $('#deptEventEditForm').submit(); 
+        });
         
         // 전사 이벤트 클릭해서 수정 버튼 눌렀을 시
         $('#companyEditBtn').on('click', function () {
             let $inputs = $('.eventCheck input, .eventCheck select, .eventCheck textarea');
             $inputs.prop('disabled', false);
+            
+         // 수정 모드에서 선택된 값 확인
+            let selectedCalendar = $('.choiEvent option:selected').val(); // 현재 선택된 값
+            console.log("수정 모드에서 선택된 캘린더:", selectedCalendar); // 디버깅을 위한 로그
+            
             $('#companyEditBtn').hide();
             $('.deleteBtn').hide();
             $('#companyConfirmBtn').show();
@@ -550,27 +630,43 @@
 
         $('#companyConfirmBtn').on('click', function (e) {
         // 확인 버튼 클릭 시
-        // 기본 폼 제출을 방지
-        e.preventDefault(); 
+        e.preventDefault(); // 기본 폼 제출을 방지
 
-        	let startDate = $('#eventStartDate').val();
-        	let startTime = $('#eventStartTime').val();
-        	let endDate = $('#eventEndDate').val();
-        	let endTime = $('#eventEndTime').val();
-        	// 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
-            let dateTimeLocal = startDate + 'T' + startTime;
-            let dateTime = new Date(dateTimeLocal);
-         	// 밀리초 단위의 타임스탬프
-            let timestamp = dateTime.getTime(); 
+            // 각 입력 값 가져오기
+            let eventName = $('#compEventName').val() ? $('#compEventName').val().trim() : '';
+            let startDate = $('#compEventStartDate').val() ? $('#compEventStartDate').val().trim() : '';
+            let startTime = $('#compEventStartTime').val() ? $('#compEventStartTime').val().trim() : '';
+            let endDate = $('#compEventEndDate').val() ? $('#compEventEndDate').val().trim() : '';
+            let endTime = $('#compEventEndTime').val() ? $('#compEventEndTime').val().trim() : '';
+            let selectedCalendar = $('.choiEvent option:selected').val() ? $('.choiEvent option:selected').val().trim() : '';  // 변경된 값 그대로 사용
+            let location = $('#compEventLocation').val() ? $('#compEventLocation').val().trim() : '';
+            let content = $('#compEventText').val() ? $('#compEventText').val().trim() : '';
+
+            // 모든 필드 비어있는지 체크
+            if (!eventName || !startDate || !startTime || !endDate || !endTime || !selectedCalendar || !location || !content) {
+                alert('모든 필드를 입력해 주세요.'); // alert을 띄움
+                console.log("폼 제출 중단: 빈 필드가 있습니다."); // 디버깅용 로그
+                return; // 빈 필드가 있을 경우 폼 제출 중단
+            }
+
+         // 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
+            let startDateTimeLocal = startDate + 'T' + startTime;
+            let startDateTime = new Date(startDateTimeLocal);
+            let startTimestamp = startDateTime.getTime(); 
             
-            $(".editStartAt").val(timestamp);
+
+            let endDateTimeLocal = endDate + 'T' + endTime;
+            let endDateTime = new Date(endDateTimeLocal);
+            let endTimestamp = endDateTime.getTime();
             
-            dateTimeLocal = endDate + 'T' + endTime;
-            dateTime = new Date(dateTimeLocal);
-         	// 밀리초 단위의 타임스탬프
-            timestamp = dateTime.getTime(); 
+         // 종료일이 시작일보다 빠를 수 없도록 검증
+            if (startTimestamp > endTimestamp) {
+                alert('종료일은 시작일보다 빠를 수 없습니다. 기간을 다시 입력해주세요.');
+                return;
+            }
             
-            $(".editEndAt").val(timestamp);
+            $("#compEditStartAt").val(startTimestamp);
+            $("#compEditEndAt").val(endTimestamp);
 
          // 폼을 제출하여 서버로 데이터를 전송
         $('#companyEventEditForm').submit();
@@ -580,6 +676,11 @@
         $('#executiveEditBtn').on('click', function () {
             let $inputs = $('.eventCheck input, .eventCheck select, .eventCheck textarea');
             $inputs.prop('disabled', false);
+            
+         // 수정 모드에서 선택된 값 확인
+            let selectedCalendar = $('.choiEvent option:selected').val(); // 현재 선택된 값
+            console.log("수정 모드에서 선택된 캘린더:", selectedCalendar); // 디버깅을 위한 로그
+            
             $('#executiveEditBtn').hide();
             $('.deleteBtn').hide();
             $('#executiveConfirmBtn').show();
@@ -589,28 +690,44 @@
 
         $('#executiveConfirmBtn').on('click', function (e) {
         // 확인 버튼 클릭 시
-        // 기본 폼 제출을 방지
-        e.preventDefault(); 
+        e.preventDefault();
+        
+        // 각 입력 값 가져오기
+            let eventName = $('#execEventName').val() ? $('#execEventName').val().trim() : '';
+            let startDate = $('#execEventStartDate').val() ? $('#execEventStartDate').val().trim() : '';
+            let startTime = $('#execEventStartTime').val() ? $('#execEventStartTime').val().trim() : '';
+            let endDate = $('#execEventEndDate').val() ? $('#execEventEndDate').val().trim() : '';
+            let endTime = $('#execEventEndTime').val() ? $('#execEventEndTime').val().trim() : '';
+            let selectedCalendar = $('.choiEvent option:selected').val() ? $('.choiEvent option:selected').val().trim() : '';  // 변경된 값 그대로 사용
+            let location = $('#execEventLocation').val() ? $('#execEventLocation').val().trim() : '';
+            let content = $('#execEventText').val() ? $('#execEventText').val().trim() : '';
 
-        	let startDate = $('#eventStartDate').val();
-        	let startTime = $('#eventStartTime').val();
-        	let endDate = $('#eventEndDate').val();
-        	let endTime = $('#eventEndTime').val();
-        	// 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
-            let dateTimeLocal = startDate + 'T' + startTime;
-            let dateTime = new Date(dateTimeLocal);
-         	// 밀리초 단위의 타임스탬프
-            let timestamp = dateTime.getTime(); 
-            
-            $(".editStartAt").val(timestamp);
-            
-            dateTimeLocal = endDate + 'T' + endTime;
-            dateTime = new Date(dateTimeLocal);
-         	// 밀리초 단위의 타임스탬프
-            timestamp = dateTime.getTime(); 
-            
-            $(".editEndAt").val(timestamp);
+            // 모든 필드 비어있는지 체크
+            if (!eventName || !startDate || !startTime || !endDate || !endTime || !selectedCalendar || !location || !content) {
+                alert('모든 필드를 입력해 주세요.'); // alert을 띄움
+                console.log("폼 제출 중단: 빈 필드가 있습니다."); // 디버깅용 로그
+                return; // 빈 필드가 있을 경우 폼 제출 중단
+            }
 
+         // 날짜와 시간을 결합하여 ISO 8601 형식의 타임스탬프 문자열을 만듬.
+            let startDateTimeLocal = startDate + 'T' + startTime;
+            let startDateTime = new Date(startDateTimeLocal);
+            let startTimestamp = startDateTime.getTime(); 
+            
+
+            let endDateTimeLocal = endDate + 'T' + endTime;
+            let endDateTime = new Date(endDateTimeLocal);
+            let endTimestamp = endDateTime.getTime();
+            
+         // 종료일이 시작일보다 빠를 수 없도록 검증
+            if (startTimestamp > endTimestamp) {
+                alert('종료일은 시작일보다 빠를 수 없습니다. 기간을 다시 입력해주세요.');
+                return;
+            }
+            
+            $("#execEditStartAt").val(startTimestamp);
+            $("#execEditEndAt").val(endTimestamp);
+            
          // 폼을 제출하여 서버로 데이터를 전송
         $('#executiveEventEditForm').submit(); 
     });
@@ -694,7 +811,8 @@
                 timeZone: 'Asia/Seoul',
                 navLinks: true,
                 businessHours: true,
-                editable: true,
+                // 드래그로 일정 옮길수 없음
+                editable: false,
                 dayMaxEvents: true,
                 selectable: true,
                 buttonText: {
@@ -759,6 +877,21 @@
                     });
                 },
                 dateClick: function (info) {
+                	// 클릭한 날짜 (Date 객체)
+                   	const selectedDate = new Date(info.dateStr);
+            		// 오늘 날짜 (Date 객체)
+            		const today = new Date(); 
+            		// 오늘 날짜의 시간 부분을 00:00:00으로 설정
+            		today.setHours(0, 0, 0, 0); 
+        	
+        			// 현재 캘린더에 있는 모든 이벤트
+            		const events = calendar.getEvents(); 
+
+            		// 선택한 날짜가 오늘 이후인지 확인
+            		if (selectedDate <= today) {
+                		alert('일정은 오늘 이후 날짜에만 생성할 수 있습니다.');
+                		return;
+            		}
 
                     // 날짜 클릭 시 발생할 이벤트
                     $('.startDate').val(info.dateStr);
