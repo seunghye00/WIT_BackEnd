@@ -32,8 +32,8 @@
 			<div class="contents">
 				<div class="left">
 					<div class="leftTop">
-						<span class="main_profile"> <img src="/img/푸바오.png"
-							alt="프로필 사진" class="profileImg">
+						<span class="main_profile"> <img src="${employee.photo}"
+							alt="프로필 이미지" class="profileImg">
 						</span>
 						<div class="dept-role">${employee.dept_code}
 							${employee.role_code}</div>
