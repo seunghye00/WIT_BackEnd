@@ -19,13 +19,12 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
 <script src="/resources/js/employee.js"></script>
-
 </head>
 
 <body class="membership_body">
 	<div class="container">
 		<!-- 공통영역 -->
-		<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp"%>
+		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
 		<!-- 공통영역 끝 -->
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
@@ -45,19 +44,31 @@
 						<h3 id="clock"></h3>
 						<div class="attendance-btn">
 							<div class="start">
-								<button type="button" id="start_button">출근</button>
+								<button type="button" id="start_button">
+									<i class="bx bxs-id-card"></i>출근
+								</button>
 								<span class="check-time" id="start_time_display">00:00</span>
 							</div>
 							<div class="end">
-								<button type="button" id="end_button">퇴근</button>
+								<button type="button" id="end_button">
+									<i class='bx bxs-home'></i>퇴근
+								</button>
 								<span class="check-time" id="end_time_display">00:00</span>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="center">
+					<div class="mainTitle">
+						<i class='bx bx-pin'
+							style="color: #fff; transform: rotate(330deg);"></i> BOARD
+					</div>
 					<div class="boardList">
 						<div class="notiList">
+							<div class="titleTxt">
+								<img src="/resources/img/fire.jpg" alt=""> <span>자유게시판
+									인기글</span>
+							</div>
 							<div class="rows notiHeader">
 								<div class="cols boardSeq">
 									<span>자유 게시판</span>
@@ -89,15 +100,16 @@
 							<c:forEach var="board" items="${boardList}" varStatus="status">
 								<div class="rows notiConts">
 									<div class="cols boardSeq">
-										<span>${status.index + 1}</span>
+										<span class="bseq-${status.index + 1}">${status.index +
+																1}</span>
 									</div>
 									<div class="cols boardTitle" onclick="toDetailBoard(this)"
 										data-seq="${board.board_seq}">
-										<span>${board.title}</span>
+										<span class="title">${board.title}</span>
 									</div>
 									<div class="cols boardWriter">
 										<!-- 여기서 조인해서 emp_no 자리에 닉네임이 나오게끔 했어! -->
-										<span>${board.emp_no}</span>
+										<span class="title">${board.emp_no}</span>
 									</div>
 									<c:choose>
 										<c:when test="${report=='true'}">
@@ -130,10 +142,15 @@
 								</div>
 							</c:forEach>
 						</div>
+
 						<div class="notiList">
+							<div class="titleTxt">
+								<i class='bx bxs-tag-alt' style="margin-right: 5px;"></i> 공지사항
+								인기글
+							</div>
 							<div class="rows notiHeader">
 								<div class="cols boardSeq">
-									<span>공지 게시판</span>
+									<span>No.</span>
 								</div>
 								<div class="cols boardTitle">
 									<span>글 제목</span>
@@ -162,15 +179,16 @@
 							<c:forEach var="board" items="${noticeList}" varStatus="status">
 								<div class="rows notiConts">
 									<div class="cols boardSeq">
-										<span>${status.index + 1}</span>
+										<span class="seq-${status.index + 1}">${status.index +
+																1}</span>
 									</div>
 									<div class="cols boardTitle" onclick="toDetailNotice(this)"
 										data-seq="${board.board_seq}">
-										<span>${board.title}</span>
+										<span class="title">${board.title}</span>
 									</div>
 									<div class="cols boardWriter">
 										<!-- 여기서 조인해서 emp_no 자리에 닉네임이 나오게끔 했어! -->
-										<span>${board.emp_no}</span>
+										<span class="writer">${board.emp_no}</span>
 									</div>
 									<c:choose>
 										<c:when test="${report=='true'}">
@@ -240,7 +258,6 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="overlay">
 		<div id="popup" class="popup">
 			<h2>추가 정보 입력</h2>
@@ -327,7 +344,16 @@
 								+ '일';
 						var days = [ '일', '월', '화', '수', '목', '금', '토' ];
 						var day = days[now.getDay()];
-						var time = now.toLocaleTimeString();
+						// AM/PM 형식으로 시간 표시
+						var options = {
+							hour : 'numeric',
+							minute : 'numeric',
+							second : 'numeric',
+							hour12 : true
+						// 12시간 형식 사용, AM/PM 표기
+						};
+						var time = now.toLocaleTimeString('en-US', options);
+
 						$('#date').text(date + ' (' + day + ')');
 						$('#clock').text(time);
 					}
