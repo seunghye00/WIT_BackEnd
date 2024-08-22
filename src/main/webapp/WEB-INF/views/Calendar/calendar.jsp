@@ -357,8 +357,8 @@
      	// 현재 날짜를 가져오기
         const today = new Date();
         
-        // 오늘 날짜에 하루를 더하기
-        today.setDate(today.getDate() + 1);
+        // 오늘 날짜
+        today.setDate(today.getDate());
 
         // 내일 날짜를 YYYY-MM-DD 형식으로 변환
         const formattedTomorrow = today.toISOString().split('T')[0];
@@ -422,7 +422,8 @@
 		            success: function(response) {
 		                if (response.success) {
 		                    alert('캘린더가 성공적으로 삭제되었습니다.');
-		                    location.reload(); // 삭제 후 페이지를 다시 로드하여 최신 상태 반영
+		                 // 삭제 후 페이지를 다시 로드하여 최신 상태 반영
+		                    location.reload(); 
 		                } else {
 		                    alert('삭제 실패');
 		                }
@@ -479,7 +480,8 @@
             success: function(response) {
                 if (response.success) {
                     alert('캘린더가 성공적으로 삭제되었습니다.');
-                    location.reload(); // 삭제 후 페이지를 다시 로드하여 최신 상태 반영
+                 // 삭제 후 페이지를 다시 로드하여 최신 상태 반영
+                    location.reload(); 
                 } else {
                     alert('삭제 실패');
                 }
@@ -496,8 +498,8 @@
             $inputs.prop('disabled', false);
             
          // 수정 모드에서 선택된 값 확인
-            let selectedCalendar = $('.choiEvent option:selected').val(); // 현재 선택된 값
-            console.log("수정 모드에서 선택된 캘린더:", selectedCalendar); // 디버깅을 위한 로그
+         // 현재 선택된 값
+            let selectedCalendar = $('.choiEvent option:selected').val();
             
             $('#editBtn').hide();
             $('.deleteBtn').hide();
@@ -875,6 +877,21 @@
                     });
                 },
                 dateClick: function (info) {
+                	// 클릭한 날짜 (Date 객체)
+                   	const selectedDate = new Date(info.dateStr);
+            		// 오늘 날짜 (Date 객체)
+            		const today = new Date(); 
+            		// 오늘 날짜의 시간 부분을 00:00:00으로 설정
+            		today.setHours(0, 0, 0, 0); 
+        	
+        			// 현재 캘린더에 있는 모든 이벤트
+            		const events = calendar.getEvents(); 
+
+            		// 선택한 날짜가 오늘 이후인지 확인
+            		if (selectedDate <= today) {
+                		alert('일정은 오늘 이후 날짜에만 생성할 수 있습니다.');
+                		return;
+            		}
 
                     // 날짜 클릭 시 발생할 이벤트
                     $('.startDate').val(info.dateStr);
