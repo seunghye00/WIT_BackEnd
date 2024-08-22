@@ -137,7 +137,7 @@
 
 						<!-- 다음 페이지로 이동 -->
 						<a
-							href="/annualLeave/attendanceVacation?cpage=${cpage < pageTotalCount ? cpage + 1 : pageTotalCount}"
+							href="/annualLeave/attendanceVacation?cpage=${cpage + 1 > pageTotalCount ? pageTotalCount : cpage + 1}"
 							class="next"> <i class='bx bx-chevron-right'></i>
 						</a>
 					</div>
