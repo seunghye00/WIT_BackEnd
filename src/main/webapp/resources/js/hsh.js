@@ -5,7 +5,7 @@ $('#startApprBtn').on('click', () => {
 	$('#startApprBtn').addClass('disabled');
 	
 	// 해당 모달창 활성화
-    $('.eApprModal.docuChoiModal').css({ display: 'flex' });
+    $('#docuModalBack').show();
 	
 	// 문서 종류를 저장할 변수
     let docu;
@@ -54,8 +54,8 @@ $('#startApprBtn').on('click', () => {
         }
 
         // 문서 양식 선택 모달창 비활성화 & 결재선 선택 모달창 활성화
-        $('.eApprModal.docuChoiModal').css({ display: 'none' });
-        $('.eApprModal.apprChoiModal').css({ display: 'flex' });
+        $('#docuModalBack').hide();
+        $('#apprChoiModalBack').show();
 
         // 부서 종류를 저장할 변수
         let dept;
@@ -204,8 +204,8 @@ $('#startApprBtn').on('click', () => {
         // 결재선 선택 모달창에서 이전 버튼 클릭 시
         $('.prev').on('click', () => {
             // 문서 양식 선택 모달창 활성화 & 결재선 선택 모달창 비활성화
-            $('.eApprModal.docuChoiModal').css('display', 'flex');
-            $('.eApprModal.apprChoiModal').hide();
+            $('#docuModalBack').show();
+            $('#apprChoiModalBack').hide();
         });
         
 		// 결재선 선택 모달창에서 완료 버튼 클릭 시        
@@ -249,7 +249,7 @@ $('#startApprBtn').on('click', () => {
     	});
     });
     // 취소 버튼 클릭 시 페이지 새로고침
-    $('.cancel').on('click', () => location.reload())
+    $('.cancel').on('click', () => location.reload());
 });
 
 // 모달창에서 체크박스의 다중 선택을 방지하는 함수
@@ -610,7 +610,7 @@ $('.docuSaveBtn').off('click').on('click', function() {
 
 // 코멘트 버튼 클릭 시 코멘트 리스트 모달창 활성화
 $('.viewComm').on('click', () => {
-   $('.commModal').toggleClass('flex');
+   $('#commModalBack').show();
 });
 
 // 참조 버튼 클릭 시 참조선 리스트 모달창 활성화
@@ -628,44 +628,12 @@ function handleOnInput(e, maxLength) {
 
 // 결재 or 전결 버튼 클릭 시 결재 코멘트 입력 모달창 활성화
 $('.apprBtn').on('click', () => {
-    $('.apprModal').css('display', 'flex');
-
-    // 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
-    $('.returnBtn').on('click', () => {
-        $('.apprModal').hide();
-        $('.returnModal').css('display', 'flex');
-    });
-
-    // 취소 버튼 클릭 시 현재 모달창 비활성화
-    $('.closeModal').on('click', () => {
-        $('.apprModal').hide();
-    });
-    
-    // 새 결재 진행 버튼 클릭 시 현재 모달창 비활성화
-    $('#startApprBtn').on('click', () => {
-    	$('.apprModal').hide();
-    });
+    $('#apprModalBack').show();
 });
 
 // 반려 버튼 클릭 시 반려 코멘트 모달창 활성화
 $('.returnBtn').on('click', () => {
-    $('.returnModal').css('display', 'flex');
-
-    // 취소 버튼 클릭 시 현재 모달창 비활성화
-    $('.closeModal').on('click', () => {
-        $('.returnModal').hide();
-    });
-    
-    // 결재 버튼 클릭 시 결재 모달창 활성화
-    $('.apprBtn').on('click', () => {
-    	$('.returnModal').hide();
-    	$('.apprModal').css('display', 'flex');
-    });
-    
-    // 새 결재 진행 버튼 클릭 시 현재 모달창 비활성화
-    $('#startApprBtn').on('click', () => {
-    	$('.returnModal').hide();
-    });
+	$('#returnModalBack').show();
 });
 
 // 반려 코멘트 모달창에서 완료 버튼 클릭 시
@@ -1075,3 +1043,29 @@ function goToSearchList(keyword){
 	}
 	location.href = pathName + '?type=' + type + '&docuCode=' + docuCode + '&keyword=' + keyword + '&cPage=1';
 }
+
+// 모달 외부 클릭 시 닫기
+$(window).click(function(event) {
+	if ($(event.target).is($('#commModalBack')[0])) {
+		$('#commModalBack').hide();
+		return;
+	}
+	if ($(event.target).is($('#apprModalBack')[0])) {
+		$('#apprModalBack').hide();
+		return;
+	}
+	if ($(event.target).is($('#returnModalBack')[0])) {
+		$('#returnModalBack').hide();
+		return;
+	}
+	if ($(event.target).is($('#docuModalBack')[0])) {
+		$('#docuModalBack').hide();
+		$('#startApprBtn').removeClass('disabled');
+		return;
+	}
+	if ($(event.target).is($('#apprChoiModalBack')[0])) {
+		$('#apprChoiModalBack').hide();
+		$('#startApprBtn').removeClass('disabled');
+		return;
+	}
+});

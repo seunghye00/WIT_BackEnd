@@ -35,7 +35,7 @@
 					<div class="mainTitle">업무 기안 문서함</div>
 					<div class="docuList docuBox">
 						<%@ include file="/WEB-INF/views/Admin/eApproval/commons/docuToolbar.jsp"%>
-						<div class="listBox apprList">
+						<div class="listBox apprDocuList">
 							<div class="rows listHeader">
 								<div class="cols">
 									<span>기안일</span>
@@ -108,9 +108,9 @@
 													<c:when test="${i.status eq '완료'}">
 														<span class="done">${i.status}</span>
 													</c:when>
-													<c:otherwise>
+													<c:when test="${i.status eq '반려'}">
 														<span class="return">${i.status}</span>
-													</c:otherwise>
+													</c:when>
 												</c:choose>
 											</div>
 										</div>

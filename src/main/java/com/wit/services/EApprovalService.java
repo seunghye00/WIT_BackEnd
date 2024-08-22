@@ -127,8 +127,8 @@ public class EApprovalService {
 	}
 
 	// 해당 문서의 결재 라인 상태를 반려 or 전결 처리에 따라 변경하기 위한 메서드
-	public void updateApprLineAll(int docuSeq, int i) {
-		dao.updateApprLineAll(docuSeq, i);
+	public void updateApprLineAll(int docuSeq, int i, String choice) {
+		dao.updateApprLineAll(docuSeq, i, choice);
 	}
 
 	// 해당 문서에 대한 코멘트를 입력하기 위한 메서드

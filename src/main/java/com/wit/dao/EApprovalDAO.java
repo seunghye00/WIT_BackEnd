@@ -128,10 +128,11 @@ public class EApprovalDAO {
 	}
 
 	// 해당 문서의 결재 라인 상태를 전부 변경하기 위한 메서드
-	public void updateApprLineAll(int docuSeq, int i) {
-		Map<String, Integer> params = new HashMap<>();
+	public void updateApprLineAll(int docuSeq, int i, String choice) {
+		Map<String, Object> params = new HashMap<>();
 		params.put("docuSeq", docuSeq);
 		params.put("order", i);
+		params.put("comm", choice + "로 인해 자동 결재 처리되었습니다.");
 		mybatis.update("eApproval.updateApprLineAll", params);
 	}
 

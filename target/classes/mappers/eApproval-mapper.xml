@@ -132,9 +132,9 @@
 		update approvals_line set comments = #{comments}, status = '결재 완료', approved_date = sysdate where document_seq = #{document_seq} and emp_no = #{emp_no}
 	</update>
 	
-	<!-- 반려 처리 후 문서의 결재 라인 상태를 업데이트하기 위한 쿼리문 -->
+	<!-- 해당 문서의 결재 라인 상태를 전부 변경하기 위한 쿼리문 -->
 	<update id="updateApprLineAll">
-		update approvals_line set status = '결재 완료', approved_date = sysdate where document_seq = #{docuSeq} and approval_order > #{order}
+		update approvals_line set status = '결재 완료', comments = #{comm} , approved_date = sysdate where document_seq = #{docuSeq} and approval_order > #{order}
 	</update>
 	
 	<!-- 결재 처리 후 문서의 결재 라인 상태를 업데이트하기 위한 쿼리문 -->
@@ -475,6 +475,7 @@
 		where rownum &lt;= 5
 	</select>
 	
+	<!-- 해당 문서 양식으로 작성된 모든 문서를 조회하기 위한 쿼리문 -->
 	<select id="searchDocuListByDocuCode" resultType="com.wit.dto.DocuInfoListDTO">
 		select * from (
 			select
@@ -489,13 +490,17 @@
 				d.docu_code = #{docuCode}
 				<if test="keyword != null">
 					and upper(title) like upper('%'||#{keyword}||'%') 
-				</if>  
+				</if>
+				<if test="status == null">
+					and d.status != '임시 저장'
+				</if>
 				<if test="status != null">
 					and d.status = #{status}
 				</if>
 		) where rn between (#{cPage} * #{recordCountPerPage} - (#{recordCountPerPage} - 1)) AND (#{cPage} * #{recordCountPerPage})
 	</select>
 	
+	<!-- 해당 문서 양식으로 작성된 모든 문서의 총 갯수를 조회하기 위한 쿼리문 -->
 	<select id="getCountSearchDocuList" resultType="int">
 		select count(*) from (
 			select
@@ -511,6 +516,9 @@
 				<if test="keyword != null">
 					and upper(title) like upper('%'||#{keyword}||'%') 
 				</if>  
+				<if test="status == null">
+					and d.status != '임시 저장'
+				</if>
 				<if test="status != null">
 					and d.status = #{status}
 				</if>

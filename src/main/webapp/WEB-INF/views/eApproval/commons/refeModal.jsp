@@ -20,12 +20,13 @@
 					</c:when>
 					<c:otherwise>
 						<c:forEach items="${refeList}" var="i">
-							<li>${i.name} ${i.role_title} <c:choose>
+							<li>${i.name}${i.role_title}<c:choose>
 									<c:when test="${i.read_yn eq 'N'}">
 										<span class="beforeRead"> 안읽음 </span>
 									</c:when>
 									<c:otherwise>
-										<span> 읽음  <fmt:formatDate value="${i.read_date}" pattern="yyyy-MM-dd HH:mm"></fmt:formatDate></span>
+										<span> 읽음 <fmt:formatDate value="${i.read_date}"
+												pattern="yyyy-MM-dd HH:mm"></fmt:formatDate></span>
 									</c:otherwise>
 								</c:choose>
 							</li>

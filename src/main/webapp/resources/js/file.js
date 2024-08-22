@@ -1,5 +1,8 @@
 let addedFiles = [];
 
+// 파일 크기 제한 (10MB)
+const maxSize = 10 * 1024 * 1024;
+
 // 파일 선택 시 동적으로 요소 생성 및 파일 관리
 $('#file').on('change', function() {
     const files = $(this).prop('files');
@@ -11,6 +14,12 @@ $('#file').on('change', function() {
 
     $.each(files, function(index, file) {
         if (!addedFiles.some(f => f.name === file.name)) {
+        	
+        	if (file && file.size > maxSize) {
+                alert('파일 크기가 10MB를 초과합니다.');
+                return false;
+            }
+            
             addedFiles.push(file);
 
             const span = $('<span>').text(file.name);
