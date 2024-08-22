@@ -58,6 +58,8 @@ public class AnnualLeaveController {
 
 		int startNavi = ((cpage - 1) / naviCountPerPage) * naviCountPerPage + 1;
 		int endNavi = startNavi + naviCountPerPage - 1;
+		System.out.println("스타트 : " + startNavi);
+		System.out.println("엔드 : " + endNavi);
 
 		if (endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
@@ -85,10 +87,8 @@ public class AnnualLeaveController {
 			@RequestParam(value = "searchTxt", required = false) String searchTxt,
 			@RequestParam(defaultValue = "1") int cpage, Model model) {
 
-		// 로그인한 직원의 ID를 세션에서 가져오기
 		String empNo = (String) session.getAttribute("loginID");
 
-		// 직원 정보 조회
 		EmployeeDTO employee = service.employeeInfo(empNo);
 		model.addAttribute("employee", employee);
 

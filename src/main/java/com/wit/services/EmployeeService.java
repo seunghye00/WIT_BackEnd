@@ -59,7 +59,8 @@ public class EmployeeService {
 
 		// 퇴사자인 경우 로그인 실패 처리
 		if (employee != null && employee.getQuit_yn() == 'Y') {
-			return null; // 퇴사자인 경우 null을 반환
+			// 퇴사자인 경우 null을 반환
+			return null; 
 		}
 
 		return employee;
@@ -97,18 +98,20 @@ public class EmployeeService {
 	// ID찾기
 	public String findID(String name, String ssn) {
 		EmployeeDTO employee = dao.findID(name, ssn);
+		// 삼항연산자 및 사원이 존재하지 않으면 null 반환
 		return (employee != null) ? employee.getEmp_no() : null;
 	}
 
-	// PW찾기(수정) 직원 정보 확인
+	// PW찾기(수정) 사원 정보 확인
 	public boolean verifyEmployee(String empNo, String name, String ssn) {
 		EmployeeDTO employee = dao.findEmployee(empNo, name, ssn);
+		// null 이 아니라면 true 반환, null 이 맞다면 false 반환
 		return employee != null;
 	}
 
 	// PW찾기 (수정)
 	public boolean modifyPassword(String empNo, String newPassword) {
-		String encryptedPassword = PWUtill.encryptPassword(newPassword); // 비밀번호 암호화
+		String encryptedPassword = PWUtill.encryptPassword(newPassword);
 		return dao.modifyPassword(empNo, encryptedPassword) > 0;
 	}
 

@@ -72,7 +72,7 @@ public class AttendanceController {
 	@RequestMapping("/attendance_month")
 	public String attendanceMonth(Model model, @RequestParam(defaultValue = "1") int cpage) {
 		String empNo = (String) session.getAttribute("loginID");
-		
+
 		EmployeeDTO employee = service.employeeInfo(empNo);
 
 		// 현재 월을 가져옴
@@ -106,7 +106,6 @@ public class AttendanceController {
 		boolean needPrev = startNavi > 1;
 		boolean needNext = endNavi < pageTotalCount;
 
-		// 페이징 처리 결과를 모델에 추가
 		model.addAttribute("cpage", cpage);
 		model.addAttribute("startNavi", startNavi);
 		model.addAttribute("endNavi", endNavi);
@@ -146,52 +145,82 @@ public class AttendanceController {
 	// 부서별 근태현황 (관리자)
 	@RequestMapping("/attendanceDept")
 	public String attendanceDept(@RequestParam(value = "deptTitle", defaultValue = "인사부") String deptTitle,
-			@RequestParam(value = "week", required = false) String week, Model model) {
+			@RequestParam(value = "week", required = false) String week, @RequestParam(defaultValue = "1") int cpage,
+			Model model) {
+
 		String empNo = (String) session.getAttribute("loginID");
 
-		// 부서 리스트 가져오기
 		List<DeptDTO> departments = service.getDepartments();
 		model.addAttribute("departments", departments);
 
 		EmployeeDTO employee = service.employeeInfo(empNo);
 
-		// 날짜 계산
+		// 날짜 계산 (해당 주의 시작일과 종료일 설정)
 		LocalDate startDate;
 		LocalDate endDate;
 
+		// 주간 시작일이 요청 파라미터에 있는 경우 해당 주의 시작일 설정
 		if (week != null) {
 			startDate = LocalDate.parse(week, DateTimeFormatter.ISO_DATE);
 		} else {
+			// 그렇지 않으면 현재 주의 월요일을 시작일로 설정
 			startDate = LocalDate.now().with(DayOfWeek.MONDAY);
 		}
 
+		// 해당 주의 종료일을 토요일로 설정
 		endDate = startDate.with(DayOfWeek.SATURDAY);
 
 		// 이전 주와 다음 주의 날짜 계산
 		LocalDate previousWeek = startDate.minusWeeks(1);
 		LocalDate nextWeek = startDate.plusWeeks(1);
 
-		// 디버깅용 출력
-		System.out.println("deptTitle: " + deptTitle);
-		System.out.println("startDate: " + startDate);
-		System.out.println("endDate: " + endDate);
+		// 부서의 총 직원 수를 가져옴
+		int recordTotalCount = service.getDeptEmployeeCount(deptTitle);
+		System.out.println("레코드 토탈 카운트 :" + recordTotalCount);
+		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
+		System.out.println("레코드 카운트 펄 페이지 :" + recordCountPerPage);
+		int naviCountPerPage = AttendanceConfig.naviCountPerPage;
+		System.out.println("네비 카운트 펄 페이지 :" + naviCountPerPage);
 
-		List<Map<String, Object>> attendanceData = service.deptAtd(deptTitle, Date.valueOf(startDate),
-				Date.valueOf(endDate));
+		// 전체 페이지 수 계산
+		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
 
-		// attendanceData 출력
-		System.out.println("attendanceData size: " + attendanceData.size());
-		for (Map<String, Object> attendanceItem : attendanceData) {
-			System.out.println("Attendance Item: " + attendanceItem);
+		// 현재 페이지 번호가 총 페이지 수를 넘지 않도록 설정
+		if (cpage > pageTotalCount) {
+			cpage = pageTotalCount;
 		}
 
-		// 모델에 데이터 추가
+		// 페이지 네비게이션의 시작 번호와 종료 번호 계산
+		int startNavi = ((cpage - 1) / naviCountPerPage) * naviCountPerPage + 1;
+		int endNavi = startNavi + naviCountPerPage - 1;
+
+		// 종료 번호가 총 페이지 수를 넘지 않도록 조정
+		if (endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+
+		// 이전 페이지와 다음 페이지의 필요 여부 결정
+		boolean needPrev = startNavi > 1;
+		boolean needNext = endNavi < pageTotalCount;
+
+		// 현재 페이지에서 조회할 데이터의 시작과 끝 인덱스 계산
+		int start = (cpage - 1) * recordCountPerPage + 1;
+		int end = cpage * recordCountPerPage;
+
+		List<Map<String, Object>> attendanceData = service.deptAtd(deptTitle, Date.valueOf(startDate),
+				Date.valueOf(endDate), start, end);
+
 		model.addAttribute("attendanceData", attendanceData);
 		model.addAttribute("deptTitle", deptTitle);
 		model.addAttribute("startDate", startDate);
 		model.addAttribute("endDate", endDate);
 		model.addAttribute("previousWeek", previousWeek);
 		model.addAttribute("nextWeek", nextWeek);
+		model.addAttribute("cpage", cpage);
+		model.addAttribute("startNavi", startNavi);
+		model.addAttribute("endNavi", endNavi);
+		model.addAttribute("needPrev", needPrev);
+		model.addAttribute("needNext", needNext);
 		model.addAttribute("employee", employee);
 
 		return "Admin/Attendance/attendanceDept";

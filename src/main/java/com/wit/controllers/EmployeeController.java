@@ -93,7 +93,7 @@ public class EmployeeController {
 		EmployeeDTO employee = service.login(emp_no, pw);
 		Map<String, Object> response = new HashMap<>();
 		if (employee != null) {
-			// 세션에 로그인 ID 저장
+
 			session.setAttribute("loginID", emp_no);
 
 			// 첫 로그인시 추가 정보 입력을 위한 코드

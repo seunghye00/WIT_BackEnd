@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>메인 페이지</title>
+<title>Wit Works</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <script
@@ -33,8 +33,8 @@
 			<div class="contents">
 				<div class="left">
 					<div class="leftTop">
-						<span class="main_profile"> <img src="/img/푸바오.png"
-							alt="프로필 사진" class="profileImg">
+						<span class="main_profile"> <img src="${employee.photo}"
+							alt="프로필 이미지" class="profileImg">
 						</span>
 						<div class="dept-role">${employee.dept_code}
 							${employee.role_code}</div>
@@ -207,29 +207,29 @@
 				</div>
 				<div class="right">
 					<div class="rightTop">
-						<a href="/eApproval/home">
-							전자 결재&nbsp;<i class='bx bx-home' style='color: #558bcf'></i> 
+						<a href="/eApproval/home"> 전자 결재&nbsp;<i class='bx bx-home'
+							style='color: #558bcf'></i>
 						</a>
 						<div class="eApprBox">
 							<div class="eApprRows">
 								<div class="eApprCols">
-									결재 대기&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
-									<span class="docuNum">${todoNum}</span>
+									결재 대기&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i> <span class="docuNum">${todoNum}</span>
 								</div>
 								<div class="eApprCols">
-									참조&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i> 
-									<span class="docuNum">${refeNum}</span>
-								</div>	
+									참조&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i> <span class="docuNum">${refeNum}</span>
+								</div>
 							</div>
 							<div class="eApprRows">
 								<div class="eApprCols">
-									기안 진행중&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
-									<span class="docuNum">${apprNum}</span>
+									기안 진행중&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i> <span class="docuNum">${apprNum}</span>
 								</div>
 								<div class="eApprCols">
-									임시 저장&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
-									<span class="docuNum">${saveNum}</span>
-								</div>	
+									임시 저장&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i> <span class="docuNum">${saveNum}</span>
+								</div>
 							</div>
 						</div>
 					</div>
