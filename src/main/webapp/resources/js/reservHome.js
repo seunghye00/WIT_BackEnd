@@ -188,7 +188,7 @@ $('#updateGuideLines').on('click', function(){
 });
 
 $('#addRoomList').on('click', function (){
-	$('.addTargetModal').css('display', 'flex');
+	$('#addRoomModal').show();
 });
 
 $('#addRoom').on('click', function(){
@@ -223,13 +223,12 @@ function handleOnInput(e, maxLength) {
 }
 
 $('#addVehicleList').on('click', function (){
-	$('.addTargetModal').css('display', 'flex');
+	$('#addVehicleModal').show();
 });
 
 	
 $('.closeModal').on('click', function(){
-	console.log('test');
-	$('.addTargetModal').hide();
+	location.reload();
 });
 
 $('#addVehicle').on('click', function(){
@@ -247,4 +246,18 @@ $('#addVehicle').on('click', function(){
 	}
 		
 	$('#addVehicleForm').submit();
+});
+
+$('.rollBack').on('click', function(){
+	location.reload();
+});
+
+// 모달 외부 클릭 시 닫기
+$(window).click(function(event) {
+	if ($(event.target).is($('#addRoomForm')[0])) {
+		location.reload();
+	}
+	if ($(event.target).is($('#addVehicleForm')[0])) {
+		location.reload();
+	}
 });

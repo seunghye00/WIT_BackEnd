@@ -32,8 +32,8 @@
 			<div class="contents">
 				<div class="left">
 					<div class="leftTop">
-						<span class="main_profile"> <img src="/img/푸바오.png"
-							alt="프로필 사진" class="profileImg">
+						<span class="main_profile"> <img src="${employee.photo}"
+							alt="프로필 이미지" class="profileImg">
 						</span>
 						<div class="dept-role">${employee.dept_code}
 							${employee.role_code}</div>
@@ -212,22 +212,30 @@
 						<div class="eApprBox">
 							<div class="eApprRows">
 								<div class="eApprCols">
+								<a href="/eApproval/apprList?type=todo&cPage=1">
 									결재 대기&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
 									<span class="docuNum">${todoNum}</span>
+								</a>
 								</div>
 								<div class="eApprCols">
+								<a href="/eApproval/privateList?type=view&cPage=1">
 									참조&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i> 
 									<span class="docuNum">${refeNum}</span>
+								</a>
 								</div>	
 							</div>
 							<div class="eApprRows">
 								<div class="eApprCols">
+								<a href="/eApproval/privateList?type=write&cPage=1">
 									기안 진행중&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
 									<span class="docuNum">${apprNum}</span>
+								</a>
 								</div>
 								<div class="eApprCols">
+								<a href="/eApproval/privateList?type=save&cPage=1">
 									임시 저장&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
 									<span class="docuNum">${saveNum}</span>
+								</a>
 								</div>	
 							</div>
 						</div>

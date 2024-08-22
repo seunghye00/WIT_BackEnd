@@ -33,11 +33,18 @@
 		where r.room_seq = #{roomSeq}
 	</select>
 	
+	<!-- 회의실 예약 가능 여부를 조회하기 위한 쿼리문 -->
+	<select id="getRoomStatus" resultType="String">
+		select status from meeting_room 
+		where 
+			room_seq = #{roomSeq}
+	</select>
+	
 	<!-- 회의실 예약 시간이 겹치는 지 확인하기 위한 쿼리문 -->
 	<select id="checkBooking" resultType="int">
 		select count(*) from room_booking 
 		where 
-			room_seq = #{room_seq} and
+			room_seq = #{room_seq} and 
 			( (start_date between #{start_date} and #{end_date}) or
 			 (end_date between #{start_date} and #{end_date}) or
 			 (start_date &lt;= #{start_date} and end_date >= #{end_date}) )

@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<div id="addVehicleModal" class="modal">
 <form id="addVehicleForm" action="/reservation/admin/add?target=vehicle" method="post">
-<div id="addVehicleModal" class="addTargetModal">
+<div class="modalContent addTargetModal">
 	<h1>
 		차량 추가<span class="closeModal">&times</span>
 	</h1>
@@ -30,3 +31,4 @@
 	</div>
 </div>
 </form>
+</div>

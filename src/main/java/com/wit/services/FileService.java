@@ -99,4 +99,9 @@ public class FileService {
 	public List<DocuFilesDTO> getList(int docuSeq) throws Exception {
 		return docuDao.getList(docuSeq);
 	}
+
+	// 해당 파일 조회
+	public DocuFilesDTO getFileBySeq(int fileSeq) {
+		return docuDao.getFileBySeq(fileSeq);
+	}
 }

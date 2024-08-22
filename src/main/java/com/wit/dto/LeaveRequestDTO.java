@@ -6,6 +6,8 @@ import java.sql.Date;
 public class LeaveRequestDTO {
 	private int document_seq;
 	private String leave_type;
+	private String startDate;
+	private String endDate;
 	private Date start_date;
 	private Date end_date;
 	private String start_day_checked;
@@ -27,6 +29,22 @@ public class LeaveRequestDTO {
 
 	public String getLeave_type() {
 		return leave_type;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	public void setLeave_type(String leave_type) {
@@ -113,12 +131,15 @@ public class LeaveRequestDTO {
 		this.reason = reason;
 	}
 
-	public LeaveRequestDTO(int document_seq, String leave_type, Date start_date, Date end_date,
-			String start_day_checked, String start_day_am_checked, String start_day_pm_checked, String end_day_checked,
-			String end_day_am_checked, String end_day_pm_checked, float request_leave_days, String reason) {
+	public LeaveRequestDTO(int document_seq, String leave_type, String startDate, String endDate, Date start_date,
+			Date end_date, String start_day_checked, String start_day_am_checked, String start_day_pm_checked,
+			String end_day_checked, String end_day_am_checked, String end_day_pm_checked, float request_leave_days,
+			String reason) {
 		super();
 		this.document_seq = document_seq;
 		this.leave_type = leave_type;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.start_date = start_date;
 		this.end_date = end_date;
 		this.start_day_checked = start_day_checked;

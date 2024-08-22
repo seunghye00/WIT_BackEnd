@@ -22,7 +22,6 @@
 					<div>
 						<input type="date" id="eStartDate" class="startDate dateInput" readonly>&nbsp;&nbsp;
 						<input type="time" id="eStartTime" class="startDate dateInput" readonly>&nbsp;&nbsp;~&nbsp;&nbsp;
-						<input type="date" id="eEndDate" class="endDate dateInput" readonly>&nbsp;&nbsp;
 						<input type="time" id="eEndTime" class="endDate dateInput" readonly>
 					</div></li>
 				<li><span>장소</span>
