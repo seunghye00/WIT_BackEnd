@@ -59,8 +59,14 @@
 					</div>
 				</div>
 				<div class="center">
-					<div class="boardList">
-						<div class="notiList">
+												<div class="mainTitle"><i class='bx bx-pin'
+												style="color:#fff; transform:rotate(330deg);"></i> BOARD</div>
+										<div class="boardList">
+											<div class="notiList">
+												<div class="titleTxt">
+													<img src="/resources/img/fire.jpg" alt="">
+													<span>자유게시판 인기글</span>
+												</div>
 							<div class="rows notiHeader">
 								<div class="cols boardSeq">
 									<span>자유 게시판</span>

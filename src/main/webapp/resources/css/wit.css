@@ -2892,11 +2892,11 @@
 	top: -5px;
 }
 
-.week_status{
+.week_status {
 	top: 7%;
 }
 
-.vacation_status{
+.vacation_status {
 	top: 8%;
 	font-size: 18px;
 }
@@ -2931,7 +2931,7 @@
 	display: flex;
 	padding: 10px 0;
 	border-bottom: 1px solid #ddd;
-/* 	height: 55px; */
+	/* 	height: 55px; */
 	align-items: center;
 	justify-content: center;
 }
@@ -3112,15 +3112,18 @@
 
 /* 모달창 배경 */
 .modalBack {
-    display: none; /* 기본적으로 숨김 */
-    position: fixed;
-    z-index: 1; /* 모달이 모든 요소 위에 표시되도록 */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.1); /* 배경색 투명도 */
+	display: none;
+	/* 기본적으로 숨김 */
+	position: fixed;
+	z-index: 1;
+	/* 모달이 모든 요소 위에 표시되도록 */
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.1);
+	/* 배경색 투명도 */
 }
 
 /* 버튼 */
@@ -3314,6 +3317,7 @@ span.return {
 	color: #fff;
 	padding: 5px;
 }
+
 .eApproval .docuList .listBox.apprDocuList .rows:not(.listHeader) .cols:last-child,
 .eApproval .docuList .listBox.leaveDocuList .rows:not(.listHeader) .cols:last-child,
 .eApproval .docuList .listBox.latenessDocuList .rows:not(.listHeader) .cols:last-child,
@@ -4050,7 +4054,8 @@ button:nth-child(4) img {
 	background-color: #fff;
 	border-radius: 10px;
 	font-size: 18px;
-	margin: 15% auto; /* 화면 중앙에 위치 */
+	margin: 15% auto;
+	/* 화면 중앙에 위치 */
 	width: 400px;
 	height: 260px;
 	padding: 30px 25px;
@@ -4115,7 +4120,8 @@ button:nth-child(4) img {
 	background-color: #fff;
 	border-radius: 10px;
 	font-size: 18px;
-	margin: 15% auto; /* 화면 중앙에 위치 */
+	margin: 15% auto;
+	/* 화면 중앙에 위치 */
 	width: 753px;
 	height: 435px;
 	padding: 30px 25px;
@@ -4959,7 +4965,8 @@ button:nth-child(4) img {
 	color: #dc3545;
 }
 
-#addRoomModal form, #addVehicleModal form {
+#addRoomModal form,
+#addVehicleModal form {
 	height: 100%;
 }
 
@@ -5097,19 +5104,19 @@ button:nth-child(4) img {
 
 .modal#reservModal .modalContent {
 	height: 66%;
-    top: 17vh;
+	top: 17vh;
 }
 
 .modal#addRoomModal .modalContent {
 	width: 24%;
-    height: 58%;
-    top: 20vh;
+	height: 58%;
+	top: 20vh;
 }
 
 .modal#addVehicleModal .modalContent {
 	width: 24%;
-    height: 49%;
-    top: 24vh;
+	height: 49%;
+	top: 24vh;
 }
 
 .modalContent.calendarCont {
