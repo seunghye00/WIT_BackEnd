@@ -2713,7 +2713,7 @@
 }
 
 .vacation_container {
-	width: 35%;
+	width: 30%;
 	border-radius: 10px;
 	position: fixed;
 	top: 20%;
@@ -2741,7 +2741,7 @@
 	display: flex;
 	padding: 10px 0;
 	border-bottom: 1px solid #ddd;
-	height: 55px;
+/* 	height: 55px; */
 	align-items: center;
 	justify-content: center;
 }

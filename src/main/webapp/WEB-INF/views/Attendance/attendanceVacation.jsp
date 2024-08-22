@@ -109,7 +109,8 @@
 									<span>일수</span>
 								</div>
 							</div>
-							<c:forEach var="request" items="${leaveRequests}" varStatus="status">
+							<c:forEach var="request" items="${leaveRequests}"
+								varStatus="status">
 								<div class="vacation_row">
 									<div class="vacation_col">${status.count}</div>
 									<div class="vacation_col">${request.leave_type}</div>
@@ -123,19 +124,19 @@
 					<div class="pagination">
 						<!-- 이전 페이지로 이동 -->
 						<a
-							href="/annualLeave/attendance_vacation?cpage=${cpage > 1 ? cpage - 1 : 1}"
+							href="/annualLeave/attendanceVacation?cpage=${cpage > 1 ? cpage - 1 : 1}"
 							class="prev"> <i class='bx bx-chevron-left'></i>
 						</a>
 
 						<!-- 페이지 번호 -->
 						<c:forEach var="i" begin="${startNavi}" end="${endNavi}">
-							<a href="/annualLeave/attendance_vacation?cpage=${i}"
+							<a href="/annualLeave/attendanceVacation?cpage=${i}"
 								class="${i == cpage ? 'active' : ''}">${i}</a>
 						</c:forEach>
 
 						<!-- 다음 페이지로 이동 -->
 						<a
-							href="/annualLeave/attendance_vacation?cpage=${cpage < pageTotalCount ? cpage + 1 : pageTotalCount}"
+							href="/annualLeave/attendanceVacation?cpage=${cpage < pageTotalCount ? cpage + 1 : pageTotalCount}"
 							class="next"> <i class='bx bx-chevron-right'></i>
 						</a>
 					</div>

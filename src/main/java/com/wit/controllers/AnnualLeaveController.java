@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.wit.services.AnnualLeaveService;
 import com.wit.commons.AttendanceConfig;
-import com.wit.commons.AttendanceVactionConfig;
 import com.wit.dto.AnnualLeaveDTO;
 import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
@@ -45,9 +44,9 @@ public class AnnualLeaveController {
 		int recordTotalCount = service.annualLeaveRecordCount(empNo);
 
 		// 페이징 처리 로직
-		int recordCountPerPage = AttendanceVactionConfig.recordCountPerPage;
+		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
 		System.out.println("레코드 카운트 펄페이지 : " + recordCountPerPage);
-		int naviCountPerPage = AttendanceVactionConfig.naviCountPerPage;
+		int naviCountPerPage = AttendanceConfig.naviCountPerPage;
 		System.out.println("네비 카운트 펄페이지 : " + naviCountPerPage);
 
 		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
@@ -59,6 +58,8 @@ public class AnnualLeaveController {
 
 		int startNavi = ((cpage - 1) / naviCountPerPage) * naviCountPerPage + 1;
 		int endNavi = startNavi + naviCountPerPage - 1;
+		System.out.println("스타트 : " + startNavi);
+		System.out.println("엔드 : " + endNavi);
 
 		if (endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
@@ -86,10 +87,8 @@ public class AnnualLeaveController {
 			@RequestParam(value = "searchTxt", required = false) String searchTxt,
 			@RequestParam(defaultValue = "1") int cpage, Model model) {
 
-		// 로그인한 직원의 ID를 세션에서 가져오기
 		String empNo = (String) session.getAttribute("loginID");
 
-		// 직원 정보 조회
 		EmployeeDTO employee = service.employeeInfo(empNo);
 		model.addAttribute("employee", employee);
 
