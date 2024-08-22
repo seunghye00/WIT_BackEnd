@@ -2705,11 +2705,12 @@
 }
 
 .week_status{
-	top: 10%;
+	top: 7%;
 }
 
 .vacation_status{
-	top: 9%;
+	top: 8%;
+	font-size: 18px;
 }
 
 .vacation_container {
@@ -5046,4 +5047,3 @@ span.return {
 	color: #dc3545;
 	font-size: 16px;
 	padding: 5px 9px;
-}
