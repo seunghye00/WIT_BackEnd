@@ -1174,7 +1174,7 @@
 .modal {
 	display: none;
 	position: fixed;
-	z-index: 1;
+	z-index: 5;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -3114,7 +3114,8 @@ span.return {
 }
 .eApproval .docuList .listBox.apprDocuList .rows:not(.listHeader) .cols:last-child,
 .eApproval .docuList .listBox.leaveDocuList .rows:not(.listHeader) .cols:last-child,
-.eApproval .docuList .listBox.latenessDocuList .rows:not(.listHeader) .cols:last-child {
+.eApproval .docuList .listBox.latenessDocuList .rows:not(.listHeader) .cols:last-child,
+.eApproval .docuList .listBox.viewList .rows:not(.listHeader) .cols:last-child {
 	padding-left: 55px;
 	justify-content: flex-start;
 }
@@ -3162,7 +3163,6 @@ span.return {
 	padding: 20px;
 	overflow-y: auto;
 	text-align: center;
-	z-index: 10;
 }
 
 .eApprWrite .document .choiBox .refeModal::-webkit-scrollbar {
@@ -4430,6 +4430,10 @@ span.return {
 
 /* 승혜 & 원희 css start */
 /* 예약 관리 메인 화면 */
+.reservation.reservHome {
+	gap: 10px;
+}
+
 .reservation .reservList {
 	flex: 9;
 	display: flex;
@@ -4638,7 +4642,7 @@ span.return {
 
 #roomInfo:checked ~.infoBox, #vehicleInfo:checked ~.infoBox {
 	display: block;
-	z-index: 10000;
+	z-index: 2;
 }
 
 /* 차량 & 회의실 관리 페이지 */
@@ -4647,6 +4651,7 @@ span.return {
 	flex: 1;
 	flex-direction: column;
 	gap: 10px;
+	padding: 0 30px;
 }
 
 .reservationControll .reservList .toolBar {
@@ -5087,3 +5092,4 @@ span.return {
 	color: #dc3545;
 	font-size: 16px;
 	padding: 5px 9px;
+}
