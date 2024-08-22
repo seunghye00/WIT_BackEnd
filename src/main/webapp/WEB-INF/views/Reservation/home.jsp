@@ -25,7 +25,7 @@
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
 			<div class="contents">
 				<%@ include file="/WEB-INF/views/Reservation/commons/sideToggle.jsp"%>
-				<div class="sideContents reservation">
+				<div class="sideContents reservation reservHome">
 					<div class="mainTitle">예약 관리 홈</div>
 					<div class="reservList">
 						<div class="subTitle">나의 예약 현황</div>
