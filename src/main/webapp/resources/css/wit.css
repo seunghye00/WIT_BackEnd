@@ -4135,6 +4135,9 @@ button:nth-child(4) img {
 	top: -3px;
 	cursor: pointer;
 }
+.compCalendar{
+	padding-top: 30px;
+}
 
 /* 날짜 박스 눌렀을 시 */
 .modalClose {
@@ -5003,3 +5006,36 @@ button:nth-child(4) img {
 }
 
 /* 승혜 & 원희 css end */
+
+/* 메인 페이지 전자 결재 영역 */
+.rightTop .eApprBox {
+	height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.rightTop .eApprBox .eApprRows {
+	flex: 1;
+	display: flex;
+}
+
+.rightTop .eApprBox .eApprRows:first-child {
+    border-bottom: 1px solid #c1c1c1;
+}
+
+.rightTop .eApprBox .eApprRows .eApprCols {
+	flex: 1;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rightTop .eApprBox .eApprRows .eApprCols:first-child {
+	border-right: 1px solid #c1c1c1;
+}
+
+.rightTop .eApprBox .eApprRows .eApprCols .docuNum {
+	color: #dc3545;
+	font-size: 16px;
+	padding: 5px 9px;
+}

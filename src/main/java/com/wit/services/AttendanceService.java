@@ -91,11 +91,11 @@ public class AttendanceService {
 		}
 
 		// 이미 퇴근 기록이 있는지 확인
-		if (existingRecord.getEnd_time() != null && !existingRecord.getEnd_time().trim().isEmpty()) {
-			response.put("message", "이미 퇴근 기록이 있습니다.");
-			response.put("endTime", existingRecord.getEnd_time());
-			return response;
-		}
+//		if (existingRecord.getEnd_time() != null && !existingRecord.getEnd_time().trim().isEmpty()) {
+//			response.put("message", "이미 퇴근 기록이 있습니다.");
+//			response.put("endTime", existingRecord.getEnd_time());
+//			return response;
+//		}
 
 		// 현재 시간을 HH:mm 형식으로 포맷
 		String endTime = now.toLocalTime().format(timeFormatter);
@@ -206,13 +206,20 @@ public class AttendanceService {
 	}
 
 	// 부서별 근태현황(관리자)
-	public List<Map<String, Object>> deptAtd(String deptTitle, Date startDate, Date endDate) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("deptTitle", deptTitle);
-		params.put("startDate", startDate);
-		params.put("endDate", endDate);
-		return dao.deptAtd(params);
+	public List<Map<String, Object>> deptAtd(String deptTitle, Date startDate, Date endDate, int start, int end) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("deptTitle", deptTitle);
+	    params.put("startDate", startDate);
+	    params.put("endDate", endDate);
+	    params.put("start", start);
+	    params.put("end", end);
+	    return dao.deptAtd(params);
 	}
+
+    // 부서의 총 직원 수를 가져옴
+    public int getDeptEmployeeCount(String deptTitle) {
+        return dao.getDeptEmployeeCount(deptTitle);
+    }
 
 	// 부서 조회
 	public List<DeptDTO> getDepartments() {

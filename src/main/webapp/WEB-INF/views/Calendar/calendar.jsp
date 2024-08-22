@@ -138,24 +138,29 @@
 							</li>
 						</ul>
 					</div>
-					<div style="padding: 60px;"></div>					
-					    <hr>					    
-					    <ul class="company">
-					        <!-- 전사 일정 -->
-					        <c:forEach var="cl" items="${clist}">
-					            <li>
-					                <input type="checkbox" id="calendar_${cl.calendar_seq}" name="calendar_${cl.calendar_seq}">
-					                <label for="calendar_${cl.calendar_seq}">${cl.calendar_name}</label>
-					            </li>
-					        </c:forEach>
-					        <!-- 임원 일정 -->
-					        <c:forEach var="el" items="${elist}">
-					            <li>
-					                <input type="checkbox" id="calendar_${el.calendar_seq}" name="calendar_${el.calendar_seq}">
-					                <label for="calendar_${el.calendar_seq}">${el.calendar_name}</label>
-					            </li>
-					        </c:forEach>
-					    </ul>
+					<div class="addressListGroup compCalendar">
+						<ul class="GroupList">
+							<li class="toggleItem">
+								<h3 class="toggleTit active">회사 캘린더</h3>
+								<ul class="subList calendarList active">
+									<!-- 전사 일정 -->
+									<c:forEach var="cl" items="${clist}">
+					            		<li>
+					                		<input type="checkbox" id="calendar_${cl.calendar_seq}" name="calendar_${cl.calendar_seq}">
+					                		<label for="calendar_${cl.calendar_seq}">${cl.calendar_name}</label>
+					            		</li>
+					        		</c:forEach>
+					        		<!-- 임원 일정 -->
+					        		<c:forEach var="el" items="${elist}">
+					            		<li>
+					                		<input type="checkbox" id="calendar_${el.calendar_seq}" name="calendar_${el.calendar_seq}">
+					                		<label for="calendar_${el.calendar_seq}">${el.calendar_name}</label>
+					            		</li>
+					        		</c:forEach>
+								</ul>
+							</li>
+						</ul>
+					</div>				
 					</div>
 				<div class="sideContents calendarBox">
 					<div id="calendar" class="calendar"></div>
@@ -250,7 +255,7 @@
 
 	<!-- 부서 캘린더 event 클릭 시 모달 -->
 	<div id="deptEventModal" class="modal">
-		<div class="modalContent calendarCont">
+		<div class="modalContent modalContent">
 			<h1>
 				일정 내용<span class="modalClose" id="eventModalClose">&times;</span>
 			</h1>
