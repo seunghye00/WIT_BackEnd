@@ -18,13 +18,13 @@ import com.wit.dto.DocuFilesDTO;
 
 @Service
 public class FileService {
-	
+
 	@Autowired
 	private BoardFilesDAO fdao;
-	
+
 	@Autowired
 	private BoardDAO bdao;
-	
+
 	@Autowired
 	private DocuFilesDAO docuDao;
 
@@ -36,7 +36,7 @@ public class FileService {
 			realPathFile.mkdirs();
 		}
 		// 게시물 등록
-		int parentSeq= bdao.write(dto);
+		int parentSeq = bdao.write(dto);
 		for (MultipartFile file : files) {
 			if (file.getSize() == 0) {
 				continue;
@@ -47,8 +47,27 @@ public class FileService {
 			fdao.upload(new BoardFilesDTO(0, parentSeq, oriName, sysName));
 		}
 	}
+
+	// 썸머노트 이미지 파일 등록
+	public String uploadImages(int parentSeq, String realPath, MultipartFile file) throws Exception {
+		File realPathFile = new File(realPath);
+		if (!realPathFile.exists()) {
+			realPathFile.mkdirs();
+		}
+		// 게시물 등록
+
+		if (file.getSize() != 0) {
+			String oriName = file.getOriginalFilename();
+			String sysName = UUID.randomUUID() + "_" + oriName;
+			file.transferTo(new File(realPath + "/" + sysName));
+			fdao.upload(new BoardFilesDTO(0, parentSeq, oriName, sysName));
+			return sysName;
+		}
+		return null;
+	}
+
 	// 파일 개별 삭제
-	public void delete(int[] filesSeq) throws Exception{
+	public void delete(int[] filesSeq) throws Exception {
 		fdao.delete(filesSeq);
 	}
 
@@ -75,7 +94,7 @@ public class FileService {
 	public List<BoardFilesDTO> detailFile(int board_seq) throws Exception {
 		return fdao.detailFile(board_seq);
 	}
-	
+
 	// 전자 결재 문서에 첨부된 파일 조회
 	public List<DocuFilesDTO> getList(int docuSeq) throws Exception {
 		return docuDao.getList(docuSeq);
