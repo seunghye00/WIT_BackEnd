@@ -2662,31 +2662,42 @@
 	margin: auto;
 }
 
-/* .Attendance {
-    gap: 10px;
-} */
-.Attendance_sections, .Attendance_vacation {
+.Attendance_sections {
+	display: flex;
+	width: 65%;
+	margin-bottom: 10px;
+	gap: 150px;
+	position: fixed;
+	top: 21%;
+}
+
+.Attendance_vacation {
 	display: flex;
 	width: 100%;
 	justify-content: space-between;
 	margin-bottom: 10px;
 	gap: 150px;
-	/* padding: 35px; */
 	position: relative;
-	top: -75px;
+	top: -55%;
 }
 
 .status_container, .hours_container, .week_status, .vacation_status {
 	width: 100%;
-	/* padding: 20px; */
 	border-radius: 10px;
 	position: relative;
 	top: -5px;
 }
 
+.week_status{
+	top: 10%;
+}
+
+.vacation_status{
+	top: -30%;
+}
+
 .vacation_container {
 	width: 35%;
-	/* padding: 20px; */
 	border-radius: 10px;
 }
 
@@ -2748,7 +2759,7 @@
 	width: 70%;
 	border-radius: 10px;
 	position: fixed;
-	top: 20%;
+	top: 21%;
 }
 
 .Attendance h2 {
