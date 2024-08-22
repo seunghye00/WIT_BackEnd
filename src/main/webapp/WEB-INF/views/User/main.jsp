@@ -44,19 +44,31 @@
 						<h3 id="clock"></h3>
 						<div class="attendance-btn">
 							<div class="start">
-								<button type="button" id="start_button"><i class="bx bxs-id-card"></i>출근</button>
+								<button type="button" id="start_button">
+									<i class="bx bxs-id-card"></i>출근
+								</button>
 								<span class="check-time" id="start_time_display">00:00</span>
 							</div>
 							<div class="end">
-								<button type="button" id="end_button"><i class='bx bxs-home'></i>퇴근</button>
+								<button type="button" id="end_button">
+									<i class='bx bxs-home'></i>퇴근
+								</button>
 								<span class="check-time" id="end_time_display">00:00</span>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="center">
+					<div class="mainTitle">
+						<i class='bx bx-pin'
+							style="color: #fff; transform: rotate(330deg);"></i> BOARD
+					</div>
 					<div class="boardList">
 						<div class="notiList">
+							<div class="titleTxt">
+								<img src="/resources/img/fire.jpg" alt=""> <span>자유게시판
+									인기글</span>
+							</div>
 							<div class="rows notiHeader">
 								<div class="cols boardSeq">
 									<span>자유 게시판</span>
@@ -88,15 +100,16 @@
 							<c:forEach var="board" items="${boardList}" varStatus="status">
 								<div class="rows notiConts">
 									<div class="cols boardSeq">
-										<span>${status.index + 1}</span>
+										<span class="bseq-${status.index + 1}">${status.index +
+																1}</span>
 									</div>
 									<div class="cols boardTitle" onclick="toDetailBoard(this)"
 										data-seq="${board.board_seq}">
-										<span>${board.title}</span>
+										<span class="title">${board.title}</span>
 									</div>
 									<div class="cols boardWriter">
 										<!-- 여기서 조인해서 emp_no 자리에 닉네임이 나오게끔 했어! -->
-										<span>${board.emp_no}</span>
+										<span class="title">${board.emp_no}</span>
 									</div>
 									<c:choose>
 										<c:when test="${report=='true'}">
@@ -129,10 +142,15 @@
 								</div>
 							</c:forEach>
 						</div>
+
 						<div class="notiList">
+							<div class="titleTxt">
+								<i class='bx bxs-tag-alt' style="margin-right: 5px;"></i> 공지사항
+								인기글
+							</div>
 							<div class="rows notiHeader">
 								<div class="cols boardSeq">
-									<span>공지 게시판</span>
+									<span>No.</span>
 								</div>
 								<div class="cols boardTitle">
 									<span>글 제목</span>
@@ -161,15 +179,16 @@
 							<c:forEach var="board" items="${noticeList}" varStatus="status">
 								<div class="rows notiConts">
 									<div class="cols boardSeq">
-										<span>${status.index + 1}</span>
+										<span class="seq-${status.index + 1}">${status.index +
+																1}</span>
 									</div>
 									<div class="cols boardTitle" onclick="toDetailNotice(this)"
 										data-seq="${board.board_seq}">
-										<span>${board.title}</span>
+										<span class="title">${board.title}</span>
 									</div>
 									<div class="cols boardWriter">
 										<!-- 여기서 조인해서 emp_no 자리에 닉네임이 나오게끔 했어! -->
-										<span>${board.emp_no}</span>
+										<span class="writer">${board.emp_no}</span>
 									</div>
 									<c:choose>
 										<c:when test="${report=='true'}">
@@ -206,37 +225,29 @@
 				</div>
 				<div class="right">
 					<div class="rightTop">
-						<a href="/eApproval/home">
-							전자 결재&nbsp;<i class='bx bx-home' style='color: #558bcf'></i> 
+						<a href="/eApproval/home"> 전자 결재&nbsp;<i class='bx bx-home'
+							style='color: #558bcf'></i>
 						</a>
 						<div class="eApprBox">
 							<div class="eApprRows">
 								<div class="eApprCols">
-								<a href="/eApproval/apprList?type=todo&cPage=1">
-									결재 대기&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
-									<span class="docuNum">${todoNum}</span>
-								</a>
+									결재 대기&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i> <span class="docuNum">${todoNum}</span>
 								</div>
 								<div class="eApprCols">
-								<a href="/eApproval/privateList?type=view&cPage=1">
-									참조&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i> 
-									<span class="docuNum">${refeNum}</span>
-								</a>
-								</div>	
+									참조&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i> <span class="docuNum">${refeNum}</span>
+								</div>
 							</div>
 							<div class="eApprRows">
 								<div class="eApprCols">
-								<a href="/eApproval/privateList?type=write&cPage=1">
-									기안 진행중&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
-									<span class="docuNum">${apprNum}</span>
-								</a>
+									기안 진행중&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i> <span class="docuNum">${apprNum}</span>
 								</div>
 								<div class="eApprCols">
-								<a href="/eApproval/privateList?type=save&cPage=1">
-									임시 저장&nbsp;<i class='bx bx-file bx-flip-horizontal' style='color: #558bcf'></i>
-									<span class="docuNum">${saveNum}</span>
-								</a>
-								</div>	
+									임시 저장&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i> <span class="docuNum">${saveNum}</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -247,53 +258,53 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="overlay"></div>
-	<div id="popup" class="popup">
-		<h2>추가 정보 입력</h2>
-		<form id="insertForm" action="/employee/update_info" method="post">
-			<input type="hidden" name="emp_no" value="${employee.emp_no}">
-			<div class="input-container">
-				<input type="password" name="pw" id="pw" placeholder="비밀번호" required>
-				<span class="valid-check error" id="pwCheck">&#x2716;</span>
-			</div>
-			<label id="resultpw"></label>
-			<div class="input-container">
-				<input type="password" name="checkpw" id="checkpw"
-					placeholder="비밀번호 확인" required> <span
-					class="valid-check error" id="checkpwCheck">&#x2716;</span>
-			</div>
-			<label id="resultcheckpw"></label>
-			<div class="input-container">
-				<input type="text" name="nickname" id="nickname" placeholder="닉네임"
-					required> <span class="valid-check error"
-					id="nicknameCheck">&#x2716;</span>
-			</div>
-			<label id="resultNickname"></label>
-			<button type="button" class="nickname-button" id="checkNickname">중복체크</button>
-			<div class="input-container">
-				<input type="text" name="ssn" id="ssn" placeholder="주민등록번호" required>
-				<span class="valid-check error" id="ssnCheck">&#x2716;</span>
-			</div>
-			<label id="resultSSN"></label>
-			<div class="input-container">
-				<input type="text" name="phone" id="phone" placeholder="휴대폰"
-					required> <span class="valid-check error" id="phoneCheck">&#x2716;</span>
-			</div>
-			<label id="resultPhone"></label>
-			<div class="input-container">
-				<input type="email" name="email" id="email" placeholder="이메일"
-					required> <span class="valid-check error" id="emailCheck">&#x2716;</span>
-			</div>
-			<label id="resultEmail"></label> <input type="text" name="zip_code"
-				id="zip_code" placeholder="우편주소" required readonly>
-			<button type="button" class="address-button" id="postcode">주소
-				찾기</button>
-			<input type="text" name="address" id="address" placeholder="주소"
-				required readonly> <input type="text" name="detail_address"
-				placeholder="상세주소" required>
-			<button type="submit" class="submit-button">입력하기</button>
-		</form>
+	<div class="overlay">
+		<div id="popup" class="popup">
+			<h2>추가 정보 입력</h2>
+			<form id="insertForm" action="/employee/update_info" method="post">
+				<input type="hidden" name="emp_no" value="${employee.emp_no}">
+				<div class="input-container">
+					<input type="password" name="pw" id="pw" placeholder="비밀번호"
+						required> <span class="valid-check error" id="pwCheck">&#x2716;</span>
+				</div>
+				<label id="resultpw"></label>
+				<div class="input-container">
+					<input type="password" name="checkpw" id="checkpw"
+						placeholder="비밀번호 확인" required> <span
+						class="valid-check error" id="checkpwCheck">&#x2716;</span>
+				</div>
+				<label id="resultcheckpw"></label>
+				<div class="input-container">
+					<input type="text" name="nickname" id="nickname" placeholder="닉네임"
+						required> <span class="valid-check error"
+						id="nicknameCheck">&#x2716;</span>
+				</div>
+				<label id="resultNickname"></label>
+				<button type="button" class="nickname-button" id="checkNickname">중복체크</button>
+				<div class="input-container">
+					<input type="text" name="ssn" id="ssn" placeholder="주민등록번호"
+						required> <span class="valid-check error" id="ssnCheck">&#x2716;</span>
+				</div>
+				<label id="resultSSN"></label>
+				<div class="input-container">
+					<input type="text" name="phone" id="phone" placeholder="휴대폰"
+						required> <span class="valid-check error" id="phoneCheck">&#x2716;</span>
+				</div>
+				<label id="resultPhone"></label>
+				<div class="input-container">
+					<input type="email" name="email" id="email" placeholder="이메일"
+						required> <span class="valid-check error" id="emailCheck">&#x2716;</span>
+				</div>
+				<label id="resultEmail"></label> <input type="text" name="zip_code"
+					id="zip_code" placeholder="우편주소" required readonly>
+				<button type="button" class="address-button" id="postcode">주소
+					찾기</button>
+				<input type="text" name="address" id="address" placeholder="주소"
+					required readonly> <input type="text" name="detail_address"
+					placeholder="상세주소" required>
+				<button type="submit" class="submit-button">입력하기</button>
+			</form>
+		</div>
 	</div>
 
 	<script>
@@ -335,10 +346,11 @@
 						var day = days[now.getDay()];
 						// AM/PM 형식으로 시간 표시
 						var options = {
-							hour: 'numeric',
-							minute: 'numeric',
-							second: 'numeric',
-							hour12: true // 12시간 형식 사용, AM/PM 표기
+							hour : 'numeric',
+							minute : 'numeric',
+							second : 'numeric',
+							hour12 : true
+						// 12시간 형식 사용, AM/PM 표기
 						};
 						var time = now.toLocaleTimeString('en-US', options);
 
