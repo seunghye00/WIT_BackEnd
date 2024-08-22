@@ -241,52 +241,53 @@
 		</div>
 	</div>
 
-	<div class="overlay"></div>
-	<div id="popup" class="popup">
-		<h2>추가 정보 입력</h2>
-		<form id="insertForm" action="/employee/update_info" method="post">
-			<input type="hidden" name="emp_no" value="${employee.emp_no}">
-			<div class="input-container">
-				<input type="password" name="pw" id="pw" placeholder="비밀번호" required>
-				<span class="valid-check error" id="pwCheck">&#x2716;</span>
-			</div>
-			<label id="resultpw"></label>
-			<div class="input-container">
-				<input type="password" name="checkpw" id="checkpw"
-					placeholder="비밀번호 확인" required> <span
-					class="valid-check error" id="checkpwCheck">&#x2716;</span>
-			</div>
-			<label id="resultcheckpw"></label>
-			<div class="input-container">
-				<input type="text" name="nickname" id="nickname" placeholder="닉네임"
-					required> <span class="valid-check error"
-					id="nicknameCheck">&#x2716;</span>
-			</div>
-			<label id="resultNickname"></label>
-			<button type="button" class="nickname-button" id="checkNickname">중복체크</button>
-			<div class="input-container">
-				<input type="text" name="ssn" id="ssn" placeholder="주민등록번호" required>
-				<span class="valid-check error" id="ssnCheck">&#x2716;</span>
-			</div>
-			<label id="resultSSN"></label>
-			<div class="input-container">
-				<input type="text" name="phone" id="phone" placeholder="휴대폰"
-					required> <span class="valid-check error" id="phoneCheck">&#x2716;</span>
-			</div>
-			<label id="resultPhone"></label>
-			<div class="input-container">
-				<input type="email" name="email" id="email" placeholder="이메일"
-					required> <span class="valid-check error" id="emailCheck">&#x2716;</span>
-			</div>
-			<label id="resultEmail"></label> <input type="text" name="zip_code"
-				id="zip_code" placeholder="우편주소" required readonly>
-			<button type="button" class="address-button" id="postcode">주소
-				찾기</button>
-			<input type="text" name="address" id="address" placeholder="주소"
-				required readonly> <input type="text" name="detail_address"
-				placeholder="상세주소" required>
-			<button type="submit" class="submit-button">입력하기</button>
-		</form>
+	<div class="overlay">
+		<div id="popup" class="popup">
+			<h2>추가 정보 입력</h2>
+			<form id="insertForm" action="/employee/update_info" method="post">
+				<input type="hidden" name="emp_no" value="${employee.emp_no}">
+				<div class="input-container">
+					<input type="password" name="pw" id="pw" placeholder="비밀번호"
+						required> <span class="valid-check error" id="pwCheck">&#x2716;</span>
+				</div>
+				<label id="resultpw"></label>
+				<div class="input-container">
+					<input type="password" name="checkpw" id="checkpw"
+						placeholder="비밀번호 확인" required> <span
+						class="valid-check error" id="checkpwCheck">&#x2716;</span>
+				</div>
+				<label id="resultcheckpw"></label>
+				<div class="input-container">
+					<input type="text" name="nickname" id="nickname" placeholder="닉네임"
+						required> <span class="valid-check error"
+						id="nicknameCheck">&#x2716;</span>
+				</div>
+				<label id="resultNickname"></label>
+				<button type="button" class="nickname-button" id="checkNickname">중복체크</button>
+				<div class="input-container">
+					<input type="text" name="ssn" id="ssn" placeholder="주민등록번호"
+						required> <span class="valid-check error" id="ssnCheck">&#x2716;</span>
+				</div>
+				<label id="resultSSN"></label>
+				<div class="input-container">
+					<input type="text" name="phone" id="phone" placeholder="휴대폰"
+						required> <span class="valid-check error" id="phoneCheck">&#x2716;</span>
+				</div>
+				<label id="resultPhone"></label>
+				<div class="input-container">
+					<input type="email" name="email" id="email" placeholder="이메일"
+						required> <span class="valid-check error" id="emailCheck">&#x2716;</span>
+				</div>
+				<label id="resultEmail"></label> <input type="text" name="zip_code"
+					id="zip_code" placeholder="우편주소" required readonly>
+				<button type="button" class="address-button" id="postcode">주소
+					찾기</button>
+				<input type="text" name="address" id="address" placeholder="주소"
+					required readonly> <input type="text" name="detail_address"
+					placeholder="상세주소" required>
+				<button type="submit" class="submit-button">입력하기</button>
+			</form>
+		</div>
 	</div>
 
 	<script>
