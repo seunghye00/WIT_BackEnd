@@ -46,9 +46,7 @@
 									<div class="addressListPrivate">
 										<ul class="GroupList">
 											<li class="toggleItem">
-												<h3 class="toggleTit">
-													자유 게시판
-												</h3>
+												<h3 class="toggleTit">자유 게시판</h3>
 												<ul class="subList">
 													<li><a href="/board/list?bookmark=true">북마크한 게시물</a></li>
 													<li><a href="/board/list?report=true">신고한 게시물</a></li>
@@ -61,12 +59,10 @@
 									<div class="addressListPrivate">
 										<ul class="GroupList">
 											<li class="toggleItem">
-												<h3 class="toggleTit">
-													공지 사항
-												</h3>
+												<h3 class="toggleTit">공지 사항</h3>
 												<ul class="subList">
-													<li><a href="/board/list?bookmark=true&boardCode=2">북마크한 게시물</a>
-													</li>
+													<li><a href="/board/list?bookmark=true&boardCode=2">북마크한
+															게시물</a></li>
 
 													<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
 
@@ -81,9 +77,7 @@
 										<div class="addressListGroup">
 											<ul class="GroupList">
 												<li class="toggleItem">
-													<h3 class="reportList">
-														신고 현황
-													</h3>
+													<h3 class="reportList">신고 현황</h3>
 												</li>
 											</ul>
 										</div>
@@ -93,10 +87,10 @@
 								<!--자유게시판 영역-->
 								<div class="sideContents board">
 									<form action="/board/update" method="post" id="fboardUpdate"
-										enctype="multipart/form-data" style="display:none">
-										<input type="hidden" id="hiddenT" name="title" value="${board.title}">
-										<input type="hidden" id="hiddenC" name="contents" value="${board.contents}">
-										<input type="hidden" name="board_seq" value="${board.board_seq}">
+										enctype="multipart/form-data" style="display: none">
+										<input type="hidden" id="hiddenT" name="title" value="${board.title}"> <input
+											type="hidden" id="hiddenC" name="contents" value="${board.contents}"> <input
+											type="hidden" name="board_seq" value="${board.board_seq}">
 										<input type="file" id="file" multiple name="files">
 									</form>
 									<c:choose>
@@ -149,9 +143,7 @@
 											<div class="detailCen" contenteditable="false">${board.contents}
 											</div>
 											<div class="docuFiles" style="display: none;">
-												<label for="file">🔗 파일 선택</label>
-												`
-												<span class="uploadFiles"></span>
+												<label for="file">🔗 파일 선택</label> ` <span class="uploadFiles"></span>
 
 											</div>
 
@@ -160,9 +152,9 @@
 												<!--본인 작성 or 관리자 버튼 보이게-->
 												<c:if test="${board.emp_no eq Nickname || employee.role_code == '사장'}">
 													<button type="button" class="btn btn-outline-success" id="fboardCom"
-														style="display:none">완료</button>
+														style="display: none">완료</button>
 													<button type="button" class="btn btn-ouline-success" id="fboardCan"
-														style="display:none">취소</button>
+														style="display: none">취소</button>
 													<button type="button" class="btn btn-outline-success"
 														id="fboardUpd">수정</button>
 													<button type="button" class="btn btn-outline-success" id="fboardDel"
@@ -181,8 +173,7 @@
 													<div class="fileItem">
 														<a
 															href="/board/download?sysname=${file.sysname}&oriName=${file.oriname}">
-															${file.oriname}
-														</a>
+															${file.oriname} </a>
 
 														<!-- 
 														1. 화면상 파일 삭제하기
@@ -203,7 +194,7 @@
 
 											<!-- 댓글 작성 폼 -->
 											<div class="reply">
-												<form action="/reply/registProc" method="post">
+												<form action="/reply/registProc" method="post" id="replyInsertForm">
 													<div class="replyCont">
 														<textarea class="writeRly" contenteditable="true"
 															name="contents"
@@ -212,7 +203,7 @@
 															value="${board.board_seq}">
 													</div>
 													<div class="replyBtn">
-														<button type="submit" class="btn btn-outline-secondary"
+														<button type="button" class="btn btn-outline-secondary"
 															id="replyInst">작성하기</button>
 													</div>
 												</form>
@@ -228,11 +219,9 @@
 													<div class="replyList">
 														<div class="replyTxt">
 															<!--임시로 푸바오 사진 넣어놈~! -->
-															<span class="myImgBox">
-																<img src="" alt="프로필 사진" class="userImg">
-															</span>
-
-															<span>${reply.emp_no}</span>
+															<span class="myImgBox"> <img src="" alt="프로필 사진"
+																	class="userImg">
+															</span> <span>${reply.emp_no}</span>
 															<div class="replyDate">
 																<fmt:formatDate value="${reply.write_date}"
 																	pattern="yyyy-MM-dd HH:mm" />
@@ -240,8 +229,7 @@
 														</div>
 														<div class="reply">
 															<div class="replyPrint" contenteditable="false">
-																${reply.contents}
-															</div>
+																${reply.contents}</div>
 
 															<div class="replyBtn">
 																<c:if
@@ -261,7 +249,7 @@
 																	<!-- 댓글 삭제 기능 -->
 																	<!--삭제 버튼 이미지 -->
 																	<img src="/resources/img/trash-solid.svg"
-																		alt="Delete" style="cursor:pointer;"
+																		alt="Delete" style="cursor: pointer;"
 																		onclick="submitDeleteForm(${reply.reply_seq});"
 																		class="delRly">
 																	<button style="display: none;"
@@ -296,10 +284,8 @@
 																aria-label="Small select example" name="target">
 																<option value="1" selected>욕설 및 비방</option>
 																<option value="2">스팸 및 광고</option>
-																<option value="3">음란물 및 부적절한 콘텐츠
-																</option>
-															</select>
-															<input type="hidden" name="board_seq"
+																<option value="3">음란물 및 부적절한 콘텐츠</option>
+															</select> <input type="hidden" name="board_seq"
 																value="${board.board_seq}">
 
 														</form>
@@ -386,7 +372,39 @@
 									onInit: function () {
 										// summernote 초기화 후 note-statusbar 요소 제거
 										$('.note-statusbar').remove()
-									}
+									},
+									onImageUpload: function (files) {
+										let file = files[0]
+										let formData = new FormData()
+										formData.append('file', file)
+										$.ajax({
+											url: `/board/uploadImg?boardSeq=-1`, // 이미지를 저장할 서버 URL
+											type: 'POST',
+											data: formData,
+											contentType: false,
+											processData: false,
+											success: function (resp) {
+												console.log(resp)
+												// 서버에서 받은 이미지 URL을 에디터에 삽입
+												$('.detailCen').summernote(
+													'insertImage',
+													`/uploads/board/images/` + resp
+												)
+
+												// 추가적인 정보가 필요하다면, 이를 사용하여 다른 작업 수행
+												//    const width = resp.width
+												//  const height = resp.height
+												// 예: 이미지 크기 조절, 추가 데이터 처리 등
+											},
+											error: function (jqXHR, textStatus, errorThrown) {
+												console.error(
+													'이미지 업로드 실패:',
+													textStatus,
+													errorThrown
+												)
+											},
+										})
+									},
 								}
 							});
 						});
@@ -673,6 +691,17 @@
 							limitReplyLength(this);
 						});
 
+						//댓글 완료시
+						$("#replyInst").on("click", function () {
+							if ($(".writeRly").val().length > 0) {
+								$("#replyInsertForm").submit();
+							}
+							else {
+								alert('댓글 내용을 입력하세요.');
+							}
+
+						})
+
 						// 댓글 수정 시
 						$(document).on('input', '.replyPrint', function () {
 							limitReplyLength(this);
@@ -686,6 +715,11 @@
 								value = $(element).val();
 							} else if ($(element).is('.replyPrint')) {
 								value = $(element).text();
+							}
+
+							if (value.trim().length === 0) {
+								alert('공백만 입력할 수 없습니다.');
+								return;
 							}
 
 							if (value.length > maxLength) {
