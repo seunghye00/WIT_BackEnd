@@ -68,7 +68,6 @@
 					<h2>월간 근태현황</h2>
 					<div class="Attendance_container">
 						<div class="month_status">
-							<h3>월간 근태현황</h3>
 							<div class="month_row month_header">
 								<div class="month_col">
 									<span>근무일</span>
