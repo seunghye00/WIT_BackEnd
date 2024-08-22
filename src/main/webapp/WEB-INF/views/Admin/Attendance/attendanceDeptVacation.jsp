@@ -85,16 +85,14 @@
 					</div>
 					<div class="attendance_table">
 						<div class="header_row">
-							<span>직급</span> <span>이름</span> <span>휴가종류</span> <span>사용기간</span>
-							<span>일수</span>
+							<span>이름</span> <span>휴가종류</span> <span>사용기간</span> <span>일수</span>
 						</div>
 						<c:forEach var="leaveRequest" items="${leaveRequests}">
 							<div class="attendance_row">
-								<span>${leaveRequest.ROLE_CODE}</span> <span>${leaveRequest.NAME}</span>
-								<span>${leaveRequest.LEAVE_TYPE}</span> <span> <fmt:formatDate
-										value="${leaveRequest.START_DATE}" pattern="yyyy-MM-dd" /> ~
-									<fmt:formatDate value="${leaveRequest.END_DATE}"
-										pattern="yyyy-MM-dd" />
+								<span>${leaveRequest.ROLE_CODE} ${leaveRequest.NAME}</span> <span>${leaveRequest.LEAVE_TYPE}</span>
+								<span> <fmt:formatDate value="${leaveRequest.START_DATE}"
+										pattern="yyyy-MM-dd" /> ~ <fmt:formatDate
+										value="${leaveRequest.END_DATE}" pattern="yyyy-MM-dd" />
 								</span> <span>${leaveRequest.REQUEST_LEAVE_DAYS}</span>
 							</div>
 						</c:forEach>
