@@ -76,12 +76,6 @@ public class ChatRoomService {
         dao.addChatRoomMember(memberParams);
     }
     
-    // 채팅방 목록 조회
-    @Transactional
-    public List<Map<String, Object>> getChatRoomsByUserId(String empNo) {
-        return dao.getChatRoomsByUserId(empNo);
-    }
-
     // 채팅방 상세 조회
     @Transactional
     public Map<String, Object> getDetailChatRooms(int chatRoomSeq, String empNo) {

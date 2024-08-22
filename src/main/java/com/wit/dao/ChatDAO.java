@@ -102,4 +102,9 @@ public class ChatDAO {
         int result = mybatis.selectOne("chat.isUserInReadReceivers", params);
         return result == 1;
     }
+    
+    // 특정 사용자가 속한 채팅방 조회
+    public List<Map<String, Object>> getChatRoomsByUserId(String empNo) {
+        return mybatis.selectList("chat.getChatRoomsByUserId", empNo);
+    }
 }

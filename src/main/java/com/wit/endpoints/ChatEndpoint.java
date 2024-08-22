@@ -1,10 +1,12 @@
 package com.wit.endpoints;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -63,6 +65,20 @@ public class ChatEndpoint {
             // 세션을 전체 세션 Set에 추가하고, 사용자 맵에 로그인 ID 매핑
             sessions.add(session);
             sessionUserMap.put(session, loginID);
+            
+            // 사용자가 속한 모든 채팅방의 읽지 않은 메시지 수를 전송
+            List<Map<String, Object>> userChatRooms = cServ.getChatRoomsByUserId(loginID);
+            for (Map<String, Object> chatRoom : userChatRooms) {
+                String chatRoomSeq = chatRoom.get("CHAT_ROOM_SEQ").toString();
+                // BigDecimal을 int로 변환
+                int unreadCount = ((BigDecimal) chatRoom.get("UNREAD_COUNT")).intValue();
+                // sessionChatRoomMap이 올바르게 초기화된 후에만 broadcast
+                if (sessionChatRoomMap.get(session) != null) {
+                    broadcastUnreadCountUpdate(chatRoomSeq, unreadCount);
+                } else {
+                    System.err.println("Warning: sessionChatRoomMap is not initialized for session: " + session.getId());
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             try {
@@ -224,6 +240,49 @@ public class ChatEndpoint {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+            }
+        }
+    }
+    
+    private void broadcastUnreadCountUpdate(String chatRoomSeq, int unreadCount) {
+        if (chatRoomSeq == null) {
+            System.err.println("Error: chatRoomSeq is null");
+            return;
+        }
+
+        JsonObject data = new JsonObject();
+        data.addProperty("type", "unreadCountUpdate");
+        data.addProperty("chatRoomSeq", chatRoomSeq);
+        data.addProperty("unreadCount", unreadCount);
+
+        synchronized (sessions) {
+            if (sessions == null) {
+                System.err.println("Error: sessions is null");
+                return;
+            }
+
+            for (Session client : sessions) {
+                if (client == null) {
+                    System.err.println("Error: client session is null");
+                    continue;
+                }
+
+                String recipientChatRoomSeq = sessionChatRoomMap.get(client);
+                System.out.println("Client session ID: " + client.getId() + ", recipientChatRoomSeq: " + recipientChatRoomSeq);
+
+                if (recipientChatRoomSeq != null && recipientChatRoomSeq.equals(chatRoomSeq)) {
+                    if (client.isOpen()) {
+                        try {
+                            client.getBasicRemote().sendText(data.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.err.println("Error: client is not open. Session ID: " + client.getId());
+                    }
+                } else {
+                    System.err.println("Error: recipientChatRoomSeq does not match or is null. Session ID: " + client.getId());
                 }
             }
         }

@@ -54,7 +54,7 @@ public class ChatRoomController {
     @ResponseBody
     public List<Map<String, Object>> getMyChatRooms() {
         String empNo = (String) session.getAttribute("loginID");
-        return serv.getChatRoomsByUserId(empNo);
+        return chatServ.getChatRoomsByUserId(empNo);
     }
 
     // 채팅방 상세 조회
@@ -97,7 +97,7 @@ public class ChatRoomController {
         }
         return response;
     }
-    
+
     // 예외를 담당하는 메서드 생성
     @ExceptionHandler(Exception.class)
     public String exceptionHandler(Exception e) {

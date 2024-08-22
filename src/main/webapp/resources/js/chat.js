@@ -51,6 +51,11 @@ function initializeWebSocket() {
             if (data.type == "readCountUpdate") {
 	            updateReadCountOnClient(data.chatRoomSeq, data.chatSeq, data.updatedReadCount);
 	        }
+	        
+            if (data.type === 'unreadCountUpdate') {
+		        updateUnreadCountOnClient(data.chatRoomSeq, data.unreadCount);
+		    }
+	        
 	        if (data.type == "loginID") {
 	            if (data.loginID) {
 	                currentLoginID = data.loginID;
@@ -135,7 +140,6 @@ function showNotificationModal(message) {
 // 채팅 시작 함수
 function startChat(chat_room_seq) {
     var chatRoomName = document.querySelector('#chatRoomPopup .chatRoomTitle h2').innerText;
-
     // 모든 li 요소에서 active 클래스 제거
     document.querySelectorAll('.chatList li').forEach(function (li) {
         li.classList.remove('active');
@@ -387,6 +391,7 @@ function loadChatList() {
             chatList.empty(); // 기존 목록 초기화
 
             response.forEach(function(chatRoom) {
+            
             	console.log(chatRoom);
                 var $listItem = $('<li>');
                 var $link = $('<a>', {
@@ -396,7 +401,7 @@ function loadChatList() {
                         showChatRoomPopup(chatRoom.CHAT_ROOM_SEQ);
                     }
                 });
-
+                
                 var $chatTitle = $('<div>', { class: 'chatTitle' });
                 var $spanName = $('<span>').text(chatRoom.CHAT_ROOM_NAME);
                 $chatTitle.append($spanName);
@@ -408,7 +413,7 @@ function loadChatList() {
                     }).text(chatRoom.UNREAD_COUNT);
                     $chatTitle.append($unreadCount);
                 }
-
+                
                 $link.append($chatTitle);
                 $listItem.append($link);
                 chatList.append($listItem);
@@ -753,6 +758,7 @@ function addEmojiToMessageInput(imgElement) {
     messageInput.appendChild(img);
 }
 
+// 채팅방 내부 메시지의 읽음 상태 업데이트
 function updateReadCountOnClient(chatRoomSeq, chatSeq, updatedReadCount) {
     let messageElement = document.querySelector(`.message[data-chat-seq="${chatSeq}"] .readBox`);
     
@@ -768,12 +774,23 @@ function updateReadCountOnClient(chatRoomSeq, chatSeq, updatedReadCount) {
     }
 }
 
-
-
+// 채팅방 목록에서 읽지 않은 메시지 수 업데이트
+function updateUnreadCountOnClient(chatRoomSeq, unreadCount) {
+    let chatRoomElement = document.querySelector(`[data-chat-room-seq="${chatRoomSeq}"] .notificationCount`);
+    
+    if (chatRoomElement) {
+        if (unreadCount > 0) {
+            chatRoomElement.textContent = unreadCount;
+            chatRoomElement.style.display = 'inline-block';
+        } else {
+            chatRoomElement.style.display = 'none';
+        }
+    }
+}
 // 메시지의 읽음 상태를 서버에 확인하고, 필요시 업데이트하는 함수
 function checkAndUpdateReadCount(chatRoomSeq, chatSeq) {
     $.ajax({
-        url: '/chatroom/checkReadCount',
+        url: '/chatroom/checkRseadCount',
         method: 'POST',
         data: {
             chatRoomSeq: chatRoomSeq,

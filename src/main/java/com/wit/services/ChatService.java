@@ -119,5 +119,11 @@ public class ChatService {
             }
         }
     }
+    
+    // 채팅방 목록 조회
+    @Transactional
+    public List<Map<String, Object>> getChatRoomsByUserId(String empNo) {
+        return dao.getChatRoomsByUserId(empNo);
+    }
 }
 

@@ -92,5 +92,26 @@
 	    WHERE chat_room_seq = #{chat_room_seq}
 	    AND chat_seq = #{chat_seq}
 	</select>
+	
+    <!-- 사용자가 속한 채팅방 조회 -->
+    <select id="getChatRoomsByUserId" resultType="map">
+		SELECT 
+	        crm.CHAT_ROOM_SEQ,
+	        crm.CHAT_ROOM_NAME,
+	        COUNT(c.chat_seq) AS unread_count
+	    FROM 
+	        chat_room_member crm
+	    LEFT JOIN 
+	        chat c 
+	        ON crm.CHAT_ROOM_SEQ = c.chat_room_seq 
+	        AND c.read_count > 0
+	        AND INSTR(COALESCE(c.read_receivers, ''), crm.emp_no) = 0
+	        AND c.name != crm.emp_no
+	    WHERE 
+	        crm.emp_no = #{empNo}
+	    GROUP BY 
+	        crm.CHAT_ROOM_SEQ, 
+	        crm.CHAT_ROOM_NAME
+    </select>
 </mapper>
 
