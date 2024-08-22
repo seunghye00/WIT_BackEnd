@@ -270,6 +270,10 @@
 										<div class="inner">
 											<div class=" top">
 												<div class="title">신고하기</div>
+												<div class="titleTxt">
+													이 글이 커뮤니티 가이드라인을 위반한다고 생각되시면 신고 사유를 작성해 주세요. <br>
+													접수된 신고는 검토 후 필요한 조치를 취하겠습니다.
+												</div>
 											</div>
 											<div class="ct">
 												<div class="reporter">
@@ -691,7 +695,7 @@
 							limitReplyLength(this);
 						});
 
-						//댓글 완료시
+						// 댓글 완료시
 						$("#replyInst").on("click", function () {
 							if ($(".writeRly").val().length > 0) {
 								$("#replyInsertForm").submit();

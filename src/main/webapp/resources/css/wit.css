@@ -241,8 +241,10 @@
 }
 
 .boardList .notiList .rows .boardTitle {
+	cursor: pointer;
 	flex: 2;
 }
+
 
 .boardList .notiList .rows .boardWriter {
 	flex: 1;
@@ -310,10 +312,12 @@
 }
 
 .boardDetail .detail .detailTop .top .topTitle {
-	flex: 7;
+	/* flex: 7; */
 	font-size: 20px;
 	display: flex;
 	align-items: center;
+	overflow: hidden;
+	width: 400px;
 }
 
 .boardDetail .detail .detailTop .top .topFile {
@@ -732,6 +736,14 @@
 	gap: 10px;
 }
 
+.dialog .inner .top {
+	gap: 10px;
+}
+
+.dialog .inner .top .titleTxt {
+	font-size: 12px;
+}
+
 .dialog {
 	display: none;
 	position: fixed;
@@ -761,6 +773,7 @@
 
 .dialog .top {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	/* justify-content: center; */
 	border-bottom: 1px solid #ddd;
@@ -791,6 +804,8 @@
 	font-weight: bold;
 	text-align: center;
 	align-items: center;
+	padding: 10px;
+	background-color: #eee;
 }
 
 .dialog .ct .ctTitle .reportPer {
@@ -810,6 +825,7 @@
 	display: flex;
 	text-align: center;
 	align-items: center;
+	padding: 10px;
 }
 
 .dialog .ct .ctCont .reportPer {
