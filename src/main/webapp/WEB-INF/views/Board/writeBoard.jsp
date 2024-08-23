@@ -15,6 +15,7 @@
 			<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 			<link rel="stylesheet" href="/css/style.main.css">
 			<link rel="stylesheet" href="/css/wit.css">
+			<script src="/js/wit.js"></script>
 			<script src="/js/boards.js"></script>
 		</head>
 
@@ -115,6 +116,14 @@
 				</div>
 			</div>
 			<script>
+				$(document).ready(function () {
+					// 모든 li 태그 안의 a 태그에 클릭 이벤트 추가
+					$('li > a').on('click', function () {
+						// 클릭된 a 태그에 active 클래스 토글
+						$(this).toggleClass('active');
+					});
+				});
+
 				var filesLength = ${ filesSize };
 				let defaultFileLength = ${ filesSize };
 
