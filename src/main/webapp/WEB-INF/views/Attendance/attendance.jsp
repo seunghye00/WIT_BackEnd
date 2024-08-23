@@ -70,7 +70,7 @@
 					<div class="Attendance_container">
 						<div class="Attendance_sections">
 							<div class="status_container">
-								<h3>월간 근태현황</h3>
+								<h3>월간 근무현황</h3>
 								<div class="status_row status_header">
 									<div class="status_col">
 										<span>지각</span>
@@ -115,7 +115,7 @@
 							</div>
 						</div>
 						<div class="week_status">
-							<h3>주간 근무현황</h3>
+							<h3>주간 근태현황</h3>
 							<div class="week_row week_header">
 								<div class="week_col">
 									<span>근무일</span>
