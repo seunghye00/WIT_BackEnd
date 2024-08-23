@@ -69,6 +69,12 @@ public class BoardController {
 				boardCode, report, adminReport);
 
 		EmployeeDTO employee = bserv.employeeInfo(empNo);
+		
+		// 신고현황 사장 만 접속 가능
+	    if ("true".equals(adminReport) && !"사장".equals(employee.getRole_code())) {
+	        return "redirect:/error";
+	    }
+		
 		model.addAttribute("board_code", boardCode);
 		model.addAttribute("report", report);
 		model.addAttribute("searchTarget", searchTarget);
@@ -96,6 +102,11 @@ public class BoardController {
 		String empNo = (String) session.getAttribute("loginID");
 
 		EmployeeDTO employee = bserv.employeeInfo(empNo);
+		
+		// 공지사항 작성 사장 만 접속 가능
+	    if (boardCode == 2 && !"사장".equals(employee.getRole_code())) {
+	        return "redirect:/error";
+	    }
 
 		model.addAttribute("employee", employee);
 		// 처음 작성할 때는 파일 사이즈가 0으로 설정
