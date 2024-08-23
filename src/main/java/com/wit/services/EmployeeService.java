@@ -193,8 +193,11 @@ public class EmployeeService {
 
 	// 주소록 검색 카운트 값 조회
 	@Transactional
-	public int totalCountPageSearch(String keyword) {
-		return dao.totalCountPageSearch(keyword);
+	public int totalCountPageSearch(String keyword, String dept_code) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("keyword", keyword);
+		params.put("dept_code", dept_code);
+		return dao.totalCountPageSearch(params);
 	}
 
 	// 주소록 검색값 레코드 조회

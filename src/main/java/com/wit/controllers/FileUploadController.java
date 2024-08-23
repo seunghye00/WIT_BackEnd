@@ -23,7 +23,7 @@ import com.wit.services.FileService;
 public class FileUploadController {
 	@Autowired
 	private FileService fserv;
-    private static final String UPLOAD_DIR = "C:/Users/Administrator/Desktop/UploadServerFile/";
+    private static final String UPLOAD_DIR = "C:/UploadServerFile/";
     
     // 파일 업로드를 처리하는 메서드입니다. POST 요청을 처리합니다.
     @PostMapping
