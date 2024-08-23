@@ -8,10 +8,10 @@
 <title>그룹 주소록</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<link rel="stylesheet" href="/resources/css/style.main.css">
-<link rel="stylesheet" href="/resources/css/wit.css">
-<script defer src="/resources/js/wit.js"></script>
-<script defer src="/resources/js/address.js"></script>
+<link rel="stylesheet" href="/css/style.main.css">
+<link rel="stylesheet" href="/css/wit.css">
+<script defer src="/js/wit.js"></script>
+<script defer src="/js/address.js"></script>
 </head>
 <body>
     <div class="container">
