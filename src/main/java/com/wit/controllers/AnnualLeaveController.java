@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.wit.services.AnnualLeaveService;
@@ -30,7 +31,7 @@ public class AnnualLeaveController {
 
 	// 연간 휴가현황 (사용자)
 	@RequestMapping("/attendanceVacation")
-	public String attendanceVacation(Model model, @RequestParam(defaultValue = "1") int cpage) {
+	public String attendanceVacation(Model model, @RequestParam(defaultValue = "1") int cpage)throws Exception {
 
 		String empNo = (String) session.getAttribute("loginID");
 
@@ -75,12 +76,17 @@ public class AnnualLeaveController {
 	@RequestMapping("/attendanceDeptVacation")
 	public String attendanceDeptVacation(@RequestParam(value = "deptTitle", defaultValue = "인사부") String deptTitle,
 			@RequestParam(value = "searchTxt", required = false) String searchTxt,
-			@RequestParam(defaultValue = "1") int cpage, Model model) {
+			@RequestParam(defaultValue = "1") int cpage, Model model)throws Exception {
 
 		String empNo = (String) session.getAttribute("loginID");
 
 		EmployeeDTO employee = service.employeeInfo(empNo);
 		model.addAttribute("employee", employee);
+		
+		// 사장이 아닐 경우 에러 페이지로 리다이렉트
+	    if (!"사장".equals(employee.getRole_code())) {
+	        return "redirect:/error";
+	    }
 
 		// 부서 리스트 가져오기
 		List<DeptDTO> departments = service.getDepartments();
@@ -122,6 +128,13 @@ public class AnnualLeaveController {
 		model.addAttribute("leaveRequests", leaveRequests);
 
 		return "Admin/Attendance/attendanceDeptVacation";
+	}
+
+	// 예외를 담당하는 메서드 생성
+	@ExceptionHandler(Exception.class)
+	public String exceptionHandler(Exception e) {
+		e.printStackTrace();
+		return "error";
 	}
 
 }

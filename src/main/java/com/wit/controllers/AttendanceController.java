@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,7 +38,7 @@ public class AttendanceController {
 	// 출근 처리
 	@RequestMapping(value = "/start", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public Map<String, String> startAttendance() {
+	public Map<String, String> startAttendance()throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 		return service.startAtd(empNo);
 	}
@@ -45,14 +46,14 @@ public class AttendanceController {
 	// 퇴근 처리
 	@RequestMapping(value = "/end", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public Map<String, String> endAttendance() {
+	public Map<String, String> endAttendance()throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 		return service.endAtd(empNo);
 	}
 
 	// 근태관리 페이지로 이동
 	@RequestMapping("/attendance")
-	public String attendance(Model model) {
+	public String attendance(Model model)throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 
 		// 월간 근태 현황 및 월간 근무 시간 조회 + 주간 근무현황
@@ -72,7 +73,7 @@ public class AttendanceController {
 
 	// 월간 근태현황 페이지로 이동
 	@RequestMapping("/attendance_month")
-	public String attendanceMonth(Model model, @RequestParam(defaultValue = "1") int cpage) {
+	public String attendanceMonth(Model model, @RequestParam(defaultValue = "1") int cpage)throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 
 		EmployeeDTO employee = service.employeeInfo(empNo);
@@ -87,7 +88,7 @@ public class AttendanceController {
 
 		// cpage가 pageTotalCount를 초과하지 않도록 설정
 		if (cpage > pageTotalCount) {
-		    return "redirect:/attendance/attendance_month?cpage=" + pageTotalCount;
+			return "redirect:/attendance/attendance_month?cpage=" + pageTotalCount;
 		}
 
 		// 모든 페이지 번호를 표시하도록 설정
@@ -115,7 +116,7 @@ public class AttendanceController {
 	// 출근 및 퇴근 시간 조회(메인 페이지)
 	@RequestMapping(value = "/times", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public Map<String, String> getAttendanceTimes() {
+	public Map<String, String> getAttendanceTimes()throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 		Map<String, String> response = new HashMap<>();
 
@@ -136,83 +137,95 @@ public class AttendanceController {
 	// 부서별 근태현황 (관리자)
 	@RequestMapping("/attendanceDept")
 	public String attendanceDept(@RequestParam(value = "deptTitle", defaultValue = "인사부") String deptTitle,
-	        @RequestParam(value = "week", required = false) String week, @RequestParam(defaultValue = "1") int cpage,
-	        Model model) {
+			@RequestParam(value = "week", required = false) String week, @RequestParam(defaultValue = "1") int cpage,
+			Model model)throws Exception {
 
-	    String empNo = (String) session.getAttribute("loginID");
-
-	    List<DeptDTO> departments = service.getDepartments();
-	    model.addAttribute("departments", departments);
-
-	    EmployeeDTO employee = service.employeeInfo(empNo);
-
-	    // 날짜 계산 (해당 주의 시작일과 종료일 설정)
-	    LocalDate startDate;
-	    LocalDate endDate;
-
-	    // 주간 시작일이 요청 파라미터에 있는 경우 해당 주의 시작일 설정
-	    if (week != null) {
-	        startDate = LocalDate.parse(week, DateTimeFormatter.ISO_DATE);
-	    } else {
-	        // 그렇지 않으면 현재 주의 월요일을 시작일로 설정
-	        startDate = LocalDate.now().with(DayOfWeek.MONDAY);
+		String empNo = (String) session.getAttribute("loginID");
+		
+		EmployeeDTO employee = service.employeeInfo(empNo);
+		
+		// 사장이 아닐 경우 에러 페이지로 리다이렉트
+	    if (!"사장".equals(employee.getRole_code())) {
+	        return "redirect:/error";
 	    }
 
-	    // 해당 주의 종료일을 토요일로 설정
-	    endDate = startDate.with(DayOfWeek.SATURDAY);
+		List<DeptDTO> departments = service.getDepartments();
+		model.addAttribute("departments", departments);
 
-	    // 이전 주와 다음 주의 날짜 계산
-	    LocalDate previousWeek = startDate.minusWeeks(1);
-	    LocalDate nextWeek = startDate.plusWeeks(1);
+		// 날짜 계산 (해당 주의 시작일과 종료일 설정)
+		LocalDate startDate;
+		LocalDate endDate;
 
-	    int recordTotalCount = service.getDeptEmployeeCount(deptTitle);
-	    int recordCountPerPage = AttendanceConfig.recordCountPerPage;
+		// 주간 시작일이 요청 파라미터에 있는 경우 해당 주의 시작일 설정
+		if (week != null) {
+			startDate = LocalDate.parse(week, DateTimeFormatter.ISO_DATE);
+		} else {
+			// 그렇지 않으면 현재 주의 월요일을 시작일로 설정
+			startDate = LocalDate.now().with(DayOfWeek.MONDAY);
+		}
 
-	    // 전체 페이지 수 계산
-	    int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
+		// 해당 주의 종료일을 토요일로 설정
+		endDate = startDate.with(DayOfWeek.SATURDAY);
 
-	    // 현재 페이지 번호가 총 페이지 수를 넘지 않도록 설정한다!
-	    if (cpage > pageTotalCount) {
-	        try {
-	        	// url에 한글이 들어갈 경우 톰캣이 인식을 못하는데 URLEncoder 를 통해 인코딩을 해준다!
-	            String encodedDeptTitle = URLEncoder.encode(deptTitle, "UTF-8");
-	            String encodedWeek = URLEncoder.encode(week, "UTF-8");
-	            return "redirect:/attendance/attendanceDept?deptTitle=" + encodedDeptTitle + "&week=" + encodedWeek + "&cpage=" + pageTotalCount;
-	        } catch (UnsupportedEncodingException e) {
-	            e.printStackTrace();
-	        }
-	    }
+		// 이전 주와 다음 주의 날짜 계산
+		LocalDate previousWeek = startDate.minusWeeks(1);
+		LocalDate nextWeek = startDate.plusWeeks(1);
 
-	    // 페이지 네비게이션의 시작 번호와 종료 번호 설정
-	    int startNavi = 1;
-	    int endNavi = pageTotalCount;
+		int recordTotalCount = service.getDeptEmployeeCount(deptTitle);
+		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
 
-	    // 이전 페이지와 다음 페이지의 필요 여부 결정
-	    boolean needPrev = cpage > 1;
-	    boolean needNext = cpage < pageTotalCount;
+		// 전체 페이지 수 계산
+		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
 
-	    // 현재 페이지에서 조회할 데이터의 시작과 끝 인덱스 계산
-	    int start = (cpage - 1) * recordCountPerPage + 1;
-	    int end = cpage * recordCountPerPage;
+		// 현재 페이지 번호가 총 페이지 수를 넘지 않도록 설정한다!
+		if (cpage > pageTotalCount) {
+			try {
+				// url에 한글이 들어갈 경우 톰캣이 인식을 못하는데 URLEncoder 를 통해 인코딩을 해준다!
+				String encodedDeptTitle = URLEncoder.encode(deptTitle, "UTF-8");
+				String encodedWeek = URLEncoder.encode(week, "UTF-8");
+				return "redirect:/attendance/attendanceDept?deptTitle=" + encodedDeptTitle + "&week=" + encodedWeek
+						+ "&cpage=" + pageTotalCount;
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
 
-	    List<Map<String, Object>> attendanceData = service.deptAtd(deptTitle, Date.valueOf(startDate),
-	            Date.valueOf(endDate), start, end);
+		// 페이지 네비게이션의 시작 번호와 종료 번호 설정
+		int startNavi = 1;
+		int endNavi = pageTotalCount;
 
-	    model.addAttribute("attendanceData", attendanceData);
-	    model.addAttribute("deptTitle", deptTitle);
-	    model.addAttribute("startDate", startDate);
-	    model.addAttribute("endDate", endDate);
-	    model.addAttribute("previousWeek", previousWeek);
-	    model.addAttribute("nextWeek", nextWeek);
-	    model.addAttribute("cpage", cpage);
-	    model.addAttribute("startNavi", startNavi);
-	    model.addAttribute("endNavi", endNavi);
-	    model.addAttribute("needPrev", needPrev);
-	    model.addAttribute("needNext", needNext);
-	    model.addAttribute("employee", employee);
+		// 이전 페이지와 다음 페이지의 필요 여부 결정
+		boolean needPrev = cpage > 1;
+		boolean needNext = cpage < pageTotalCount;
 
-	    return "Admin/Attendance/attendanceDept";
+		// 현재 페이지에서 조회할 데이터의 시작과 끝 인덱스 계산
+		int start = (cpage - 1) * recordCountPerPage + 1;
+		int end = cpage * recordCountPerPage;
+
+		List<Map<String, Object>> attendanceData = service.deptAtd(deptTitle, Date.valueOf(startDate),
+				Date.valueOf(endDate), start, end);
+
+		model.addAttribute("attendanceData", attendanceData);
+		model.addAttribute("deptTitle", deptTitle);
+		model.addAttribute("startDate", startDate);
+		model.addAttribute("endDate", endDate);
+		model.addAttribute("previousWeek", previousWeek);
+		model.addAttribute("nextWeek", nextWeek);
+		model.addAttribute("cpage", cpage);
+		model.addAttribute("startNavi", startNavi);
+		model.addAttribute("endNavi", endNavi);
+		model.addAttribute("needPrev", needPrev);
+		model.addAttribute("needNext", needNext);
+		model.addAttribute("employee", employee);
+
+		return "Admin/Attendance/attendanceDept";
 	}
 
+	// 예외를 담당하는 메서드 생성
+	@ExceptionHandler(Exception.class)
+	public String exceptionHandler(Exception e) {
+		e.printStackTrace();
+		return "error";
+	}
 
 }
