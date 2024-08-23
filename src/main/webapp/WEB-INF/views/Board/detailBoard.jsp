@@ -16,9 +16,10 @@
 				<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css"
 					rel="stylesheet">
 				<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-				<link rel="stylesheet" href="/resources/css/style.main.css">
-				<link rel="stylesheet" href="/resources/css/wit.css">
-				<script defer src="/resources/js/boards.js"></script>
+				<link rel="stylesheet" href="/css/style.main.css">
+				<link rel="stylesheet" href="/css/wit.css">
+				<script src="/js/wit.js"></script>
+				<script defer src="/js/boards.js"></script>
 			</head>
 
 
@@ -316,6 +317,13 @@
 
 
 				<script>
+					$(document).ready(function () {
+						// 모든 li 태그 안의 a 태그에 클릭 이벤트 추가
+						$('li > a').on('click', function () {
+							// 클릭된 a 태그에 active 클래스 토글
+							$(this).toggleClass('active');
+						});
+					});
 
 					// JSP에서 계산된 파일의 길이를 JavaScript로 전달합니다.
 					let defaultFileLength = ${ filesSize };
