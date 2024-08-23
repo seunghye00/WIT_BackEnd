@@ -24,7 +24,7 @@
 <body class="membership_body">
 	<div class="container">
 		<!-- 공통영역 -->
-		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
+		<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp"%>
 		<!-- 공통영역 끝 -->
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
@@ -287,7 +287,7 @@
 				</div>
 				<label id="resultSSN"></label>
 				<div class="input-container">
-					<input type="text" name="phone" id="phone" placeholder="휴대폰"
+					<input type="text" name="phone" id="phone" placeholder="전화번호"
 						required> <span class="valid-check error" id="phoneCheck">&#x2716;</span>
 				</div>
 				<label id="resultPhone"></label>

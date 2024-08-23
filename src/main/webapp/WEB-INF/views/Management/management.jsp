@@ -14,100 +14,114 @@
 </head>
 <body>
 <div class="container">
-        <%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp" %>
-        <div class="main-content">
-            <%@ include file="/WEB-INF/views/Includes/header.jsp" %>
-            <div class="contents">
-                <div class="sideAbout">
-                    <div class="sideTxt">
-                        <h2 class="sideTit">사원관리</h2>
-                    </div>
-                    <div class="addressListPrivate">
-                        <ul class="privateList">
-                            <li class="toggleItem">
-                            	<a href="javascript:;"> <h3 class="addressTit">사원 정보 관리</h3></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="sideContents addressCont">
-		            <form action="/employee/manageSearch" id="searchForm" class="manageForm">
-						<div class="mainTitle addressTit">사원 정보 관리</div>
-						<div class="manageTool">
-							<div class="search">
-								<select name="column">
-									<option selected value="NAME">이름</option>
-									<option value="EMP_NO">사번</option>
-								</select>
-								<div class="searchBox">
-									<input type="text" id="searchInput" placeholder="검색" name="keyword">
-									<button class="searchBtn" id="searchBtn" type="submit">
-										<i class='bx bx-search'></i>
-									</button>
+   		<c:choose>
+			<c:when test="${employee.role_code eq '사장'}">
+				<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp"%>
+				<div class="main-content">
+		            <%@ include file="/WEB-INF/views/Includes/header.jsp" %>
+		            <div class="contents">
+		                <div class="sideAbout">
+		                    <div class="sideTxt">
+		                        <h2 class="sideTit">사원관리</h2>
+		                    </div>
+		                    <div class="addressListPrivate">
+		                        <ul class="privateList">
+		                            <li class="toggleItem">
+		                            	<a href="javascript:;"> <h3 class="addressTit">사원 정보 관리</h3></a>
+		                            </li>
+		                        </ul>
+		                    </div>
+		                </div>
+		                <div class="sideContents addressCont">
+				            <form action="/employee/manageSearch" id="searchForm" class="manageForm">
+								<div class="mainTitle addressTit">사원 정보 관리</div>
+								<div class="manageTool">
+									<div class="search">
+										<select name="column">
+											<option selected value="NAME">이름</option>
+											<option value="EMP_NO">사번</option>
+										</select>
+										<div class="searchBox">
+											<input type="text" id="searchInput" placeholder="검색" name="keyword">
+											<button class="searchBtn" id="searchBtn" type="submit">
+												<i class='bx bx-search'></i>
+											</button>
+										</div>
+									</div>
+									<div class="regiBtn">
+										<button type="button" onclick="window.location.href='/employee/register_form'">
+											신규 사원 등록
+										</button>	
+									</div>
 								</div>
-							</div>
-							<div class="regiBtn">
-								<button type="button" onclick="window.location.href='/employee/register_form'">
-									신규 사원 등록
-								</button>	
-							</div>
-						</div>
-						<div class="tableCont">
-	                        <div class="listBox">
-	                            <div class="rows listHeader">
-	                                <div class="cols">
-	                                    <span>사번</span>
-	                                </div>
-	                                <div class="cols">
-	                                    <span>이름</span>
-	                                </div>
-	                                <div class="cols">
-	                                    <span>부서</span>
-	                                </div>
-	                                <div class="cols">
-	                                    <span>직급</span>
-	                                </div>
-	                                <div class="cols">
-	                                    <span>입사일</span>
-	                                </div>
-	                                <div class="cols">
-	                                    <span>퇴사일</span>
-	                                </div>
-	                            </div>
-	                            <div id="results">
-		                            <c:forEach var="list" items="${manageList}">
-									    <div class="rows" onclick="handleRowClick(event, this)" data-seq="${list.EMP_NO}">
-									        <div class="cols">
-									            <span>${list.EMP_NO}</span>
-									        </div>
-									        <div class="cols">
-									            <span>${list.NAME}</span>
-									        </div>
-									        <div class="cols">
-									            <span>${list.DEPT_TITLE}</span>
-									        </div>
-									        <div class="cols">
-									            <span>${list.ROLE_TITLE}</span>
-									        </div>
-									        <div class="cols">
-									            <span>${list.JOIN_DATE}</span>
-									        </div>
-									        <div class="cols">
-									            <span>${list.QUIT_DATE}</span>
-									        </div>
-									    </div>
-									</c:forEach>
-								</div>
-	                        </div>
-	                    </div>
-	                    <div class="pagination" id="pagination"></div>
-		            </form>
-                </div>
-            </div>
-        </div>
+								<div class="tableCont">
+			                        <div class="listBox">
+			                            <div class="rows listHeader">
+			                                <div class="cols">
+			                                    <span>사번</span>
+			                                </div>
+			                                <div class="cols">
+			                                    <span>이름</span>
+			                                </div>
+			                                <div class="cols">
+			                                    <span>부서</span>
+			                                </div>
+			                                <div class="cols">
+			                                    <span>직급</span>
+			                                </div>
+			                                <div class="cols">
+			                                    <span>입사일</span>
+			                                </div>
+			                                <div class="cols">
+			                                    <span>퇴사일</span>
+			                                </div>
+			                            </div>
+			                            <div id="results">
+				                            <c:forEach var="list" items="${manageList}">
+											    <div class="rows" onclick="handleRowClick(event, this)" data-seq="${list.EMP_NO}">
+											        <div class="cols">
+											            <span>${list.EMP_NO}</span>
+											        </div>
+											        <div class="cols">
+											            <span>${list.NAME}</span>
+											        </div>
+											        <div class="cols">
+											            <span>${list.DEPT_TITLE}</span>
+											        </div>
+											        <div class="cols">
+											            <span>${list.ROLE_TITLE}</span>
+											        </div>
+											        <div class="cols">
+											            <span>${list.JOIN_DATE}</span>
+											        </div>
+											        <div class="cols">
+											            <span>${list.QUIT_DATE}</span>
+											        </div>
+											    </div>
+											</c:forEach>
+										</div>
+			                        </div>
+			                    </div>
+			                    <div class="pagination" id="pagination"></div>
+				            </form>
+		                </div>
+		            </div>
+		        </div>
+			</c:when>
+			<c:otherwise>
+				 <c:redirect url="/errorPage.jsp"/>
+			</c:otherwise>
+		</c:choose>
     </div>
 </body>
 <script>
+	let btn = $('#btn');
+	let sideBar = $('.sideBar');
+	
+	btn.on('click', function() {
+		sideBar.toggleClass('active');
+	});
+
 	//페이징
 	$(document).ready(function(){
 		loadPage();
@@ -196,6 +210,7 @@
             }
         });
     }
+	
 	function handleSearchFormSubmit(event) {
 	    event.preventDefault();
 	    var keyword = $('#searchInput').val();

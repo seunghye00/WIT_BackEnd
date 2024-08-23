@@ -121,11 +121,12 @@ public class EmployeeDAO {
 	}
 
 	// 주소록 검색
-	public List<Map<String, Object>> selectByCon(String keyword, int startNum, int endNum) {
+	public List<Map<String, Object>> selectByCon(String keyword, int startNum, int endNum, String dept_code) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("keyword", keyword);
 		params.put("startNum", startNum);
 		params.put("endNum", endNum);
+		params.put("dept_code", dept_code);
 		List<Map<String, Object>> list = mybatis.selectList("employee.selectByCon", params);
 		return list;
 	}
@@ -190,6 +191,11 @@ public class EmployeeDAO {
 		return mybatis.selectOne("employee.getRole", empNo);
 	}
 
+	// 해당 사번을 지닌 직원의 직급 코드 조회
+	public String getRoleCode(String empNo) {
+		return mybatis.selectOne("employee.getRoleCode", empNo);
+	}
+
 	// 해당 사번을 지닌 직원의 부서명 조회
 	public String getDept(String empNo) {
 		return mybatis.selectOne("employee.getDept", empNo);
@@ -214,7 +220,7 @@ public class EmployeeDAO {
 	public Map<String, Object> managementDetail(String emp_no) {
 		return mybatis.selectOne("employee.managementDetail", emp_no);
 	}
-	
+
 	// 직원 상세 업데이트
 	public void updateManage(Map<String, Object> params) {
 		mybatis.update("employee.updateManage", params);

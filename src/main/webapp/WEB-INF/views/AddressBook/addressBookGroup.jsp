@@ -10,8 +10,8 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link rel="stylesheet" href="/resources/css/style.main.css">
 <link rel="stylesheet" href="/resources/css/wit.css">
-<script defer src="/resources/js/mky.js"></script>
-<script defer src="/resources/js/header.js"></script>
+<script defer src="/resources/js/wit.js"></script>
+<script defer src="/resources/js/address.js"></script>
 </head>
 <body>
     <div class="container">
@@ -43,7 +43,8 @@
                 <div class="sideContents addressCont">
                     <div class="mainTitle addressTit">전체 주소록</div>
                     <form class="searchBox" id="searchForm" action="/employee/search">
-                        <input type="text" id="searchInput" placeholder="검색" name="keyword">
+                        <input type="text" id="searchInput" placeholder="이름으로 검색" name="keyword">
+                        <input type="hidden" id="searchCate" name="dept_code" value="">
                         <button class="searchBtn" type="submit" >
                             <i class='bx bx-search'></i>
                         </button>
@@ -159,6 +160,7 @@
 	    </div>
 	</div>
     <script>
+    
     let currentChosung  = '전체';
     let currentCategory = '전체';
     
@@ -167,18 +169,7 @@
         $('.toolBar a').off('click').on('click', handleToolBarClick);
         $('#searchForm').off('submit').on('submit', handleSearchFormSubmit);
     });
- 	// 토글 이벤트 설정
-    const toggleItems = $('.toggleItem');
-    toggleItems.each(function() {
-    	const toggleItem = $(this);
-        const toggleTit = toggleItem.find('.toggleTit');
-        const subList = toggleItem.find('.subList');
 
-        toggleTit.on('click', function() {
-        	subList.toggleClass('active');
-            toggleTit.toggleClass('active'); // 이미지 회전을 위해 클래스 추가
-        });
-    });
     function loadGroupPage(params = { cpage: 1 }, url = '/employee/groupAddressTool') {
         $.ajax({
             url: url,
@@ -190,7 +181,6 @@
                 $('#results').empty();
                 if (Array.isArray(data) && data.length > 0) {
                     data.forEach(function(contact) {
-                    	console.log(contact);
                         var $row = $('<div>', {
                             class: 'rows',
                             onclick: 'handleRowClick(this)',
@@ -278,10 +268,14 @@
 	function handleSearchFormSubmit(event) {
 	    event.preventDefault();
 	    var keyword = $('#searchInput').val();
+	    var dept_code = $('#searchCate').val(); // hidden input에서 dept_code 값을 가져옴
+	    
 	    $('.toolBar a').removeClass('active');
 	    $('.toolBar a:first').addClass('active');
 	    currentChosung = '전체';
-	    loadGroupPage({ keyword: keyword, cpage: 1 }, '/employee/search');
+	    
+	    // category_id 값을 함께 전달
+	    loadPage({ keyword: keyword, cpage: 1, dept_code: dept_code }, '/employee/search');
 	}
 	
 	// 카테고리 
@@ -291,12 +285,11 @@
             type: 'GET',
             dataType: 'json',
             success: function(categories) {
-            	console.log(categories);
                 let categoryList = $('.GroupList .subList');
                 categoryList.empty();
                 categoryList.append('<li><a href="javascript:;" onclick="loadCategoryData(\'전체\')" class="active">전체</a></li>');
                 categories.forEach(function(category) {
-                    categoryList.append('<li><a href="javascript:;" onclick="loadCategoryData(\'' + category.DEPT_TITLE + '\')">' + category.DEPT_TITLE + '</a></li>');
+                	categoryList.append('<li><a href="javascript:;" onclick="loadCategoryData(\'' + category.DEPT_TITLE + '\', \'' + category.DEPT_CODE + '\')">' + category.DEPT_TITLE + '</a></li>');
                 });
                 loadGroupPage();
             },
@@ -306,8 +299,13 @@
         });
     }
 
-	function loadCategoryData(category) {
+	function loadCategoryData(category, dept_code) {
         currentCategory = category;
+        if(dept_code == null ) {
+        	$('#searchCate').val("전체");
+        } else {        	
+	        $('#searchCate').val(dept_code);
+        }
         $('.mainTitle').text(category + " 주소록");
         $('.subList a').removeClass('active');
         $('.subList a').each(function() {
@@ -320,7 +318,6 @@
 	
 	// 주소록 상세 조회
 	function fillViewForm(contact) {
-		console.log(contact);
 		document.getElementById('viewPhoto').src = contact.PHOTO !== null && contact.PHOTO !== undefined ? contact.PHOTO : '/resources/img/default.png';;
 	    document.getElementById('viewName').textContent = contact.NAME !== null && contact.NAME !== undefined ? contact.NAME : '-';
 	    document.getElementById('viewPhone').textContent = contact.PHONE !== null && contact.PHONE !== undefined ? contact.PHONE : '-';

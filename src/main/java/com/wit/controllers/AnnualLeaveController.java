@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.wit.services.AnnualLeaveService;
@@ -13,6 +14,8 @@ import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.LeaveRequestDTO;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +31,10 @@ public class AnnualLeaveController {
 
 	// 연간 휴가현황 (사용자)
 	@RequestMapping("/attendanceVacation")
-	public String attendanceVacation(Model model, @RequestParam(defaultValue = "1") int cpage) {
+	public String attendanceVacation(Model model, @RequestParam(defaultValue = "1") int cpage)throws Exception {
 
 		String empNo = (String) session.getAttribute("loginID");
-		
-		// 직원 정보 조회
+
 		EmployeeDTO employee = service.employeeInfo(empNo);
 		model.addAttribute("employee", employee);
 
@@ -45,28 +47,17 @@ public class AnnualLeaveController {
 
 		// 페이징 처리 로직
 		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
-		System.out.println("레코드 카운트 펄페이지 : " + recordCountPerPage);
-		int naviCountPerPage = AttendanceConfig.naviCountPerPage;
-		System.out.println("네비 카운트 펄페이지 : " + naviCountPerPage);
-
 		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
-		System.out.println("페이지 토탈 카운트 : " + pageTotalCount);
 
 		if (cpage > pageTotalCount) {
-			cpage = pageTotalCount;
+			return "redirect:/annualLeave/attendanceVacation?cpage=" + pageTotalCount;
 		}
 
-		int startNavi = ((cpage - 1) / naviCountPerPage) * naviCountPerPage + 1;
-		int endNavi = startNavi + naviCountPerPage - 1;
-		System.out.println("스타트 : " + startNavi);
-		System.out.println("엔드 : " + endNavi);
+		int startNavi = 1;
+		int endNavi = pageTotalCount;
 
-		if (endNavi > pageTotalCount) {
-			endNavi = pageTotalCount;
-		}
-
-		boolean needPrev = startNavi > 1;
-		boolean needNext = endNavi < pageTotalCount;
+		boolean needPrev = cpage > 1;
+		boolean needNext = cpage < pageTotalCount;
 
 		model.addAttribute("cpage", cpage);
 		model.addAttribute("startNavi", startNavi);
@@ -85,12 +76,17 @@ public class AnnualLeaveController {
 	@RequestMapping("/attendanceDeptVacation")
 	public String attendanceDeptVacation(@RequestParam(value = "deptTitle", defaultValue = "인사부") String deptTitle,
 			@RequestParam(value = "searchTxt", required = false) String searchTxt,
-			@RequestParam(defaultValue = "1") int cpage, Model model) {
+			@RequestParam(defaultValue = "1") int cpage, Model model)throws Exception {
 
 		String empNo = (String) session.getAttribute("loginID");
 
 		EmployeeDTO employee = service.employeeInfo(empNo);
 		model.addAttribute("employee", employee);
+		
+		// 사장이 아닐 경우 에러 페이지로 리다이렉트
+	    if (!"사장".equals(employee.getRole_code())) {
+	        return "redirect:/error";
+	    }
 
 		// 부서 리스트 가져오기
 		List<DeptDTO> departments = service.getDepartments();
@@ -98,28 +94,25 @@ public class AnnualLeaveController {
 
 		// 부서별 연간 휴가 내역 조회 (페이징 및 검색 적용)
 		int recordTotalCount = service.annualLeaveRecordCountByDept(deptTitle, searchTxt);
-
 		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
-		System.out.println("레코드 카운트 펄페이지 : " + recordCountPerPage);
-		int naviCountPerPage = AttendanceConfig.naviCountPerPage;
-		System.out.println("네비 카운트 펄페이지 : " + naviCountPerPage);
-
 		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
-		System.out.println("페이지 토탈 카운트 : " + pageTotalCount);
 
 		if (cpage > pageTotalCount) {
-			cpage = pageTotalCount;
+			try {
+				String encodedDeptTitle = URLEncoder.encode(deptTitle, "UTF-8");
+				String encodedSearchTxt = searchTxt != null ? URLEncoder.encode(searchTxt, "UTF-8") : "";
+				return "redirect:/annualLeave/attendanceDeptVacation?deptTitle=" + encodedDeptTitle + "&searchTxt="
+						+ encodedSearchTxt + "&cpage=" + pageTotalCount;
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 
-		int startNavi = ((cpage - 1) / naviCountPerPage) * naviCountPerPage + 1;
-		int endNavi = startNavi + naviCountPerPage - 1;
+		int startNavi = 1;
+		int endNavi = pageTotalCount;
 
-		if (endNavi > pageTotalCount) {
-			endNavi = pageTotalCount;
-		}
-
-		boolean needPrev = startNavi > 1;
-		boolean needNext = endNavi < pageTotalCount;
+		boolean needPrev = cpage > 1;
+		boolean needNext = cpage < pageTotalCount;
 
 		model.addAttribute("cpage", cpage);
 		model.addAttribute("startNavi", startNavi);
@@ -129,13 +122,19 @@ public class AnnualLeaveController {
 
 		// 부서별 연간 휴가 내역 조회 (페이징 및 검색 적용)
 		List<Map<String, Object>> leaveRequests = service.selectAnnualLeaveRequestsByDept(deptTitle, searchTxt, cpage);
-		System.out.println(leaveRequests);
 
 		model.addAttribute("deptTitle", deptTitle);
 		model.addAttribute("searchTxt", searchTxt);
 		model.addAttribute("leaveRequests", leaveRequests);
 
 		return "Admin/Attendance/attendanceDeptVacation";
-
 	}
+
+	// 예외를 담당하는 메서드 생성
+	@ExceptionHandler(Exception.class)
+	public String exceptionHandler(Exception e) {
+		e.printStackTrace();
+		return "error";
+	}
+
 }
