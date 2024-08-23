@@ -301,6 +301,7 @@
 						</form>
 					</div>
 				</div>
+		</div>
 
 				<script>
 					$(document).ready(

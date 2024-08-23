@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +15,8 @@ import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.services.AttendanceService;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -35,7 +38,7 @@ public class AttendanceController {
 	// 출근 처리
 	@RequestMapping(value = "/start", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public Map<String, String> startAttendance() {
+	public Map<String, String> startAttendance()throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 		return service.startAtd(empNo);
 	}
@@ -43,14 +46,14 @@ public class AttendanceController {
 	// 퇴근 처리
 	@RequestMapping(value = "/end", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public Map<String, String> endAttendance() {
+	public Map<String, String> endAttendance()throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 		return service.endAtd(empNo);
 	}
 
 	// 근태관리 페이지로 이동
 	@RequestMapping("/attendance")
-	public String attendance(Model model) {
+	public String attendance(Model model)throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 
 		// 월간 근태 현황 및 월간 근무 시간 조회 + 주간 근무현황
@@ -70,7 +73,7 @@ public class AttendanceController {
 
 	// 월간 근태현황 페이지로 이동
 	@RequestMapping("/attendance_month")
-	public String attendanceMonth(Model model, @RequestParam(defaultValue = "1") int cpage) {
+	public String attendanceMonth(Model model, @RequestParam(defaultValue = "1") int cpage)throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 
 		EmployeeDTO employee = service.employeeInfo(empNo);
@@ -80,31 +83,20 @@ public class AttendanceController {
 
 		// 레코드 수 조회
 		int recordTotalCount = service.monthlyRecordCount(empNo, month);
-
-		// 페이징 처리 로직
 		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
-		System.out.println("레코드 카운트 펄페이지 : " + recordCountPerPage);
-		int naviCountPerPage = AttendanceConfig.naviCountPerPage;
-		System.out.println("네비 카운트 펄페이지 : " + naviCountPerPage);
-
-		// 실제 레코드 수 기반 페이지 총 수 계산
 		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
-		System.out.println("페이지 토탈 카운트 : " + pageTotalCount);
 
 		// cpage가 pageTotalCount를 초과하지 않도록 설정
 		if (cpage > pageTotalCount) {
-			cpage = pageTotalCount;
+			return "redirect:/attendance/attendance_month?cpage=" + pageTotalCount;
 		}
 
-		int startNavi = ((cpage - 1) / naviCountPerPage) * naviCountPerPage + 1;
-		int endNavi = startNavi + naviCountPerPage - 1;
+		// 모든 페이지 번호를 표시하도록 설정
+		int startNavi = 1;
+		int endNavi = pageTotalCount;
 
-		if (endNavi > pageTotalCount) {
-			endNavi = pageTotalCount;
-		}
-
-		boolean needPrev = startNavi > 1;
-		boolean needNext = endNavi < pageTotalCount;
+		boolean needPrev = cpage > 1; // 이전 버튼이 필요한지 여부
+		boolean needNext = cpage < pageTotalCount; // 다음 버튼이 필요한지 여부
 
 		model.addAttribute("cpage", cpage);
 		model.addAttribute("startNavi", startNavi);
@@ -124,7 +116,7 @@ public class AttendanceController {
 	// 출근 및 퇴근 시간 조회(메인 페이지)
 	@RequestMapping(value = "/times", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public Map<String, String> getAttendanceTimes() {
+	public Map<String, String> getAttendanceTimes()throws Exception {
 		String empNo = (String) session.getAttribute("loginID");
 		Map<String, String> response = new HashMap<>();
 
@@ -146,14 +138,19 @@ public class AttendanceController {
 	@RequestMapping("/attendanceDept")
 	public String attendanceDept(@RequestParam(value = "deptTitle", defaultValue = "인사부") String deptTitle,
 			@RequestParam(value = "week", required = false) String week, @RequestParam(defaultValue = "1") int cpage,
-			Model model) {
+			Model model)throws Exception {
 
 		String empNo = (String) session.getAttribute("loginID");
+		
+		EmployeeDTO employee = service.employeeInfo(empNo);
+		
+		// 사장이 아닐 경우 에러 페이지로 리다이렉트
+	    if (!"사장".equals(employee.getRole_code())) {
+	        return "redirect:/error";
+	    }
 
 		List<DeptDTO> departments = service.getDepartments();
 		model.addAttribute("departments", departments);
-
-		EmployeeDTO employee = service.employeeInfo(empNo);
 
 		// 날짜 계산 (해당 주의 시작일과 종료일 설정)
 		LocalDate startDate;
@@ -174,34 +171,32 @@ public class AttendanceController {
 		LocalDate previousWeek = startDate.minusWeeks(1);
 		LocalDate nextWeek = startDate.plusWeeks(1);
 
-		// 부서의 총 직원 수를 가져옴
 		int recordTotalCount = service.getDeptEmployeeCount(deptTitle);
-		System.out.println("레코드 토탈 카운트 :" + recordTotalCount);
 		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
-		System.out.println("레코드 카운트 펄 페이지 :" + recordCountPerPage);
-		int naviCountPerPage = AttendanceConfig.naviCountPerPage;
-		System.out.println("네비 카운트 펄 페이지 :" + naviCountPerPage);
 
 		// 전체 페이지 수 계산
 		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
 
-		// 현재 페이지 번호가 총 페이지 수를 넘지 않도록 설정
+		// 현재 페이지 번호가 총 페이지 수를 넘지 않도록 설정한다!
 		if (cpage > pageTotalCount) {
-			cpage = pageTotalCount;
+			try {
+				// url에 한글이 들어갈 경우 톰캣이 인식을 못하는데 URLEncoder 를 통해 인코딩을 해준다!
+				String encodedDeptTitle = URLEncoder.encode(deptTitle, "UTF-8");
+				String encodedWeek = URLEncoder.encode(week, "UTF-8");
+				return "redirect:/attendance/attendanceDept?deptTitle=" + encodedDeptTitle + "&week=" + encodedWeek
+						+ "&cpage=" + pageTotalCount;
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 
-		// 페이지 네비게이션의 시작 번호와 종료 번호 계산
-		int startNavi = ((cpage - 1) / naviCountPerPage) * naviCountPerPage + 1;
-		int endNavi = startNavi + naviCountPerPage - 1;
-
-		// 종료 번호가 총 페이지 수를 넘지 않도록 조정
-		if (endNavi > pageTotalCount) {
-			endNavi = pageTotalCount;
-		}
+		// 페이지 네비게이션의 시작 번호와 종료 번호 설정
+		int startNavi = 1;
+		int endNavi = pageTotalCount;
 
 		// 이전 페이지와 다음 페이지의 필요 여부 결정
-		boolean needPrev = startNavi > 1;
-		boolean needNext = endNavi < pageTotalCount;
+		boolean needPrev = cpage > 1;
+		boolean needNext = cpage < pageTotalCount;
 
 		// 현재 페이지에서 조회할 데이터의 시작과 끝 인덱스 계산
 		int start = (cpage - 1) * recordCountPerPage + 1;
@@ -224,6 +219,13 @@ public class AttendanceController {
 		model.addAttribute("employee", employee);
 
 		return "Admin/Attendance/attendanceDept";
+	}
+
+	// 예외를 담당하는 메서드 생성
+	@ExceptionHandler(Exception.class)
+	public String exceptionHandler(Exception e) {
+		e.printStackTrace();
+		return "error";
 	}
 
 }

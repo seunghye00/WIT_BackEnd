@@ -1,72 +1,57 @@
-
-// 주소록 툴바 활성화
-const links = document.querySelectorAll('.toolBar a')
-links.forEach(function (link) {
-    link.addEventListener('click', function () {
-        links.forEach(function (link) {
-            link.classList.remove('active') // 모든 링크에서 active 클래스 제거
-        })
-        this.classList.add('active') // 클릭한 링크에 active 클래스 추가
-    })
-})
-
 // 주소록 체크박스
 // 전체 선택 체크박스
 const checkAll = document.getElementById('checkAll')
 // 개별 선택 체크박스들
 const individualChecks = document.querySelectorAll('.individual')
 
+// 주소록 항목의 체크박스와 확인 버튼을 토글
+function toggleCheckboxes() {
+    const checkboxes = document.querySelectorAll('.addressCheckbox');
+    const confirmBtn = document.querySelector('.createChatConfirmBtn');
+    checkboxes.forEach(checkbox => {
+        checkbox.style.display = checkbox.style.display === 'none' ? 'inline-block' : 'none'; // 체크박스 토글
+    });
+    confirmBtn.style.display = confirmBtn.style.display === 'none' ? 'inline-block' : 'none'; // 확인 버튼 토글
+    clearCheckboxes();   // 체크박스 초기화
+}
 
-	let webSocket; // WebSocket 객체
-    let currentChatRoomSeq; // 현재 활성화된 채팅방 시퀀스
-    let currentLoginID = null;
-    let fileToSend = null;
-
-	// 주소록 항목의 체크박스와 확인 버튼을 토글
-    function toggleCheckboxes() {
-        const checkboxes = document.querySelectorAll('.addressCheckbox');
-        const confirmBtn = document.querySelector('.createChatConfirmBtn');
-        checkboxes.forEach(checkbox => {
-            checkbox.style.display = checkbox.style.display === 'none' ? 'inline-block' : 'none'; // 체크박스 토글
-        });
-        confirmBtn.style.display = confirmBtn.style.display === 'none' ? 'inline-block' : 'none'; // 확인 버튼 토글
-    }
-
-    // 주소록 항목의 체크박스를 클릭하여 선택 상태를 토글
-    function toggleCheckbox(event, element ,emp_no) {
-        event.preventDefault();
-        const checkbox = element.querySelector('.addressCheckbox')
-        checkbox.checked = !checkbox.checked;
-    }
+// 주소록 항목의 체크박스를 클릭하여 선택 상태를 토글
+function toggleCheckbox(event, element, emp_no) {
+    event.preventDefault();
+    const checkbox = element.querySelector('.addressCheckbox');
+    checkbox.checked = !checkbox.checked;
+}
 
 // 채팅방 
 // 채팅방 사이드 영역 보기 전환
 function toggleView(view) {
-    const chatList = document.getElementById('chatList')
-    const addressList = document.getElementById('addressList')
-    const sideTitle = document.getElementById('sideTitle')
-    const createGroup = document.getElementById('createGroup')
+    const chatList = document.getElementById('chatList');
+    const addressList = document.getElementById('addressList');
+    const sideTitle = document.getElementById('sideTitle');
+    const createGroup = document.getElementById('createGroup');
     const chatButton = document.querySelector(
         '.toggleBtn[onclick="toggleView(\'chat\')"]'
-    )
+    );
     const addressButton = document.querySelector(
         '.toggleBtn[onclick="toggleView(\'address\')"]'
-    )
+    );
 
     if (view === 'chat') {
-        chatList.style.display = 'block' // 채팅방 리스트 보이기
-        addressList.style.display = 'none' // 주소록 리스트 숨기기
-        sideTitle.innerText = '채팅방' // 제목을 '채팅방'으로 변경
-        chatButton.style.display = 'none' // '채팅방' 버튼 숨기기
-        addressButton.style.display = 'inline-block' // '주소록' 버튼 보이기
-        createGroup.style.display = 'none' // '주소록' 버튼 보이기
+        chatList.style.display = 'block'; // 채팅방 리스트 보이기
+        addressList.style.display = 'none'; // 주소록 리스트 숨기기
+        sideTitle.innerText = '채팅방'; // 제목을 '채팅방'으로 변경
+        chatButton.style.display = 'none'; // '채팅방' 버튼 숨기기
+        addressButton.style.display = 'inline-block'; // '주소록' 버튼 보이기
+        createGroup.style.display = 'none'; // 그룹 채팅 생성 버튼 숨기기
+        clearCheckboxes();   // 체크박스 초기화
     } else {
-        chatList.style.display = 'none' // 채팅방 리스트 숨기기
-        addressList.style.display = 'block' // 주소록 리스트 보이기
-        sideTitle.innerText = '주소록' // 제목을 '주소록'으로 변경
-        chatButton.style.display = 'inline-block' // '채팅방' 버튼 보이기
-        addressButton.style.display = 'none' // '주소록' 버튼 숨기기
-        createGroup.style.display = 'inline-block' // '주소록' 버튼 보이기
+        chatList.style.display = 'none'; // 채팅방 리스트 숨기기
+        addressList.style.display = 'block'; // 주소록 리스트 보이기
+        sideTitle.innerText = '주소록'; // 제목을 '주소록'으로 변경
+        chatButton.style.display = 'inline-block'; // '채팅방' 버튼 보이기
+        addressButton.style.display = 'none'; // '주소록' 버튼 숨기기
+        createGroup.style.display = 'inline-block'; // 그룹 채팅 생성 버튼 보이기
+        clearCheckboxes();   // 체크박스 초기화
     }
 }
 
@@ -79,7 +64,6 @@ function showProfile(event, emp_no) {
         data: { emp_no: emp_no },
         success: function(employee) {
             // 프로필 정보를 업데이트
-            console.log(employee);
             $('#profilePopup .profileTit img').attr('src', employee.PHOTO); // 이미지 경로는 실제 데이터에 맞게 수정
             $('#profilePopup .profileTit span').text(employee.NAME);
             $('#profileDept').text(employee.DEPT_TITLE);
@@ -87,7 +71,7 @@ function showProfile(event, emp_no) {
             $('#profilePhone').text(employee.PHONE);
             $('#profileEmail').text(employee.EMAIL);
             
-        	// emp_no를 데이터 속성으로 저장
+            // emp_no를 데이터 속성으로 저장
             $('#profilePopup').data('emp_no', employee.EMP_NO);
 
             // 팝업을 표시
@@ -101,18 +85,19 @@ function showProfile(event, emp_no) {
 
 // 프로필 팝업 닫기 버튼
 function closeProfilePopup() {
-    document.getElementById('profilePopup').style.display = 'none' // 팝업 숨기기
+    document.getElementById('profilePopup').style.display = 'none'; // 팝업 숨기기
 }
+
 
 // 선택된 주소록 항목을 수집하여 그룹 채팅 생성
 function createChat() {
-    const selectedAddresses = []
-    const checkboxes = document.querySelectorAll('.addressCheckbox')
+    const selectedAddresses = [];
+    const checkboxes = document.querySelectorAll('.addressCheckbox');
     checkboxes.forEach((checkbox, index) => {
         if (checkbox.checked) {
-            selectedAddresses.push(`주소록 ${index + 1}`) // 체크된 항목의 이름을 배열에 추가
+            selectedAddresses.push(`주소록 ${index + 1}`); // 체크된 항목의 이름을 배열에 추가
         }
-    })
+    });
 }
 
 
@@ -125,7 +110,7 @@ function loadEmployeeList() {
             var addressList = $('#addressList');
             addressList.find('li:not(:first)').remove(); // 기존 항목 제거
             response.forEach(function(employee) {
-                addressList.append('<li><a href="javascript:;" data-emp-no="' + employee.EMP_NO + '" onclick="toggleCheckbox(event, this)"><input type="checkbox" class="addressCheckbox" value="' + employee.EMP_NO + '" style="display: none;">' + employee.NAME + '</a></li>');
+				addressList.append('<li><a href="javascript:;" data-emp-no="' + employee.EMP_NO + '" onclick="toggleCheckbox(event, this)"><input type="checkbox" class="addressCheckbox" value="' + employee.EMP_NO + '" style="display: none;">' + employee.DEPT_TITLE + ' ' + employee.ROLE_TITLE + ' ' + employee.NAME + '</a></li>');
             });
             // 주소록 클릭 시 프로필 팝업 표시
             const addressItems = document.querySelectorAll('.addressList li a');
@@ -151,6 +136,7 @@ function loadEmployeeList() {
     });
 }
 
+
 // 채팅방 조회
 function loadChatList() {
     $.ajax({
@@ -161,28 +147,36 @@ function loadChatList() {
             chatList.empty(); // 기존 목록 초기화
 
             response.forEach(function(chatRoom) {
+            
+            	console.log(chatRoom);
                 var $listItem = $('<li>');
                 var $link = $('<a>', {
                     href: 'javascript:;',
                     'data-chat-room-seq': chatRoom.CHAT_ROOM_SEQ,
+                    'data-emp-no': chatRoom.EMP_NO,
                     click: function() {
                         showChatRoomPopup(chatRoom.CHAT_ROOM_SEQ);
                     }
                 });
-
-                var $chatTitle = $('<div>', { class: 'chatTitle' });
-                var $spanName = $('<span>').text(chatRoom.CHAT_ROOM_NAME);
-                $chatTitle.append($spanName);
                 
-                // 읽지 않은 메시지가 있는 경우 표시
-                if (chatRoom.UNREAD_COUNT > 0) {
-                    var $unreadCount = $('<span>', { 
-                        class: 'notificationCount' 
-                    }).text(chatRoom.UNREAD_COUNT);
-                    $chatTitle.append($unreadCount);
-                }
-
-                $link.append($chatTitle);
+                var $chatTitle = $('<div>', { class: 'chatTitle' });
+				var $spanName = $('<span>').text(chatRoom.CHAT_ROOM_NAME);
+				$chatTitle.append($spanName);
+				
+				// 항상 .notificationCount 요소를 생성하되, 처음에는 숨겨둠
+				var $unreadCount = $('<span>', { 
+				    class: 'notificationCount',
+				    style: 'display: none;' // 처음엔 숨겨둠
+				}).text(chatRoom.UNREAD_COUNT);
+				
+				// UNREAD_COUNT가 0보다 큰 경우에만 표시
+				if (chatRoom.UNREAD_COUNT > 0) {
+				    $unreadCount.css('display', 'inline'); // 요소를 보이게 처리
+				}
+				
+				$chatTitle.append($unreadCount);
+				$link.append($chatTitle);
+				
                 $listItem.append($link);
                 chatList.append($listItem);
                 
@@ -202,20 +196,32 @@ function showChatRoomPopup(chatRoomSeq) {
         method: 'GET',
         data: { chat_room_seq: chatRoomSeq },
         success: function(response) {
-        	console.log(response);
-        	// 기존 내용을 지운 후 새로운 내용을 추가
+
+            // 채팅방 이름 설정
+           	response.chatName.forEach(function(chatName) {
+                // 멤버 정보를 리스트에 추가
+	            $('#chatRoomPopup .chatRoomTitle h2').text(chatName.CHAT_ROOM_NAME);
+            });
+
+            // 멤버 목록 설정
             var $chatRoomDetails = $('#chatRoomPopup .chatRoomDetails ul');
             $chatRoomDetails.empty();  // 기존 내용을 지웁니다.
-        	 response.forEach(function(chatRoomDetails) {
-	            // 채팅방 정보를 팝업에 표시
- 	           	var $listName = $('<li>').text(chatRoomDetails.MEMBER_NAME);
-            	$chatRoomDetails.append($listName);
-        		$('#chatRoomPopup .chatRoomTitle h2').text(chatRoomDetails.CHAT_ROOM_NAME);
-        	 })
 
-        	$('#chatTitModi').data('chat_room_seq', chatRoomSeq);
-        	$('.chatRoomPopupBtn .chatBtn').data('chat_room_seq', chatRoomSeq);
+            response.members.forEach(function(member) {
+                // 멤버 정보를 리스트에 추가
+                var $listName = $('<li>').text(member.MEMBER_NAME);
+                $chatRoomDetails.append($listName);
+            });
+
+            // 데이터 속성에 chat_room_seq 설정
+            $('#chatTitModi').data('chat_room_seq', chatRoomSeq);
+            $('.chatRoomPopupBtn .chatBtn').data('chat_room_seq', chatRoomSeq);
+
+            // 팝업 표시
             $('#chatRoomPopup').css('display', 'flex');
+            
+           	// 버튼의 onclick 속성에 chatRoomSeq를 포함하여 업데이트
+            $('.chatRoomPopupBtn .chatBtn').attr('onclick', `startChat(${chatRoomSeq})`);
         },
         error: function(error) {
             console.error("Error loading chat room details:", error);
@@ -268,6 +274,7 @@ function exitChatRoom() {
         }
     });
 }
+
 // 채팅방 팝업 닫는 함수
 function closeChatRoomPopup() {
     $('#chatRoomPopup').css('display', 'none');
@@ -306,15 +313,19 @@ $('.chatButton').on('click', function() {
     startPrivateChat(emp_no1, chat_room_name);
 });
 
-// 단체 채팅 ajax
 function createGroupChat() {
+    var selectedEmpNos = [];
+    $('.addressCheckbox:checked').each(function() {
+        selectedEmpNos.push($(this).val());
+    });
+
+    if (selectedEmpNos.length < 2) {
+        alert("단체 채팅방을 생성하려면 최소 2명 이상의 대상을 선택해야 합니다.");
+        return; // 채팅방 생성 중단
+    }
+
     var chatRoomName = prompt("채팅방 이름을 입력하세요:");
     if (chatRoomName) {
-        var selectedEmpNos = [];
-        $('.addressCheckbox:checked').each(function() {
-            selectedEmpNos.push($(this).val());
-        });
-
         $.ajax({
             url: '/chatroom/createGroup',
             method: 'POST',
@@ -327,8 +338,7 @@ function createGroupChat() {
                 if (response === 'success') {
                     alert('단체 채팅방이 생성되었습니다.');
                     toggleView('chat');
-	                loadChatList();
-                    // 여기서 채팅방으로 리다이렉트하거나 UI 업데이트를 할 수 있습니다.
+                    loadChatList();
                 } else {
                     alert('채팅방 생성에 실패했습니다.');
                 }
@@ -343,14 +353,23 @@ function createGroupChat() {
 // 단체톡방 생성 버튼 클릭 이벤트
 $('.createChatConfirmBtn').on('click', function() {
     createGroupChat();
+    toggleView('chat');  // 채팅방으로 전환
+    toggleCheckboxes();  // 체크박스와 확인 버튼 숨기기
+    clearCheckboxes();   // 체크박스 초기화
 });
+
+// 체크박스 초기화 함수
+function clearCheckboxes() {
+    const checkboxes = document.querySelectorAll('.addressCheckbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;  // 체크 해제
+    });
+}
 
 // 채팅 
 // 채팅 시작 함수
-function startChat() {
-	var chat_room_seq = $('.chatRoomPopupBtn .chatBtn').data('chat_room_seq'); // 여기에서 chat_room_seq를 가져옵니다.
+function startChat(chat_room_seq) {
     var chatRoomName = document.querySelector('#chatRoomPopup .chatRoomTitle h2').innerText;
-    //activateChatRoom(chatRoomSeq, chatRoomName);
     // 모든 li 요소에서 active 클래스 제거
     document.querySelectorAll('.chatList li').forEach(function (li) {
         li.classList.remove('active');
@@ -369,59 +388,19 @@ function startChat() {
     // 채팅방 메시지를 로드
     loadChatMessages(chat_room_seq);
 
-    // WebSocket 연결 설정
-    if (webSocket) {
-        webSocket.close();
-    }
-    
-    webSocket = new WebSocket('ws://13.125.46.163/chat/' + chat_room_seq);
-    webSocket.onopen = function (event) {
-        console.log("WebSocket is open now.");
-    };
-    
-    webSocket.onmessage = function (event) {
-        let data = JSON.parse(event.data);
-	    console.log(data);  // 전체 데이터를 확인
-	
-	    if (data.type === "loginID") {
-	        // 서버에서 보낸 로그인 ID 저장
-	        currentLoginID = data.loginID;
-	
-	        // 이전 채팅 내역 처리
-	        data.chatHistory.forEach(function (chat) {
-	            appendMessage(chat, chat.sender === currentLoginID ? 'sent' : 'received');
-	        });
-	    } else if (data.type === "chat") {
-	        // 채팅 메시지 처리
-	        appendMessage(data, data.sender === currentLoginID ? 'sent' : 'received');
-	        
-	        // 읽음 처리 호출 (메시지 전송자가 현재 사용자가 아닌 경우에만 호출)
-	        if (data.sender !== currentLoginID && data.read_count !== 0) {
-	            markMessageAsRead(data.chat_room_seq, data.chat_seq);
-	        }
-	    } else if (data.type === "status") {
-	        // 사용자 상태 메시지 처리 (입장 및 퇴장)
-	        displayStatusMessage(data);
-	    }
-    };
-    
-
-    webSocket.onclose = function (event) {
-        console.log("Disconnected from chat room:", chat_room_seq);
-    };
-
-    webSocket.onerror = function (event) {
-        console.error("WebSocket error:", error);
-    };
-
     // 현재 활성화된 채팅방 시퀀스 저장
     currentChatRoomSeq = chat_room_seq;
-}
 
+    // WebSocket이 열려 있는 경우, 서버에 chatRoomSeq를 전달
+    if (webSocket && webSocket.readyState === WebSocket.OPEN) {
+        webSocket.send(JSON.stringify({ type: 'join', chatRoomSeq: chat_room_seq }));
+    } else {
+        console.error("WebSocket is not open or initialized.");
+    }
+}
 
 // 예시: 채팅방 메시지를 로드하는 함수 (서버에서 메시지를 가져오는 로직 추가 필요)
 function loadChatMessages(chat_room_seq) {
-    // 기존 채팅 메시지 초기화
     $('#chatBody').empty();
     var activeLi = document.querySelector('.chatList li a[data-chat-room-seq="' + chat_room_seq + '"]');
     if (activeLi) {
@@ -431,8 +410,6 @@ function loadChatMessages(chat_room_seq) {
 
 // 메시지를 화면에 추가하고, 읽음 처리하는 함수
 function appendMessage(data, type) {
-	console.log(data);
-	console.log(type);
     let chatBody = $("#chatBody");
     let mbox = $("<div>").addClass("text_box");
     let id_Box = $("<div>").addClass("sender");
@@ -440,9 +417,11 @@ function appendMessage(data, type) {
     let time_Box = $("<div>").addClass("timeBox");
     let readBox = $("<div>").addClass("readBox");
     let message = $("<div>").addClass("message");
+
     // 메시지 데이터를 HTML로 삽입
     mbox.html(data.message);
     time_Box.text(data.send_time);
+    
     if (type === "received") {
         message.addClass("received");
         id_Box.text(data.sender + ":");
@@ -451,9 +430,12 @@ function appendMessage(data, type) {
         message.addClass("sent");
     }
     
+    // `chatSeq`를 메시지에 데이터 속성으로 저장 (나중에 읽음 수 업데이트 시 사용)
+    message.attr("data-chat-seq", data.chat_seq);
     // `read_count`를 반영하여 보여줌
     if (data.read_count > 0) {
         readBox.text(data.read_count);
+        readBox.show();
     } else {
         readBox.hide(); // read_count가 0이면 숨김
     }
@@ -463,24 +445,14 @@ function appendMessage(data, type) {
     message.append(mbox);
     message.append(subBox);
     chatBody.append(message);
+
     // 스크롤을 최신 메시지로 이동
     chatBody.scrollTop(chatBody[0].scrollHeight);
+    
+    // append 후에 readCountUpdate가 있을 경우 바로 업데이트
+    checkAndUpdateReadCount(data.chat_room_seq, data.chat_seq);
 }
 
-function displayStatusMessage(data) {
-    let statusMessage = $("<div>").addClass("message status");
-    let statusText = "";
-	
-    if (data.status === "joined") {
-        statusText = data.user + "님이 입장하셨습니다";
-    } else if (data.status === "left") {
-        statusText = data.user + "님이 퇴장하셨습니다";
-    }
-
-    statusMessage.text(statusText);
-    $("#chatBody").append(statusMessage);
-    $("#chatBody").scrollTop($("#chatBody")[0].scrollHeight);
-}
 
 // 메시지를 전송하는 함수
 function sendMessage() {
@@ -488,10 +460,14 @@ function sendMessage() {
     const messageHTML = messageInput.innerHTML.trim();
     if (messageHTML !== '' && webSocket && currentChatRoomSeq) {
         const messageData = {
-            message: messageHTML
+            chatRoomSeq: currentChatRoomSeq,  // 현재 채팅방의 chatRoomSeq를 포함
+            message: messageHTML // messageHTML로 수정
         };
-        webSocket.send(JSON.stringify(messageData));
-        messageInput.innerHTML = '';
+        webSocket.send(JSON.stringify({ type: 'chat', chatRoomSeq: currentChatRoomSeq, message: messageHTML }));
+        messageInput.innerHTML = ''; // 입력 필드 초기화
+        
+    } else {
+        console.error("Message is empty or WebSocket is not connected.");
     }
 }
 
@@ -530,6 +506,7 @@ function handleFileInput(event) {
         console.log("No file selected or file is empty."); // 디버깅 로그 추가
     }
 }
+
 // 파일 전송을 확인하는 함수
 function confirmFileSend() {
     if (!fileToSend) {
@@ -578,22 +555,29 @@ function confirmFileSend() {
 
 // 파일 전송을 취소하는 함수
 function cancelFileSend() {
-    document.getElementById('filePopup').style.display = 'none'
-    document.getElementById('fileInput').value = ''
-    fileToSend = null
+    document.getElementById('filePopup').style.display = 'none';
+    document.getElementById('fileInput').value = '';
+    fileToSend = null;
 }
 
 // 클립보드에서 이미지를 붙여넣는 함수
 function addPasteImageListener(elementId) {
-    const messageInput = document.getElementById(elementId)
+    const messageInput = document.getElementById(elementId);
     if (messageInput) {
         messageInput.addEventListener('paste', function (event) {
-            const items = (event.clipboardData || window.clipboardData).items
+            const currentImages = messageInput.getElementsByTagName('img');
+
+            if (currentImages.length >= 2) {
+                alert('최대 2개의 이미지만 추가할 수 있습니다.');
+                return;
+            }
+
+            const items = (event.clipboardData || window.clipboardData).items;
             for (let item of items) {
                 if (item.type.indexOf('image') !== -1) {
-                    const file = item.getAsFile()
-                    const formData = new FormData()
-                    formData.append('file', file)
+                    const file = item.getAsFile();
+                    const formData = new FormData();
+                    formData.append('file', file);
 
                     fetch('/uploadImage', {
                         method: 'POST',
@@ -602,13 +586,14 @@ function addPasteImageListener(elementId) {
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            const img = document.createElement('img');
-                            img.src = data.url;
-                            img.alt = "Pasted Image";
-                            img.style.maxWidth = "100%";
-                            img.style.maxHeight = "200px";
-                            messageInput.innerHTML = '';
-                            messageInput.appendChild(img);
+                            if (currentImages.length < 2) { // 이 조건을 다시 한 번 확인
+                                const img = document.createElement('img');
+                                img.src = data.url;
+                                img.alt = "Pasted Image";
+                                img.style.maxWidth = "100%";
+                                img.style.maxHeight = "200px";
+                                messageInput.appendChild(img);
+                            }
                         } else {
                             alert('Error uploading image: ' + data.message);
                         }
@@ -616,14 +601,12 @@ function addPasteImageListener(elementId) {
                     .catch(error => {
                         console.error('Error uploading image:', error);
                         alert('Error uploading image: ' + error.message);
-                    })
+                    });
                 }
             }
-        })
+        });
     }
 }
-
-
 
 // 키 다운 이벤트 처리 (엔터 키로 메시지 전송)
 function handleKeyDown(event) {
@@ -635,51 +618,88 @@ function handleKeyDown(event) {
 
 // 이모티콘 컨테이너를 토글하는 함수
 function toggleEmojiContainer() {
-    const emojiContainer = document.getElementById('emojiContainer')
-    const chatBody = document.getElementById('chatBody')
+    const emojiContainer = document.getElementById('emojiContainer');
+    const chatBody = document.getElementById('chatBody');
 
     if (emojiContainer.style.display === 'flex') {
-        emojiContainer.style.display = 'none'
-        chatBody.style.paddingBottom = '20px'
+        emojiContainer.style.display = 'none';
+        chatBody.style.paddingBottom = '20px';
     } else {
-        emojiContainer.style.display = 'flex'
-        chatBody.style.paddingBottom = `${emojiContainer.clientHeight + 20}px`
+        emojiContainer.style.display = 'flex';
+        chatBody.style.paddingBottom = `${emojiContainer.clientHeight + 20}px`;
     }
 }
 
 // 이모티콘을 메시지 입력 필드에 추가하는 함수
 function addEmojiToMessageInput(imgElement) {
-    const messageInput = document.getElementById('messageInput')
-    const img = document.createElement('img')
-    img.src = imgElement.src
-    img.style.maxWidth = '100%'
-    img.style.maxHeight = '100px'
-    messageInput.appendChild(img)
+    const messageInput = document.getElementById('messageInput');
+    const currentImages = messageInput.getElementsByTagName('img');
+
+    if (currentImages.length >= 2) {
+        alert('최대 2개의 이미지만 추가할 수 있습니다.');
+        return;
+    }
+
+    const img = document.createElement('img');
+    img.src = imgElement.src;
+    img.style.maxWidth = '100%';
+    img.style.maxHeight = '100px';
+    messageInput.appendChild(img);
 }
 
 // 메시지를 읽었을 때 서버로 읽음 처리 요청을 보내는 함수
-function markMessageAsRead(chatRoomSeq, messageSeq) {
+// 사용자가 메시지를 읽었을 때 호출되는 함수
+function markMessageAsRead(chatRoomSeq, chatSeq) {
+    console.log(`markMessageAsRead called for chatSeq: ${chatSeq}, chatRoomSeq: ${chatRoomSeq}`);
+    const message = JSON.stringify({
+        type: "read",
+        chatRoomSeq: chatRoomSeq,
+        chatSeq: chatSeq,
+        userName: currentLoginID
+    });
+    webSocket.send(message);
+}
+
+// 채팅방 내부 메시지의 읽음 상태 업데이트
+function updateReadCountOnClient(chatRoomSeq, chatSeq, updatedReadCount) {
+    let messageElement = document.querySelector(`.message[data-chat-seq="${chatSeq}"] .readBox`);
+    
+    if (messageElement) {
+        if (updatedReadCount > 0) {
+            messageElement.textContent = updatedReadCount;
+            messageElement.style.display = 'block';
+        } else {
+            messageElement.style.display = 'none';
+        }
+    } else {
+        setTimeout(() => updateReadCountOnClient(chatRoomSeq, chatSeq, updatedReadCount), 100);
+    }
+}
+
+// 메시지의 읽음 상태를 서버에 확인하고, 필요시 업데이트하는 함수
+function checkAndUpdateReadCount(chatRoomSeq, chatSeq) {
     $.ajax({
-        url: '/chatroom/updateReadCount',  // 이 URL이 실제로 존재해야 합니다.
+        url: '/chatroom/checkRseadCount',
         method: 'POST',
         data: {
             chatRoomSeq: chatRoomSeq,
-            messageSeq: messageSeq
+            chatSeq: chatSeq
         },
         success: function(response) {
             if (response.status === 'success') {
                 const updatedReadCount = response.updated_read_count;
-                let readBox = $('div.message').find('.readBox');
+                let readBox = $(`.message[data-chat-seq="${chatSeq}"] .readBox`);
 
                 if (updatedReadCount > 0) {
                     readBox.text(updatedReadCount);
+                    readBox.show();
                 } else {
-                    readBox.remove(); // read_count가 0이 되면 readBox를 제거
+                    readBox.hide();
                 }
             }
         },
         error: function(error) {
-            console.error("Error marking message as read:", error);
+            console.error("Error checking read count:", error);
         }
     });
 }

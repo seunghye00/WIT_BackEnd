@@ -263,6 +263,23 @@ document.getElementById('vehicleForm').addEventListener('submit', function (even
             $("#vehicleStartAt").val(startTimestamp);
             $("#vehicleEndAt").val(endTimestamp);
 
-            // 모든 검증을 통과한 후 폼 제출
-            event.target.submit();
+            // 예약 내용이 수정 및 삭제가 불가능함을 사용자에게 확인
+    		if (confirm('예약 내용은 수정&삭제가 불가능합니다. 계속하시겠습니까?')) {
+		        // 사용자가 확인을 누르면 폼을 제출
+		        event.target.submit();
+		    } else {
+		        // 사용자가 취소를 누르면 폼 제출 중단
+		        return;
+		    }
         });
+        
+// 모달 외부 클릭 시 닫기
+$(window).click(function(e) {
+	if ($(e.target).is($('#reservModal')[0])) {
+		location.reload();
+	}
+	if ($(e.target).is($('#eventModal')[0])) {
+		$('#eventModal').hide();
+	}
+});
+

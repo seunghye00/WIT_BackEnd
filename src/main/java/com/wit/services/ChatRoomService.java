@@ -76,19 +76,26 @@ public class ChatRoomService {
         dao.addChatRoomMember(memberParams);
     }
     
-    // 채팅방 목록 조회
-    @Transactional
-    public List<Map<String, Object>> getChatRoomsByUserId(String empNo) {
-        return dao.getChatRoomsByUserId(empNo);
-    }
-
     // 채팅방 상세 조회
     @Transactional
-    public List<Map<String, Object>> getDetailChatRooms(int chatRoomSeq, String empNo) {
+    public Map<String, Object> getDetailChatRooms(int chatRoomSeq, String empNo) {
         Map<String, Object> params = new HashMap<>();
         params.put("chatRoomSeq", chatRoomSeq);
         params.put("empNo", empNo);
-        return dao.getDetailChatRooms(params);
+
+        // 채팅방 이름 조회
+        List<Map<String, Object>> roomNameResult = dao.getChatRoomName(params);
+
+        // 채팅방 멤버 조회
+        List<Map<String, Object>> membersResult = dao.getChatRoomMembers(params);
+
+        Map<String, Object> result = new HashMap<>();
+        if (!roomNameResult.isEmpty()) {
+            result.put("chatRoomName", roomNameResult.get(0).get("chat_room_name"));
+        }
+        result.put("chatName", roomNameResult);
+        result.put("members", membersResult);
+        return result;
     }
 
     // 채팅방 제목 수정

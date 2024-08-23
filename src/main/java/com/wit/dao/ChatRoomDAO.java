@@ -47,8 +47,12 @@ public class ChatRoomDAO {
     }
 
     // 채팅방 상세 조회
-    public List<Map<String, Object>> getDetailChatRooms(Map<String, Object> params) {
-        return mybatis.selectList("chatRoom.getDetailChatRooms", params);
+    public List<Map<String, Object>> getChatRoomName(Map<String, Object> params) {
+        return mybatis.selectList("chatRoom.getChatRoomName", params);
+    }
+    // 채팅방 상세 조회
+    public List<Map<String, Object>> getChatRoomMembers(Map<String, Object> params) {
+        return mybatis.selectList("chatRoom.getChatRoomMembers", params);
     }
 
     // 채팅방 타이틀 수정

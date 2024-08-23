@@ -10,10 +10,11 @@
 <title>근태 관리</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
-<link rel="stylesheet" href="/resources/css/style.main.css">
-<link rel="stylesheet" href="/resources/css/wit.css">
+<link rel="stylesheet" href="/css/style.main.css">
+<link rel="stylesheet" href="/css/wit.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="/resources/js/employee.js"></script>
+<script src="/js/employee.js"></script>
+<script src="/js/wit.js"></script>
 
 </head>
 <body>
@@ -70,7 +71,7 @@
 					<div class="Attendance_container">
 						<div class="Attendance_sections">
 							<div class="status_container">
-								<h3>월간 근태현황</h3>
+								<h3>월간 근무현황</h3>
 								<div class="status_row status_header">
 									<div class="status_col">
 										<span>지각</span>
@@ -115,7 +116,7 @@
 							</div>
 						</div>
 						<div class="week_status">
-							<h3>주간 근무현황</h3>
+							<h3>주간 근태현황</h3>
 							<div class="week_row week_header">
 								<div class="week_col">
 									<span>근무일</span>

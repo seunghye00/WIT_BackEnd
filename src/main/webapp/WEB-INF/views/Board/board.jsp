@@ -72,7 +72,7 @@
 													</li>
 
 													<c:if test="${employee.role_code == '사장'}">
-														<li><a href="/board/write?boardCode=2" class="toggleTit">공지 사항 글
+														<li><a href="/board/write?boardCode=2">공지 사항 글
 																작성</a></li>
 													</c:if>
 												</ul>
