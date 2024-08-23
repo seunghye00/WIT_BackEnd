@@ -125,5 +125,12 @@ public class ChatService {
     public List<Map<String, Object>> getChatRoomsByUserId(String empNo) {
         return dao.getChatRoomsByUserId(empNo);
     }
+    
+    // 안읽은 메시지 출력
+    @Transactional
+    public int getUnreadMessages(String chatRoomSeq, String userName) {
+        return dao.getUnreadMessages(chatRoomSeq, userName);
+    }
+
 }
 

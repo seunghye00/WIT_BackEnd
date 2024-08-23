@@ -1,8 +1,26 @@
-let webSocket; // WebSocket 객체
-let currentChatRoomSeq; // 현재 활성화된 채팅방 시퀀스
-let currentLoginID = null;
-let chatHistoryLoaded = false;
-let fileToSend = null;
+// 주소록 체크박스
+// 전체 선택 체크박스
+const checkAll = document.getElementById('checkAll')
+// 개별 선택 체크박스들
+const individualChecks = document.querySelectorAll('.individual')
+
+// 주소록 항목의 체크박스와 확인 버튼을 토글
+function toggleCheckboxes() {
+    const checkboxes = document.querySelectorAll('.addressCheckbox');
+    const confirmBtn = document.querySelector('.createChatConfirmBtn');
+    checkboxes.forEach(checkbox => {
+        checkbox.style.display = checkbox.style.display === 'none' ? 'inline-block' : 'none'; // 체크박스 토글
+    });
+    confirmBtn.style.display = confirmBtn.style.display === 'none' ? 'inline-block' : 'none'; // 확인 버튼 토글
+    clearCheckboxes();   // 체크박스 초기화
+}
+
+// 주소록 항목의 체크박스를 클릭하여 선택 상태를 토글
+function toggleCheckbox(event, element, emp_no) {
+    event.preventDefault();
+    const checkbox = element.querySelector('.addressCheckbox');
+    checkbox.checked = !checkbox.checked;
+}
 
 // 채팅방 
 // 채팅방 사이드 영역 보기 전환
@@ -35,271 +53,6 @@ function toggleView(view) {
         createGroup.style.display = 'inline-block'; // 그룹 채팅 생성 버튼 보이기
         clearCheckboxes();   // 체크박스 초기화
     }
-}
-// 로그인 시 WebSocket 연결 설정
-function initializeWebSocket() {
-    webSocket = new WebSocket('ws://192.168.1.107/chat');
-
-    webSocket.onopen = function (event) {
-        console.log("WebSocket is open now.");
-    };
-
-	webSocket.onmessage = function(event) {
-	    try {
-	        let data = JSON.parse(event.data);
-			console.log(data);
-            if (data.type == "readCountUpdate") {
-	            updateReadCountOnClient(data.chatRoomSeq, data.chatSeq, data.updatedReadCount);
-	        }
-	        
-            if (data.type === 'unreadCountUpdate') {
-		        updateUnreadCountOnClient(data.chatRoomSeq, data.unreadCount);
-		    }
-	        
-	        if (data.type == "loginID") {
-	            if (data.loginID) {
-	                currentLoginID = data.loginID;
-	                console.log("LoginID set:", currentLoginID);
-	            } else {
-	                console.log("Invalid loginID data");
-	            }
-	        }
-	        if (data.type == "chatHistory") {
-	            if (currentLoginID && Array.isArray(data.chatHistory)) {
-	                data.chatHistory.forEach(function(chat) {
-	                    appendMessage(chat, chat.name === currentLoginID ? 'sent' : 'received');
-	                });
-	            } else {
-	                console.log("chatHistory received before loginID is set or invalid chatHistory data");
-	            }
-	        } 
-	        if (data.type == "chat") {
-	            if (data.chat_room_seq == currentChatRoomSeq) {
-	                appendMessage(data, data.name === currentLoginID ? 'sent' : 'received');
-	                 // 자신이 보낸 메시지는 읽음 처리하지 않도록 조건 추가
-	             	if (data.name !== currentLoginID) {
-					    console.log("markMessageAsRead called for chatSeq:", data.chat_seq);
-					    markMessageAsRead(data.chat_room_seq, data.chat_seq);
-					}
-	            } else {
-	                showNotificationModal(`${data.sender}님이 새 메시지를 보냈습니다`);
-	                console.log("Ignoring message for chat room:", data.chat_room_seq);
-	            }
-	        }
-	        if (data.type == "status") {
-	            displayStatusMessage(data);
-	        }
-	    } catch (error) {
-	        console.error("Error processing WebSocket message:", error);
-	    }
-	};
-
-    webSocket.onerror = function(error) {
-        console.log("WebSocket error observed:", error);
-    };
-
-    webSocket.onclose = function(event) {
-        console.log("WebSocket connection closed:", event);
-    };
-}
-
-// WebSocket 연결 초기화 (로그인 시 호출)
-initializeWebSocket();
-
-// 알림이 오면 모달을 자동으로 띄우는 함수
-function showNotificationModal(message) {
-    let modal = document.getElementById("notificationModal");
-
-    // 알림 내용 업데이트
-    let notificationList = document.getElementById("notificationList");
-    notificationList.innerHTML = ""; // 기존 알림을 모두 제거
-    let notificationItem = document.createElement("li");
-    notificationItem.textContent = message; // 서버에서 받은 메시지를 그대로 표시
-    notificationList.appendChild(notificationItem);
-
-    // 모달 표시
-    modal.style.display = "block";
-    modal.classList.add("show");
-
-    // 모달 닫기 버튼 처리
-    let closeBtn = modal.querySelector(".close");
-    closeBtn.onclick = function() {
-        modal.style.display = "none";
-        modal.classList.remove("show");
-    };
-
-    // 모달 외부 클릭 시 모달 닫기
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-            modal.classList.remove("show");
-        }
-    };
-}
-
-// 채팅 시작 함수
-function startChat(chat_room_seq) {
-    var chatRoomName = document.querySelector('#chatRoomPopup .chatRoomTitle h2').innerText;
-    // 모든 li 요소에서 active 클래스 제거
-    document.querySelectorAll('.chatList li').forEach(function (li) {
-        li.classList.remove('active');
-    });
-
-    // 해당 chatRoomSeq를 가진 li 요소에 active 클래스 추가
-    var activeLi = document.querySelector('.chatList li a[data-chat-room-seq="' + chat_room_seq + '"]');
-    if (activeLi) {
-        activeLi.classList.add('active');
-    }
-
-    // 채팅방 제목 변경
-    document.querySelector('.chatHeader .title').innerText = chatRoomName;
-    closeChatRoomPopup(); // 팝업 닫기
-
-    // 채팅방 메시지를 로드
-    loadChatMessages(chat_room_seq);
-
-    // 현재 활성화된 채팅방 시퀀스 저장
-    currentChatRoomSeq = chat_room_seq;
-
-    // WebSocket이 열려 있는 경우, 서버에 chatRoomSeq를 전달
-    if (webSocket && webSocket.readyState === WebSocket.OPEN) {
-        webSocket.send(JSON.stringify({ type: 'join', chatRoomSeq: chat_room_seq }));
-    } else {
-        console.error("WebSocket is not open or initialized.");
-    }
-}
-
-// 예시: 채팅방 메시지를 로드하는 함수 (서버에서 메시지를 가져오는 로직 추가 필요)
-function loadChatMessages(chat_room_seq) {
-    $('#chatBody').empty();
-    var activeLi = document.querySelector('.chatList li a[data-chat-room-seq="' + chat_room_seq + '"]');
-    if (activeLi) {
-        activeLi.parentElement.classList.add('active'); // parentElement를 사용하여 li 요소에 active 클래스 추가
-    }
-}
-
-// 메시지를 화면에 추가하고, 읽음 처리하는 함수
-function appendMessage(data, type) {
-    let chatBody = $("#chatBody");
-    let mbox = $("<div>").addClass("text_box");
-    let id_Box = $("<div>").addClass("sender");
-    let subBox = $("<div>").addClass("subBox");
-    let time_Box = $("<div>").addClass("timeBox");
-    let readBox = $("<div>").addClass("readBox");
-    let message = $("<div>").addClass("message");
-
-    // 메시지 데이터를 HTML로 삽입
-    mbox.html(data.message);
-    time_Box.text(data.send_time);
-    
-    if (type === "received") {
-        message.addClass("received");
-        id_Box.text(data.sender + ":");
-        message.append(id_Box);
-    } else {
-        message.addClass("sent");
-    }
-    
-    // `chatSeq`를 메시지에 데이터 속성으로 저장 (나중에 읽음 수 업데이트 시 사용)
-    message.attr("data-chat-seq", data.chat_seq);
-    // `read_count`를 반영하여 보여줌
-    if (data.read_count > 0) {
-        readBox.text(data.read_count);
-        readBox.show();
-    } else {
-        readBox.hide(); // read_count가 0이면 숨김
-    }
-
-    subBox.append(readBox);
-    subBox.append(time_Box);
-    message.append(mbox);
-    message.append(subBox);
-    chatBody.append(message);
-
-    // 스크롤을 최신 메시지로 이동
-    chatBody.scrollTop(chatBody[0].scrollHeight);
-    
-    // append 후에 readCountUpdate가 있을 경우 바로 업데이트
-    checkAndUpdateReadCount(data.chat_room_seq, data.chat_seq);
-}
-
-function displayStatusMessage(data) {
-    let statusMessage = $("<div>").addClass("message status");
-    let statusText = "";
-    
-    if (data.status === "joined") {
-        statusText = data.user + "님이 입장하셨습니다";
-    } else if (data.status === "left") {
-        statusText = data.user + "님이 퇴장하셨습니다";
-    }
-
-    statusMessage.text(statusText);
-    $("#chatBody").append(statusMessage);
-    $("#chatBody").scrollTop($("#chatBody")[0].scrollHeight);
-}
-
-// 메시지를 전송하는 함수
-function sendMessage() {
-    const messageInput = document.getElementById('messageInput');
-    const messageHTML = messageInput.innerHTML.trim();
-    if (messageHTML !== '' && webSocket && currentChatRoomSeq) {
-        const messageData = {
-            chatRoomSeq: currentChatRoomSeq,  // 현재 채팅방의 chatRoomSeq를 포함
-            message: messageHTML // messageHTML로 수정
-        };
-        webSocket.send(JSON.stringify({ type: 'chat', chatRoomSeq: currentChatRoomSeq, message: messageHTML }));
-        messageInput.innerHTML = ''; // 입력 필드 초기화
-        
-    } else {
-        console.error("Message is empty or WebSocket is not connected.");
-    }
-}
-
-// 메시지를 읽었을 때 서버로 읽음 처리 요청을 보내는 함수
-// 사용자가 메시지를 읽었을 때 호출되는 함수
-function markMessageAsRead(chatRoomSeq, chatSeq) {
-    console.log(`markMessageAsRead called for chatSeq: ${chatSeq}, chatRoomSeq: ${chatRoomSeq}`);
-    const message = JSON.stringify({
-        type: "read",
-        chatRoomSeq: chatRoomSeq,
-        chatSeq: chatSeq,
-        userName: currentLoginID
-    });
-    webSocket.send(message);
-}
-
-// 여기서부터는 채팅 이외의 다른 UI 요소와 관련된 코드입니다.
-// 주소록 툴바 활성화
-const links = document.querySelectorAll('.toolBar a');
-links.forEach(function (link) {
-    link.addEventListener('click', function () {
-        links.forEach(function (link) {
-            link.classList.remove('active'); // 모든 링크에서 active 클래스 제거
-        });
-        this.classList.add('active'); // 클릭한 링크에 active 클래스 추가
-    });
-});
-
-// 주소록 체크박스
-const checkAll = document.getElementById('checkAll');
-const individualChecks = document.querySelectorAll('.individual');
-
-// 주소록 항목의 체크박스와 확인 버튼을 토글
-function toggleCheckboxes() {
-    const checkboxes = document.querySelectorAll('.addressCheckbox');
-    const confirmBtn = document.querySelector('.createChatConfirmBtn');
-    checkboxes.forEach(checkbox => {
-        checkbox.style.display = checkbox.style.display === 'none' ? 'inline-block' : 'none'; // 체크박스 토글
-    });
-    confirmBtn.style.display = confirmBtn.style.display === 'none' ? 'inline-block' : 'none'; // 확인 버튼 토글
-    clearCheckboxes();   // 체크박스 초기화
-}
-
-// 주소록 항목의 체크박스를 클릭하여 선택 상태를 토글
-function toggleCheckbox(event, element, emp_no) {
-    event.preventDefault();
-    const checkbox = element.querySelector('.addressCheckbox');
-    checkbox.checked = !checkbox.checked;
 }
 
 // 주소록 클릭 시 프로필 팝업 표시
@@ -335,6 +88,7 @@ function closeProfilePopup() {
     document.getElementById('profilePopup').style.display = 'none'; // 팝업 숨기기
 }
 
+
 // 선택된 주소록 항목을 수집하여 그룹 채팅 생성
 function createChat() {
     const selectedAddresses = [];
@@ -345,6 +99,7 @@ function createChat() {
         }
     });
 }
+
 
 // 채팅방 주소록 조회
 function loadEmployeeList() {
@@ -381,6 +136,7 @@ function loadEmployeeList() {
     });
 }
 
+
 // 채팅방 조회
 function loadChatList() {
     $.ajax({
@@ -397,24 +153,30 @@ function loadChatList() {
                 var $link = $('<a>', {
                     href: 'javascript:;',
                     'data-chat-room-seq': chatRoom.CHAT_ROOM_SEQ,
+                    'data-emp-no': chatRoom.EMP_NO,
                     click: function() {
                         showChatRoomPopup(chatRoom.CHAT_ROOM_SEQ);
                     }
                 });
                 
                 var $chatTitle = $('<div>', { class: 'chatTitle' });
-                var $spanName = $('<span>').text(chatRoom.CHAT_ROOM_NAME);
-                $chatTitle.append($spanName);
-                
-                // 읽지 않은 메시지가 있는 경우 표시
-                if (chatRoom.UNREAD_COUNT > 0) {
-                    var $unreadCount = $('<span>', { 
-                        class: 'notificationCount' 
-                    }).text(chatRoom.UNREAD_COUNT);
-                    $chatTitle.append($unreadCount);
-                }
-                
-                $link.append($chatTitle);
+				var $spanName = $('<span>').text(chatRoom.CHAT_ROOM_NAME);
+				$chatTitle.append($spanName);
+				
+				// 항상 .notificationCount 요소를 생성하되, 처음에는 숨겨둠
+				var $unreadCount = $('<span>', { 
+				    class: 'notificationCount',
+				    style: 'display: none;' // 처음엔 숨겨둠
+				}).text(chatRoom.UNREAD_COUNT);
+				
+				// UNREAD_COUNT가 0보다 큰 경우에만 표시
+				if (chatRoom.UNREAD_COUNT > 0) {
+				    $unreadCount.css('display', 'inline'); // 요소를 보이게 처리
+				}
+				
+				$chatTitle.append($unreadCount);
+				$link.append($chatTitle);
+				
                 $listItem.append($link);
                 chatList.append($listItem);
                 
@@ -425,6 +187,7 @@ function loadChatList() {
         }
     });
 }
+
 
 // 채팅방 팝업 함수
 function showChatRoomPopup(chatRoomSeq) {
@@ -532,6 +295,7 @@ function startPrivateChat(emp_no1, chat_room_name) {
                 closeProfilePopup();
                 toggleView('chat');
                 loadChatList();
+                // 여기서 채팅방으로 리다이렉트하거나 UI 업데이트를 할 수 있습니다.
             } else {
                 alert('채팅방 생성에 실패했습니다.');
             }
@@ -549,15 +313,19 @@ $('.chatButton').on('click', function() {
     startPrivateChat(emp_no1, chat_room_name);
 });
 
-// 단체 채팅 ajax
 function createGroupChat() {
+    var selectedEmpNos = [];
+    $('.addressCheckbox:checked').each(function() {
+        selectedEmpNos.push($(this).val());
+    });
+
+    if (selectedEmpNos.length < 2) {
+        alert("단체 채팅방을 생성하려면 최소 2명 이상의 대상을 선택해야 합니다.");
+        return; // 채팅방 생성 중단
+    }
+
     var chatRoomName = prompt("채팅방 이름을 입력하세요:");
     if (chatRoomName) {
-        var selectedEmpNos = [];
-        $('.addressCheckbox:checked').each(function() {
-            selectedEmpNos.push($(this).val());
-        });
-
         $.ajax({
             url: '/chatroom/createGroup',
             method: 'POST',
@@ -598,6 +366,112 @@ function clearCheckboxes() {
     });
 }
 
+// 채팅 
+// 채팅 시작 함수
+function startChat(chat_room_seq) {
+    var chatRoomName = document.querySelector('#chatRoomPopup .chatRoomTitle h2').innerText;
+    // 모든 li 요소에서 active 클래스 제거
+    document.querySelectorAll('.chatList li').forEach(function (li) {
+        li.classList.remove('active');
+    });
+
+    // 해당 chatRoomSeq를 가진 li 요소에 active 클래스 추가
+    var activeLi = document.querySelector('.chatList li a[data-chat-room-seq="' + chat_room_seq + '"]');
+    if (activeLi) {
+        activeLi.classList.add('active');
+    }
+
+    // 채팅방 제목 변경
+    document.querySelector('.chatHeader .title').innerText = chatRoomName;
+    closeChatRoomPopup(); // 팝업 닫기
+
+    // 채팅방 메시지를 로드
+    loadChatMessages(chat_room_seq);
+
+    // 현재 활성화된 채팅방 시퀀스 저장
+    currentChatRoomSeq = chat_room_seq;
+
+    // WebSocket이 열려 있는 경우, 서버에 chatRoomSeq를 전달
+    if (webSocket && webSocket.readyState === WebSocket.OPEN) {
+        webSocket.send(JSON.stringify({ type: 'join', chatRoomSeq: chat_room_seq }));
+    } else {
+        console.error("WebSocket is not open or initialized.");
+    }
+}
+
+// 예시: 채팅방 메시지를 로드하는 함수 (서버에서 메시지를 가져오는 로직 추가 필요)
+function loadChatMessages(chat_room_seq) {
+    $('#chatBody').empty();
+    var activeLi = document.querySelector('.chatList li a[data-chat-room-seq="' + chat_room_seq + '"]');
+    if (activeLi) {
+        activeLi.parentElement.classList.add('active'); // parentElement를 사용하여 li 요소에 active 클래스 추가
+    }
+}
+
+// 메시지를 화면에 추가하고, 읽음 처리하는 함수
+function appendMessage(data, type) {
+    let chatBody = $("#chatBody");
+    let mbox = $("<div>").addClass("text_box");
+    let id_Box = $("<div>").addClass("sender");
+    let subBox = $("<div>").addClass("subBox");
+    let time_Box = $("<div>").addClass("timeBox");
+    let readBox = $("<div>").addClass("readBox");
+    let message = $("<div>").addClass("message");
+
+    // 메시지 데이터를 HTML로 삽입
+    mbox.html(data.message);
+    time_Box.text(data.send_time);
+    
+    if (type === "received") {
+        message.addClass("received");
+        id_Box.text(data.sender + ":");
+        message.append(id_Box);
+    } else {
+        message.addClass("sent");
+    }
+    
+    // `chatSeq`를 메시지에 데이터 속성으로 저장 (나중에 읽음 수 업데이트 시 사용)
+    message.attr("data-chat-seq", data.chat_seq);
+    // `read_count`를 반영하여 보여줌
+    if (data.read_count > 0) {
+        readBox.text(data.read_count);
+        readBox.show();
+    } else {
+        readBox.hide(); // read_count가 0이면 숨김
+    }
+
+    subBox.append(readBox);
+    subBox.append(time_Box);
+    message.append(mbox);
+    message.append(subBox);
+    chatBody.append(message);
+
+    // 스크롤을 최신 메시지로 이동
+    chatBody.scrollTop(chatBody[0].scrollHeight);
+    
+    // append 후에 readCountUpdate가 있을 경우 바로 업데이트
+    checkAndUpdateReadCount(data.chat_room_seq, data.chat_seq);
+}
+
+
+// 메시지를 전송하는 함수
+function sendMessage() {
+    const messageInput = document.getElementById('messageInput');
+    const messageHTML = messageInput.innerHTML.trim();
+    if (messageHTML !== '' && webSocket && currentChatRoomSeq) {
+        const messageData = {
+            chatRoomSeq: currentChatRoomSeq,  // 현재 채팅방의 chatRoomSeq를 포함
+            message: messageHTML // messageHTML로 수정
+        };
+        webSocket.send(JSON.stringify({ type: 'chat', chatRoomSeq: currentChatRoomSeq, message: messageHTML }));
+        messageInput.innerHTML = ''; // 입력 필드 초기화
+        
+    } else {
+        console.error("Message is empty or WebSocket is not connected.");
+    }
+}
+
+
 // 파일 업로드 함수
 function uploadImage(file) {
     let formData = new FormData();
@@ -619,7 +493,7 @@ function uploadImage(file) {
 
 // 파일 입력 필드를 트리거하는 함수
 function triggerFileInput() {
-    document.getElementById('fileInput').click();
+    document.getElementById('fileInput').click()
 }
 
 // 파일 입력을 처리하는 함수
@@ -691,6 +565,13 @@ function addPasteImageListener(elementId) {
     const messageInput = document.getElementById(elementId);
     if (messageInput) {
         messageInput.addEventListener('paste', function (event) {
+            const currentImages = messageInput.getElementsByTagName('img');
+
+            if (currentImages.length >= 2) {
+                alert('최대 2개의 이미지만 추가할 수 있습니다.');
+                return;
+            }
+
             const items = (event.clipboardData || window.clipboardData).items;
             for (let item of items) {
                 if (item.type.indexOf('image') !== -1) {
@@ -705,13 +586,14 @@ function addPasteImageListener(elementId) {
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            const img = document.createElement('img');
-                            img.src = data.url;
-                            img.alt = "Pasted Image";
-                            img.style.maxWidth = "100%";
-                            img.style.maxHeight = "200px";
-                            messageInput.innerHTML = '';
-                            messageInput.appendChild(img);
+                            if (currentImages.length < 2) { // 이 조건을 다시 한 번 확인
+                                const img = document.createElement('img');
+                                img.src = data.url;
+                                img.alt = "Pasted Image";
+                                img.style.maxWidth = "100%";
+                                img.style.maxHeight = "200px";
+                                messageInput.appendChild(img);
+                            }
                         } else {
                             alert('Error uploading image: ' + data.message);
                         }
@@ -729,8 +611,8 @@ function addPasteImageListener(elementId) {
 // 키 다운 이벤트 처리 (엔터 키로 메시지 전송)
 function handleKeyDown(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        sendMessage();
+        event.preventDefault()
+        sendMessage()
     }
 }
 
@@ -751,11 +633,31 @@ function toggleEmojiContainer() {
 // 이모티콘을 메시지 입력 필드에 추가하는 함수
 function addEmojiToMessageInput(imgElement) {
     const messageInput = document.getElementById('messageInput');
+    const currentImages = messageInput.getElementsByTagName('img');
+
+    if (currentImages.length >= 2) {
+        alert('최대 2개의 이미지만 추가할 수 있습니다.');
+        return;
+    }
+
     const img = document.createElement('img');
     img.src = imgElement.src;
     img.style.maxWidth = '100%';
     img.style.maxHeight = '100px';
     messageInput.appendChild(img);
+}
+
+// 메시지를 읽었을 때 서버로 읽음 처리 요청을 보내는 함수
+// 사용자가 메시지를 읽었을 때 호출되는 함수
+function markMessageAsRead(chatRoomSeq, chatSeq) {
+    console.log(`markMessageAsRead called for chatSeq: ${chatSeq}, chatRoomSeq: ${chatRoomSeq}`);
+    const message = JSON.stringify({
+        type: "read",
+        chatRoomSeq: chatRoomSeq,
+        chatSeq: chatSeq,
+        userName: currentLoginID
+    });
+    webSocket.send(message);
 }
 
 // 채팅방 내부 메시지의 읽음 상태 업데이트
@@ -774,19 +676,6 @@ function updateReadCountOnClient(chatRoomSeq, chatSeq, updatedReadCount) {
     }
 }
 
-// 채팅방 목록에서 읽지 않은 메시지 수 업데이트
-function updateUnreadCountOnClient(chatRoomSeq, unreadCount) {
-    let chatRoomElement = document.querySelector(`[data-chat-room-seq="${chatRoomSeq}"] .notificationCount`);
-    
-    if (chatRoomElement) {
-        if (unreadCount > 0) {
-            chatRoomElement.textContent = unreadCount;
-            chatRoomElement.style.display = 'inline-block';
-        } else {
-            chatRoomElement.style.display = 'none';
-        }
-    }
-}
 // 메시지의 읽음 상태를 서버에 확인하고, 필요시 업데이트하는 함수
 function checkAndUpdateReadCount(chatRoomSeq, chatSeq) {
     $.ajax({

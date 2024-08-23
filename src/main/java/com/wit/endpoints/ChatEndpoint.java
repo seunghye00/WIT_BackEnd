@@ -65,16 +65,17 @@ public class ChatEndpoint {
             // 세션을 전체 세션 Set에 추가하고, 사용자 맵에 로그인 ID 매핑
             sessions.add(session);
             sessionUserMap.put(session, loginID);
-            
             // 사용자가 속한 모든 채팅방의 읽지 않은 메시지 수를 전송
             List<Map<String, Object>> userChatRooms = cServ.getChatRoomsByUserId(loginID);
             for (Map<String, Object> chatRoom : userChatRooms) {
-                String chatRoomSeq = chatRoom.get("CHAT_ROOM_SEQ").toString();
-                // BigDecimal을 int로 변환
+                String chatRoomSeq = ((BigDecimal) chatRoom.get("CHAT_ROOM_SEQ")).toString();
+
+                // UNREAD_COUNT는 BigDecimal이므로 변환
                 int unreadCount = ((BigDecimal) chatRoom.get("UNREAD_COUNT")).intValue();
+
                 // sessionChatRoomMap이 올바르게 초기화된 후에만 broadcast
-                if (sessionChatRoomMap.get(session) != null) {
-                    broadcastUnreadCountUpdate(chatRoomSeq, unreadCount);
+                if (sessionUserMap.get(session) != null) {
+                    broadcastUnreadCountUpdate(chatRoomSeq, unreadCount, loginID);
                 } else {
                     System.err.println("Warning: sessionChatRoomMap is not initialized for session: " + session.getId());
                 }
@@ -114,6 +115,12 @@ public class ChatEndpoint {
                     }
                 }
             }
+            
+            
+            // 읽지 않은 메시지 수를 업데이트하여 전송
+            int unreadCount = cServ.getUnreadMessages(chatRoomSeq, loginID);
+            broadcastUnreadCountUpdate(chatRoomSeq, unreadCount, loginID);
+            
         } else if ("chat".equals(type)) {
             String chatRoomSeq = sessionChatRoomMap.get(session);
             processChatMessage(session, chatRoomSeq, jsonMessage);
@@ -121,10 +128,14 @@ public class ChatEndpoint {
             String chatRoomSeq = jsonMessage.get("chatRoomSeq").getAsString();
             int chatSeq = jsonMessage.get("chatSeq").getAsInt();
             String userName = jsonMessage.get("userName").getAsString();
-            System.out.println(userName+ " 되는지 보자");
             // 메시지 읽음 처리
             int updatedReadCount = cServ.decreaseReadCount(chatRoomSeq, chatSeq, userName);
             broadcastReadCountUpdate(chatRoomSeq, chatSeq, updatedReadCount);
+            
+            String loginID = sessionUserMap.get(session);
+            // 읽지 않은 메시지 수를 업데이트하여 전송
+            int unreadCount = cServ.getUnreadMessages(chatRoomSeq, loginID);
+            broadcastUnreadCountUpdate(chatRoomSeq, unreadCount, loginID);
         }
     }
 
@@ -165,10 +176,17 @@ public class ChatEndpoint {
                         // 자신에게는 알림 플래그 없이 메시지 전송
                         if (session.equals(client)) {
                             client.getBasicRemote().sendText(data.toString());
+                            // 읽지 않은 메시지 수를 업데이트하여 전송
+                            int unreadCount = cServ.getUnreadMessages(chatRoomSeq, sessionUserMap.get(client));
+                            broadcastUnreadCountUpdate(chatRoomSeq, unreadCount, sessionUserMap.get(client));
                         } else {
                             // 다른 사용자에게는 알림 플래그 추가
                             data.addProperty("isNotification", true);
                             client.getBasicRemote().sendText(data.toString());
+                            
+                            // 읽지 않은 메시지 수를 업데이트하여 전송
+                            int unreadCount = cServ.getUnreadMessages(chatRoomSeq, sessionUserMap.get(client));
+                            broadcastUnreadCountUpdate(chatRoomSeq, unreadCount, sessionUserMap.get(client));
                         }
                     }
                 } catch (Exception e) {
@@ -245,7 +263,7 @@ public class ChatEndpoint {
         }
     }
     
-    private void broadcastUnreadCountUpdate(String chatRoomSeq, int unreadCount) {
+    private void broadcastUnreadCountUpdate(String chatRoomSeq, int unreadCount, String empNo) {
         if (chatRoomSeq == null) {
             System.err.println("Error: chatRoomSeq is null");
             return;
@@ -255,34 +273,18 @@ public class ChatEndpoint {
         data.addProperty("type", "unreadCountUpdate");
         data.addProperty("chatRoomSeq", chatRoomSeq);
         data.addProperty("unreadCount", unreadCount);
+        data.addProperty("empNo", empNo); 
 
         synchronized (sessions) {
-            if (sessions == null) {
-                System.err.println("Error: sessions is null");
-                return;
-            }
-
             for (Session client : sessions) {
-                if (client == null) {
-                    System.err.println("Error: client session is null");
-                    continue;
-                }
-
-                String recipientChatRoomSeq = sessionChatRoomMap.get(client);
-                System.out.println("Client session ID: " + client.getId() + ", recipientChatRoomSeq: " + recipientChatRoomSeq);
-
-                if (recipientChatRoomSeq != null && recipientChatRoomSeq.equals(chatRoomSeq)) {
-                    if (client.isOpen()) {
-                        try {
-                            client.getBasicRemote().sendText(data.toString());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        System.err.println("Error: client is not open. Session ID: " + client.getId());
+                if (client.isOpen()) {
+                    try {
+                        client.getBasicRemote().sendText(data.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 } else {
-                    System.err.println("Error: recipientChatRoomSeq does not match or is null. Session ID: " + client.getId());
+                    System.err.println("Error: client is not open. Session ID: " + client.getId());
                 }
             }
         }

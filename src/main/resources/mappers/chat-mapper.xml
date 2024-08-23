@@ -98,7 +98,8 @@
 		SELECT 
 	        crm.CHAT_ROOM_SEQ,
 	        crm.CHAT_ROOM_NAME,
-	        COUNT(c.chat_seq) AS unread_count
+	        COUNT(c.chat_seq) AS unread_count,
+	        crm.emp_no
 	    FROM 
 	        chat_room_member crm
 	    LEFT JOIN 
@@ -111,7 +112,17 @@
 	        crm.emp_no = #{empNo}
 	    GROUP BY 
 	        crm.CHAT_ROOM_SEQ, 
-	        crm.CHAT_ROOM_NAME
+	        crm.CHAT_ROOM_NAME,
+	        crm.emp_no
     </select>
+    
+    <!-- 실시간 안읽은 메시지처리 -->
+    <select id="getUnreadMessages" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+	    FROM chat
+	    WHERE chat_room_seq = #{chat_room_seq}
+	      AND INSTR(COALESCE(read_receivers, ''), #{user_name}) = 0
+	      AND name != #{user_name}
+	</select>
 </mapper>
 

@@ -107,4 +107,12 @@ public class ChatDAO {
     public List<Map<String, Object>> getChatRoomsByUserId(String empNo) {
         return mybatis.selectList("chat.getChatRoomsByUserId", empNo);
     }
+    
+    // 안읽은 메시지 출력
+    public int getUnreadMessages(String chatRoomSeq, String userName) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chat_room_seq", chatRoomSeq);
+        params.put("user_name", userName);
+        return mybatis.selectOne("chat.getUnreadMessages", params);
+    }
 }
