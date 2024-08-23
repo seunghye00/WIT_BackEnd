@@ -24,7 +24,7 @@
 <body class="membership_body">
 	<div class="container">
 		<!-- 공통영역 -->
-		<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
+		<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp"%>
 		<!-- 공통영역 끝 -->
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
