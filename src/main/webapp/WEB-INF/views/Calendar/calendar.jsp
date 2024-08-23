@@ -146,14 +146,16 @@
 									<!-- 전사 일정 -->
 									<c:forEach var="cl" items="${clist}">
 					            		<li>
-					                		<input type="checkbox" id="calendar_${cl.calendar_seq}" name="calendar_${cl.calendar_seq}">
+					                		<input type="checkbox" id="calendar_${cl.calendar_seq}" name="calendar_${cl.calendar_seq}"
+					                		<c:if test="${cl.default_yn == 'Y'}">checked</c:if>>
 					                		<label for="calendar_${cl.calendar_seq}">${cl.calendar_name}</label>
 					            		</li>
 					        		</c:forEach>
 					        		<!-- 임원 일정 -->
 					        		<c:forEach var="el" items="${elist}">
 					            		<li>
-					                		<input type="checkbox" id="calendar_${el.calendar_seq}" name="calendar_${el.calendar_seq}">
+					                		<input type="checkbox" id="calendar_${el.calendar_seq}" name="calendar_${el.calendar_seq}"
+					                		<c:if test="${el.default_yn == 'Y'}">checked</c:if>>
 					                		<label for="calendar_${el.calendar_seq}">${el.calendar_name}</label>
 					            		</li>
 					        		</c:forEach>
@@ -978,9 +980,7 @@
         	            }
         	        }).fail((jqXHR, textStatus, errorThrown) => {
         	            console.error('AJAX 요청 실패:', textStatus, errorThrown);
-        	        });
-                 
-                    
+        	        });                 
                 }
             });
             
