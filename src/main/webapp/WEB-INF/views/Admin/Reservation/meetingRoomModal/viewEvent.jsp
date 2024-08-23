@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <div id="eventModal" class="modal">
 	<div class="modalContent">
 		<h1>
@@ -20,13 +19,16 @@
 					</div></li>
 				<li><span>예약 기간</span>
 					<div>
-						<input type="date" id="eStartDate" class="startDate dateInput" readonly>&nbsp;&nbsp;
-						<input type="time" id="eStartTime" class="startDate dateInput" readonly>&nbsp;&nbsp;~&nbsp;&nbsp;
-						<input type="time" id="eEndTime" class="endDate dateInput" readonly>
+						<input type="date" id="eStartDate" class="startDate dateInput"
+							readonly>&nbsp;&nbsp; <input type="time" id="eStartTime"
+							class="startDate dateInput" readonly>&nbsp;&nbsp;~&nbsp;&nbsp;
+						<input type="time" id="eEndTime" class="endDate dateInput"
+							readonly>
 					</div></li>
 				<li><span>장소</span>
 					<div>
-						<input type="text" class="eventLocation" id="roomLocation" readonly>
+						<input type="text" class="eventLocation" id="roomLocation"
+							readonly>
 					</div></li>
 				<li><span>예약 목적</span>
 					<div>

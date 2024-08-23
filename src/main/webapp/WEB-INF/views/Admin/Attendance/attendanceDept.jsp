@@ -67,7 +67,7 @@
 					</c:if>
 				</div>
 				<div class="sideContents AttendanceDept">
-					<h2>부서별 근무현황</h2>
+					<h2>부서별 근태현황</h2>
 					<div class="week_selector">
 						<span> <i class="bx bx-chevron-left"
 							onclick="window.location.href='?week=${previousWeek}&deptTitle=${deptTitle}'"></i>
@@ -99,7 +99,7 @@
 							</div>
 						</c:forEach>
 					</div>
-					<div class="pagination">
+					<div class="pagination" id="atd_dept_navi">
 						<!-- 이전 페이지로 이동 -->
 						<a
 							href="?deptTitle=${deptTitle}&week=${startDate}&cpage=${cpage > 1 ? cpage - 1 : 1}"

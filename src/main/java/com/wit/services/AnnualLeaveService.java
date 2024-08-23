@@ -68,7 +68,6 @@ public class AnnualLeaveService {
 		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
 		int start = (cpage - 1) * recordCountPerPage + 1;
 		int end = cpage * recordCountPerPage;
-
 		return dao.selectAnnualLeaveRequestsByDept(deptTitle, searchTxt, start, end);
 	}
 

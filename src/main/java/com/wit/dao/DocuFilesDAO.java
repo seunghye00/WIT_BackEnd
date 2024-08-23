@@ -23,4 +23,9 @@ public class DocuFilesDAO {
 	public List<DocuFilesDTO> getList(int docuSeq) throws Exception {
 		return mybatis.selectList("docuFile.selectByDocuSeq", docuSeq);
 	}
+
+	// 해당 파일 조회
+	public DocuFilesDTO getFileBySeq(int fileSeq) {
+		return mybatis.selectOne("docuFile.selectBySeq", fileSeq);
+	}
 }

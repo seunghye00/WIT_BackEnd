@@ -46,7 +46,7 @@
 	<select id="selectAllVehicleList" resultType="com.wit.dto.VehiclesDTO">
 		select * from vehicles where status = #{status}
 	</select>
-	
+		
 	<!-- 해당 사원의 차량 예약 정보 목록 조회 -->
 	<select id="selectAllByEmpNo" resultType="com.wit.dto.VehicleBookingDTO">
 		select * from (

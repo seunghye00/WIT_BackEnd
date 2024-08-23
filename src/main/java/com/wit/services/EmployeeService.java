@@ -59,7 +59,8 @@ public class EmployeeService {
 
 		// 퇴사자인 경우 로그인 실패 처리
 		if (employee != null && employee.getQuit_yn() == 'Y') {
-			return null; // 퇴사자인 경우 null을 반환
+			// 퇴사자인 경우 null을 반환
+			return null;
 		}
 
 		return employee;
@@ -97,18 +98,20 @@ public class EmployeeService {
 	// ID찾기
 	public String findID(String name, String ssn) {
 		EmployeeDTO employee = dao.findID(name, ssn);
+		// 삼항연산자 및 사원이 존재하지 않으면 null 반환
 		return (employee != null) ? employee.getEmp_no() : null;
 	}
 
-	// PW찾기(수정) 직원 정보 확인
+	// PW찾기(수정) 사원 정보 확인
 	public boolean verifyEmployee(String empNo, String name, String ssn) {
 		EmployeeDTO employee = dao.findEmployee(empNo, name, ssn);
+		// null 이 아니라면 true 반환, null 이 맞다면 false 반환
 		return employee != null;
 	}
 
 	// PW찾기 (수정)
 	public boolean modifyPassword(String empNo, String newPassword) {
-		String encryptedPassword = PWUtill.encryptPassword(newPassword); // 비밀번호 암호화
+		String encryptedPassword = PWUtill.encryptPassword(newPassword);
 		return dao.modifyPassword(empNo, encryptedPassword) > 0;
 	}
 
@@ -228,10 +231,19 @@ public class EmployeeService {
 		return dao.getName(empNo);
 	}
 
-	// 해당 사번을 가진 사원의 이름 조회
-	@Transactional
+	// 해당 사번을 가진 사원의 부서명 조회
 	public String getDept(String empNo) {
 		return dao.getDept(empNo);
+	}
+
+	// 해당 사번을 가진 사원의 직급 조회
+	public String getRole(String empNo) {
+		return dao.getRole(empNo);
+	}
+
+	// 해당 사번을 가진 사원의 직급 조회
+	public String getRoleCode(String empNo) {
+		return dao.getRoleCode(empNo);
 	}
 
 	// 메신저 emp_no 이름으로 변경
@@ -281,10 +293,11 @@ public class EmployeeService {
 	public Map<String, Object> managementDetail(String emp_no) {
 		return dao.managementDetail(emp_no);
 	}
-	
+
 	// 관리자 사원 상세 업데이트
 	@Transactional
-	public void updateManage(String empNo, String photoUrl, String phone, String quit_yn ,String email,String dept_code,String role_code) {
+	public void updateManage(String empNo, String photoUrl, String phone, String quit_yn, String email,
+			String dept_code, String role_code) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("emp_no", empNo);
 		params.put("phone", phone);
@@ -294,7 +307,7 @@ public class EmployeeService {
 		params.put("role_code", role_code);
 		params.put("quit_yn", quit_yn);
 		params.put("photo", photoUrl);
-		
+
 		dao.updateManage(params);
 	}
 }

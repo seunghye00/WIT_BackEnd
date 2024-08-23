@@ -13,6 +13,8 @@ import com.wit.dto.DeptDTO;
 import com.wit.dto.EmployeeDTO;
 import com.wit.dto.LeaveRequestDTO;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -31,8 +33,7 @@ public class AnnualLeaveController {
 	public String attendanceVacation(Model model, @RequestParam(defaultValue = "1") int cpage) {
 
 		String empNo = (String) session.getAttribute("loginID");
-		
-		// 직원 정보 조회
+
 		EmployeeDTO employee = service.employeeInfo(empNo);
 		model.addAttribute("employee", employee);
 
@@ -45,26 +46,17 @@ public class AnnualLeaveController {
 
 		// 페이징 처리 로직
 		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
-		System.out.println("레코드 카운트 펄페이지 : " + recordCountPerPage);
-		int naviCountPerPage = AttendanceConfig.naviCountPerPage;
-		System.out.println("네비 카운트 펄페이지 : " + naviCountPerPage);
-
 		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
-		System.out.println("페이지 토탈 카운트 : " + pageTotalCount);
 
 		if (cpage > pageTotalCount) {
-			cpage = pageTotalCount;
+			return "redirect:/annualLeave/attendanceVacation?cpage=" + pageTotalCount;
 		}
 
-		int startNavi = ((cpage - 1) / naviCountPerPage) * naviCountPerPage + 1;
-		int endNavi = startNavi + naviCountPerPage - 1;
+		int startNavi = 1;
+		int endNavi = pageTotalCount;
 
-		if (endNavi > pageTotalCount) {
-			endNavi = pageTotalCount;
-		}
-
-		boolean needPrev = startNavi > 1;
-		boolean needNext = endNavi < pageTotalCount;
+		boolean needPrev = cpage > 1;
+		boolean needNext = cpage < pageTotalCount;
 
 		model.addAttribute("cpage", cpage);
 		model.addAttribute("startNavi", startNavi);
@@ -85,10 +77,8 @@ public class AnnualLeaveController {
 			@RequestParam(value = "searchTxt", required = false) String searchTxt,
 			@RequestParam(defaultValue = "1") int cpage, Model model) {
 
-		// 로그인한 직원의 ID를 세션에서 가져오기
 		String empNo = (String) session.getAttribute("loginID");
 
-		// 직원 정보 조회
 		EmployeeDTO employee = service.employeeInfo(empNo);
 		model.addAttribute("employee", employee);
 
@@ -98,28 +88,25 @@ public class AnnualLeaveController {
 
 		// 부서별 연간 휴가 내역 조회 (페이징 및 검색 적용)
 		int recordTotalCount = service.annualLeaveRecordCountByDept(deptTitle, searchTxt);
-
 		int recordCountPerPage = AttendanceConfig.recordCountPerPage;
-		System.out.println("레코드 카운트 펄페이지 : " + recordCountPerPage);
-		int naviCountPerPage = AttendanceConfig.naviCountPerPage;
-		System.out.println("네비 카운트 펄페이지 : " + naviCountPerPage);
-
 		int pageTotalCount = (int) Math.ceil(recordTotalCount / (double) recordCountPerPage);
-		System.out.println("페이지 토탈 카운트 : " + pageTotalCount);
 
 		if (cpage > pageTotalCount) {
-			cpage = pageTotalCount;
+			try {
+				String encodedDeptTitle = URLEncoder.encode(deptTitle, "UTF-8");
+				String encodedSearchTxt = searchTxt != null ? URLEncoder.encode(searchTxt, "UTF-8") : "";
+				return "redirect:/annualLeave/attendanceDeptVacation?deptTitle=" + encodedDeptTitle + "&searchTxt="
+						+ encodedSearchTxt + "&cpage=" + pageTotalCount;
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 
-		int startNavi = ((cpage - 1) / naviCountPerPage) * naviCountPerPage + 1;
-		int endNavi = startNavi + naviCountPerPage - 1;
+		int startNavi = 1;
+		int endNavi = pageTotalCount;
 
-		if (endNavi > pageTotalCount) {
-			endNavi = pageTotalCount;
-		}
-
-		boolean needPrev = startNavi > 1;
-		boolean needNext = endNavi < pageTotalCount;
+		boolean needPrev = cpage > 1;
+		boolean needNext = cpage < pageTotalCount;
 
 		model.addAttribute("cpage", cpage);
 		model.addAttribute("startNavi", startNavi);
@@ -129,13 +116,12 @@ public class AnnualLeaveController {
 
 		// 부서별 연간 휴가 내역 조회 (페이징 및 검색 적용)
 		List<Map<String, Object>> leaveRequests = service.selectAnnualLeaveRequestsByDept(deptTitle, searchTxt, cpage);
-		System.out.println(leaveRequests);
 
 		model.addAttribute("deptTitle", deptTitle);
 		model.addAttribute("searchTxt", searchTxt);
 		model.addAttribute("leaveRequests", leaveRequests);
 
 		return "Admin/Attendance/attendanceDeptVacation";
-
 	}
+
 }

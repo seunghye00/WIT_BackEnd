@@ -27,7 +27,7 @@ public class VehicleBookingService {
 		return dao.getVehicleInfo(vehicleSeq);
 	}
 
-	// 차량 예약 추가
+	// 차량 예약 정보를 입력하기 위한 메서드
 	public int saveVehicle(VehicleBookingDTO dto) {
 		return dao.saveVehicle(dto);
 	}

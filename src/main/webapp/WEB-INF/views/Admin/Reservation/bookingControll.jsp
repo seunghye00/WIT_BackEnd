@@ -83,7 +83,7 @@
 									</c:choose>
 									<div class="btns">
 										<button id="updateGuideLines">수정</button>
-										<button class="red">취소</button>
+										<button class="red rollBack">취소</button>
 									</div>
 								</div>
 							</div>
@@ -202,7 +202,7 @@
 									</c:choose>
 									<div class="btns">
 										<button id="updateGuideLines">수정</button>
-										<button class="red">취소</button>
+										<button class="red rollBack">취소</button>
 									</div>
 								</div>
 							</div>

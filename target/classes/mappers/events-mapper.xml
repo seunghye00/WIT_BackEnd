@@ -21,7 +21,7 @@
 	</insert>
 	
 	<!-- 이벤트 조회 -->
-<select id="getEventsByCalendar" parameterType="list" resultType="com.wit.dto.EventsDTO"> 
+	<select id="getEventsByCalendar" parameterType="list" resultType="com.wit.dto.EventsDTO"> 
     <!-- 개인 캘린더에서 이벤트 조회 -->
     SELECT e.events_seq, e.emp_no, e.title, e.start_date, e.end_date, 
            e.calendar_seq, pc.calendar_name AS calendar_name, e.location, e.content 

@@ -13,6 +13,20 @@ $('#purpose').on('input', function() {
     }
 });
 
+// input date 오늘 이전 날짜 선택 불가
+    // 현재 날짜를 가져오기
+    const today = new Date();
+        
+    // 오늘 날짜
+    today.setDate(today.getDate());
+
+    // 내일 날짜를 YYYY-MM-DD 형식으로 변환
+    const formattedTomorrow = today.toISOString().split('T')[0];
+
+    // startDate와 endDate 입력 필드의 min 속성을 설정
+    document.getElementById('startDate').setAttribute('min', formattedTomorrow);
+    document.getElementById('endDate').setAttribute('min', formattedTomorrow);
+
 $('#addBtn').on('click', function () {
    // 입력 필드값 변수에 저장
    let eventName = $('#eventName').val();
@@ -86,7 +100,7 @@ $(document).ready(function() {
     });
 
     if (isEventInRange) {
-        alert('선택한 날짜에 이미 이벤트가 있거나 기간 내에 포함됩니다. 다른 날짜를 선택해주세요.');
+        alert('예약이 이미 마감된 날짜 입니다.');
     } else {
         // 선택한 날짜에 이벤트가 없고, 오늘 이후일 경우 예약 모달을 보여줌
         $('.startDate').val(info.dateStr);
@@ -249,6 +263,22 @@ document.getElementById('vehicleForm').addEventListener('submit', function (even
             $("#vehicleStartAt").val(startTimestamp);
             $("#vehicleEndAt").val(endTimestamp);
 
-            // 모든 검증을 통과한 후 폼 제출
-            event.target.submit();
+            // 예약 내용이 수정 및 삭제가 불가능함을 사용자에게 확인
+    		if (confirm('예약 내용은 수정&삭제가 불가능합니다. 계속하시겠습니까?')) {
+		        // 사용자가 확인을 누르면 폼을 제출
+		        event.target.submit();
+		    } else {
+		        // 사용자가 취소를 누르면 폼 제출 중단
+		        return;
+		    }
         });
+        
+// 모달 외부 클릭 시 닫기
+$(window).click(function(e) {
+	if ($(e.target).is($('#reservModal')[0])) {
+		location.reload();
+	}
+	if ($(e.target).is($('#eventModal')[0])) {
+		$('#eventModal').hide();
+	}
+});

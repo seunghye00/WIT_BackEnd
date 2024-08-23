@@ -96,13 +96,18 @@ public class MeetingRoomDAO {
 		mybatis.update("meetingRoom.updateGuideLines", params);
 	}
 
-	// 해당 항목 삭제
+	// 해당 회의실 삭제
 	public void deleteBySeq(int seq) {
 		mybatis.delete("meetingRoom.deleteBySeq", seq);
 	}
 
-	// 항목 추가
+	// 회의실 추가
 	public void addRoom(MeetingRoomDTO dto) {
 		mybatis.insert("meetingRoom.addRoom", dto);
+	}
+
+	// 해당 회의실의 예약 가능 여부를 넘겨주기 위한 메서드
+	public String getRoomStatus(int roomSeq) {
+		return mybatis.selectOne("meetingRoom.getRoomStatus", roomSeq);
 	}
 }

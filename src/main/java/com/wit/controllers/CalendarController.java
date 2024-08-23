@@ -68,7 +68,7 @@ public class CalendarController {
     @ResponseBody
     public Map<String, Object> deletePerCalendar(@RequestParam("calendarSeq") String calendarSeq) {
         Map<String, Object> response = new HashMap<>();
-        try {
+        try {        	
             boolean success = service.deletePerCalendar(Integer.parseInt(calendarSeq));
             response.put("success", success);
             response.put("message", success ? "삭제 성공" : "삭제 실패");

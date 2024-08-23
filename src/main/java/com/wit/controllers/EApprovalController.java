@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -64,7 +66,10 @@ public class EApprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-
+		// 관리자 계정으로 접속 시 일반 사용자 경로 접속 불가
+		if (eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 		// 결재 진행 중인 문서 목록 최신순으로 5개만 받아와서 JSP로 전달
 		model.addAttribute("currentDocuList", serv.selectByStatus("진행중", empNo));
 		// 결재 완료된 문서 목록 최신순으로 5개만 받아와서 JSP로 전달
@@ -79,7 +84,10 @@ public class EApprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-
+		// 관리자 계정이 아닐 시 관리자 경로 접속 불가
+		if (!eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 		// 결재 대기 중인 문서 목록 최신순으로 5개만 받아와서 JSP로 전달
 		model.addAttribute("toDoList", serv.selectApprList(empNo, "결재 대기"));
 		// 결재 예정인 문서 목록 최신순으로 5개만 받아와서 JSP로 전달
@@ -95,7 +103,10 @@ public class EApprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-
+		// 관리자 계정으로 접속 시 일반 사용자 경로 접속 불가
+		if (eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 		// 해당 문서의 내용, 기안자 정보, 결재 라인, 문서 열람 목적을 model 객체에 저장
 		DocuDTO dto = serv.getDocuInfo(docuSeq);
 		model.addAttribute("docuInfo", dto);
@@ -155,8 +166,7 @@ public class EApprovalController {
 				return "eApproval/appr/apprLateness";
 			}
 		default:
-			// 추후 에러 페이지로 변경
-			return "redirect:/eApproval/home";
+			return "redirect:/error";
 		}
 	}
 
@@ -167,7 +177,10 @@ public class EApprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-
+		// 관리자 계정이 아닐 시 관리자 경로 접속 불가
+		if (!eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 		// 해당 문서의 내용, 기안자 정보, 결재 라인, 문서 열람 목적을 model 객체에 저장
 		DocuDTO dto = serv.getDocuInfo(docuSeq);
 		model.addAttribute("docuInfo", dto);
@@ -210,8 +223,7 @@ public class EApprovalController {
 				return "Admin/eApproval/appr/apprLateness";
 			}
 		default:
-			// 추후 에러 페이지로 변경
-			return "redirect:/eApproval/home";
+			return "redirect:/error";
 		}
 	}
 
@@ -229,19 +241,25 @@ public class EApprovalController {
 			ApprLineDTO dto = list.get(i);
 			if (dto.getEmp_no().equals(empNo)) {
 				dto.setComments(comments);
+				if (comments == null) {
+					dto.setComments("반려로 인해 자동 결재 처리되었습니다.");
+				}
 				serv.insertComments(dto);
-				serv.updateApprLineAll(docuSeq, i + 1);
+				serv.updateApprLineAll(docuSeq, i + 1, "반려");
 				// 문서 상태 업데이트
 				serv.updateDocuStatus(docuSeq, "반려");
 				break;
 			}
 		}
-		// 현재 요청된 URL을 확인 후 이동 경로 설정
+		// 현재 요청된 URL & 직급 정보를 확인 후 이동 경로 설정
 		String currentUrl = request.getRequestURI();
-		if (currentUrl.equals("/eApproval/admin/returnDocu")) {
+		if (currentUrl.equals("/eApproval/admin/returnDocu") && eServ.getRoleCode(empNo).equals("R1")) {
 			return "redirect:/eApproval/admin/apprList?type=todo&cPage=1";
+		} else if (currentUrl.equals("/eApproval/returnDocu") && !eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/eApproval/apprList?type=todo&cPage=1";
+		} else {
+			return "redirect:/error";
 		}
-		return "redirect:/eApproval/apprList?type=todo&cPage=1";
 	}
 
 	// 관리자가 해당 문서를 결재 처리하기 위한 메서드
@@ -282,15 +300,17 @@ public class EApprovalController {
 			}
 			break;
 		default:
-			// 추후 에러 페이지로 변경
-			return "redirect:/";
+			return "redirect:/error";
 		}
-		// 현재 요청된 URL을 확인 후 이동 경로 설정
+		// 현재 요청된 URL & 직급 정보를 확인 후 이동 경로 설정
 		String currentUrl = request.getRequestURI();
-		if (currentUrl.equals("/eApproval/admin/apprDocu")) {
+		if (currentUrl.equals("/eApproval/admin/apprDocu") && eServ.getRoleCode(empNo).equals("R1")) {
 			return "redirect:/eApproval/admin/apprList?type=todo&cPage=1";
+		} else if (currentUrl.equals("/eApproval/apprDocu") && !eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/eApproval/apprList?type=todo&cPage=1";
+		} else {
+			return "redirect:/error";
 		}
-		return "redirect:/eApproval/apprList?type=todo&cPage=1";
 	}
 
 	// 해당 문서를 전결 처리하기 위한 메서드
@@ -309,7 +329,7 @@ public class EApprovalController {
 			if (dto.getEmp_no().equals(empNo)) {
 				dto.setComments(comments);
 				serv.insertComments(dto);
-				serv.updateApprLineAll(docuSeq, i + 1);
+				serv.updateApprLineAll(docuSeq, i + 1, "전결");
 				// 문서 상태 업데이트
 				serv.updateDocuStatus(docuSeq, "완료");
 				if (applyLeaves != null) {
@@ -320,12 +340,15 @@ public class EApprovalController {
 				break;
 			}
 		}
-		// 현재 요청된 URL을 확인 후 이동 경로 설정
+		// 현재 요청된 URL & 직급 정보를 확인 후 이동 경로 설정
 		String currentUrl = request.getRequestURI();
-		if (currentUrl.equals("/eApproval/admin/apprAllDocu")) {
+		if (currentUrl.equals("/eApproval/admin/apprAllDocu") && eServ.getRoleCode(empNo).equals("R1")) {
 			return "redirect:/eApproval/admin/apprList?type=todo&cPage=1";
+		} else if (currentUrl.equals("/eApproval/apprAllDocu") && !eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/eApproval/apprList?type=todo&cPage=1";
+		} else {
+			return "redirect:/error";
 		}
-		return "redirect:/eApproval/apprList?type=todo&cPage=1";
 	}
 
 	// 임시 저장 페이지에서 다시 임시 저장을 하거나 결재 요청을 했을 시 처리하기 위한 메서드
@@ -333,6 +356,12 @@ public class EApprovalController {
 	@RequestMapping(value = { "reSaveDocu", "update" })
 	public String reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO,
 			HttpServletRequest request) throws Exception {
+
+		String empNo = (String) session.getAttribute("loginID");
+		// 관리자 계정으로 접속 시 일반 사용자 경로 접속 불가
+		if (eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 
 		// 현재 요청된 URL을 확인
 		String currentUrl = request.getRequestURI();
@@ -354,13 +383,23 @@ public class EApprovalController {
 			serv.updatePropDocu(wDTO);
 			break;
 		case "M2":
+			// 문자열을 Date 타입으로 변환 후 저장
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			if (lrDTO.getStartDate() != "") {
+				Date startDate = new Date(format.parse(lrDTO.getStartDate()).getTime());
+				lrDTO.setStart_date(startDate);
+			}
+			if (lrDTO.getEndDate() != "") {
+				Date endDate = new Date(format.parse(lrDTO.getEndDate()).getTime());
+				lrDTO.setEnd_date(endDate);
+			}
 			serv.updateLeaveDocu(lrDTO);
 			break;
 		case "M3":
 			serv.updateLatenessDocu(lnDTO);
 			break;
 		default:
-			break;
+			return "redirect:/error";
 		}
 		return "redirect:/eApproval/readDocu?docuSeq=" + dto.getDocument_seq() + "&type=" + type;
 	}
@@ -372,6 +411,10 @@ public class EApprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
+		// 관리자 계정이 아닐 시 관리자 경로 접속 불가
+		if (!eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 
 		// 문서 상태를 변수에 저장
 		String status = "";
@@ -383,8 +426,7 @@ public class EApprovalController {
 			status = "결재 예정";
 			break;
 		default:
-			// 추후 에러 페이지로 변경
-			return "redirect:/eApproval/admin/home";
+			return "redirect:/error";
 		}
 
 		// 문서 정보를 저장할 변수 생성 후 검색 여부에 따라 해당하는 데이터를 변수에 저장
@@ -415,6 +457,10 @@ public class EApprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
+		// 관리자 계정으로 접속 시 일반 사용자 경로 접속 불가
+		if (eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 
 		// 문서 상태를 변수에 저장
 		String status = "";
@@ -426,8 +472,7 @@ public class EApprovalController {
 			status = "결재 예정";
 			break;
 		default:
-			// 추후 에러 페이지로 변경
-			return "redirect:/eApproval/admin/home";
+			return "redirect:/error";
 		}
 
 		// 문서 정보를 저장할 변수 생성 후 검색 여부에 따라 해당하는 데이터를 변수에 저장
@@ -458,7 +503,10 @@ public class EApprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-
+		// 관리자 계정으로 접속 시 일반 사용자 경로 접속 불가
+		if (eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장 후 model 객체로 전달
 		List<DocuInfoListDTO> list = null;
 		model.addAttribute("type", type);
@@ -505,8 +553,7 @@ public class EApprovalController {
 			model.addAttribute("totalCount", serv.getCountSearchViewList(empNo, docuCode, keyword));
 			break;
 		default:
-			// 추후 에러 페이지로 변경
-			return "redirect:/eApproval/home";
+			return "redirect:/error";
 		}
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("cPage", cPage);
@@ -525,7 +572,10 @@ public class EApprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-
+		// 관리자 계정이 아닐 시 관리자 경로 접속 불가
+		if (!eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장 후 model 객체로 전달
 		List<DocuInfoListDTO> list = null;
 		model.addAttribute("type", type);
@@ -559,8 +609,7 @@ public class EApprovalController {
 			model.addAttribute("totalCount", serv.getCountSearchViewList(empNo, docuCode, keyword));
 			break;
 		default:
-			// 추후 에러 페이지로 변경
-			return "redirect:/eApproval/admin/home";
+			return "redirect:/error";
 		}
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("cPage", cPage);
@@ -577,6 +626,12 @@ public class EApprovalController {
 	public String adminDocuList(String type, String status, @RequestParam(required = false) String keyword, int cPage,
 			Model model) throws Exception {
 
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+		// 관리자 계정이 아닐 시 관리자 경로 접속 불가
+		if (!eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 		// 문서 정보를 저장할 변수 생성 후 type에 따라 해당하는 데이터를 변수에 저장 후 model 객체로 전달
 		model.addAttribute("type", type);
 
@@ -593,7 +648,7 @@ public class EApprovalController {
 			break;
 		default:
 			// 추후 에러 페이지로 변경
-			return "redirect:/eApproval/admin/home";
+			return "redirect:/error";
 		}
 		List<DocuInfoListDTO> list = serv.searchDocuListByDocuCode(docuCode, status, keyword, cPage);
 		for (DocuInfoListDTO dto : list) {
@@ -622,8 +677,15 @@ public class EApprovalController {
 	// 임시 저장 상태인 해당 문서를 삭제하기 위한 메서드
 	@RequestMapping("delDocu")
 	public String delDocu(int docuSeq) throws Exception {
+
+		// 세션에서 접속자 정보를 꺼내 변수에 저장
+		String empNo = (String) session.getAttribute("loginID");
+		// 관리자 계정으로 접속 시 일반 사용자 경로 접속 불가
+		if (eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 		serv.delDocu(docuSeq);
-		return "redirect:/eApproval/privateList?type=save";
+		return "redirect:/eApproval/privateList?type=save&cPage=1";
 	}
 
 	// 전자 결재 작성페이지로 이동 시 노출할 데이터를 담아서 전달하는 메서드
@@ -633,7 +695,10 @@ public class EApprovalController {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
-
+		// 관리자 계정으로 접속 시 일반 사용자 경로 접속 불가
+		if (eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
 		// 현재 날짜를 객체로 생성 후 문자열로 변환
 		LocalDate today = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -657,8 +722,7 @@ public class EApprovalController {
 		case "M3":
 			return "eApproval/write/writeLateness";
 		default:
-			// 추후 에러 페이지로 변경
-			return "redirect:/eApproval/home";
+			return "redirect:/error";
 		}
 	}
 
@@ -783,6 +847,17 @@ public class EApprovalController {
 		String empNo = (String) session.getAttribute("loginID");
 		dto.setEmp_no(empNo);
 
+		// 문자열을 Date 타입으로 변환 후 저장
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		if (subDTO.getStartDate() != "") {
+			Date startDate = new Date(format.parse(subDTO.getStartDate()).getTime());
+			subDTO.setStart_date(startDate);
+		}
+		if (subDTO.getEndDate() != "") {
+			Date endDate = new Date(format.parse(subDTO.getEndDate()).getTime());
+			subDTO.setEnd_date(endDate);
+		}
+
 		// 현재 요청된 URL을 확인
 		String currentUrl = request.getRequestURI();
 
@@ -845,7 +920,11 @@ public class EApprovalController {
 
 	// 해당 파일을 다운로드하기 위한 메서드
 	@RequestMapping("downloadFiles")
-	public void download(String oriname, String sysname, HttpServletResponse response) throws Exception {
+	public void download(int fileSeq, HttpServletResponse response) throws Exception {
+		// 파일 SEQ로 파일 정보 조회 후 변수에 저장
+		DocuFilesDTO dto = fServ.getFileBySeq(fileSeq);
+		String sysname = dto.getSysname();
+		String oriname = dto.getOriname();
 
 		String realPath = session.getServletContext().getRealPath("eApproval/upload");
 		File target = new File(realPath + "/" + sysname);
@@ -866,6 +945,6 @@ public class EApprovalController {
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception e) {
 		e.printStackTrace();
-		return "redirect:/";
+		return "redirect:/error";
 	}
 }

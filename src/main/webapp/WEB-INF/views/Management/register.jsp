@@ -3,14 +3,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>신규 직원 등록</title>
+    <title>신규 사원 등록</title>
     <link rel="stylesheet" href="/resources/css/wit.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="/resources/js/employee.js"></script>
 </head>
 <body class="membership_body">
     <div class="registration_container active">
-        <h2>신규 직원 등록</h2>
+        <h2>신규 사원 등록</h2>
         <form action="/employee/register" method="post">
             <select name="dept_code" id="dept_select" required>
                 <option value="" disabled selected>부서 선택</option>

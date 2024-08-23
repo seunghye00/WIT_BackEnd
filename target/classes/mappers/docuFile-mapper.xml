@@ -11,4 +11,8 @@
 	<select id="selectByDocuSeq" resultType="com.wit.dto.DocuFilesDTO">
 		select * from document_files where document_seq = #{docuSeq}
 	</select>
+	
+	<select id="selectBySeq" resultType="com.wit.dto.DocuFilesDTO">
+		select * from document_files where document_files_seq = #{fileSeq}
+	</select>
 </mapper>
