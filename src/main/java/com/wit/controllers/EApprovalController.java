@@ -123,8 +123,13 @@ public class EApprovalController {
 			if (fileList.size() > 0) {
 				model.addAttribute("files", fileList);
 			}
+		} else {
+			// 현재 날짜를 객체로 생성 후 문자열로 변환 후 model 객체에 저장
+			LocalDate today = LocalDate.now(); 
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			String formattedDate = today.format(formatter);
+			model.addAttribute("today", formattedDate);
 		}
-
 		// 참조 문서함에서 문서 열람 시 문서 열람 여부와 열람 일시 업데이트 후 참조 라인 정보를 model 객체에 저장
 		if (type.equals("read") && readYN != null) {
 			serv.updateReadYN(docuSeq, empNo, readYN);
@@ -362,7 +367,6 @@ public class EApprovalController {
 		if (eServ.getRoleCode(empNo).equals("R1")) {
 			return "redirect:/error";
 		}
-
 		// 현재 요청된 URL을 확인
 		String currentUrl = request.getRequestURI();
 		String type = null;
@@ -376,7 +380,6 @@ public class EApprovalController {
 		}
 		// 문서 정보 업데이트 ( 작성일, 제목, 상태 )
 		serv.updateDocu(dto);
-
 		// 문서 양식에 따라 해당 문서의 세부 정보 업데이트
 		switch (dto.getDocu_code()) {
 		case "M1":
@@ -400,6 +403,9 @@ public class EApprovalController {
 			break;
 		default:
 			return "redirect:/error";
+		}
+		if(type == null) {
+			return "redirect:/eApproval/readDocu?docuSeq=" + dto.getDocument_seq();
 		}
 		return "redirect:/eApproval/readDocu?docuSeq=" + dto.getDocument_seq() + "&type=" + type;
 	}
