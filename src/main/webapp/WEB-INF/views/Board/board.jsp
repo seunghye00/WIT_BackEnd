@@ -15,6 +15,7 @@
 				<link rel="stylesheet" href="/resources/css/wit.css">
 				<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 				<script src="/resources/js/boards.js"></script>
+				<script src="/resources/js/wit.js"></script>
 			</head>
 
 			<body>
@@ -310,6 +311,14 @@
 				</div>
 
 				<script>
+					$(document).ready(function () {
+						// 모든 li 태그 안의 a 태그에 클릭 이벤트 추가
+						$('li > a').on('click', function () {
+							// 클릭된 a 태그에 active 클래스 토글
+							$(this).toggleClass('active');
+						});
+					});
+
 					// 처음에 서버에서 값을 보내줄 때 빈 문자열이 아니면 서버에서 보내준 값으로 설정
 					if (${ searchTarget != "" }) {
 						document.getElementById('searchTarget').value = "${ searchTarget }";
