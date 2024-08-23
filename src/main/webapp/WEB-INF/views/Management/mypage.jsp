@@ -10,11 +10,11 @@
 <title>마이 페이지</title>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
-<link rel="stylesheet" href="/resources/css/style.main.css">
-<link rel="stylesheet" href="/resources/css/wit.css">
+<link rel="stylesheet" href="/css/style.main.css">
+<link rel="stylesheet" href="/css/wit.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="/resources/js/employee.js"></script>
-<script src="/resources/js/wit.js"></script>
+<script src="/js/employee.js"></script>
+<script src="/js/wit.js"></script>
 </head>
 
 <body>
