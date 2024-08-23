@@ -1038,9 +1038,24 @@
             event.target.submit();
         });
         
-        
-        
-        
+     	// 모달 외부 클릭 시 닫기
+        $(window).click(function(e) {
+        	if ($(e.target).is($('#calendarModal')[0])) {
+        		location.reload();
+        	}
+        	if ($(e.target).is($('#deptEventModal')[0])) {
+        		$('#deptEventModal').hide();
+        	}
+        	if ($(e.target).is($('#personEventModal')[0])) {
+        		$('#personEventModal').hide();
+        	}
+        	if ($(e.target).is($('#executiveEventModal')[0])) {
+        		$('#executiveEventModal').hide();
+        	}
+        	if ($(e.target).is($('#companyEventModal')[0])) {
+        		$('#companyEventModal').hide();
+        	}
+        });      
     </script>
 </body>
 </html>

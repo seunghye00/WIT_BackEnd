@@ -282,3 +282,4 @@ $(window).click(function(e) {
 		$('#eventModal').hide();
 	}
 });
+

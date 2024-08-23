@@ -6,25 +6,22 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-<meta charset="UTF-8">
-<title>게시물 상세</title>
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
-	rel='stylesheet'>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-	integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-	crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link
-	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-<link rel="stylesheet" href="/resources/css/style.main.css">
-<link rel="stylesheet" href="/resources/css/wit.css">
-<script defer src="/resources/js/boards.js"></script>
-</head>
+			<head>
+				<meta charset="UTF-8">
+				<title>게시물 상세</title>
+				<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+				<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+					integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+					crossorigin="anonymous" referrerpolicy="no-referrer" />
+				<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css"
+					rel="stylesheet">
+				<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+				<link rel="stylesheet" href="/css/style.main.css">
+				<link rel="stylesheet" href="/css/wit.css">
+				<script src="/js/wit.js"></script>
+				<script defer src="/js/boards.js"></script>
+			</head>
 
 
 <body>
@@ -316,7 +313,14 @@
 
 
 
-	<script>
+				<script>
+					$(document).ready(function () {
+						// 모든 li 태그 안의 a 태그에 클릭 이벤트 추가
+						$('li > a').on('click', function () {
+							// 클릭된 a 태그에 active 클래스 토글
+							$(this).toggleClass('active');
+						});
+					});
 
 					// JSP에서 계산된 파일의 길이를 JavaScript로 전달합니다.
 					let defaultFileLength = ${ filesSize };

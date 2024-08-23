@@ -265,6 +265,6 @@ public class AddressBookController {
 	@ExceptionHandler(Exception.class)
 	public String execptionHandler(Exception e) {
 		e.printStackTrace();
-		return "error";
+		return "redirect:/error";
 	}
 }

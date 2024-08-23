@@ -98,10 +98,10 @@ public class ChatRoomController {
         return response;
     }
 
-    // 예외를 담당하는 메서드 생성
-    @ExceptionHandler(Exception.class)
-    public String exceptionHandler(Exception e) {
-        e.printStackTrace();
-        return "error";
-    }
+	// 예외를 담당하는 메서드 생성
+	@ExceptionHandler(Exception.class)
+	public String execptionHandler(Exception e) {
+		e.printStackTrace();
+		return "redirect:/error";
+	}
 }

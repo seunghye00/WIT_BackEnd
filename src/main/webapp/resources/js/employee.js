@@ -632,10 +632,12 @@ $('#loginForm').on('submit', function (e) {
     $('#start_button').click(function () {
         var now = new Date()
         var hours = now.getHours()
+        
         if (hours >= 18) {
             alert('18시 이후에는 출근할 수 없습니다.')
             return
         }
+        
         if (confirm('출근 하시겠습니까?')) {
             $.ajax({
                 url: '/attendance/start',
@@ -678,7 +680,6 @@ $('#loginForm').on('submit', function (e) {
         }
     })
 
-    // 여기 코드는 회원가입때 쓰는 코드인데 나중에 회원가입 제거하면서 같이 제거 합니당!
     // 초기 상태로 x 표시를 숨깁니다.
     const pwCheck = document.getElementById('pwCheck')
     const checkpwCheck = document.getElementById('checkpwCheck')
