@@ -134,7 +134,7 @@ public class AnnualLeaveController {
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception e) {
 		e.printStackTrace();
-		return "error";
+		return "redirect:/error";
 	}
 
 }
