@@ -5,9 +5,9 @@
 <html>
 <head>
 <title>PW 찾기</title>
-<link rel="stylesheet" href="/resources/css/wit.css">
+<link rel="stylesheet" href="/css/wit.css">
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="/resources/js/employee.js"></script>
+<script src="/js/employee.js"></script>
 </head>
 <body class="membership_body">
     <div class="find_pw_container active">
