@@ -26,7 +26,7 @@
             </select>
             <input type="text" id="employee_id" name="emp_no" placeholder="사원번호" readonly>
             <button type="button" id="generate_id_button">사원번호 생성</button>
-            <input type="password" name="pw" placeholder="초기 비밀번호: 1233" value="qwer1234!!" readonly>
+            <input type="password" name="pw" value="qwer1234!!" readonly>
             <input type="text" id="name" name="name" placeholder="이름" required>
             <label id="resultName"></label>
             <button type="submit" id="register_button">등록</button>
