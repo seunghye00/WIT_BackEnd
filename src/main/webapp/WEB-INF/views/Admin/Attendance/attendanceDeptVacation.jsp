@@ -70,7 +70,7 @@
 					<h2>부서별 휴가현황</h2>
 					<div class="searchBox" id="search_name">
 						<input type="text" placeholder="검색" value="${searchTxt}"
-							id="searchTxt">
+							id="searchTxt" onkeydown="if(event.key === 'Enter') search();">
 						<button class="searchBtn" id="searchBtn" onclick="search()">
 							<i class='bx bx-search'></i>
 						</button>
