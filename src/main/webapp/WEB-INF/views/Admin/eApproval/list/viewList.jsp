@@ -76,7 +76,7 @@
 								</c:when>
 								<c:otherwise>
 									<c:forEach items="${docuList}" var="i">
-										<a href="/eApproval/readDocu?docuSeq=${i.document_seq}<c:if test='${i.read_yn eq "N"}'> &readYN=Y</c:if>">
+										<a href="/eApproval/admin/readDocu?docuSeq=${i.document_seq}<c:if test='${i.read_yn eq "N"}'>&readYN=Y</c:if>">
 										<div class="rows">
 											<div class="cols">
 												<span><fmt:formatDate value="${i.write_date}" pattern="yyyy-MM-dd" /></span>

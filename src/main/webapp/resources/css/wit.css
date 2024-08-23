@@ -3416,6 +3416,7 @@ span.return {
 
 .eApprWrite .document .choiBox .refeModal li {
 	padding: 7px 0;
+	text-align: start;
 }
 
 .eApprWrite .document .docuCont {
@@ -5291,11 +5292,37 @@ button:nth-child(4) img {
 	gap: 10px;
 }
 
+.adminCont .left .leftTop .main_profile {
+	flex: 5;
+}
+
+.adminCont .left .leftTop .dept-role,
+.adminCont .left .leftTop .username {
+	flex: 1;
+} 
+
 .adminCont .left .leftTop .eApprBox {
 	border-radius: 10px;
-	background-color: #558BCF;
+	background-color: #6ba4eb;
 	width: 100%;
+	flex: 3;
+	display: flex;
+    flex-direction: column;
+    padding-left: 20px;
 }
-.adminCont .left .leftTop .eApprBox .docuNum {
+
+.adminCont .left .leftTop .eApprBox a {
+	flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.adminCont .left .leftTop .eApprBox .eApprRows {
+    color: #fff;
+    font-size: 18px;
+}
+
+.adminCont .left .leftTop .eApprBox .eApprRows .docuNum {
 	color: #dc3545;
+    padding: 0 8px;
 }
