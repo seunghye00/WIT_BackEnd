@@ -95,8 +95,6 @@ public class AddressBookController {
     @ResponseBody
     public Map<String, Object> search(String keyword, String cpage, String category_id) {
     	String emp_no = (String) session.getAttribute("loginID");
-    	System.out.println(keyword);
-    	System.out.println(category_id);
         if (cpage == null) {
             cpage = "1";
         }
@@ -111,8 +109,8 @@ public class AddressBookController {
         }
 
         List<Map<String, Object>> list = serv.selectByCon(keyword, cpage_num, emp_no, categoryId);
-        int totPage = serv.totalCountPageSearch(keyword);
-
+        int totPage = serv.totalCountPageSearch(emp_no, keyword, categoryId);
+        System.out.println(totPage);
         Map<String, Object> response = new HashMap<>();
         response.put("totPage", totPage);
         response.put("cpage", cpage_num);

@@ -90,7 +90,16 @@
     
     <!-- 주소록 검색 페이지네이션 총 카운트 -->
     <select id="totalCountPageSearch" resultType="int">
-        select count(*) from address_book where name like '%'||#{keyword}||'%'
+        <![CDATA[
+	        select count(*) from address_book ab
+	            left join
+	                categories c on ab.category_id = c.category_id
+	            where 
+	                ab.emp_no = #{emp_no}
+	            and name like '%'||#{keyword}||'%']]>
+            <if test="category_id != 0">
+                <![CDATA[and c.category_id = #{category_id}]]>
+            </if>
     </select>
     
     <!-- 주소록 검색 -->
