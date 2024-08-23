@@ -44,10 +44,8 @@ function insertFiles(parentSeq, goToUrl) {
 	if(goToUrl.includes('eApproval')){
 		goToUrl = goToUrl + '?docuSeq=' + parentSeq;
 	}
-
     // addedFiles 배열의 파일들을 FormData에 추가
     addedFiles.forEach(file => formData.append('file', file));
-	
 
     // AJAX 요청으로 파일 전송
     $.ajax({
@@ -60,8 +58,8 @@ function insertFiles(parentSeq, goToUrl) {
     }).done(resp => {
 		// 해당 문서 열람 페이지로 이동
 		location.href = resp.hrefUrl;    	
-
     }).fail((jqXHR, textStatus, errorThrown) => {
-    	console.error('AJAX request failed:', textStatus, errorThrown);  // 오류 로그 출력
+    	console.error('AJAX 요청 실패:', textStatus, errorThrown);
+    	location.href = '/eApproval/delDocu?docuSeq' + parentSeq + '&goTo=error';
 	});
 }

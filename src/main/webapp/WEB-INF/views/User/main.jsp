@@ -4,18 +4,21 @@
 			<!DOCTYPE html>
 			<html>
 
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Wit Works</title>
-				<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-				<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-				<link rel="stylesheet" href="/resources/css/style.main.css">
-				<link rel="stylesheet" href="/resources/css/wit.css">
-				<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-				<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
-				<script src="/resources/js/employee.js"></script>
-			</head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wit Works</title>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
+	rel='stylesheet'>
+<script
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<link rel="stylesheet" href="/css/style.main.css">
+<link rel="stylesheet" href="/css/wit.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
+<script defer src="/js/employee.js"></script>
+<script defer src="/js/wit.js"></script>
+</head>
 
 			<body class="membership_body">
 				<div class="container">
@@ -31,8 +34,6 @@
 											<span class="main_profile"> <img src="${employee.photo}" alt="프로필 이미지"
 													class="profileImg">
 											</span>
-											<div class="dept-role">${employee.dept_code}
-												${employee.role_code}</div>
 											<div class="username">${employee.name}</div>
 										</div>
 										<div class="leftBottom">
@@ -84,6 +85,8 @@
 															<div class="cols boardView">조회수</div>
 														</c:otherwise>
 													</c:choose>
+											<div class="dept-role">${employee.dept_code}
+												${employee.role_code}</div>
 
 												</div>
 
@@ -256,19 +259,39 @@
 								</div>
 						</div>
 				</div>
-				<div class="overlay">
-					<div id="popup" class="popup">
-						<h2>추가 정보 입력</h2>
-						<form id="insertForm" action="/employee/update_info" method="post">
-							<input type="hidden" name="emp_no" value="${employee.emp_no}">
-							<div class="input-container">
-								<input type="password" name="pw" id="pw" placeholder="비밀번호" required> <span
-									class="valid-check error" id="pwCheck">&#x2716;</span>
+				<div class="right">
+					<div class="rightTop">
+						<a href="/eApproval/home">전자 결재&nbsp;<i class='bx bx-home'
+							style='color: #558bcf'></i>
+						</a>
+						<div class="eApprBox">
+							<div class="eApprRows">
+								<div class="eApprCols">
+								<a href="/eApproval/apprList?type=todo&cPage=1">
+									결재 대기&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i><span class="docuNum">${todoNum}</span>
+								</a>
+								</div>
+								<div class="eApprCols">
+								<a href="/eApproval/privateList?type=view&cPage=1">
+									참조&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i><span class="docuNum">${refeNum}</span>
+								</a>
+								</div>
 							</div>
-							<label id="resultpw"></label>
-							<div class="input-container">
-								<input type="password" name="checkpw" id="checkpw" placeholder="비밀번호 확인" required> <span
-									class="valid-check error" id="checkpwCheck">&#x2716;</span>
+							<div class="eApprRows">
+								<div class="eApprCols">
+								<a href="/eApproval/privateList?type=write&cPage=1">
+									기안 진행중&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i><span class="docuNum">${apprNum}</span>
+								</a>
+								</div>
+								<div class="eApprCols">
+								<a href="/eApproval/privateList?type=save&cPage=1">
+									임시 저장&nbsp;<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i><span class="docuNum">${saveNum}</span>
+								</a>
+								</div>
 							</div>
 							<label id="resultcheckpw"></label>
 							<div class="input-container">

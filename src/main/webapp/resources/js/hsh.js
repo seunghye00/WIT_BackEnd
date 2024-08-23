@@ -43,6 +43,7 @@ $('#startApprBtn').on('click', () => {
     	
     }).fail((jqXHR, textStatus, errorThrown) => {
     	console.error('AJAX 요청 실패:', textStatus, errorThrown);
+    	location.href = "/error";
 	});
 
     // 해당 모달창에서 다음 버튼 클릭 시
@@ -92,7 +93,10 @@ $('#startApprBtn').on('click', () => {
             	dept = noMultiClick(this, 'apprChoiModal')
             	getEmployeeList(dept);
         	});
-    	});
+    	}).fail((jqXHR, textStatus, errorThrown) => {
+    		console.error('AJAX 요청 실패:', textStatus, errorThrown);
+    		location.href = "/error";
+		});
 
 		// 결재선 추가 버튼 클릭
 		$('#addAppr').on('click',()=>{
@@ -308,6 +312,9 @@ function getEmployeeList(dept) {
     		li.append(input, label);
     		ul.append(li);
     	}
+	}).fail((jqXHR, textStatus, errorThrown) => {
+    	console.error('AJAX 요청 실패:', textStatus, errorThrown);
+    	location.href = "/error";
 	});
 }
 
@@ -335,7 +342,9 @@ $('.goBack').on('click', () => {
 	if(prevUrl.includes('writeProc')){
 		location.href = '/eApproval/privateList?type=write&cPage=1';
 	} else {
-		window.history.back();
+		const urlObj = new URL(prevUrl);
+    	const pathAndQuery = urlObj.pathname + urlObj.search;
+		location.href = pathAndQuery;
 	}
 });
 
@@ -350,13 +359,12 @@ $('.delDocu').on('click', () => {
 $('.cancelWrite').on('click', () => {
 	if(confirm('정말로 작성을 취소하시겠습니까 ?')){
 		// 이전 페이지의 Url을 변수에 저장
-		const previousUrl = document.referrer;
+		const prevUrl = document.referrer;
 
 		// URL 객체를 생성하여 pathname과 search를 추출
-		if (previousUrl) {
-    		const urlObj = new URL(previousUrl);
+		if (prevUrl) {
+    		const urlObj = new URL(prevUrl);
     		const pathAndQuery = urlObj.pathname + urlObj.search;
-
 			location.href = pathAndQuery;
 		} else {
    		 	console.log("이전 페이지 정보가 없습니다.");
@@ -712,7 +720,10 @@ function sendFormData(choiUrl) {
      	} else {
      		location.href = "/eApproval/readDocu?docuSeq=" + resp;
      	}
-     });	
+     }).fail((jqXHR, textStatus, errorThrown) => {
+    	console.error('AJAX 요청 실패:', textStatus, errorThrown);
+    	location.href = "/error";
+	 });	
 }
 
 // 휴가 신청서에서 휴가 시작일 변화를 감지
