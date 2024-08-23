@@ -345,6 +345,12 @@ $('#loginForm').on('submit', function (e) {
             alert('이메일 형식이 잘못되었습니다.')
             return false
         }
+        
+        // 우편번호 유효성 검사
+    	if ($('#zip_code').val() == '') {
+        alert('주소찾기 를 해주세요.');
+        return false;
+    	}
 
         // 모든 유효성 검사를 통과한 경우 서버에 데이터 전송
         $.ajax({
