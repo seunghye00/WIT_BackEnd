@@ -433,7 +433,7 @@
 		select * from (
 			select
 				d.document_seq document_seq, d.emp_no emp_no, write_date, dl.name, emer_yn, title,
-				d.status status, done_date,
+				d.status status, done_date, r.read_yn,
 				row_number() over (order by emer_yn desc, write_date desc) as rn
 			from
 				documents d
@@ -521,8 +521,7 @@
 				</if>
 				<if test="status != null">
 					and d.status = #{status}
-				</if>
-		)
+				</if> )
 	</select>
 	
 	<!-- 해당 문서의 작성자 사번을 조회하기 위한 쿼리문 -->

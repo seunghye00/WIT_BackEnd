@@ -2825,7 +2825,7 @@
 #end_button {
 	padding: 10px 20px;
 	border-radius: 10px;
-	background-color: #c51221;
+	background-color: #d24450;
 	color: white;
 	border: 1px solid #ccc;
 	display: flex;
@@ -5125,7 +5125,8 @@ button:nth-child(4) img {
 }
 
 .modalContent.calendarCont {
-	height: 84%;
+	height: fit-content;
+	top: 11vh;
 }
 
 .modalClose {
@@ -5261,6 +5262,11 @@ button:nth-child(4) img {
 	flex: 1;
 	display: flex;
 	justify-content: center;
+	align-items: center;
+}
+
+.rightTop .eApprBox .eApprRows .eApprCols a {
+	display: flex;
 	align-items: center;
 }
 

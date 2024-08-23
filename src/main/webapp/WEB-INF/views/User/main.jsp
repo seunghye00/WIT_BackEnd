@@ -225,28 +225,36 @@
 				</div>
 				<div class="right">
 					<div class="rightTop">
-						<a href="/eApproval/home"> 전자 결재&nbsp;<i class='bx bx-home'
-							style='color: #558bcf'></i>
+						<a href="/eApproval/home"><i class='bx bx-home'
+							style='color: #558bcf'></i>&nbsp;전자 결재
 						</a>
 						<div class="eApprBox">
 							<div class="eApprRows">
 								<div class="eApprCols">
-									결재 대기&nbsp;<i class='bx bx-file bx-flip-horizontal'
-										style='color: #558bcf'></i> <span class="docuNum">${todoNum}</span>
+								<a href="/eApproval/apprList?type=todo&cPage=1">
+									<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i>&nbsp;결재 대기<span class="docuNum">${todoNum}</span>
+								</a>
 								</div>
 								<div class="eApprCols">
-									참조&nbsp;<i class='bx bx-file bx-flip-horizontal'
-										style='color: #558bcf'></i> <span class="docuNum">${refeNum}</span>
+								<a href="/eApproval/privateList?type=view&cPage=1">
+									<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i>&nbsp;참조<span class="docuNum">${refeNum}</span>
+								</a>
 								</div>
 							</div>
 							<div class="eApprRows">
 								<div class="eApprCols">
-									기안 진행중&nbsp;<i class='bx bx-file bx-flip-horizontal'
-										style='color: #558bcf'></i> <span class="docuNum">${apprNum}</span>
+								<a href="/eApproval/privateList?type=write&cPage=1">
+									<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i>&nbsp;기안 진행중<span class="docuNum">${apprNum}</span>
+								</a>
 								</div>
 								<div class="eApprCols">
-									임시 저장&nbsp;<i class='bx bx-file bx-flip-horizontal'
-										style='color: #558bcf'></i> <span class="docuNum">${saveNum}</span>
+								<a href="/eApproval/privateList?type=save&cPage=1">
+									<i class='bx bx-file bx-flip-horizontal'
+										style='color: #558bcf'></i>&nbsp;임시 저장<span class="docuNum">${saveNum}</span>
+								</a>
 								</div>
 							</div>
 						</div>
