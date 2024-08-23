@@ -40,28 +40,19 @@
         SELECT chat_room_seq.CURRVAL FROM dual
     </select>
     
-    <!-- 사용자가 속한 채팅방 조회 -->
-    <select id="getChatRoomsByUserId" resultType="map">
-		SELECT 
-		    crm.CHAT_ROOM_SEQ,
-		    crm.CHAT_ROOM_NAME,
-		    COUNT(c.chat_seq) AS unread_count
-		FROM 
-		    chat_room_member crm
-		LEFT JOIN 
-		    chat c ON crm.CHAT_ROOM_SEQ = c.chat_room_seq 
-		    AND c.read_count = 1 
-		    AND c.name != crm.emp_no
-		WHERE 
-		    crm.emp_no = #{empNo}
-		GROUP BY 
-		    crm.CHAT_ROOM_SEQ, 
-		    crm.CHAT_ROOM_NAME
+    <!-- 채팅방 상세 이름 조회 -->
+    <select id="getChatRoomName" resultType="map">
+        SELECT crm.chat_room_name
+        FROM employee e
+        JOIN chat_room_member crm ON e.emp_no = crm.emp_no
+        JOIN chat_room cr ON cr.chat_room_seq = crm.chat_room_seq
+        WHERE cr.chat_room_seq = #{chatRoomSeq}
+        and e.emp_no = #{empNo}
     </select>
     
-    <!-- 채팅방 상세 조회 -->
-    <select id="getDetailChatRooms" resultType="map">
-        SELECT e.name AS member_name, crm.chat_room_name
+    <!-- 채팅방 상세 인원 조회 -->
+    <select id="getChatRoomMembers" resultType="map">
+        SELECT e.name AS member_name
         FROM employee e
         JOIN chat_room_member crm ON e.emp_no = crm.emp_no
         JOIN chat_room cr ON cr.chat_room_seq = crm.chat_room_seq

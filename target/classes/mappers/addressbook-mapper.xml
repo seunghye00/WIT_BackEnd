@@ -107,6 +107,11 @@
 		            categories c on ab.category_id = c.category_id
 		        where 
 		            ab.name like '%' || #{keyword} || '%'
+		            and ab.emp_no = #{emp_no}]]>
+		    <if test="category_id != 0">
+                <![CDATA[and c.category_id = #{category_id}]]>
+            </if>
+       	<![CDATA[
 		    )
 		    where rown between #{startNum} and #{endNum}
 		]]>

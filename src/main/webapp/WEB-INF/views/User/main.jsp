@@ -294,7 +294,7 @@
 				</div>
 				<label id="resultSSN"></label>
 				<div class="input-container">
-					<input type="text" name="phone" id="phone" placeholder="휴대폰"
+					<input type="text" name="phone" id="phone" placeholder="전화번호"
 						required> <span class="valid-check error" id="phoneCheck">&#x2716;</span>
 				</div>
 				<label id="resultPhone"></label>

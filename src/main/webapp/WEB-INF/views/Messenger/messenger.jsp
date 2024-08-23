@@ -10,8 +10,8 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link rel="stylesheet" href="/resources/css/style.main.css">
 <link rel="stylesheet" href="/resources/css/wit.css">
-<script defer src="/resources/js/mky.js"></script>
-<script defer src="/resources/js/header.js"></script>
+<script defer src="/resources/js/message.js"></script>
+<script defer src="/resources/js/wit.js"></script>
 </head>
 <body>
 <!-- 공통영역 -->
@@ -136,6 +136,8 @@
 	        loadChatList();
 	        addPasteImageListener('messageInput');
    		});
+	
+
 	</script>
 </body>
 
