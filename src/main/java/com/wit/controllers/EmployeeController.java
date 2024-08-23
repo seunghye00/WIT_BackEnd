@@ -75,11 +75,14 @@ public class EmployeeController {
 
 	// 회원가입
 	@RequestMapping("/register")
-	public String register(EmployeeDTO dto) throws Exception {
+	public String register(EmployeeDTO dto, Model model) throws Exception {
 		int result = service.register(dto);
+		String empNo = (String) session.getAttribute("loginID");
 		if (result == 1) {
 			// 회원가입 성공 시 해당 회원의 기본 개인 캘린더 추가
 			cService.insertPerDefaultCalendar(dto.getEmp_no());
+			EmployeeDTO employee = service.employeeInfo(empNo);
+			model.addAttribute("employee", employee);
 			return "/Management/management";
 		} else {
 			return "/Management/register";

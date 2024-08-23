@@ -109,7 +109,7 @@
 		        </div>
 			</c:when>
 			<c:otherwise>
-				 <c:redirect url="/errorPage.jsp"/>
+				 <c:redirect url="/error"/>
 			</c:otherwise>
 		</c:choose>
     </div>
