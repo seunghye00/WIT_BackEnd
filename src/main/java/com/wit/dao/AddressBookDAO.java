@@ -26,11 +26,13 @@ public class AddressBookDAO {
 	}
 	
 	// 주소록 검색
-	public List<Map<String, Object>> selectByCon(String keyword, int startNum, int endNum) {
+	public List<Map<String, Object>> selectByCon(String keyword, int startNum, int endNum, String emp_no, int category_id) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("keyword", keyword);
 		params.put("startNum", startNum);
 		params.put("endNum", endNum);
+		params.put("emp_no", emp_no);
+		params.put("category_id", category_id);
 		List<Map<String, Object>> list = mybatis.selectList("addressbook.selectByCon", params);
 		return list;
 	}

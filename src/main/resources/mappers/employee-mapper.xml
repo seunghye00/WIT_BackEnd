@@ -390,7 +390,11 @@
 		        left join
 		            dept d on em.dept_code = d.dept_code
 		        where 
-		            em.name like '%' || #{keyword} || '%'
+		            em.name like '%' || #{keyword} || '%']]>
+			    <if test="dept_code != '전체'">
+	                <![CDATA[and em.dept_code = #{dept_code}]]>
+	            </if>
+	    <![CDATA[
 		    )
 		    where rown between #{startNum} and #{endNum}
 		]]>
@@ -410,9 +414,8 @@
 		where
 		emp_no != #{emp_no}
 		and em.quit_yn = 'N'
-		and
-		em.role_code != 'R1'
-		order by name asc
+		and em.role_code != 'R1' 
+		order by em.dept_code, em.name asc
 	</select>
 
 	<!-- 메신저 주소록 상세 조회 -->
@@ -479,8 +482,7 @@
 
 	<!-- 관리자 사원 검색 총 카운트 -->
 	<select id="totalCountManageSearch" resultType="int">
-		select count(*)
-		from employee where em.emp_no != #{empNo} and ${column} like
+		select count(*) from employee where emp_no != #{emp_no} and ${column} like
 		'%'||#{keyword}||'%'
 	</select>
 

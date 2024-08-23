@@ -311,12 +311,12 @@ public class EmployeeController {
 	// 주소록 검색
 	@RequestMapping("search")
 	@ResponseBody
-	public Map<String, Object> search(String keyword, String cpage) {
+	public Map<String, Object> search(String keyword, String cpage, String dept_code) {
 		if (cpage == null) {
 			cpage = "1";
 		}
 		int cpage_num = Integer.parseInt(cpage);
-		List<Map<String, Object>> list = service.selectByCon(keyword, cpage_num);
+		List<Map<String, Object>> list = service.selectByCon(keyword, cpage_num, dept_code);
 		int totPage = service.totalCountPageSearch(keyword);
 
 		Map<String, Object> response = new HashMap<>();
@@ -385,12 +385,15 @@ public class EmployeeController {
 	// 관리자 사원 관리
 	@RequestMapping("/management")
 	public String management(Model model, String cpage) throws Exception {
+		String empNo = (String) session.getAttribute("loginID");
+		EmployeeDTO employee = service.employeeInfo(empNo);
+		model.addAttribute("employee", employee);
 		return "Management/management";
 	}
 
 	// 관리자 사원 관리
-	@ResponseBody
 	@RequestMapping("/manageLoad")
+	@ResponseBody
 	public Map<String, Object> getManagement(Model model, String cpage) throws Exception {
 		String emp_no = (String) session.getAttribute("loginID");
 
@@ -432,7 +435,6 @@ public class EmployeeController {
 	@RequestMapping("/manageSearch")
 	public Map<String, Object> manageSearch(String column, String keyword, Model model, String cpage) throws Exception {
 		String emp_no = (String) session.getAttribute("loginID");
-
 		if (cpage == null) {
 			cpage = "1";
 		}
@@ -462,18 +464,14 @@ public class EmployeeController {
 		response.put("naviCountPerPage", BoardConfig.naviCountPerPage);
 		response.put("recordCountPerPage", BoardConfig.recordCountPerPage);
 		response.put("manageList", list);
-//		List<EmployeeDTO> list = serv.selectByCon(column,keyword,cpage_num);
-//		int totPage = serv.totalCountPageSearch(column,keyword);
-//		model.addAttribute("list", list);
-//		model.addAttribute("totPage", totPage);
-//		model.addAttribute("cpage", cpage_num);
 		return response;
 	}
 
 	// 관리자 사원 관리 상세
 	@RequestMapping("/managementDetail")
 	public String managementDetail(Model model, String empNo) throws Exception {
-
+		String emp_no = (String) session.getAttribute("loginID");
+		EmployeeDTO employee = service.employeeInfo(emp_no);
 		Map<String, Object> manageDetail = service.managementDetail(empNo);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -495,6 +493,7 @@ public class EmployeeController {
 		model.addAttribute("employee", manageDetail);
 		model.addAttribute("departments", departments);
 		model.addAttribute("roles", roles);
+		model.addAttribute("emp", employee);
 		return "Management/managementDetail";
 	}
 

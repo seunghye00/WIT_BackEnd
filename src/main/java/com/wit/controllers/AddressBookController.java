@@ -93,12 +93,24 @@ public class AddressBookController {
 
     @RequestMapping("search")
     @ResponseBody
-    public Map<String, Object> search(String keyword, String cpage) {
+    public Map<String, Object> search(String keyword, String cpage, String category_id) {
+    	String emp_no = (String) session.getAttribute("loginID");
+    	System.out.println(keyword);
+    	System.out.println(category_id);
         if (cpage == null) {
             cpage = "1";
         }
         int cpage_num = Integer.parseInt(cpage);
-        List<Map<String, Object>> list = serv.selectByCon(keyword, cpage_num);
+        int categoryId = 0;
+        if (category_id != null && !category_id.isEmpty()) {
+            try {
+            	categoryId = Integer.parseInt(category_id);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid category_id, setting it to null");
+            }
+        }
+
+        List<Map<String, Object>> list = serv.selectByCon(keyword, cpage_num, emp_no, categoryId);
         int totPage = serv.totalCountPageSearch(keyword);
 
         Map<String, Object> response = new HashMap<>();
