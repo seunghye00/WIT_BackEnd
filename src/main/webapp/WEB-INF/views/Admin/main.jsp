@@ -4,21 +4,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wit Works</title>
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
-	rel='stylesheet'>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="/resources/css/style.main.css">
 <link rel="stylesheet" href="/resources/css/wit.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
-<script src="/resources/js/employee.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
+<script src="/js/employee.js"></script>
 </head>
 
 <body class="membership_body">
@@ -29,15 +26,31 @@
 		<div class="main-content">
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
 
-			<div class="contents">
+			<div class="contents adminCont">
 				<div class="left">
 					<div class="leftTop">
 						<span class="main_profile"> <img src="${employee.photo}"
 							alt="프로필 이미지" class="profileImg">
 						</span>
-						<div class="dept-role">${employee.dept_code}
-							${employee.role_code}</div>
+						<div class="dept-role">${employee.dept_code} ${employee.role_code}</div>
 						<div class="username">${employee.name}</div>
+						<div class="eApprBox">
+							<a href="/eApproval/admin/apprList?type=todo&cPage=1">
+								<div class="eApprRows">결재 대기 문서
+									<span class="docuNum">${todoNum}</span>
+								</div>
+							</a>
+							<a href="/eApproval/admin/apprList?type=upcoming&cPage=1">
+								<div class="eApprRows">결재 예정 문서
+									<span class="docuNum">${upcomingNum}</span>
+								</div>
+							</a>
+							<a href="/eApproval/admin/privateList?type=view&cPage=1">
+								<div class="eApprRows">참조 문서 ( 미확인 )
+									<span class="docuNum">${refeNum}</span>
+								</div>
+							</a>
+						</div>
 					</div>
 					<div class="leftBottom">
 						<div id="date"></div>
@@ -228,28 +241,7 @@
 						<a href="/eApproval/home"> 전자 결재&nbsp;<i class='bx bx-home'
 							style='color: #558bcf'></i>
 						</a>
-						<div class="eApprBox">
-							<div class="eApprRows">
-								<div class="eApprCols">
-									결재 대기&nbsp;<i class='bx bx-file bx-flip-horizontal'
-										style='color: #558bcf'></i> <span class="docuNum">${todoNum}</span>
-								</div>
-								<div class="eApprCols">
-									참조&nbsp;<i class='bx bx-file bx-flip-horizontal'
-										style='color: #558bcf'></i> <span class="docuNum">${refeNum}</span>
-								</div>
-							</div>
-							<div class="eApprRows">
-								<div class="eApprCols">
-									기안 진행중&nbsp;<i class='bx bx-file bx-flip-horizontal'
-										style='color: #558bcf'></i> <span class="docuNum">${apprNum}</span>
-								</div>
-								<div class="eApprCols">
-									임시 저장&nbsp;<i class='bx bx-file bx-flip-horizontal'
-										style='color: #558bcf'></i> <span class="docuNum">${saveNum}</span>
-								</div>
-							</div>
-						</div>
+						
 					</div>
 					<div class="rightBottom">
 						<div id="calendar" class="calendar"></div>

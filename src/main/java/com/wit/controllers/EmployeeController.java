@@ -126,11 +126,7 @@ public class EmployeeController {
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("noticeList", noticeList);
 		
-		// 전자 결재 영역에서 필요한 데이터를 model 객체에 저장
-		model.addAttribute("todoNum", eServ.getCountSearchListByType(empNo, "결재 대기", null, null));
-		model.addAttribute("refeNum", eServ.getCountBeforeViewList(empNo));
-		model.addAttribute("apprNum", eServ.getCountWriteListByIng(empNo));
-		model.addAttribute("saveNum", eServ.getCountSearchSaveList(empNo, null, null));
+
 		
 		// 직원 정보 가져오기
 		EmployeeDTO employee = service.employeeInfo(empNo);
@@ -140,8 +136,19 @@ public class EmployeeController {
 
 			// 사장님(CEO)이라면 Admin 페이지로 이동
 			if ("사장".equals(employee.getRole_code())) {
+				// 전자 결재 영역에서 필요한 데이터를 model 객체에 저장
+				model.addAttribute("todoNum", eServ.getCountSearchListByType(empNo, "결재 대기", null, null));
+				model.addAttribute("refeNum", eServ.getCountBeforeViewList(empNo));
+				model.addAttribute("upcomingNum", eServ.getCountSearchListByType(empNo, "결재 예정", null, null));
+				
 				return "Admin/main";
 			} else {
+				// 전자 결재 영역에서 필요한 데이터를 model 객체에 저장
+				model.addAttribute("todoNum", eServ.getCountSearchListByType(empNo, "결재 대기", null, null));
+				model.addAttribute("refeNum", eServ.getCountBeforeViewList(empNo));
+				model.addAttribute("apprNum", eServ.getCountWriteListByIng(empNo));
+				model.addAttribute("saveNum", eServ.getCountSearchSaveList(empNo, null, null));
+				
 				// 다른 직급이라면 User 페이지로 이동
 				return "User/main";
 			}
