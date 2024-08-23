@@ -2278,6 +2278,11 @@
 	margin: auto;
 }
 
+.membership .errorMsg {
+	padding: 15px 0;
+	font-size: 18px;
+}
+
 .find_id_container.active,
 .find_pw_container.active {
 	margin: auto;

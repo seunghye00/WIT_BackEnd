@@ -56,7 +56,8 @@
 		r.role_title AS role_code,
 		e.quit_yn
 		FROM employee e
-		JOIN role r ON e.role_code = r.role_code
+		JOIN role r ON
+		e.role_code = r.role_code
 		WHERE e.emp_no = #{emp_no}
 		AND e.pw = #{pw}
 		AND e.quit_yn = 'N'
@@ -67,13 +68,15 @@
 		SELECT
 		e.name AS NAME,
 		r.role_title AS ROLE_CODE,
-		d.dept_title AS DEPT_CODE
+		d.dept_title AS DEPT_CODE,
+		e.photo AS PHOTO
 		FROM
 		Employee e
 		JOIN
 		Role r ON e.role_code = r.role_code
 		JOIN
-		Dept d ON e.dept_code =
+		Dept d ON
+		e.dept_code =
 		d.dept_code
 		WHERE
 		e.emp_no = #{emp_no}
@@ -191,6 +194,13 @@
 	<select id="getName" resultType="String">
 		select name from employee where
 		emp_no = #{empNo}
+	</select>
+
+	<!-- 사원 직급 코드 조회 -->
+	<select id="getRoleCode" resultType="String">
+		select role_code
+		from employee
+		where emp_no = #{empNo}
 	</select>
 
 	<!-- 사원 직급명 조회 -->
@@ -399,7 +409,10 @@
 		r.role_code
 		where
 		emp_no != #{emp_no}
-		and em.quit_yn = 'N' 
+		and em.quit_yn = 'N'
+		and
+		em.role_code != 'R1'
+		order by name asc
 	</select>
 
 	<!-- 메신저 주소록 상세 조회 -->
@@ -407,10 +420,12 @@
 		select emp_no, name,
 		d.dept_title, r.role_title, phone, email, photo
 		from employee em
-		left join
+		left
+		join
 		dept d on em.dept_code = d.dept_code
 		left join
-		role r on em.role_code = r.role_code
+		role r on
+		em.role_code = r.role_code
 		where emp_no = #{emp_no}
 	</select>
 
@@ -424,47 +439,48 @@
 	<select id="getManagementList" parameterType="map"
 		resultType="map">
 		select * from (
-		    select 
-		        em.*, 
-		        d.dept_title,
-		        r.role_title,
-		        row_number() over (order by em.emp_no asc) as rown
-		    from 
-		        employee em
-		    left join
-		        dept d on em.dept_code = d.dept_code
-		    left join
-		        role r on em.role_code = r.role_code
-		   	where 
-            	em.emp_no != #{emp_no}
-		    )
-		    where rown between #{startNum} and #{endNum}    
+		select
+		em.*,
+		d.dept_title,
+		r.role_title,
+		row_number() over (order by em.emp_no asc) as rown
+		from
+		employee em
+		left join
+		dept d on em.dept_code = d.dept_code
+		left join
+		role r on em.role_code = r.role_code
+		where
+		em.emp_no != #{emp_no}
+		)
+		where rown between #{startNum} and #{endNum}
 	</select>
 
 	<!-- 관리자 사원 검색 조회 -->
 	<select id="selectByManage" parameterType="map" resultType="map">
 		select * from (
-		    select 
-		        em.*, 
-		        d.dept_title,
-		        r.role_title,
-		        row_number() over (order by em.emp_no asc) as rown
-		    from 
-		        employee em
-		    left join
-		        dept d on em.dept_code = d.dept_code
-		    left join
-		        role r on em.role_code = r.role_code
-		    where 
-	    		em.emp_no != #{emp_no}
-		    	and ${column} like '%'||#{keyword}||'%'    
-		    )
-		    where rown between #{startNum} and #{endNum}    
+		select
+		em.*,
+		d.dept_title,
+		r.role_title,
+		row_number() over (order by em.emp_no asc) as rown
+		from
+		employee em
+		left join
+		dept d on em.dept_code = d.dept_code
+		left join
+		role r on em.role_code = r.role_code
+		where
+		em.emp_no != #{emp_no}
+		and ${column} like '%'||#{keyword}||'%'
+		)
+		where rown between #{startNum} and #{endNum}
 	</select>
 
 	<!-- 관리자 사원 검색 총 카운트 -->
 	<select id="totalCountManageSearch" resultType="int">
-		select count(*) from employee where em.emp_no != #{empNo} and ${column} like
+		select count(*)
+		from employee where em.emp_no != #{empNo} and ${column} like
 		'%'||#{keyword}||'%'
 	</select>
 
@@ -480,21 +496,21 @@
 		left join
 		dept d on em.dept_code = d.dept_code
 		left join
-		    role r on em.role_code = r.role_code
-		where 
-		    emp_no = #{emp_no}
-    </select>	
-    
-    <update id="updateManage" parameterType="map">
-    	update employee 
-		    set 
-		        phone = #{phone}, 
-		        email = #{email}, 
-		        dept_code = #{dept_code}, 
-		        role_code = #{role_code}, 
-		        photo = #{photo}, 
-		        quit_yn = #{quit_yn},
-		        quit_date = CASE WHEN #{quit_yn} = 'Y' THEN sysdate ELSE quit_date END
-		    WHERE emp_no = #{emp_no}
-    </update>	
+		role r on em.role_code = r.role_code
+		where
+		emp_no = #{emp_no}
+	</select>
+
+	<update id="updateManage" parameterType="map">
+		update employee
+		set
+		phone = #{phone},
+		email = #{email},
+		dept_code = #{dept_code},
+		role_code = #{role_code},
+		photo = #{photo},
+		quit_yn = #{quit_yn},
+		quit_date = CASE WHEN #{quit_yn} = 'Y' THEN sysdate ELSE quit_date END
+		WHERE emp_no = #{emp_no}
+	</update>
 </mapper>

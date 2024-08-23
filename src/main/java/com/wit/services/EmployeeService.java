@@ -60,7 +60,7 @@ public class EmployeeService {
 		// 퇴사자인 경우 로그인 실패 처리
 		if (employee != null && employee.getQuit_yn() == 'Y') {
 			// 퇴사자인 경우 null을 반환
-			return null; 
+			return null;
 		}
 
 		return employee;
@@ -231,10 +231,19 @@ public class EmployeeService {
 		return dao.getName(empNo);
 	}
 
-	// 해당 사번을 가진 사원의 이름 조회
-	@Transactional
+	// 해당 사번을 가진 사원의 부서명 조회
 	public String getDept(String empNo) {
 		return dao.getDept(empNo);
+	}
+
+	// 해당 사번을 가진 사원의 직급 조회
+	public String getRole(String empNo) {
+		return dao.getRole(empNo);
+	}
+
+	// 해당 사번을 가진 사원의 직급 조회
+	public String getRoleCode(String empNo) {
+		return dao.getRoleCode(empNo);
 	}
 
 	// 메신저 emp_no 이름으로 변경
@@ -284,10 +293,11 @@ public class EmployeeService {
 	public Map<String, Object> managementDetail(String emp_no) {
 		return dao.managementDetail(emp_no);
 	}
-	
+
 	// 관리자 사원 상세 업데이트
 	@Transactional
-	public void updateManage(String empNo, String photoUrl, String phone, String quit_yn ,String email,String dept_code,String role_code) {
+	public void updateManage(String empNo, String photoUrl, String phone, String quit_yn, String email,
+			String dept_code, String role_code) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("emp_no", empNo);
 		params.put("phone", phone);
@@ -297,7 +307,7 @@ public class EmployeeService {
 		params.put("role_code", role_code);
 		params.put("quit_yn", quit_yn);
 		params.put("photo", photoUrl);
-		
+
 		dao.updateManage(params);
 	}
 }

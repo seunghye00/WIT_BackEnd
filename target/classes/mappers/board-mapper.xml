@@ -28,7 +28,7 @@
 	<!-- 그리고 작성날짜가 최신순인게 맨위로 올라온다! -->
 	<!-- 조인 너무 어려워 밍쥬야... -->
 	<select id="list" resultType="com.wit.dto.BoardReportDTO">
-	select a.*
+		select a.*
 		from
 		(SELECT
 		row_number() over(
@@ -37,12 +37,12 @@
 				order by b.write_date desc
 			</when>
 			<when test="sortTarget == 'views'">
-			<if test="adminReport=='true'">
-				order by r.count desc
-			</if>
-			<if test="adminReport=='false'">
+				<if test="adminReport=='true'">
+					order by r.count desc
+				</if>
+				<if test="adminReport=='false'">
 					order by b.views desc
-			</if>
+				</if>
 			</when>
 			<otherwise>
 				order by b.board_seq desc
@@ -57,7 +57,6 @@
 		</if>
 		<if test="adminReport=='true'">
 			,r.count
-<!-- 			,r.count, r.report_type, r.report_date -->
 		</if>
 
 		FROM
@@ -65,9 +64,12 @@
 		JOIN employee e ON b.emp_no = e.emp_no
 		<if test="report=='true'">
 			join report r on b.board_seq=r.board_seq
+			and r.emp_no =
+			#{emp_no}
 		</if>
 		<if test="adminReport=='true'">
-			join (select board_seq,count(*) as count from report group by board_seq) r
+			join (select board_seq,count(*) as count from report group
+			by board_seq) r
 			on b.board_seq=r.board_seq
 		</if>
 
@@ -94,9 +96,10 @@
 
 	<!-- 게시글 개수 -->
 	<select id="boardCount" resultType="int">
-		select count(*) from board 
+		select count(*) from board
 		<if test="adminReport=='true'">
-			 b join (select board_seq,count(*) as count from report group by board_seq) r
+			b join (select board_seq,count(*) as count from report group by
+			board_seq) r
 			on b.board_seq=r.board_seq
 		</if>
 		where board_code=${board_code}
@@ -157,10 +160,12 @@
 	<!-- 이건 공통코드로 쓰일거야 헤더 우측 프로필 옆에 뽑아야하니깐! -->
 	<select id="employeeInfo" resultType="com.wit.dto.EmployeeDTO">
 		SELECT e.name, r.role_title
-		as role_code
+		as role_code,
+		e.photo AS PHOTO
 		FROM Employee e
 		JOIN Role r ON e.role_code = r.role_code
-		WHERE e.emp_no = #{emp_no}
+		WHERE
+		e.emp_no = #{emp_no}
 	</select>
 
 	<!-- 게시물 수정 -->
@@ -168,14 +173,14 @@
 		update board set title=#{title} ,
 		contents=#{contents}, write_date=sysdate where board_seq=${board_seq}
 	</update>
-	
+
 	<!-- 신고 내역 리스트 -->
 	<select id="reportList" resultType="map">
-		select 
+		select
 		r.board_seq, r.report_type, r.report_date, em.name as emp_no
-		from board b  
-		join report r on b.board_seq = r.board_seq  
+		from board b
+		join report r on b.board_seq = r.board_seq
 		join employee em on r.emp_no = em.emp_no
 		where r.board_seq = ${board_seq}
-	</select> 
+	</select>
 </mapper>
