@@ -1,10 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+		<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<!DOCTYPE html>
-<html>
+			<!DOCTYPE html>
+			<html>
 
 			<head>
 				<meta charset="UTF-8">
@@ -19,309 +18,304 @@
 				<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 				<link rel="stylesheet" href="/css/style.main.css">
 				<link rel="stylesheet" href="/css/wit.css">
-				<script src="/js/wit.js"></script>
+				<script defer src="/js/wit.js"></script>
 				<script defer src="/js/boards.js"></script>
 			</head>
 
 
-<body>
-	<div id="container">
-		<c:choose>
-			<c:when test="${employee.role_code eq '사장'}">
-				<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp"%>
-			</c:when>
-			<c:otherwise>
-				<%@ include file="/WEB-INF/views/Includes/sideBar.jsp"%>
-			</c:otherwise>
-		</c:choose>
-		<div class="main-content">
-			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
-			<div class="contents">
-				<div class="sideAbout">
-					<div class="sideTxt">
-						<h2 class="sideTit">게시판</h2>
-					</div>
-					<div class="sideBtnBox">
-						<button id="writeBtn" class="plusBtn sideBtn">자유 게시판 글 작성</button>
-					</div>
-
-					<div class="addressListPrivate">
-						<ul class="GroupList">
-							<li class="toggleItem">
-								<h3 class="toggleTit">자유 게시판</h3>
-								<ul class="subList">
-									<li><a href="/board/list?bookmark=true">북마크한 게시물</a></li>
-									<li><a href="/board/list?report=true">신고한 게시물</a></li>
-									<li><a href="/board/list">자유 게시판으로 이동</a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-
-					<div class="addressListPrivate">
-						<ul class="GroupList">
-							<li class="toggleItem">
-								<h3 class="toggleTit">공지 사항</h3>
-								<ul class="subList">
-									<li><a href="/board/list?bookmark=true&boardCode=2">북마크한
-											게시물</a></li>
-
-									<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
-
-									<c:if test="${employee.role_code == '사장'}">
-										<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
-									</c:if>
-								</ul>
-							</li>
-						</ul>
-					</div>
-					<c:if test="${employee.role_code == '사장'}">
-						<div class="addressListGroup">
-							<ul class="GroupList">
-								<li class="toggleItem">
-									<h3 class="reportList">신고 현황</h3>
-								</li>
-							</ul>
-						</div>
-					</c:if>
-				</div>
-
-				<!--자유게시판 영역-->
-				<div class="sideContents board">
-					<form action="/board/update" method="post" id="fboardUpdate"
-						enctype="multipart/form-data" style="display: none">
-						<input type="hidden" id="hiddenT" name="title"
-							value="${board.title}"> <input type="hidden" id="hiddenC"
-							name="contents" value="${board.contents}"> <input
-							type="hidden" name="board_seq" value="${board.board_seq}">
-						<input type="file" id="file" multiple name="files">
-					</form>
+			<body>
+				<div id="container">
 					<c:choose>
-						<c:when test="${board_code=='1'}">
-							<div class="mainTitle">자유게시판 상세</div>
+						<c:when test="${employee.role_code eq '사장'}">
+							<%@ include file="/WEB-INF/views/Includes/sideBarAdmin.jsp" %>
 						</c:when>
-						<c:when test="${board_code=='2'}">
-							<div class="mainTitle">공지게시판 상세</div>
-						</c:when>
+						<c:otherwise>
+							<%@ include file="/WEB-INF/views/Includes/sideBar.jsp" %>
+						</c:otherwise>
 					</c:choose>
+					<div class="main-content">
+						<%@ include file="/WEB-INF/views/Includes/header.jsp" %>
+							<div class="contents">
+								<div class="sideAbout">
+									<div class="sideTxt">
+										<h2 class="sideTit">게시판</h2>
+									</div>
+									<div class="sideBtnBox">
+										<button id="writeBtn" class="plusBtn sideBtn">자유 게시판 글 작성</button>
+									</div>
 
-					<div class="boardDetail">
-						<div class="detail">
-							<div class="detailTop">
-								<div class="top">
-									<div class="topTitle" contenteditable="false">${board.title}
+									<div class="addressListPrivate">
+										<ul class="GroupList">
+											<li class="toggleItem">
+												<h3 class="toggleTit">자유 게시판</h3>
+												<ul class="subList">
+													<li><a href="/board/list?bookmark=true">북마크한 게시물</a></li>
+													<li><a href="/board/list?report=true">신고한 게시물</a></li>
+													<li><a href="/board/list">자유 게시판으로 이동</a></li>
+												</ul>
+											</li>
+										</ul>
 									</div>
-									<div class="topFile">
-										<!-- data 속성으로 게시글과 사용자 정보를 저장함. -->
-										<i class='bx bx-star' id="starIcon"
-											data-board-seq="${board.board_seq}"
-											data-emp-no="${employee.emp_no }"></i><i
-											class='bx bx-file-blank' id="fileIcon"></i>
+
+									<div class="addressListPrivate">
+										<ul class="GroupList">
+											<li class="toggleItem">
+												<h3 class="toggleTit">공지 사항</h3>
+												<ul class="subList">
+													<li><a href="/board/list?bookmark=true&boardCode=2">북마크한
+															게시물</a></li>
+
+													<li><a href="/board/list?boardCode=2">공지 사항으로 이동</a></li>
+
+													<c:if test="${employee.role_code == '사장'}">
+														<li><a href="/board/write?boardCode=2">공지 사항 글 작성</a></li>
+													</c:if>
+												</ul>
+											</li>
+										</ul>
 									</div>
+									<c:if test="${employee.role_code == '사장'}">
+										<div class="addressListGroup">
+											<ul class="GroupList">
+												<li class="toggleItem">
+													<h3 class="reportList">신고 현황</h3>
+												</li>
+											</ul>
+										</div>
+									</c:if>
 								</div>
-								<div class="top">
-									<div class="writeAbout">
-										<span>${board.emp_no}</span> <span> <fmt:formatDate
-												value="${board.write_date}" pattern="yyyy-MM-dd" />
-										</span> <span><i class="fa-regular fa-eye"></i> ${board.views}</span>
-									</div>
 
-									<!-- 신고하기 버튼 -->
+								<!--자유게시판 영역-->
+								<div class="sideContents board">
+									<form action="/board/update" method="post" id="fboardUpdate"
+										enctype="multipart/form-data" style="display: none">
+										<input type="hidden" id="hiddenT" name="title" value="${board.title}"> <input
+											type="hidden" id="hiddenC" name="contents" value="${board.contents}"> <input
+											type="hidden" name="board_seq" value="${board.board_seq}">
+										<input type="file" id="file" multiple name="files">
+									</form>
 									<c:choose>
 										<c:when test="${board_code=='1'}">
-											<div class="writeReport">
-												<c:if test="${board.emp_no != Nickname}">
-													<button id="reportBtn">
-														<i class='bx bx-message-alt-error'></i> 신고하기
-													</button>
-												</c:if>
-											</div>
+											<div class="mainTitle">자유게시판 상세</div>
+										</c:when>
+										<c:when test="${board_code=='2'}">
+											<div class="mainTitle">공지게시판 상세</div>
 										</c:when>
 									</c:choose>
-								</div>
-							</div>
 
-							<div class="detailCen" contenteditable="false">${board.contents}
-							</div>
-							<div class="docuFiles" style="display: none;">
-								<label for="file">🔗 파일 선택</label> ` <span class="uploadFiles"></span>
+									<div class="boardDetail">
+										<div class="detail">
+											<div class="detailTop">
+												<div class="top">
+													<div class="topTitle" contenteditable="false">${board.title}
+													</div>
+													<div class="topFile">
+														<!-- data 속성으로 게시글과 사용자 정보를 저장함. -->
+														<i class='bx bx-star' id="starIcon"
+															data-board-seq="${board.board_seq}"
+															data-emp-no="${employee.emp_no }"></i><i
+															class='bx bx-file-blank' id="fileIcon"></i>
+													</div>
+												</div>
+												<div class="top">
+													<div class="writeAbout">
+														<span>${board.emp_no}</span> <span>
+															<fmt:formatDate value="${board.write_date}"
+																pattern="yyyy-MM-dd" />
+														</span> <span><i class="fa-regular fa-eye"></i>
+															${board.views}</span>
+													</div>
 
-							</div>
+													<!-- 신고하기 버튼 -->
+													<c:choose>
+														<c:when test="${board_code=='1'}">
+															<div class="writeReport">
+																<c:if test="${board.emp_no != Nickname}">
+																	<button id="reportBtn">
+																		<i class='bx bx-message-alt-error'></i> 신고하기
+																	</button>
+																</c:if>
+															</div>
+														</c:when>
+													</c:choose>
+												</div>
+											</div>
 
-							<div class="detailBott">
-								<!-- 수정 및 삭제버튼 jstl 사용! -->
-								<!--본인 작성 or 관리자 버튼 보이게-->
-								<c:if
-									test="${board.emp_no eq Nickname || employee.role_code == '사장'}">
-									<button type="button" class="btn btn-outline-success"
-										id="fboardCom" style="display: none">완료</button>
-									<button type="button" class="btn btn-ouline-success"
-										id="fboardCan" style="display: none">취소</button>
-									<button type="button" class="btn btn-outline-success"
-										id="fboardUpd">수정</button>
-									<button type="button" class="btn btn-outline-success"
-										id="fboardDel"
-										onclick="deleteBoard(${board.board_seq},${board_code})">삭제</button>
-								</c:if>
-								<button type="button" class="btn btn-outline-primary"
-									onclick="location.href='/board/list?boardCode=${board_code}'">목록으로</button>
-							</div>
-						</div>
+											<div class="detailCen" contenteditable="false">${board.contents}
+											</div>
+											<div class="docuFiles" style="display: none;">
+												<label for="file">🔗 파일 선택</label> ` <span class="uploadFiles"></span>
 
-						<!-- 파일 리스트 모달 -->
-						<div class="files" id="fileModal">
-							<h4>첨부 파일</h4>
-							<div id="fileList">
-								<c:forEach var="file" items="${files}">
-									<div class="fileItem">
-										<a
-											href="/board/download?sysname=${file.sysname}&oriName=${file.oriname}">
-											${file.oriname} </a>
+											</div>
 
-										<!-- 
+											<div class="detailBott">
+												<!-- 수정 및 삭제버튼 jstl 사용! -->
+												<!--본인 작성 or 관리자 버튼 보이게-->
+												<c:if test="${board.emp_no eq Nickname || employee.role_code == '사장'}">
+													<button type="button" class="btn btn-outline-success" id="fboardCom"
+														style="display: none">완료</button>
+													<button type="button" class="btn btn-ouline-success" id="fboardCan"
+														style="display: none">취소</button>
+													<button type="button" class="btn btn-outline-success"
+														id="fboardUpd">수정</button>
+													<button type="button" class="btn btn-outline-success" id="fboardDel"
+														onclick="deleteBoard(${board.board_seq},${board_code})">삭제</button>
+												</c:if>
+												<button type="button" class="btn btn-outline-primary"
+													onclick="location.href='/board/list?boardCode=${board_code}'">목록으로</button>
+											</div>
+										</div>
+
+										<!-- 파일 리스트 모달 -->
+										<div class="files" id="fileModal">
+											<h4>첨부 파일</h4>
+											<div id="fileList">
+												<c:forEach var="file" items="${files}">
+													<div class="fileItem">
+														<a
+															href="/board/download?sysname=${file.sysname}&oriName=${file.oriname}">
+															${file.oriname} </a>
+
+														<!-- 
 														1. 화면상 파일 삭제하기
 														2. 수정 완료 버튼 누르면 파일 시퀀스 보내주기
 													 -->
 
-										<button class="fileDel" style="display: none;"
-											data-seq="${file.board_files_seq}">x</button>
-									</div>
-								</c:forEach>
-							</div>
-						</div>
-
-						<!-- reply 영역 -->
-						<div class="replyWrapper">
-							<span class="replyTxt"><i class='bx bx-message-alt-dots'></i>
-								댓글 달기</span>
-
-							<!-- 댓글 작성 폼 -->
-							<div class="reply">
-								<form action="/reply/registProc" method="post"
-									id="replyInsertForm">
-									<div class="replyCont">
-										<textarea class="writeRly" contenteditable="true"
-											name="contents" placeholder="입력할 수 있는 글자 수는 최대 900자입니다."></textarea>
-										<input type="hidden" name="board_seq"
-											value="${board.board_seq}">
-									</div>
-									<div class="replyBtn">
-										<button type="button" class="btn btn-outline-secondary"
-											id="replyInst">작성하기</button>
-									</div>
-								</form>
-							</div>
-							<!-- 댓글 수 -->
-							<div class="replyCount">
-								<span>댓글 수 : </span><span>${replyList.size()}</span>
-							</div>
-
-							<!-- 댓글 리스트 -->
-							<div class="replyLists">
-								<c:forEach var="reply" items="${replyList}">
-									<div class="replyList">
-										<div class="replyTxt">
-											<span class="myImgBox"> <img src="${employee.photo}"
-												alt="프로필 이미지" class="userImg">
-											</span> <span>${reply.emp_no}</span>
-											<div class="replyDate">
-												<fmt:formatDate value="${reply.write_date}"
-													pattern="yyyy-MM-dd HH:mm" />
+														<button class="fileDel" style="display: none;"
+															data-seq="${file.board_files_seq}">x</button>
+													</div>
+												</c:forEach>
 											</div>
 										</div>
-										<div class="reply">
-											<div class="replyPrint" contenteditable="false">
-												${reply.contents}</div>
 
-											<div class="replyBtn">
-												<c:if
-													test="${reply.emp_no eq Nickname || employee.role_code == '사장'}">
-													<!-- 수정 아이콘-->
-													<img src="/resources/img/pen-to-square-solid.svg"
-														class="updateReply">
+										<!-- reply 영역 -->
+										<div class="replyWrapper">
+											<span class="replyTxt"><i class='bx bx-message-alt-dots'></i>
+												댓글 달기</span>
 
-													<!-- 수정 완료 아이콘-->
-													<i class='bx bx-check updateRly' style="display: none;"
-														data-seq="${reply.reply_seq}"> </i>
-													<!-- 수정 취소 아이콘-->
-													<i class='bx bx-x canRly' style="display: none;"
-														data-seq="${reply.reply_seq}"></i>
+											<!-- 댓글 작성 폼 -->
+											<div class="reply">
+												<form action="/reply/registProc" method="post" id="replyInsertForm">
+													<div class="replyCont">
+														<textarea class="writeRly" contenteditable="true"
+															name="contents"
+															placeholder="입력할 수 있는 글자 수는 최대 900자입니다."></textarea>
+														<input type="hidden" name="board_seq"
+															value="${board.board_seq}">
+													</div>
+													<div class="replyBtn">
+														<button type="button" class="btn btn-outline-secondary"
+															id="replyInst">작성하기</button>
+													</div>
+												</form>
+											</div>
+											<!-- 댓글 수 -->
+											<div class="replyCount">
+												<span>댓글 수 : </span><span>${replyList.size()}</span>
+											</div>
 
-													<!-- 댓글 삭제 기능 -->
-													<!--삭제 버튼 이미지 -->
-													<img src="/resources/img/trash-solid.svg" alt="Delete"
-														style="cursor: pointer;"
-														onclick="submitDeleteForm(${reply.reply_seq});"
-														class="delRly">
-													<button style="display: none;" class="replyDelBtn"></button>
-												</c:if>
+											<!-- 댓글 리스트 -->
+											<div class="replyLists">
+												<c:forEach var="reply" items="${replyList}">
+													<div class="replyList">
+														<div class="replyTxt">
+															<span class="myImgBox"> <img src="${employee.photo}"
+																	alt="프로필 이미지" class="userImg">
+															</span> <span>${reply.emp_no}</span>
+															<div class="replyDate">
+																<fmt:formatDate value="${reply.write_date}"
+																	pattern="yyyy-MM-dd HH:mm" />
+															</div>
+														</div>
+														<div class="reply">
+															<div class="replyPrint" contenteditable="false">
+																${reply.contents}</div>
+
+															<div class="replyBtn">
+																<c:if
+																	test="${reply.emp_no eq Nickname || employee.role_code == '사장'}">
+																	<!-- 수정 아이콘-->
+																	<img src="/resources/img/pen-to-square-solid.svg"
+																		class="updateReply">
+
+																	<!-- 수정 완료 아이콘-->
+																	<i class='bx bx-check updateRly'
+																		style="display: none;"
+																		data-seq="${reply.reply_seq}"> </i>
+																	<!-- 수정 취소 아이콘-->
+																	<i class='bx bx-x canRly' style="display: none;"
+																		data-seq="${reply.reply_seq}"></i>
+
+																	<!-- 댓글 삭제 기능 -->
+																	<!--삭제 버튼 이미지 -->
+																	<img src="/resources/img/trash-solid.svg"
+																		alt="Delete" style="cursor: pointer;"
+																		onclick="submitDeleteForm(${reply.reply_seq});"
+																		class="delRly">
+																	<button style="display: none;"
+																		class="replyDelBtn"></button>
+																</c:if>
+															</div>
+														</div>
+													</div>
+												</c:forEach>
 											</div>
 										</div>
 									</div>
-								</c:forEach>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<!--신고하기 모달창-->
-				<div id="modal" class="dialog">
-					<div class="tb">
-						<div class="inner">
-							<div class=" top">
-								<div class="title">신고하기</div>
-								<div class="titleTxt">
-									이 글이 커뮤니티 가이드라인을 위반한다고 생각되시면 신고 사유를 작성해 주세요. <br> 접수된 신고는
-									검토 후 필요한 조치를 취하겠습니다.
 								</div>
-							</div>
-							<div class="ct">
-								<div class="reporter">
-									<div class="reportNick">신고자 닉네임</div>
-									<input class="reportInput" value="${Nickname}" readonly></input>
-								</div>
-								<div class="reportSort">
-									<div class="sort">신고 사유</div>
-									<div class="selectSort">
-										<form action="/report/insert" id="reportForm">
-											<select class="form-select form-select-sm"
-												aria-label="Small select example" name="target">
-												<option value="1" selected>욕설 및 비방</option>
-												<option value="2">스팸 및 광고</option>
-												<option value="3">음란물 및 부적절한 콘텐츠</option>
-											</select> <input type="hidden" name="board_seq"
-												value="${board.board_seq}">
 
-										</form>
+								<!--신고하기 모달창-->
+								<div id="modal" class="dialog">
+									<div class="tb">
+										<div class="inner">
+											<div class=" top">
+												<div class="title">신고하기</div>
+												<div class="titleTxt">
+													이 글이 커뮤니티 가이드라인을 위반한다고 생각되시면 신고 사유를 작성해 주세요. <br> 접수된 신고는
+													검토 후 필요한 조치를 취하겠습니다.
+												</div>
+											</div>
+											<div class="ct">
+												<div class="reporter">
+													<div class="reportNick">신고자 닉네임</div>
+													<input class="reportInput" value="${Nickname}" readonly></input>
+												</div>
+												<div class="reportSort">
+													<div class="sort">신고 사유</div>
+													<div class="selectSort">
+														<form action="/report/insert" id="reportForm">
+															<select class="form-select form-select-sm"
+																aria-label="Small select example" name="target">
+																<option value="1" selected>욕설 및 비방</option>
+																<option value="2">스팸 및 광고</option>
+																<option value="3">음란물 및 부적절한 콘텐츠</option>
+															</select> <input type="hidden" name="board_seq"
+																value="${board.board_seq}">
+
+														</form>
+													</div>
+												</div>
+											</div>
+											<div class="reportControls">
+												<a href="#" class="rClose">
+													<button type="button" class="btn btn-primary"
+														id="reportClose">닫기</button>
+												</a> <a href="#">
+													<button type="button" class="btn btn-danger"
+														id="reportInsert">신고하기</button>
+												</a>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
-							<div class="reportControls">
-								<a href="#" class="rClose">
-									<button type="button" class="btn btn-primary" id="reportClose">닫기</button>
-								</a> <a href="#">
-									<button type="button" class="btn btn-danger" id="reportInsert">신고하기</button>
-								</a>
-							</div>
-						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
 
 
 
 
 				<script>
-					$(document).ready(function () {
-						// 모든 li 태그 안의 a 태그에 클릭 이벤트 추가
-						$('li > a').on('click', function () {
-							// 클릭된 a 태그에 active 클래스 토글
-							$(this).toggleClass('active');
-						});
-					});
-
 					// JSP에서 계산된 파일의 길이를 JavaScript로 전달합니다.
 					let defaultFileLength = ${ filesSize };
 					var filesLength = ${ filesSize };
@@ -621,17 +615,7 @@
 							}
 						});
 
-						// 주소록 토글 이벤트 설정
-						const toggleItems = document.querySelectorAll('.toggleItem')
-						toggleItems.forEach(function (toggleItem) {
-							const toggleTit = toggleItem.querySelector('.toggleTit')
-							const subList = toggleItem.querySelector('.subList')
 
-							$(toggleTit).on('click', function () {
-								subList.classList.toggle('active')
-								toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
-							})
-						})
 					});
 					// 신고하기 제한
 					$('#reportInsert').on('click', function () {
@@ -743,6 +727,6 @@
 					});
 
 				</script>
-</body>
+			</body>
 
-</html>
+			</html>

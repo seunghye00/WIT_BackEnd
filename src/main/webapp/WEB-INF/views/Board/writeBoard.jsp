@@ -15,7 +15,7 @@
 			<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 			<link rel="stylesheet" href="/css/style.main.css">
 			<link rel="stylesheet" href="/css/wit.css">
-			<script src="/js/wit.js"></script>
+			<script defer src="/js/wit.js"></script>
 			<script src="/js/boards.js"></script>
 		</head>
 
@@ -116,28 +116,12 @@
 				</div>
 			</div>
 			<script>
-				$(document).ready(function () {
-					// 모든 li 태그 안의 a 태그에 클릭 이벤트 추가
-					$('li > a').on('click', function () {
-						// 클릭된 a 태그에 active 클래스 토글
-						$(this).toggleClass('active');
-					});
-				});
+
 
 				var filesLength = ${ filesSize };
 				let defaultFileLength = ${ filesSize };
 
-				// 주소록 토글 이벤트 설정
-				const toggleItems = document.querySelectorAll('.toggleItem')
-				toggleItems.forEach(function (toggleItem) {
-					const toggleTit = toggleItem.querySelector('.toggleTit')
-					const subList = toggleItem.querySelector('.subList')
 
-					$(toggleTit).on('click', function () {
-						subList.classList.toggle('active')
-						toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
-					})
-				})
 
 				// 신고현황 클릭 시
 				$(".reportList").on("click", function () {

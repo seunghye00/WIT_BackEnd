@@ -15,7 +15,7 @@
 				<link rel="stylesheet" href="/resources/css/wit.css">
 				<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 				<script src="/resources/js/boards.js"></script>
-				<script src="/resources/js/wit.js"></script>
+				<script defer src="/resources/js/wit.js"></script>
 			</head>
 
 			<body>
@@ -297,211 +297,189 @@
 									</div>
 								</div>
 							</div>
-
-
 					</div>
-				</div>
-				</div>
-				<div class="reporttemp" style="display: none;">
-					<div class="ctCont">
-						<div class="reportPer"></div>
-						<div class="reportRes"></div>
-						<div class="reportDate"></div>
+					<div class="reporttemp" style="display: none;">
+						<div class="ctCont">
+							<div class="reportPer"></div>
+							<div class="reportRes"></div>
+							<div class="reportDate"></div>
+						</div>
 					</div>
-				</div>
 
-				<script>
-					$(document).ready(function () {
-						// 모든 li 태그 안의 a 태그에 클릭 이벤트 추가
-						$('li > a').on('click', function () {
-							// 클릭된 a 태그에 active 클래스 토글
-							$(this).toggleClass('active');
-						});
-					});
+					<script>
 
-					// 처음에 서버에서 값을 보내줄 때 빈 문자열이 아니면 서버에서 보내준 값으로 설정
-					if (${ searchTarget != "" }) {
-						document.getElementById('searchTarget').value = "${ searchTarget }";
-					}
-
-					if (${ sortTarget != "" }) {
-						document.getElementById('sortTarget').value = "${ sortTarget }";
-					}
-
-					if (${ bookmark != "false" }) {
-						document.getElementById('bookmark').value = "${ bookmark }";
-					}
-
-					if (${ board_code != "1" }) {
-						document.getElementById('board_code').value = "${ board_code }";
-					}
-
-					if (${ report != "false" }) {
-						document.getElementById('report').value = "${ report }";
-					}
-
-					if (${ adminReport != "false" }) {
-						document.getElementById('adminReport').value = "${ adminReport }";
-					}
-
-
-					// 글작성 버튼 누르면 글 작성 페이지로 이동
-					document.getElementById('writeBtn').addEventListener('click',
-						function () {
-							window.location.href = '/board/write';
-						});
-					function toDetail(e) {
-						$.ajax({
-							url: "/board/views",
-							data: {
-								board_seq: $(e).data("seq")
-							}
-
-						}).done(function (response) {
-							window.location.href = "${pageContext.request.contextPath}/board/detail?boardCode=${board_code}&board_seq=" + $(e).data("seq")
-						})
-
-					}
-
-					// 신고현황 클릭 시
-					$(".reportList").on("click", function () {
-						window.location.href = "/board/list?adminReport=true";
-					});
-
-					// 신고 리스트 모달 열기 및 닫기
-					$('.thisRList').on('click', function () {
-						$.ajax({
-							url: "/board/reportList",
-							data: {
-								board_seq: $(this).data("seq")
-							}
-
-						}).done((resp) => {
-							var data = resp.reportList;
-							if (Array.isArray(data) && data.length > 0) {
-								let ctContainer = $(".ctContainer");
-								ctContainer.html(""); // 기존 내용을 지우기
-								data.forEach(function (contact) {
-									console.log(contact);
-									let clone = $(".reporttemp").find(".ctCont").clone(true);
-									clone.css({
-										display: "flex",
-										flex: 1
-									})
-									let per = clone.find(".reportPer");
-									let res = clone.find(".reportRes");
-									let date = clone.find(".reportDate");
-									per.html(contact.EMP_NO);
-									res.html(contact.REPORT_TYPE);
-									date.html(contact.REPORT_DATE);
-									ctContainer.append(clone);
-								});
-							} else {
-								$(".ctContainer").append('<div class="noData">데이터 없음</div>');
-							}
-						})
-						$('#modal').css('display', 'block')
-					})
-					$('.rClose').on('click', function () {
-						$('#modal').css('display', 'none')
-					})
-
-					// 검색 버튼 누르면 검색 옵션, 정렬 옵션, 검색 내용 값 넣어주기
-					$("#searchBtn").on("click", function () {
-						let hiddenInput = $(".hiddenInput");
-						hiddenInput.eq(0).val($("#searchTarget").val());
-						hiddenInput.eq(1).val($("#sortTarget").val());
-						hiddenInput.eq(2).val($("#searchTxt").val());
-
-						$("#searchForm").submit();
-					})
-
-					// 엔터키로 검색 가능하게 추가
-					$("#searchTxt").on("keypress", function (event) {
-						if (event.keyCode === 13) { // Enter 키의 keyCode는 13
-							$("#searchBtn").click();
+						// 처음에 서버에서 값을 보내줄 때 빈 문자열이 아니면 서버에서 보내준 값으로 설정
+						if (${ searchTarget != "" }) {
+							document.getElementById('searchTarget').value = "${ searchTarget }";
 						}
-					});
 
-					// 정렬 옵션이 바뀌면 정렬 옵션값 넣어주고, 
-					// 검색 옵션, 검색 내용 값은 맨 처음 서버에서 보내준 초기값으로 설정해준다!
-					// 왜냐하면, 검색 버튼을 누르기 전이기 때문에 변한 값을 넣어주면 안된다!
-					$("#sortTarget").on("change", function () {
-						let hiddenInput = $(".hiddenInput");
-						hiddenInput.eq(0).val("${ searchTarget }");
-						hiddenInput.eq(1).val($("#sortTarget").val());
-						hiddenInput.eq(2).val("${ searchTxt }");
+						if (${ sortTarget != "" }) {
+							document.getElementById('sortTarget').value = "${ sortTarget }";
+						}
 
-						$("#searchForm").submit();
-					})
+						if (${ bookmark != "false" }) {
+							document.getElementById('bookmark').value = "${ bookmark }";
+						}
 
+						if (${ board_code != "1" }) {
+							document.getElementById('board_code').value = "${ board_code }";
+						}
 
-					// 페이징
-					let pageNation = $(".pagination");
+						if (${ report != "false" }) {
+							document.getElementById('report').value = "${ report }";
+						}
 
-					let cpage = ${ cpage }
-					let record_total_count = ${ record_total_count }
-					let record_count_per_page = ${ record_count_per_page }
-					let navi_count_per_page = ${ navi_count_per_page }
-					let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
-
-					let startNavi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;
-					let endNavi = startNavi + navi_count_per_page - 1;
-
-					if (endNavi > pageTotalCount) {
-						endNavi = pageTotalCount;
-					}
-
-					let needPrev = true;
-					if (startNavi == 1) {
-						needPrev = false;
-					}
-					let needNext = true;
-					if (endNavi == pageTotalCount) {
-						needNext = false;
-					}
+						if (${ adminReport != "false" }) {
+							document.getElementById('adminReport').value = "${ adminReport }";
+						}
 
 
+						// 글작성 버튼 누르면 글 작성 페이지로 이동
+						document.getElementById('writeBtn').addEventListener('click',
+							function () {
+								window.location.href = '/board/write';
+							});
+						function toDetail(e) {
+							$.ajax({
+								url: "/board/views",
+								data: {
+									board_seq: $(e).data("seq")
+								}
 
-					if (needPrev)
-						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&adminReport=${adminReport}&cpage=" + (startNavi - 1) + "' class='prev " + (needPrev ? "active" : "disabled") + "'><i class='bx bx-chevron-left'></i></a>");
-
-					for (let i = startNavi; i <= endNavi; i++) {
-						let page = $("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&adminReport=${adminReport}&cpage=" + i + "'>" + i + "</a> ");
-						pageNation.append(page);
-						if (i == cpage) {
-							page.css({
-								backgroundColor: '#558BCF',
-								color: 'white',
-								'border-radius': '100%',
-								width: '40px',
-								'text-align': 'center'
+							}).done(function (response) {
+								window.location.href = "${pageContext.request.contextPath}/board/detail?boardCode=${board_code}&board_seq=" + $(e).data("seq")
 							})
+
 						}
-					}
-					if (needNext)
-						pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&adminReport=${adminReport}&cpage=" + (endNavi + 1) + "' class='next " + (needNext ? "active" : "disabled") + "' data-page='" + (endNavi + 1) + "'><i class='bx bx-chevron-right'></i></a>");
 
+						// 신고현황 클릭 시
+						$(".reportList").on("click", function () {
+							window.location.href = "/board/list?adminReport=true";
+						});
 
-					// 주소록 토글 이벤트 설정
-					const toggleItems = document.querySelectorAll('.toggleItem')
-					toggleItems.forEach(function (toggleItem) {
-						const toggleTit = toggleItem.querySelector('.toggleTit')
-						const subList = toggleItem.querySelector('.subList')
-						$(toggleTit).on('click', function () {
-							subList.classList.toggle('active')
-							toggleTit.classList.toggle('active') // 이미지 회전을 위해 클래스 추가
+						// 신고 리스트 모달 열기 및 닫기
+						$('.thisRList').on('click', function () {
+							$.ajax({
+								url: "/board/reportList",
+								data: {
+									board_seq: $(this).data("seq")
+								}
+
+							}).done((resp) => {
+								var data = resp.reportList;
+								if (Array.isArray(data) && data.length > 0) {
+									let ctContainer = $(".ctContainer");
+									ctContainer.html(""); // 기존 내용을 지우기
+									data.forEach(function (contact) {
+										console.log(contact);
+										let clone = $(".reporttemp").find(".ctCont").clone(true);
+										clone.css({
+											display: "flex",
+											flex: 1
+										})
+										let per = clone.find(".reportPer");
+										let res = clone.find(".reportRes");
+										let date = clone.find(".reportDate");
+										per.html(contact.EMP_NO);
+										res.html(contact.REPORT_TYPE);
+										date.html(contact.REPORT_DATE);
+										ctContainer.append(clone);
+									});
+								} else {
+									$(".ctContainer").append('<div class="noData">데이터 없음</div>');
+								}
+							})
+							$('#modal').css('display', 'block')
 						})
-					})
+						$('.rClose').on('click', function () {
+							$('#modal').css('display', 'none')
+						})
 
-					// 삭제 기능
-					function deleteBoard(boardSeq) {
-						if (confirm("정말로 삭제하시겠습니까?")) {
-							// 사용자에게 삭제 확인을 받았을 때만 삭제 요청
-							location.href = "/board/deleteReport?board_seq=" + boardSeq;
+						// 검색 버튼 누르면 검색 옵션, 정렬 옵션, 검색 내용 값 넣어주기
+						$("#searchBtn").on("click", function () {
+							let hiddenInput = $(".hiddenInput");
+							hiddenInput.eq(0).val($("#searchTarget").val());
+							hiddenInput.eq(1).val($("#sortTarget").val());
+							hiddenInput.eq(2).val($("#searchTxt").val());
+
+							$("#searchForm").submit();
+						})
+
+						// 엔터키로 검색 가능하게 추가
+						$("#searchTxt").on("keypress", function (event) {
+							if (event.keyCode === 13) { // Enter 키의 keyCode는 13
+								$("#searchBtn").click();
+							}
+						});
+
+						// 정렬 옵션이 바뀌면 정렬 옵션값 넣어주고, 
+						// 검색 옵션, 검색 내용 값은 맨 처음 서버에서 보내준 초기값으로 설정해준다!
+						// 왜냐하면, 검색 버튼을 누르기 전이기 때문에 변한 값을 넣어주면 안된다!
+						$("#sortTarget").on("change", function () {
+							let hiddenInput = $(".hiddenInput");
+							hiddenInput.eq(0).val("${ searchTarget }");
+							hiddenInput.eq(1).val($("#sortTarget").val());
+							hiddenInput.eq(2).val("${ searchTxt }");
+
+							$("#searchForm").submit();
+						})
+
+
+						// 페이징
+						let pageNation = $(".pagination");
+
+						let cpage = ${ cpage }
+						let record_total_count = ${ record_total_count }
+						let record_count_per_page = ${ record_count_per_page }
+						let navi_count_per_page = ${ navi_count_per_page }
+						let pageTotalCount = Math.ceil(record_total_count / record_count_per_page);
+
+						let startNavi = Math.floor((cpage - 1) / navi_count_per_page) * navi_count_per_page + 1;
+						let endNavi = startNavi + navi_count_per_page - 1;
+
+						if (endNavi > pageTotalCount) {
+							endNavi = pageTotalCount;
 						}
-					}
-				</script>
+
+						let needPrev = true;
+						if (startNavi == 1) {
+							needPrev = false;
+						}
+						let needNext = true;
+						if (endNavi == pageTotalCount) {
+							needNext = false;
+						}
+
+
+
+						if (needPrev)
+							pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&adminReport=${adminReport}&cpage=" + (startNavi - 1) + "' class='prev " + (needPrev ? "active" : "disabled") + "'><i class='bx bx-chevron-left'></i></a>");
+
+						for (let i = startNavi; i <= endNavi; i++) {
+							let page = $("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&adminReport=${adminReport}&cpage=" + i + "'>" + i + "</a> ");
+							pageNation.append(page);
+							if (i == cpage) {
+								page.css({
+									backgroundColor: '#558BCF',
+									color: 'white',
+									'border-radius': '100%',
+									width: '40px',
+									'text-align': 'center'
+								})
+							}
+						}
+						if (needNext)
+							pageNation.append("<a href='/board/list?searchTarget=${searchTarget}&searchTxt=${searchTxt}&sortTarget=${sortTarget}&boardCode=${board_code}&bookmark=${bookmark}&report=${report}&adminReport=${adminReport}&cpage=" + (endNavi + 1) + "' class='next " + (needNext ? "active" : "disabled") + "' data-page='" + (endNavi + 1) + "'><i class='bx bx-chevron-right'></i></a>");
+
+
+						// 삭제 기능
+						function deleteBoard(boardSeq) {
+							if (confirm("정말로 삭제하시겠습니까?")) {
+								// 사용자에게 삭제 확인을 받았을 때만 삭제 요청
+								location.href = "/board/deleteReport?board_seq=" + boardSeq;
+							}
+						}
+					</script>
 			</body>
 
 			</html>
