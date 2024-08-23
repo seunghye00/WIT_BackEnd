@@ -52,23 +52,23 @@
                     <div class="tableCont">
                         <div class="toolBar">
                             <ul>
-                                <li><a href="javascript:;" class="active" onclick="loadPage({chosung: '', category: currentCategory, cpage: 1})">전체</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㄱ', category: currentCategory, cpage: 1})">ㄱ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㄴ', category: currentCategory, cpage: 1})">ㄴ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㄷ', category: currentCategory, cpage: 1})">ㄷ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㄹ', category: currentCategory, cpage: 1})">ㄹ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㅁ', category: currentCategory, cpage: 1})">ㅁ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㅂ', category: currentCategory, cpage: 1})">ㅂ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㅅ', category: currentCategory, cpage: 1})">ㅅ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㅇ', category: currentCategory, cpage: 1})">ㅇ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㅈ', category: currentCategory, cpage: 1})">ㅈ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㅊ', category: currentCategory, cpage: 1})">ㅊ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㅋ', category: currentCategory, cpage: 1})">ㅋ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㅌ', category: currentCategory, cpage: 1})">ㅌ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㅍ', category: currentCategory, cpage: 1})">ㅍ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'ㅎ', category: currentCategory, cpage: 1})">ㅎ</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: 'a-z', category: currentCategory, cpage: 1})">a-z</a></li>
-                                <li><a href="javascript:;" onclick="loadPage({chosung: '0-9', category: currentCategory, cpage: 1})">0-9</a></li>
+                                <li><a href="javascript:;" class="active" onclick="loadGroupPage({chosung: '', category: currentCategory, cpage: 1})">전체</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㄱ', category: currentCategory, cpage: 1})">ㄱ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㄴ', category: currentCategory, cpage: 1})">ㄴ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㄷ', category: currentCategory, cpage: 1})">ㄷ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㄹ', category: currentCategory, cpage: 1})">ㄹ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㅁ', category: currentCategory, cpage: 1})">ㅁ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㅂ', category: currentCategory, cpage: 1})">ㅂ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㅅ', category: currentCategory, cpage: 1})">ㅅ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㅇ', category: currentCategory, cpage: 1})">ㅇ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㅈ', category: currentCategory, cpage: 1})">ㅈ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㅊ', category: currentCategory, cpage: 1})">ㅊ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㅋ', category: currentCategory, cpage: 1})">ㅋ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㅌ', category: currentCategory, cpage: 1})">ㅌ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㅍ', category: currentCategory, cpage: 1})">ㅍ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'ㅎ', category: currentCategory, cpage: 1})">ㅎ</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: 'a-z', category: currentCategory, cpage: 1})">a-z</a></li>
+                                <li><a href="javascript:;" onclick="loadGroupPage({chosung: '0-9', category: currentCategory, cpage: 1})">0-9</a></li>
                             </ul>
                         </div>
                         <div class="listBox">
@@ -239,7 +239,8 @@
                         cpage: page,
                         keyword: $('#searchInput').val(),
                         chosung: currentChosung,
-                        category: currentCategory
+                        category: currentCategory,
+                        dept_code: dept_code
                     };
                     loadGroupPage(params, url);
                 });
@@ -262,7 +263,7 @@
 	    currentChosung = chosung;
 	    $('.toolBar a').removeClass('active');
 	    $(this).addClass('active');
-	    loadGroupPage({ chosung: chosung, cpage: 1, category: currentCategory }, '/employee/groupAddressTool');
+	    loadGroupPage({ chosung: chosung, cpage: 1, dept_code: dept_code }, '/employee/groupAddressTool');
 	}
 	
 	function handleSearchFormSubmit(event) {
@@ -275,7 +276,14 @@
 	    currentChosung = '전체';
 	    
 	    // category_id 값을 함께 전달
-	    loadPage({ keyword: keyword, cpage: 1, dept_code: dept_code }, '/employee/search');
+	    loadGroupPage({ keyword: keyword, cpage: 1, dept_code: dept_code }, '/employee/search');
+	 	
+	    // 검색 필드와 관련된 요소들을 초기화
+	    $('#searchInput').val('');  // 검색어 입력 필드를 비움
+	    $('#searchCate').val('');   // hidden input 필드를 초기화
+	    
+	    // 검색 후 결과를 비우고 싶다면, 결과 표시 영역도 비움
+	    $('#searchResults').empty();  // 검색 결과를 표시하는 div 또는 영역을 비움 (id는 실제 사용되는 id로 대체)
 	}
 	
 	// 카테고리 

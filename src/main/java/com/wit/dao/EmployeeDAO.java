@@ -132,8 +132,8 @@ public class EmployeeDAO {
 	}
 
 	// 주소록 툴바 페이지네이션 총 카운트
-	public int totalCountPageSearch(String keyword) {
-		return mybatis.selectOne("employee.totalCountPageSearch", keyword);
+	public int totalCountPageSearch(Map<String, Object> params) {
+		return mybatis.selectOne("employee.totalCountPageSearch", params);
 	}
 
 	// 메신저 주소록 조히
