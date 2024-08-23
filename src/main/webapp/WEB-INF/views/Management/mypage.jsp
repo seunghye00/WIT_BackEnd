@@ -126,13 +126,6 @@
 		</div>
 	</div>
 	<script>
-		let btn = document.querySelector("#btn");
-		let sideBar = document.querySelector(".sideBar");
-
-		btn.onclick = function() {
-			sideBar.classList.toggle("active");
-		};
-
 		// 원래 닉네임을 저장
 		let originalNickname = "${employee.nickname}";
 
