@@ -325,10 +325,16 @@ public class EmployeeController {
 		if (cpage == null) {
 			cpage = "1";
 		}
+		
+        if (dept_code == null || dept_code.isEmpty() || "전체".equals(dept_code)) {
+        	dept_code = "전체";
+        }
 		int cpage_num = Integer.parseInt(cpage);
-		List<Map<String, Object>> list = service.selectByCon(keyword, cpage_num, dept_code);
-		int totPage = service.totalCountPageSearch(keyword);
 
+		List<Map<String, Object>> list = service.selectByCon(keyword, cpage_num, dept_code);
+		int totPage = service.totalCountPageSearch(keyword, dept_code);
+		
+		System.out.println(totPage);	
 		Map<String, Object> response = new HashMap<>();
 		response.put("totPage", totPage);
 		response.put("cpage", cpage_num);

@@ -38,8 +38,8 @@ public class AddressBookDAO {
 	}
 	
 	// 주소록 툴바 페이지네이션 총 카운트
-	public int totalCountPageSearch(String keyword) {
-		return mybatis.selectOne("addressbook.totalCountPageSearch", keyword);
+	public int totalCountPageSearch(Map<String, Object> params) {
+		return mybatis.selectOne("addressbook.totalCountPageSearch", params);
 	}
 	
 	// 주소록 등록

@@ -216,6 +216,8 @@
 	    var keyword = $('#searchInput').val();
 	    var column = $('select[name="column"]').val();
 	    loadPage({ keyword: keyword, column: column, cpage: 1 }, '/employee/manageSearch');
+	 	// 검색 필드와 선택된 옵션을 초기화
+	    $('#searchInput').val('');  // 검색어 입력 필드를 비움
 	}
 	
 	function handleRowClick(event, element) {

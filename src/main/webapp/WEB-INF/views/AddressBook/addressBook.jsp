@@ -658,6 +658,14 @@
 	    
 	    // category_id 값을 함께 전달
 	    loadPage({ keyword: keyword, cpage: 1, category_id: category_id }, '/addressbook/search');
+	    
+	    // 검색 필드와 관련된 요소들을 초기화
+	    $('#searchInput').val('');  // 검색어 입력 필드를 비움
+	    $('#searchCate').val('');   // hidden input 필드를 초기화
+	    
+	    // 검색 후 결과를 비우고 싶다면, 결과 표시 영역도 비움
+	    $('#searchResults').empty();  // 검색 결과를 표시하는 div 또는 영역을 비움 (id는 실제 사용되는 id로 대체)
+	
 	}
 	
 	// 주소록 등록 / 수정 유효성 검사
