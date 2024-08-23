@@ -43,6 +43,7 @@ $('#startApprBtn').on('click', () => {
     	
     }).fail((jqXHR, textStatus, errorThrown) => {
     	console.error('AJAX 요청 실패:', textStatus, errorThrown);
+    	location.href = "/error";
 	});
 
     // 해당 모달창에서 다음 버튼 클릭 시
@@ -92,7 +93,10 @@ $('#startApprBtn').on('click', () => {
             	dept = noMultiClick(this, 'apprChoiModal')
             	getEmployeeList(dept);
         	});
-    	});
+    	}).fail((jqXHR, textStatus, errorThrown) => {
+    		console.error('AJAX 요청 실패:', textStatus, errorThrown);
+    		location.href = "/error";
+		});
 
 		// 결재선 추가 버튼 클릭
 		$('#addAppr').on('click',()=>{
@@ -308,6 +312,9 @@ function getEmployeeList(dept) {
     		li.append(input, label);
     		ul.append(li);
     	}
+	}).fail((jqXHR, textStatus, errorThrown) => {
+    	console.error('AJAX 요청 실패:', textStatus, errorThrown);
+    	location.href = "/error";
 	});
 }
 
@@ -713,7 +720,10 @@ function sendFormData(choiUrl) {
      	} else {
      		location.href = "/eApproval/readDocu?docuSeq=" + resp;
      	}
-     });	
+     }).fail((jqXHR, textStatus, errorThrown) => {
+    	console.error('AJAX 요청 실패:', textStatus, errorThrown);
+    	location.href = "/error";
+	 });	
 }
 
 // 휴가 신청서에서 휴가 시작일 변화를 감지

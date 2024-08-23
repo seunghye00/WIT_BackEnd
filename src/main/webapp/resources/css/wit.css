@@ -2809,7 +2809,7 @@
 
 /* 메인 근태 스타일 */
 #start_button {
-	padding: 10px 20px;
+	padding: 15px;
 	border-radius: 10px;
 	background-color: #558BCF;
 	color: white;
@@ -2817,13 +2817,13 @@
 	display: flex;
 	width: 100%;
 	gap: 5px;
-	font-size: 26px;
+	font-size: 22px;
 	align-items: center;
 	justify-content: center;
 }
 
 #end_button {
-	padding: 10px 20px;
+	padding: 15px;
 	border-radius: 10px;
 	background-color: #d24450;
 	color: white;
@@ -2831,7 +2831,7 @@
 	display: flex;
 	width: 100%;
 	gap: 5px;
-	font-size: 26px;
+	font-size: 22px;
 	align-items: center;
 	justify-content: center;
 }
@@ -3007,13 +3007,15 @@
 }
 
 .dept-role {
-	font-weight: bold;
+	/* font-weight: bold; */
 	font-size: 30px;
+	color: #82b5f5;
 }
 
 .username {
 	font-weight: bold;
 	font-size: 30px;
+	color: #2d578d;
 }
 
 .start {}
@@ -5278,4 +5280,19 @@ button:nth-child(4) img {
 	color: #dc3545;
 	font-size: 16px;
 	padding: 5px 9px;
+	/* font-weight: 600; */
+}
+
+/* 관리자 메인 페이지 */
+.adminCont .left .leftTop {
+	gap: 10px;
+}
+
+.adminCont .left .leftTop .eApprBox {
+	border-radius: 10px;
+	background-color: #558BCF;
+	width: 100%;
+}
+.adminCont .left .leftTop .eApprBox .docuNum {
+	color: #dc3545;
 }

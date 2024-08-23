@@ -676,12 +676,16 @@ public class EApprovalController {
 
 	// 임시 저장 상태인 해당 문서를 삭제하기 위한 메서드
 	@RequestMapping("delDocu")
-	public String delDocu(int docuSeq) throws Exception {
+	public String delDocu(int docuSeq, @RequestParam(value = "goTo", required = false) String goTo) throws Exception {
 
 		// 세션에서 접속자 정보를 꺼내 변수에 저장
 		String empNo = (String) session.getAttribute("loginID");
 		// 관리자 계정으로 접속 시 일반 사용자 경로 접속 불가
 		if (eServ.getRoleCode(empNo).equals("R1")) {
+			return "redirect:/error";
+		}
+		if (goTo != null && goTo.equals("error")) {
+			serv.delDocu(docuSeq);
 			return "redirect:/error";
 		}
 		serv.delDocu(docuSeq);
@@ -908,7 +912,6 @@ public class EApprovalController {
 
 		// 파일을 저장할 서버 경로 설정 및 파일 업로드
 		String realPath = session.getServletContext().getRealPath("eApproval/upload");
-		System.out.println(realPath);
 
 		fServ.uploadDocuFile(docuSeq, realPath, file);
 

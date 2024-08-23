@@ -376,7 +376,7 @@ body {
 
 .leftTop {
    border-radius: 20px;
-   flex: 1 1 0%;
+   flex: 2 2 0%;
    background-color: rgb(255, 255, 255);
    border: 3px solid #558BCF;
    padding: 20px;
@@ -396,7 +396,7 @@ body {
     flex-direction: column;
     justify-content: center;
     color: #555;
-    gap: 40px;
+    gap: 15px;
 }
 
 .center {

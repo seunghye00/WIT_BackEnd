@@ -127,7 +127,8 @@ $('#addMeetingReserv').on('click', function () {
 				return;
 			} 
 		}).fail((jqXHR, textStatus, errorThrown) => {
-    		console.error('AJAX request failed:', textStatus, errorThrown);  // 오류 로그 출력
+    		console.error('AJAX 요청 실패:', textStatus, errorThrown);
+    		location.href = "/error";
 		});
 	}
 });
