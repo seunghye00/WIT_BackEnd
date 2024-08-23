@@ -8,10 +8,10 @@
 <title>메신저</title>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<link rel="stylesheet" href="/resources/css/style.main.css">
-<link rel="stylesheet" href="/resources/css/wit.css">
-<script defer src="/resources/js/message.js"></script>
-<script defer src="/resources/js/wit.js"></script>
+<link rel="stylesheet" href="/css/style.main.css">
+<link rel="stylesheet" href="/css/wit.css">
+<script defer src="/js/message.js"></script>
+<script defer src="/js/wit.js"></script>
 </head>
 <body>
 <!-- 공통영역 -->
