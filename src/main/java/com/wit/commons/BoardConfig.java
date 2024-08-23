@@ -12,7 +12,6 @@ public class BoardConfig {
 	public static int notice = 2;
 
 	// realPath
-	public static String realPath = "C:" + File.separator + "Users" + File.separator + "Administrator" + File.separator
-			+ "Desktop" + File.separator + "UploadServerFile"+File.separator;
+	public static String realPath = "C:" + File.separator + "UploadServerFile" + File.separator;
 	//public static String realPath= "C:" + File.separator +"Wit"+File.separator + "UploadServerFile"+File.separator;
 }

@@ -123,7 +123,7 @@ public class AddressBookController {
     @RequestMapping("addContact")
     public String addContact(String name, String email, String phone, String address, Integer category_id, String company, String position, MultipartFile photo, RedirectAttributes redirectAttributes) {
         String emp_no = (String) session.getAttribute("loginID");
-        String realPath = "C:/Users/Administrator/Desktop/UploadServerFile/"; 
+        String realPath = "C:/UploadServerFile/"; 
         String fileName = null;
 
         if (photo != null && !photo.isEmpty()) {
@@ -158,7 +158,7 @@ public class AddressBookController {
     @RequestMapping("updateContact")
     public String updateContact(int addr_book_seq, String name, String email, String phone, String address, Integer category_id, String company, String position, MultipartFile photo, RedirectAttributes redirectAttributes) {
         String emp_no = (String) session.getAttribute("loginID");
-        String realPath = "C:/Users/Administrator/Desktop/UploadServerFile/"; 
+        String realPath = "C:/UploadServerFile/"; 
         String fileName = null;
 
         if (photo != null && !photo.isEmpty()) {
