@@ -116,7 +116,6 @@ public class AnnualLeaveController {
 
 		// 부서별 연간 휴가 내역 조회 (페이징 및 검색 적용)
 		List<Map<String, Object>> leaveRequests = service.selectAnnualLeaveRequestsByDept(deptTitle, searchTxt, cpage);
-		System.out.println(leaveRequests);
 
 		model.addAttribute("deptTitle", deptTitle);
 		model.addAttribute("searchTxt", searchTxt);
