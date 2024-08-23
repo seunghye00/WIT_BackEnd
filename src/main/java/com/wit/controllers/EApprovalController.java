@@ -911,7 +911,7 @@ public class EApprovalController {
 	public Map<String, String> upload(int docuSeq, MultipartFile[] file) throws Exception {
 
 		// 파일을 저장할 서버 경로 설정 및 파일 업로드
-		String realPath = "C:/Users/Administrator/Desktop/UploadServerFile/eApproval/upload";
+		String realPath = "C:/UploadServerFile/eApproval/upload";
 		fServ.uploadDocuFile(docuSeq, realPath, file);
 
 		Map<String, String> result = new HashMap<>();
@@ -928,7 +928,7 @@ public class EApprovalController {
 		String sysname = dto.getSysname();
 		String oriname = dto.getOriname();
 
-		String realPath = "C:/Users/Administrator/Desktop/UploadServerFile/eApproval/upload";
+		String realPath = "C:/UploadServerFile/eApproval/upload";
 		File target = new File(realPath + "/" + sysname);
 
 		oriname = new String(oriname.getBytes(), "ISO-8859-1");
