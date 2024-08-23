@@ -121,11 +121,12 @@ public class EmployeeDAO {
 	}
 
 	// 주소록 검색
-	public List<Map<String, Object>> selectByCon(String keyword, int startNum, int endNum) {
+	public List<Map<String, Object>> selectByCon(String keyword, int startNum, int endNum, String dept_code) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("keyword", keyword);
 		params.put("startNum", startNum);
 		params.put("endNum", endNum);
+		params.put("dept_code", dept_code);
 		List<Map<String, Object>> list = mybatis.selectList("employee.selectByCon", params);
 		return list;
 	}

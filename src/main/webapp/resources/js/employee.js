@@ -154,7 +154,7 @@ $('#loginForm').on('submit', function (e) {
                 .css('color', 'green')
                 .html('&#x2714;')
         } else {
-            resultLabel.text('영어 소문자,숫자,특수문자 포함 최소 10자리').css('color', 'red')
+            resultLabel.text('알파벳 소문자, 숫자, 특수문자 포함 최소 10자리').css('color', 'red')
             pwCheck
                 .removeClass('success')
                 .addClass('show error')

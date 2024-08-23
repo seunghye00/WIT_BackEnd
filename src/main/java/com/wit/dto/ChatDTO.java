@@ -10,13 +10,10 @@ public class ChatDTO {
 	private String message;
 	private Timestamp send_time;
 	private int read_count;
-
-	public ChatDTO() {
-		super();
-	}
+	private String read_receivers;
 
 	public ChatDTO(int chat_seq, int chat_room_seq, String name, String sender, String message, Timestamp send_time,
-			int read_count) {
+			int read_count, String read_receivers) {
 		super();
 		this.chat_seq = chat_seq;
 		this.chat_room_seq = chat_room_seq;
@@ -25,6 +22,11 @@ public class ChatDTO {
 		this.message = message;
 		this.send_time = send_time;
 		this.read_count = read_count;
+		this.read_receivers = read_receivers;
+	}
+
+	public ChatDTO() {
+		super();
 	}
 
 	public int getChat_seq() {
@@ -83,4 +85,11 @@ public class ChatDTO {
 		this.read_count = read_count;
 	}
 
+	public String getRead_receivers() {
+		return read_receivers;
+	}
+
+	public void setRead_receivers(String read_receivers) {
+		this.read_receivers = read_receivers;
+	}
 }

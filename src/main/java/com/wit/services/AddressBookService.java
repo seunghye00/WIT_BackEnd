@@ -51,9 +51,9 @@ public class AddressBookService {
 	
 	// 주소록 검색값 레코드 조회
 	@Transactional
-	public List<Map<String, Object>> selectByCon(String keyword, int cpage) {
+	public List<Map<String, Object>> selectByCon(String keyword, int cpage, String emp_no, int category_id) {
 		return dao.selectByCon(keyword, cpage * BoardConfig.recordCountPerPage - (BoardConfig.recordCountPerPage - 1),
-				cpage * BoardConfig.recordCountPerPage);
+				cpage * BoardConfig.recordCountPerPage, emp_no, category_id);
 	}
 	
 	// 콘텐츠 등록

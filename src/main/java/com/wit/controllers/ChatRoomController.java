@@ -54,14 +54,14 @@ public class ChatRoomController {
     @ResponseBody
     public List<Map<String, Object>> getMyChatRooms() {
         String empNo = (String) session.getAttribute("loginID");
-        return serv.getChatRoomsByUserId(empNo);
+        return chatServ.getChatRoomsByUserId(empNo);
     }
 
     // 채팅방 상세 조회
     @RequestMapping("details")
     @ResponseBody
-    public List<Map<String, Object>> getDetailChatRooms(int chat_room_seq) {
-        String empNo = (String) session.getAttribute("loginID");
+    public Map<String, Object> getDetailChatRooms(int chat_room_seq) {
+    	String empNo = (String) session.getAttribute("loginID");
         return serv.getDetailChatRooms(chat_room_seq, empNo);
     }
 
@@ -83,24 +83,21 @@ public class ChatRoomController {
         return result;
     }
     
-    @RequestMapping("updateReadCount")
+    @RequestMapping("/checkReadCount")
     @ResponseBody
-    public Map<String, Object> updateReadCount(
-        @RequestParam("chatRoomSeq") String chatRoomSeq, 
-        @RequestParam("messageSeq") String messageSeq) {
-    	String userName = (String) session.getAttribute("loginID");
-        Map<String, Object> result = new HashMap<>();
+    public Map<String, Object> checkReadCount(String chatRoomSeq, String chatSeq) {
+        Map<String, Object> response = new HashMap<>();
         try {
-            int updatedReadCount = chatServ.decreaseReadCount(chatRoomSeq, Integer.parseInt(messageSeq), userName);
-            result.put("status", "success");
-            result.put("updated_read_count", updatedReadCount);
+            int updatedReadCount = chatServ.getUpdatedReadCount(chatRoomSeq, Integer.parseInt(chatSeq));
+            response.put("status", "success");
+            response.put("updated_read_count", updatedReadCount);
         } catch (Exception e) {
+            response.put("status", "error");
             e.printStackTrace();
-            result.put("status", "error");
         }
-        return result;
+        return response;
     }
-    
+
     // 예외를 담당하는 메서드 생성
     @ExceptionHandler(Exception.class)
     public String exceptionHandler(Exception e) {
