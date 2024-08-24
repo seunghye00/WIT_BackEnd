@@ -534,4 +534,15 @@
 	<select id="getEmpNoByDocuSeq" resultType="String">
 		select emp_no from documents where document_seq = #{docuSeq}
 	</select>
+	
+	<select id="getDocuStatus" resultType="map">
+		select 
+    		dl.name,
+    		coalesce(sum(case when d.status = '완료' then 1 else 0 end), 0) as approved_count,
+    		coalesce(sum(case when d.status = '반려' then 1 else 0 end), 0) as return_count
+		from 
+    		document_list dl
+		left outer join documents d on dl.docu_code = d.docu_code
+		group by dl.name
+	</select>
 </mapper>

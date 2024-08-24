@@ -125,7 +125,7 @@ public class EApprovalController {
 			}
 		} else {
 			// 현재 날짜를 객체로 생성 후 문자열로 변환 후 model 객체에 저장
-			LocalDate today = LocalDate.now(); 
+			LocalDate today = LocalDate.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			String formattedDate = today.format(formatter);
 			model.addAttribute("today", formattedDate);
@@ -359,8 +359,7 @@ public class EApprovalController {
 	// 임시 저장 페이지에서 다시 임시 저장을 하거나 결재 요청을 했을 시 처리하기 위한 메서드
 	@Transactional
 	@RequestMapping(value = { "reSaveDocu", "update" })
-	public String reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO,
-			HttpServletRequest request) throws Exception {
+	public String reSaveDocu(DocuDTO dto, WorkPropDTO wDTO, LatenessDTO lnDTO, LeaveRequestDTO lrDTO, HttpServletRequest request) throws Exception {
 
 		String empNo = (String) session.getAttribute("loginID");
 		// 관리자 계정으로 접속 시 일반 사용자 경로 접속 불가
@@ -377,6 +376,10 @@ public class EApprovalController {
 			type = "saved";
 		} else {
 			dto.setStatus("진행중");
+			// 결재 라인에 대한 정보를 순서에 따라서 전달
+			serv.updateApprLine(dto.getDocument_seq(), 1, "결재 대기");
+			serv.updateApprLine(dto.getDocument_seq(), 2, "결재 예정");
+			serv.updateApprLine(dto.getDocument_seq(), 3, "결재 예정");
 		}
 		// 문서 정보 업데이트 ( 작성일, 제목, 상태 )
 		serv.updateDocu(dto);
@@ -404,7 +407,7 @@ public class EApprovalController {
 		default:
 			return "redirect:/error";
 		}
-		if(type == null) {
+		if (type == null) {
 			return "redirect:/eApproval/readDocu?docuSeq=" + dto.getDocument_seq();
 		}
 		return "redirect:/eApproval/readDocu?docuSeq=" + dto.getDocument_seq() + "&type=" + type;
@@ -949,6 +952,12 @@ public class EApprovalController {
 			dos.flush();
 		}
 	}
+	
+    @ResponseBody
+    @RequestMapping("/getDocuStatus")
+    public List<Map<String, Object>> getDocuStatus() {
+        return serv.getDocuStatus();
+    }
 
 	@ExceptionHandler(Exception.class)
 	public String exceptionHandler(Exception e) {
