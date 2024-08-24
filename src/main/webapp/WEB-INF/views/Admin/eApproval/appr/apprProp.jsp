@@ -14,7 +14,7 @@
 	rel='stylesheet'>
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
-<script defer src="/js/hsh.js"></script>
+<script defer src="/js/eApprAdmin.js"></script>
 <script defer src="/js/wit.js"></script>
 </head>
 <body>

@@ -15,7 +15,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
-<script defer src="/js/wit.js"></script>
+<script defer src="/js/eApprAdmin.js"></script>
 <script defer src="/js/hsh.js"></script>
 </head>
 

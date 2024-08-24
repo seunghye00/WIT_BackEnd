@@ -495,8 +495,7 @@ body {
 }
 
 /* 버튼 효과 */
-.sideAbout .sideBtn:hover, .sideAbout .sideBtn:focus, .sideAbout .sideBtn:active
-	{
+.sideAbout .sideBtn:hover {
 	cursor: pointer;
 	background-color: #558BCF;
 	color: #fff;
@@ -561,13 +560,10 @@ body {
 	font-size: 24px;
 	color: #ccc;
 	font-weight: bold;
-}
-
-.pagination a.prev, .pagination a.next {
 	background-color: unset;
 	border: none;
-	font-size: 24px;
 	padding: 5px 10px;
+	display: flex;
 }
 
 .pagination a.prev.active, .pagination a.next.active {

@@ -1096,24 +1096,19 @@ function goToSearchList(keyword){
 $(window).click(function(event) {
 	if ($(event.target).is($('#commModalBack')[0])) {
 		location.reload();
-		return;
 	}
 	if ($(event.target).is($('#apprModalBack')[0])) {
 		location.reload();
-		return;
 	}
 	if ($(event.target).is($('#returnModalBack')[0])) {
 		location.reload();
-		return;
 	}
 	if ($(event.target).is($('#docuModalBack')[0])) {
 		$('#startApprBtn').removeClass('disabled');
 		location.reload();
-		return;
 	}
 	if ($(event.target).is($('#apprChoiModalBack')[0])) {
 		$('#startApprBtn').removeClass('disabled');
 		location.reload();
-		return;
 	}
 });
