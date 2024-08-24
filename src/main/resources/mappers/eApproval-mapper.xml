@@ -119,7 +119,13 @@
 	
 	<!-- 휴가 신청서 문서의 정보를 업데이트하기 위한 쿼리문 -->
 	<update id="updateLeaveByDocuSeq">
-		update leave_requests set leave_type = #{leave_type}, start_date = #{start_date}, end_date = #{end_date},
+		update leave_requests set leave_type = #{leave_type}, 
+		<if test="start_date != null">
+			start_date = #{start_date},
+		</if>
+		<if test="end_date != null">
+			end_date = #{end_date},
+		</if>
 		start_day_checked = #{start_day_checked}, start_day_am_checked = #{start_day_am_checked},
 		start_day_pm_checked = #{start_day_pm_checked}, end_day_checked = #{end_day_checked},
 		end_day_am_checked = #{end_day_am_checked}, end_day_pm_checked = #{end_day_pm_checked},

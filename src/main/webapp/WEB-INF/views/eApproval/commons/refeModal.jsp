@@ -14,7 +14,7 @@
 					<c:when test="${empty docuInfo}">
 						<c:forEach items="${refeList}" var="i">
 							<c:set var="refeInfo" value="${fn:split(i, ' ')}" />
-							<li>${refeInfo[1]}${refeInfo[2]}</li>
+							<li>${refeInfo[1]}&nbsp;${refeInfo[2]}</li>
 							<input type="hidden" name="refeList" value="${refeInfo[0]}">
 						</c:forEach>
 					</c:when>

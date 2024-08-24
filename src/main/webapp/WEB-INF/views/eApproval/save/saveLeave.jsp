@@ -111,24 +111,25 @@
 							</div>
 							<div class="docuWrite docuLeave">
 								<form id="docuContForm" action="/eApproval/update" method="post">
-									<input type="hidden" name="docu_code" value="M2">
+									<input type="hidden" name="docu_code" id="docuCode" value="M2">
 									<input type="hidden" name="document_seq" value="${docuInfo.document_seq}" id="docuSeq">
 									<table>
 										<thead>
 											<tr>
 												<th>휴가 종류</th>
 												<td><select name="leave_type" id="leaveType">
-														<option value="1">연차</option>
-														<option value="2">지각</option>
-														<option value="3">조퇴</option>
-														<option value="4">경조사</option>
-														<option value="5">병가</option>
+														<option value="연차">연차</option>
+														<option value="지각">지각</option>
+														<option value="조퇴">조퇴</option>
+														<option value="경조사">경조사</option>
+														<option value="병가">병가</option>
+														<option value="공가">공가</option>
 													</select>
 												<th>기간 및 일시</th>
 												<td colspan="2"><input type="date" id="startLeaveDay"
-													name="startDate" value="${docuDetail.start_date}" readonly>
+													name="startDate" min="${today}" value="${docuDetail.start_date}">
 													<span>~</span> <input type="date" id="endLeaveDay"
-													name="endDate" value="${docuDetail.end_date}" readonly></td>
+													name="endDate" min="${today}" value="${docuDetail.end_date}"></td>
 												<th>긴급</th>
 												<td>
 													<div>
@@ -143,34 +144,50 @@
 												<td colspan="2">
                                                 	<span>
                                                 		<input type="checkbox" id="startDay" <c:if test="${docuDetail.start_day_checked eq 'Y'}">checked</c:if>>
+                                                		<input type="hidden" id="startDayChecked" name="start_day_checked" value="Y"> 
                                                 		<label for="startDay">시작일</label>
 													</span> ( 
 													<span>
 														<input type="checkbox" id="startDayAM" <c:if test="${docuDetail.start_day_am_checked eq 'Y'}">checked</c:if>>
+														<input type="hidden" id="startDayAMChecked" name="start_day_am_checked" value="Y">
 														<label for="startDayAM">오전</label>
 													</span> 
 													<span>
 														<input type="checkbox" id="startDayPM" <c:if test="${docuDetail.start_day_pm_checked eq 'Y'}">checked</c:if>>
+														<input type="hidden" id="startDayPMChecked" name="start_day_pm_checked" value="Y"> 
 														<label for="startDayPM">오후</label>
 													</span> ) <br> 
 													<span> 
 														<input type="checkbox" id="endDay" <c:if test="${docuDetail.end_day_checked eq 'Y'}">checked</c:if>>
+														<input type="hidden" id="endDayChecked" name="end_day_checked" value="Y"> 
 														<label for="endDay">종료일</label>
 													</span> ( 
 													<span>
 														<input type="checkbox" id="endDayAM" <c:if test="${docuDetail.end_day_am_checked eq 'Y'}">checked</c:if>>
+														<input type="hidden" id="endDayAMChecked" name="end_day_am_checked" value="Y">
 														<label for="endDayAM">오전</label>
 													</span> 
 													<span>
 														<input type="checkbox" id="endDayPM" <c:if test="${docuDetail.end_day_pm_checked eq 'Y'}">checked</c:if>>
+														<input type="hidden" id="endDayPMChecked" name="end_day_pm_checked" value="Y"> 
 														<label for="endDayPM">오후</label>
 													</span> )
 												</td>
+												<th>연차 일수</th>
+												<td colspan="3">
+													<span> 잔여 연차 :&nbsp;&nbsp; <input
+													class="readOnly" type="text" value="${remaingLeaves}"
+													id="remainingLeaves" readonly>
+													</span> <span> 신청 연차 :&nbsp;&nbsp; <input type="text"
+													id="applyLeaves" class="readOnly" name="request_leave_days"
+													value="${docuDetail.request_leave_days}" readonly>
+													</span>
+											</td>
 											</tr>
 											<tr>
 												<th>제목</th>
 												<td colspan="6"><input type="text" name="title"
-													id="writeDocuTitle" oninput='handleOnInput(this, 33)'
+													id="writeDocuTitle" value="${docuInfo.title}" oninput='handleOnInput(this, 33)'
 													data-label="문서 제목"></td>
 											</tr>
 										</thead>
@@ -178,7 +195,7 @@
 											<tr>
 												<th>휴가 사유</th>
 												<td colspan="6"><textarea name="reason" id="reason" oninput='handleOnInput(this, 1333)'
-														data-label="문서 내용"></textarea></td>
+														data-label="문서 내용">${docuDetail.reason}</textarea></td>
 											</tr>
 										</tbody>
 									</table>
