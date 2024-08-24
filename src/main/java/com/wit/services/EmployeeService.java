@@ -223,6 +223,11 @@ public class EmployeeService {
 	public List<EmployeeDTO> getListByDept(String deptCode) {
 		return dao.getListByDept(deptCode);
 	}
+	
+	// 부서별 사원 수 조회
+	public List<Map<String, Integer>> getEmpNumByDept() {
+		return dao.getEmpNumByDept();
+	}
 
 	// 해당 사번을 가진 사원의 이름과 부서명 조회
 	public EmployeeInfoDTO getNameNDept(String empNo) {
@@ -312,5 +317,9 @@ public class EmployeeService {
 		params.put("photo", photoUrl);
 
 		dao.updateManage(params);
+	}
+
+	public List<Map<String, Object>> getEmpNumByRole() {
+		return dao.getEmpNumByRole();
 	}
 }
