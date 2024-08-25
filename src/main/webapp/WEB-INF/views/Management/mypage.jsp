@@ -34,11 +34,6 @@
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
 
 			<div class="contents">
-				<div class="sideAbout">
-					<div class="sideTxt">
-						<h2 class="sideTit">마이페이지</h2>
-					</div>
-				</div>
 				<div class="sideContents mypage">
 					<h2>마이페이지</h2>
 					<div class="form-container">
