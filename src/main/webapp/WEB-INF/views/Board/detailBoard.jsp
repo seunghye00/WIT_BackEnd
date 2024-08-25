@@ -330,6 +330,7 @@
 					if (${ report != "false" }) {
 						document.getElementById('report').value = "${ report }";
 					}
+
 					if (${ adminReport != "false" }) {
 						document.getElementById('adminReport').value = "${ adminReport }";
 					}
@@ -346,12 +347,12 @@
 							data: {
 								boardSeq: ${ board.board_seq },
 							replySeq: replySeq
-                        }
+                        	}
 
-                    }).done(function (response) {
+                    	}).done(function (response) {
 								location.reload()
 							})
-               	}
+               		}
 
 					// 북마크 기능
 					// 북마크 눌렀을 때 북마크한 아이콘 새로고침 해도유지됨

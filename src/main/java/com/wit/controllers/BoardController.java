@@ -145,8 +145,8 @@ public class BoardController {
 	@RequestMapping("detail")
 	public String detail(int board_seq, Model model, @RequestParam(defaultValue = "1") int boardCode,
 			@RequestParam(defaultValue = "false") String bookmark,
-			@RequestParam(defaultValue = "false") String report,
-			@RequestParam(defaultValue = "false") String adminReport) throws Exception {
+			@RequestParam(defaultValue = "false") String report
+			) throws Exception {
 
 		BoardDTO board = bserv.detailBoard(board_seq);
 		List<BoardFilesDTO> files = fserv.detailFile(board_seq);
@@ -169,7 +169,7 @@ public class BoardController {
 		model.addAttribute("board_code", boardCode);
 		model.addAttribute("bookmark", bookmark);
 		model.addAttribute("report", report);
-		model.addAttribute("adminReport", adminReport);
+		
 		
 		// 여기에다 북마크로 쿼리문을 보내서 사원번호랑, 보드 시퀀스 맞는 항목이 있으면 true,false 해서
 		// model 에 추가
@@ -232,7 +232,7 @@ public class BoardController {
 		// 파일 수정
 		String realPath = BoardConfig.realPath+"board";
 		bserv.update(dto, files, realPath);
-
+		// 수정 후 해당 게시판으로 리다이렉트
 		return "redirect:/board/detail?board_seq=" + dto.getBoard_seq();
 	}
 	@RequestMapping("/uploadImg")
