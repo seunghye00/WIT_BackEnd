@@ -491,7 +491,8 @@
             dataType: 'json',
             success: function(response) {
                 loadCategories();
-            },
+                window.location.reload();
+           	},
             error: function(xhr, status, error) {
                 console.error('Failed to add category:', status, error);
             }
@@ -506,6 +507,7 @@
             dataType: 'json',
             success: function(response) {
                 loadCategories();
+                window.location.reload();
             },
             error: function(xhr, status, error) {
                 console.error('Failed to edit category:', status, error);
@@ -521,6 +523,7 @@
             dataType: 'json',
             success: function(response) {
                 loadCategories();
+                window.location.reload();
             },
             error: function(xhr, status, error) {
                 console.error('Failed to delete category:', status, error);
