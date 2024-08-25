@@ -78,12 +78,13 @@
 
 					<div class="dept_tabs">
 						<c:forEach var="dept" items="${departments}">
-							<div
+							<a href="?deptTitle=${dept.dept_title}"
 								class="dept_tab ${dept.dept_title == deptTitle ? 'active' : ''}">
-								<a href="?deptTitle=${dept.dept_title}">${dept.dept_title}</a>
-							</div>
+								<div>${dept.dept_title}</div>
+							</a>
 						</c:forEach>
 					</div>
+
 					<div class="attendance_table">
 						<div class="header_row">
 							<span>이름</span> <span>월</span> <span>화</span> <span>수</span> <span>목</span>
