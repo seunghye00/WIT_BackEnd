@@ -35,7 +35,7 @@ links.on('click', function() {
 // 채팅방 
 // 로그인 시 WebSocket 연결 설정
 function initializeWebSocket() {
-    webSocket = new WebSocket('ws://192.168.1.107/chat');
+    webSocket = new WebSocket('ws://15.165.69.26/chat');
 
     webSocket.onopen = function (event) {
         console.log("WebSocket is open now.");

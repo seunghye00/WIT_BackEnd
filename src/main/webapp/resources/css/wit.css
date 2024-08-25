@@ -1731,7 +1731,7 @@
 
 .chatFooter {
 	padding: 10px;
-	display: flex;
+	display: none;
 	align-items: center;
 	background-color: white;
 	z-index: 1001;
