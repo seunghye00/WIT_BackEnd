@@ -339,7 +339,7 @@ $('.goToDoList').on('click', () => {
 $('.goBack').on('click', () => {
 	// 이전 페이지의 url을 변수에 저장
 	const prevUrl = document.referrer;
-	if(prevUrl.includes('writeProc')){
+	if(prevUrl.includes('writeProc') || prevUrl.includes('saved')){
 		location.href = '/eApproval/privateList?type=write&cPage=1';
 	} else {
 		const urlObj = new URL(prevUrl);
@@ -486,7 +486,6 @@ $('.leaveUpdate').on('click', () => {
 	if($('#emerCheck').is(':checked')){
 		$('#emerChecked').val('Y');
 	}
-	
 	$('#docuContForm').submit();
 });
 
@@ -524,6 +523,26 @@ $('.reSaveDocu').on('click', () => {
 		// 문서의 긴급 여부 체크
 		if($('#emerCheck').is(':checked')){
 			$('#emerChecked').val('Y');
+		}
+		if($('#docuCode').val() == 'M2'){
+			if(!$('#startDay').is(':checked')){
+				$('#startDayChecked').val('N');
+			}		
+			if(!$('#startDayAM').is(':checked')){
+				$('#startDayAMChecked').val('N');
+			}
+			if(!$('#startDayPM').is(':checked')){
+				$('#startDayPMChecked').val('N');
+			}
+			if(!$('#endDay').is(':checked')){
+				$('#endDayChecked').val('N');
+			}
+			if(!$('#endDayAM').is(':checked')){
+				$('#endDayAMChecked').val('N');
+			}
+			if(!$('#endDayPM').is(':checked')){
+				$('#endDayPMChecked').val('N');
+			}
 		}
 		$('#docuContForm').attr('action', '/eApproval/reSaveDocu');
 		$('#docuContForm').submit();
@@ -695,9 +714,27 @@ function sendFormData(choiUrl) {
 		$('#emerChecked').val('Y');
 	}
 	
-	// 휴가 신청서 문서일 경우 신청 연차 일수 문자열을 숫자로 변환
+	// 휴가 신청서 문서일 경우 신청 연차 일수 문자열을 숫자로 변환 & 체크 여부 검사
 	if(choiUrl.includes('Leave')){
     	$('#applyLeaves').val(parseFloat($('#applyLeaves').val()));
+    	if(!$('#startDay').is(':checked')){
+			$('#startDayChecked').val('N');
+		}
+		if(!$('#startDayAM').is(':checked')){
+			$('#startDayAMChecked').val('N');
+		}
+		if(!$('#startDayPM').is(':checked')){
+			$('#startDayPMChecked').val('N');
+		}
+		if(!$('#endDay').is(':checked')){
+			$('#endDayChecked').val('N');
+		}
+		if(!$('#endDayAM').is(':checked')){
+			$('#endDayAMChecked').val('N');
+		}
+		if(!$('#endDayPM').is(':checked')){
+			$('#endDayPMChecked').val('N');
+		}
 	} 
 	
  	// 폼 데이터를 직렬화 후 변수에 저장
@@ -1058,25 +1095,25 @@ function goToSearchList(keyword){
 // 모달 외부 클릭 시 닫기
 $(window).click(function(event) {
 	if ($(event.target).is($('#commModalBack')[0])) {
-		$('#commModalBack').hide();
+		location.reload();
 		return;
 	}
 	if ($(event.target).is($('#apprModalBack')[0])) {
-		$('#apprModalBack').hide();
+		location.reload();
 		return;
 	}
 	if ($(event.target).is($('#returnModalBack')[0])) {
-		$('#returnModalBack').hide();
+		location.reload();
 		return;
 	}
 	if ($(event.target).is($('#docuModalBack')[0])) {
-		$('#docuModalBack').hide();
 		$('#startApprBtn').removeClass('disabled');
+		location.reload();
 		return;
 	}
 	if ($(event.target).is($('#apprChoiModalBack')[0])) {
-		$('#apprChoiModalBack').hide();
 		$('#startApprBtn').removeClass('disabled');
+		location.reload();
 		return;
 	}
 });

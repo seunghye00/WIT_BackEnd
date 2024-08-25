@@ -331,4 +331,8 @@ public class EApprovalDAO {
 	public String getEmpNoByDocuSeq(int docuSeq) {
 		return mybatis.selectOne("eApproval.getEmpNoByDocuSeq", docuSeq);
 	}
+
+	public List<Map<String, Object>> getDocuStatus() {
+		return mybatis.selectList("eApproval.getDocuStatus");
+	}
 }

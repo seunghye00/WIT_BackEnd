@@ -146,14 +146,16 @@
 									<!-- 전사 일정 -->
 									<c:forEach var="cl" items="${clist}">
 					            		<li>
-					                		<input type="checkbox" id="calendar_${cl.calendar_seq}" name="calendar_${cl.calendar_seq}">
+					                		<input type="checkbox" id="calendar_${cl.calendar_seq}" name="calendar_${cl.calendar_seq}"
+					                		<c:if test="${cl.default_yn == 'Y'}">checked</c:if>>
 					                		<label for="calendar_${cl.calendar_seq}">${cl.calendar_name}</label>
 					            		</li>
 					        		</c:forEach>
 					        		<!-- 임원 일정 -->
 					        		<c:forEach var="el" items="${elist}">
 					            		<li>
-					                		<input type="checkbox" id="calendar_${el.calendar_seq}" name="calendar_${el.calendar_seq}">
+					                		<input type="checkbox" id="calendar_${el.calendar_seq}" name="calendar_${el.calendar_seq}"
+					                		<c:if test="${el.default_yn == 'Y'}">checked</c:if>>
 					                		<label for="calendar_${el.calendar_seq}">${el.calendar_name}</label>
 					            		</li>
 					        		</c:forEach>
@@ -195,10 +197,10 @@
                                 <!-- role_code가 'R2'인 경우 -->
                                 <c:if test="${employee.role_code eq 'R2'}">
                                     <c:forEach items="${plist}" var="dto">
-                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}(개인)</option>
                                     </c:forEach>
                                     <c:forEach items="${dlist}" var="dto">
-                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}(부서)</option>
                                     </c:forEach>
                                 </c:if>
                                 <!-- role_code가 'R1'인 경우 -->
@@ -286,10 +288,10 @@
 									<!-- role_code가 'R2'인 경우 -->
 									<c:if test="${employee.role_code eq 'R2'}">
 										<c:forEach items="${plist}" var="dto">
-											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											<option value="${dto.calendar_seq}">${dto.calendar_name}(개인)</option>
 										</c:forEach>
 										<c:forEach items="${dlist}" var="dto">
-											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											<option value="${dto.calendar_seq}">${dto.calendar_name}(부서)</option>
 										</c:forEach>
 									</c:if>
 									<!-- role_code가 'R2'가 아닌 경우 -->
@@ -978,9 +980,7 @@
         	            }
         	        }).fail((jqXHR, textStatus, errorThrown) => {
         	            console.error('AJAX 요청 실패:', textStatus, errorThrown);
-        	        });
-                 
-                    
+        	        });                 
                 }
             });
             

@@ -128,9 +128,7 @@ public class EmployeeController {
 		System.out.println(empNo);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("noticeList", noticeList);
-		
 
-		
 		// 직원 정보 가져오기
 		EmployeeDTO employee = service.employeeInfo(empNo);
 
@@ -159,6 +157,18 @@ public class EmployeeController {
 			return "redirect:/";
 		}
 	}
+	
+    @ResponseBody
+    @RequestMapping("/getEmpNumByDept")
+    public List<Map<String, Integer>> getEmpNumByDept() {
+        return service.getEmpNumByDept();
+    }
+	
+	@ResponseBody
+    @RequestMapping("/getEmpNumByRole")
+    public List<Map<String, Object>> getEmpNumByRole() {
+		return service.getEmpNumByRole();
+    }
 
 	// 추가 정보 업데이트
 	@RequestMapping("/update_info")

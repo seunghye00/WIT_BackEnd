@@ -5307,14 +5307,15 @@ button:nth-child(4) img {
 	width: 100%;
 	flex: 3;
 	display: flex;
-    flex-direction: column;
-    padding-left: 20px;
+	flex-direction: column;
+	padding: 0 20px;
 }
 
 .adminCont .left .leftTop .eApprBox a {
 	flex: 1;
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 .adminCont .left .leftTop .eApprBox .eApprRows {
@@ -5322,7 +5323,42 @@ button:nth-child(4) img {
     font-size: 18px;
 }
 
-.adminCont .left .leftTop .eApprBox .eApprRows .docuNum {
+.adminCont .left .leftTop .eApprBox .docuNum {
 	color: #dc3545;
     padding: 0 8px;
+}
+
+.adminCont .left .leftBottom #date {
+	font-size: 26px;
+}
+
+.adminCont .left .leftBottom #clock {
+	font-size: 50px;
+}
+
+.adminCont .right {
+	flex: 5 1 0%;
+    display: flex;
+    border-radius: 20px;
+    background-color: #558BCF;
+    padding: 20px;
+}
+
+.adminCont .right .contBox {
+	flex: 1;
+	border-radius: 20px;
+	background-color: #ffffff52;
+	display: flex;
+	padding: 20px;
+}
+
+.adminCont .right .contBox #doughNutChart {
+    display: block;
+    box-sizing: border-box;
+    height: 650px !important;
+    width: 650px !important;
+}
+
+.adminCont .right .contBox .chartBox {
+	flex: 1;
 }

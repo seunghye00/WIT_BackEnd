@@ -1,6 +1,7 @@
 package com.wit.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -235,5 +236,9 @@ public class EApprovalService {
 	// 관리자가 조회하는 문서 양식 별 데이터의 총 갯수를 얻기 위한 메서드
 	public int getCountSearchDocuList(String docuCode, String status, String keyword) {
 		return dao.getCountSearchDocuList(docuCode, status, keyword);
+	}
+
+	public List<Map<String, Object>> getDocuStatus() {
+		return dao.getDocuStatus();
 	}
 }
