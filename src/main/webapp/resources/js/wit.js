@@ -79,12 +79,12 @@ function initializeWebSocket() {
 					    console.log("markMessageAsRead called for chatSeq:", data.chat_seq);
 					    markMessageAsRead(data.chat_room_seq, data.chat_seq);
 					}
-	            } else {
 	            }
 	        }
 	        
 	        if (data.type == "alarm") {
 	        	showNotificationModal(data);
+	            loadChatList();
 	        }
 
 	    } catch (error) {
@@ -147,6 +147,7 @@ function showNotificationModal(data) {
 		            modal.classList.remove("show");
 		        }
 		    };
+
         } else {
              modal.style.display = "none";
         }
