@@ -679,7 +679,7 @@ function updateReadCountOnClient(chatRoomSeq, chatSeq, updatedReadCount) {
 // 메시지의 읽음 상태를 서버에 확인하고, 필요시 업데이트하는 함수
 function checkAndUpdateReadCount(chatRoomSeq, chatSeq) {
     $.ajax({
-        url: '/chatroom/checkRseadCount',
+        url: '/chatroom/checkReadCount',
         method: 'POST',
         data: {
             chatRoomSeq: chatRoomSeq,
