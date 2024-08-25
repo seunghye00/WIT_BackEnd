@@ -197,10 +197,10 @@
                                 <!-- role_code가 'R2'인 경우 -->
                                 <c:if test="${employee.role_code eq 'R2'}">
                                     <c:forEach items="${plist}" var="dto">
-                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}(개인)</option>
                                     </c:forEach>
                                     <c:forEach items="${dlist}" var="dto">
-                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}(부서)</option>
                                     </c:forEach>
                                 </c:if>
                                 <!-- role_code가 'R1'인 경우 -->
@@ -288,10 +288,10 @@
 									<!-- role_code가 'R2'인 경우 -->
 									<c:if test="${employee.role_code eq 'R2'}">
 										<c:forEach items="${plist}" var="dto">
-											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											<option value="${dto.calendar_seq}">${dto.calendar_name}(개인)</option>
 										</c:forEach>
 										<c:forEach items="${dlist}" var="dto">
-											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											<option value="${dto.calendar_seq}">${dto.calendar_name}(부서)</option>
 										</c:forEach>
 									</c:if>
 									<!-- role_code가 'R2'가 아닌 경우 -->
