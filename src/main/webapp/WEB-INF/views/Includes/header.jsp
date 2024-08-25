@@ -17,7 +17,7 @@
         </a>
     </span> 
     <span class="logOut">
-        <a href="/employee/logout">
+        <a href="/employee/logout" onclick="return confirmLogout();">
             <i class='bx bx-log-in'></i>
         </a>
     </span>
@@ -42,6 +42,10 @@
   </div>
 </div>
 <script>
+
+function confirmLogout() {
+    return confirm("로그아웃 하시겠습니까?");
+}
 
 $(document).ready(function() {
     $.ajax({
