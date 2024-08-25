@@ -154,6 +154,7 @@
 	                    <div class="formGroup">
 	                        <label for="group">그룹</label> 
 	                        <select id="group" name="category_id" >
+		                        <option value="">전체</option>
                                 <c:forEach var="category" items="${categoryList}">
 			                        <option value="${category.CATEGORY_ID}">${category.CATEGORY_NAME}</option>
 			                    </c:forEach>
@@ -215,6 +216,7 @@
 	                    <div class="formGroup">
 	                        <label for="editGroup">그룹</label> 
 	                        <select id="editGroup" name="category_id" >
+		                        <option value="">전체</option>
 	                            <c:forEach var="category" items="${categoryList}">
 			                        <option value="${category.CATEGORY_ID}">${category.CATEGORY_NAME}</option>
 			                    </c:forEach>
@@ -389,7 +391,8 @@
                         cpage: page,
                         keyword: $('#searchInput').val(),
                         chosung: currentChosung,
-                        category: currentCategory
+                        category: currentCategory,
+                        category_id: $('#searchCate').val()
                     };
                     loadPage(params, url);
                 });
@@ -661,7 +664,6 @@
 	    
 	    // 검색 필드와 관련된 요소들을 초기화
 	    $('#searchInput').val('');  // 검색어 입력 필드를 비움
-	    $('#searchCate').val('');   // hidden input 필드를 초기화
 	    
 	    // 검색 후 결과를 비우고 싶다면, 결과 표시 영역도 비움
 	    $('#searchResults').empty();  // 검색 결과를 표시하는 div 또는 영역을 비움 (id는 실제 사용되는 id로 대체)
