@@ -162,7 +162,7 @@
 														onclick="deleteBoard(${board.board_seq},${board_code})">삭제</button>
 												</c:if>
 												<button type="button" class="btn btn-outline-primary"
-													onclick="location.href='/board/list?boardCode=${board_code}'">목록으로</button>
+													onclick="location.href='/board/list?boardCode=${board_code}&bookmark=${bookmark}&report=${report}&adminReport=${adminReport}'">목록으로</button>
 											</div>
 										</div>
 
@@ -175,11 +175,10 @@
 														<a
 															href="/board/download?sysname=${file.sysname}&oriName=${file.oriname}">
 															${file.oriname} </a>
-
 														<!-- 
 														1. 화면상 파일 삭제하기
 														2. 수정 완료 버튼 누르면 파일 시퀀스 보내주기
-													 -->
+														-->
 
 														<button class="fileDel" style="display: none;"
 															data-seq="${file.board_files_seq}">x</button>
@@ -202,6 +201,10 @@
 															placeholder="입력할 수 있는 글자 수는 최대 900자입니다."></textarea>
 														<input type="hidden" name="board_seq"
 															value="${board.board_seq}">
+
+														<input type="hidden" name="boardCode" id="board_code" value="1">
+														<input type="hidden" name="bookmark" id="bookmark">
+														<input type="hidden" name="report" id="report" value="false">
 													</div>
 													<div class="replyBtn">
 														<button type="button" class="btn btn-outline-secondary"
@@ -316,18 +319,43 @@
 
 
 				<script>
+					if (${ bookmark != "false" }) {
+						document.getElementById('bookmark').value = "${ bookmark }";
+					}
+
+					if (${ board_code != "1" }) {
+						document.getElementById('board_code').value = "${ board_code }";
+					}
+
+					if (${ report != "false" }) {
+						document.getElementById('report').value = "${ report }";
+					}
+					if (${ adminReport != "false" }) {
+						document.getElementById('adminReport').value = "${ adminReport }";
+					}
+
 					// JSP에서 계산된 파일의 길이를 JavaScript로 전달합니다.
 					let defaultFileLength = ${ filesSize };
 					var filesLength = ${ filesSize };
 					console.log(filesLength);
+
 					// 삭제 이미지 클릭시 form 제출
 					function submitDeleteForm(replySeq) {
-						location.href = "/reply/delete?boardSeq=${board.board_seq}&replySeq=" + replySeq;
-					}
+						$.ajax({
+							url: "/reply/delete",
+							data: {
+								boardSeq: ${ board.board_seq },
+							replySeq: replySeq
+                        }
+
+                    }).done(function (response) {
+								location.reload()
+							})
+               	}
 
 					// 북마크 기능
 					// 북마크 눌렀을 때 북마크한 아이콘 새로고침 해도유지됨
-					if (${ bookmark }) { $('#starIcon').attr('class', 'bx bxs-star') }
+					if (${ bookmarkCheck }) { $('#starIcon').attr('class', 'bx bxs-star') }
 
 					// 삭제 기능
 					function deleteBoard(boardSeq, boardCode) {
@@ -526,8 +554,9 @@
 							cancel.hide();
 
 							cancel.parent().parent().find(".replyPrint").attr("contenteditable", false);
-							location.href = "/board/detail?board_seq=${board.board_seq}";
+							location.reload()
 						})
+
 
 						// 댓글 수정 완료 버튼 클릭 시
 						$(".updateRly").on("click", function (e) {

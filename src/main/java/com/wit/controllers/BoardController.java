@@ -143,7 +143,10 @@ public class BoardController {
 
 	// 게시물 상세 조회
 	@RequestMapping("detail")
-	public String detail(int board_seq, Model model, @RequestParam(defaultValue = "1") int boardCode) throws Exception {
+	public String detail(int board_seq, Model model, @RequestParam(defaultValue = "1") int boardCode,
+			@RequestParam(defaultValue = "false") String bookmark,
+			@RequestParam(defaultValue = "false") String report,
+			@RequestParam(defaultValue = "false") String adminReport) throws Exception {
 
 		BoardDTO board = bserv.detailBoard(board_seq);
 		List<BoardFilesDTO> files = fserv.detailFile(board_seq);
@@ -164,9 +167,13 @@ public class BoardController {
 		model.addAttribute("Nickname", Nickname);
 		model.addAttribute("employee", employee);
 		model.addAttribute("board_code", boardCode);
+		model.addAttribute("bookmark", bookmark);
+		model.addAttribute("report", report);
+		model.addAttribute("adminReport", adminReport);
+		
 		// 여기에다 북마크로 쿼리문을 보내서 사원번호랑, 보드 시퀀스 맞는 항목이 있으면 true,false 해서
 		// model 에 추가
-		model.addAttribute("bookmark", bmserv.isBookmarked(board_seq, empNo));
+		model.addAttribute("bookmarkCheck", bmserv.isBookmarked(board_seq, empNo));
 
 		// 댓글 리스트 model에 추가
 		model.addAttribute("replyList", replyList);

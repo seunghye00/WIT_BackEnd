@@ -4,9 +4,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wit.dto.ReplyDTO;
@@ -24,12 +26,14 @@ public class ReplyController {
 	
 	// 댓글 등록
 	@RequestMapping("registProc")
-	public String input(ReplyDTO dto) throws Exception{
+	public String input(ReplyDTO dto, @RequestParam(defaultValue = "1") int boardCode,
+			@RequestParam(defaultValue = "false") String bookmark,
+			@RequestParam(defaultValue = "false") String report) throws Exception{
 		String writer = (String) session.getAttribute("loginID");
 		System.out.println(writer);
 		dto.setEmp_no(writer);
 		rs.input(dto);
-		return "redirect:/board/detail?board_seq="+dto.getBoard_seq();
+		return "redirect:/board/detail?board_seq="+dto.getBoard_seq()+"&boardCode="+boardCode+"&bookmark="+bookmark+"&report="+report;
 	}
 	
 	// 댓글 삭제

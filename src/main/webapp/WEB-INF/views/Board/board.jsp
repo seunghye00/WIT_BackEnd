@@ -7,15 +7,17 @@
 			<head>
 				<meta charset="UTF-8">
 				<title>자유게시판</title>
+				<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 				<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 					integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
 					crossorigin="anonymous" referrerpolicy="no-referrer" />
 				<link rel="stylesheet" href="/resources/css/style.main.css">
 				<link rel="stylesheet" href="/resources/css/wit.css">
-				<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-				<script src="/resources/js/boards.js"></script>
+
 				<script defer src="/resources/js/wit.js"></script>
+				<script src="/resources/js/boards.js"></script>
+
 			</head>
 
 			<body>
@@ -347,7 +349,7 @@
 								}
 
 							}).done(function (response) {
-								window.location.href = "${pageContext.request.contextPath}/board/detail?boardCode=${board_code}&board_seq=" + $(e).data("seq")
+								window.location.href = "${pageContext.request.contextPath}/board/detail?boardCode=${board_code}&bookmark=${bookmark}&report=${report}&adminReport=${adminReport}&board_seq=" + $(e).data("seq")
 							})
 
 						}
