@@ -44,9 +44,12 @@
                 </div>
                 <div class="sideContents chatContainer">
                     <div class="chatHeader">
-                        <div class="title">채팅방 제목</div>
+                        <div class="title">채팅을 시작하세요</div>
                     </div>
                     <div class="chatBody" id="chatBody">
+                    	<div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                    		<img src="/img/WIT_logo1.png" alt="me" style="border: 10px #fff solid; border-radius: 100%; opacity: 0.5;">
+                    	</div>
                         <!-- 웹소켓 실시간 통신 및 Ajax 데이터를 불러와 여기에 추가할 예정 -->
                     </div>
                     <div class="emojiContainer" id="emojiContainer">

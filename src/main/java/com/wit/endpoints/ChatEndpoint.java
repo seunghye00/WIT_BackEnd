@@ -175,19 +175,13 @@ public class ChatEndpoint {
                 	if (client.isOpen()) {
                         // 자신에게는 알림 플래그 없이 메시지 전송
                         if (session.equals(client)) {
+                            // 자신에게는 알림 플래그 없이 메시지 전송
                             client.getBasicRemote().sendText(data.toString());
                             // 읽지 않은 메시지 수를 업데이트하여 전송
-                            int unreadCount = cServ.getUnreadMessages(chatRoomSeq, sessionUserMap.get(client));
-                            broadcastUnreadCountUpdate(chatRoomSeq, unreadCount, sessionUserMap.get(client));
-                        } else {
-                            // 다른 사용자에게는 알림 플래그 추가
-                            data.addProperty("isNotification", true);
-                            client.getBasicRemote().sendText(data.toString());
-                            
-                            // 읽지 않은 메시지 수를 업데이트하여 전송
-                            int unreadCount = cServ.getUnreadMessages(chatRoomSeq, sessionUserMap.get(client));
-                            broadcastUnreadCountUpdate(chatRoomSeq, unreadCount, sessionUserMap.get(client));
                         }
+                        int unreadCount = cServ.getUnreadMessages(chatRoomSeq, sessionUserMap.get(client));
+                        broadcastUnreadCountUpdate(chatRoomSeq, unreadCount, sessionUserMap.get(client));
+                        broadcastAlarm(chatRoomSeq, userName,  sessionUserMap.get(client));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -273,6 +267,33 @@ public class ChatEndpoint {
         data.addProperty("type", "unreadCountUpdate");
         data.addProperty("chatRoomSeq", chatRoomSeq);
         data.addProperty("unreadCount", unreadCount);
+        data.addProperty("empNo", empNo); 
+
+        synchronized (sessions) {
+            for (Session client : sessions) {
+                if (client.isOpen()) {
+                    try {
+                        client.getBasicRemote().sendText(data.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.err.println("Error: client is not open. Session ID: " + client.getId());
+                }
+            }
+        }
+    }
+    
+    private void broadcastAlarm(String chatRoomSeq, String sender, String empNo) {
+        if (chatRoomSeq == null) {
+            System.err.println("Error: chatRoomSeq is null");
+            return;
+        }
+
+        JsonObject data = new JsonObject();
+        data.addProperty("type", "alarm");
+        data.addProperty("chatRoomSeq", chatRoomSeq);
+        data.addProperty("sender", sender);
         data.addProperty("empNo", empNo); 
 
         synchronized (sessions) {
