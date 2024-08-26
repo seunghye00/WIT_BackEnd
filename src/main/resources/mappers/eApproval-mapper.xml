@@ -208,7 +208,7 @@
 			select
 				d.document_seq document_seq, write_date, name, emer_yn, title, d.emp_no emp_no,
 				a.emp_no last_appr,
-				row_number() over (order by write_date desc, emer_yn desc) as rn 
+				row_number() over (order by	emer_yn desc, write_date desc) as rn 
 			from
 				documents d
 			join
