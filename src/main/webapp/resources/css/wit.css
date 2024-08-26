@@ -5308,9 +5308,9 @@ span.return {
 	gap: 10px;
 }
 
-.adminCont .left .leftTop .main_profile {
+/* .adminCont .left .leftTop .main_profile {
 	flex: 5;
-}
+} */
 
 .adminCont .left .leftTop .dept-role, .adminCont .left .leftTop .username
 	{
