@@ -10,7 +10,6 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
-<script defer src="/js/mky.js"></script>
 </head>
 <body>
 <div class="container">
@@ -123,6 +122,13 @@
     </div>
 </body>
 <script>
+	let btn = $('#btn');
+	let sideBar = $('.sideBar');
+	
+	btn.on('click', function() {
+		sideBar.toggleClass('active');
+	});
+
 	//수정 버튼 클릭 시
 	$('#editBtn').click(function() {
 	    // 모든 입력 필드를 활성화

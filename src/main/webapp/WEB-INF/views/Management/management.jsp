@@ -10,7 +10,6 @@
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 <link rel="stylesheet" href="/css/style.main.css">
 <link rel="stylesheet" href="/css/wit.css">
-<script defer src="/js/mky.js"></script>
 </head>
 <body>
 <div class="container">

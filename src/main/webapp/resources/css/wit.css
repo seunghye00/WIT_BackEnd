@@ -1752,7 +1752,7 @@
 
 .chatFooter {
 	padding: 10px;
-	display: flex;
+	display: none;
 	align-items: center;
 	background-color: white;
 	z-index: 1001;
@@ -2566,11 +2566,13 @@
 	vertical-align: middle;
 	margin-left: -20px;
 	margin-top: 14px;
+	position: absolute;
+	right: 15px;
+	width: fit-content;
 }
 
 .form-container {
-	/* padding: 5%; */
-	margin-left: 10%;
+	margin-left: 7%;
 }
 
 .form-group {
@@ -2579,6 +2581,7 @@
 	align-items: flex-start;
 	padding: auto;
 	position: relative;
+	justify-content: space-between;
 }
 
 .form-group span,
@@ -2608,6 +2611,7 @@
 	flex-direction: column;
 	gap: 30px;
 	position: relative;
+	/* width: fit-content; */
 }
 
 .form-group-photo {
@@ -2616,8 +2620,8 @@
 }
 
 .form-group-photo img {
-	width: 100px;
-	height: 100px;
+	width: 125px;
+	height: 125px;
 	border: 1px solid #ccc;
 	border-radius: 10px;
 }
@@ -2625,21 +2629,22 @@
 .form-row {
 	display: flex;
 	justify-content: space-between;
+	gap: 30px;
 }
 
 .form-row .form-group {
 	flex: 1;
 	position: relative;
+	width: 50%;
 }
 
 .form-actions {
 	display: flex;
 	justify-content: flex-end;
-	margin-right: 12%;
-	gap: 10px;
 	position: fixed;
-	bottom: 85px;
-	right: -18px;
+	bottom: 60px;
+	right: 60px;
+	gap: 5px;
 }
 
 .form-actions button {
@@ -2649,6 +2654,8 @@
 	color: white;
 	font-size: 15px;
 	border: 1px solid #ccc;
+	/* position: relative; */
+	/* left: 35px; */
 }
 
 .form-container input[type="text"],
@@ -2656,14 +2663,10 @@
 	width: 60%;
 }
 
-.form-container .hidden {
-	display: none;
-}
-
 .edit-nickname-button {
 	position: absolute;
-	top: -65px;
-	right: 150px;
+	top: 85px;
+	right: 0%;
 	padding: 10px 10px;
 	border-radius: 10px;
 	background-color: #9733c5;
@@ -2672,12 +2675,17 @@
 	border: 1px solid #ccc;
 }
 
+.edit-nickname-button:hover {
+	background-color: #9609cd;
+}
+
 .form-container .show {
 	display: inline;
 }
 
 .form-container .hidden {
 	display: none;
+	gap: 10px;
 }
 
 .form-container .success {
@@ -2694,6 +2702,10 @@
 
 .cancel button {
 	background-color: #c51221;
+}
+
+.cancel button:hover {
+	background-color: #e90619;
 }
 
 /* PW 찾기*/
@@ -4212,10 +4224,43 @@ button:nth-child(4) img {
 	overflow: visible;
 }
 
+.scrollableContent {
+    max-height: 170px; /* 원하는 최대 높이 */
+    overflow-y: auto;  /* 스크롤 기능 활성화 */
+    overflow-x: hidden; /* 가로 스크롤 숨기기 (필요에 따라) */
+    position: relative;
+    width: 96%;
+}
+
+/* 스크롤바 스타일링 */
+.scrollableContent::-webkit-scrollbar {
+    width: 7px; /* 스크롤바의 너비를 조정합니다. */
+}
+
+.scrollableContent::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 8px;
+}
+
+.scrollableContent::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.scrollableContent::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
 .subList.calendarList li {
 	position: relative;
 	justify-content: unset;
 	gap: 10px;
+	width: 250px;
+}
+
+.subList.calendarList li label {
+	max-width: 180px;
+	overflow-x: auto;
 }
 
 .sideCalendarAdd {
@@ -4225,6 +4270,7 @@ button:nth-child(4) img {
 	border-radius: 2px;
 	color: #777;
 	position: relative;
+	margin-top: 15px;
 }
 
 .myCalendarPopup {
@@ -4296,7 +4342,7 @@ button:nth-child(4) img {
 	font-size: 20px;
 	font-weight: bold;
 	position: absolute;
-	right: 7px;
+	right: 20px;
 	top: -3px;
 	cursor: pointer;
 }
@@ -4357,7 +4403,7 @@ button:nth-child(4) img {
 	font-size: 20px;
 	font-weight: bold;
 	position: absolute;
-	right: 7px;
+	right: 20px;
 	top: -3px;
 	cursor: pointer;
 }
