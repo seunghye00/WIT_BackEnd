@@ -4192,10 +4192,43 @@ span.return {
 	overflow: visible;
 }
 
+.scrollableContent {
+    max-height: 170px; /* 원하는 최대 높이 */
+    overflow-y: auto;  /* 스크롤 기능 활성화 */
+    overflow-x: hidden; /* 가로 스크롤 숨기기 (필요에 따라) */
+    position: relative;
+    width: 96%;
+}
+
+/* 스크롤바 스타일링 */
+.scrollableContent::-webkit-scrollbar {
+    width: 7px; /* 스크롤바의 너비를 조정합니다. */
+}
+
+.scrollableContent::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 8px;
+}
+
+.scrollableContent::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.scrollableContent::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
 .subList.calendarList li {
 	position: relative;
 	justify-content: unset;
 	gap: 10px;
+	width: 250px;
+}
+
+.subList.calendarList li label {
+	max-width: 180px;
+	overflow-x: auto;
 }
 
 .sideCalendarAdd {
@@ -4205,6 +4238,7 @@ span.return {
 	border-radius: 2px;
 	color: #777;
 	position: relative;
+	margin-top: 15px;
 }
 
 .myCalendarPopup {
@@ -4276,7 +4310,7 @@ span.return {
 	font-size: 20px;
 	font-weight: bold;
 	position: absolute;
-	right: 7px;
+	right: 20px;
 	top: -3px;
 	cursor: pointer;
 }
@@ -4337,7 +4371,7 @@ span.return {
 	font-size: 20px;
 	font-weight: bold;
 	position: absolute;
-	right: 7px;
+	right: 20px;
 	top: -3px;
 	cursor: pointer;
 }
