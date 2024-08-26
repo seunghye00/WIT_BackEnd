@@ -41,6 +41,7 @@
 							<li class="toggleItem">
 								<h3 class="toggleTit">내 캘린더</h3>
 								<ul class="subList calendarList">
+								<div class="scrollableContent">  <!-- 스크롤 가능한 콘텐츠를 감싸는 div -->
 									<c:forEach items="${plist}" var="dto">
 										<li><input type="checkbox"
 											id="calendar_${dto.calendar_seq}"
@@ -55,6 +56,7 @@
 											</c:if> <input type="hidden" id="hidden_${dto.calendar_seq}"
 											value="${dto.calendar_seq}"></li>
 									</c:forEach>
+									</div>
 									<div>
 										<span class="sideCalendarAdd"><i
 											class='bx bx-plus-medical'></i> <span class="myCalendarAdd">내
@@ -68,7 +70,7 @@
 												<div class="content">
 													<form id="perCalendarForm"
 														action="/calendar/insertPerCalendar" method="post">
-														<input type="text" name="calendar_name" id="calendar_name">
+														<input type="text" name="calendar_name" id="calendar_name" maxlength="13" placeholder="최대 13글자">
 														<input type="hidden" name="emp_no"> <input
 															type="hidden" name="default_yn">
 													</form>
@@ -90,50 +92,48 @@
 							<li class="toggleItem">
 								<h3 class="toggleTit">부서 캘린더</h3>
 								<ul class="subList calendarList">
-									<c:forEach items="${dlist}" var="dto">
-										<li><input type="checkbox"
-											id="calendar_${dto.calendar_seq}"
-											name="calendar_${dto.calendar_seq}"
-											class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
-											<c:if test="${dto.default_yn == 'Y'}">checked</c:if>>
-											<label for="calendar_${dto.calendar_seq}">(${dto.dept_title}) ${dto.calendar_name}</label>
-											<!-- 회의 일정(기본), 부서원 생일(기본)에는 삭제 버튼 없음 기본 생성자는 default='Y' -->
-											<c:if
-												test="${employee.role_code eq 'R2' and dto.default_yn ne 'Y'}">
-												<span class="sideDepSelectDel"
-													data-seq="${dto.calendar_seq}" id="sideDepSelectDel">&times;</span>
-											</c:if> <input type="hidden" id="${dto.calendar_seq}"
-											value="${dto.calendar_seq}"></li>
-									</c:forEach>
-									<c:if test="${employee.role_code eq 'R2'}">
-										<div>
-											<span class="sideCalendarAdd"><i
-												class='bx bx-plus-medical'></i> <span
-												class="deptCalendarAdd">부서 캘린더 추가</span>
-												<div class="deptCalendarPopup">
-													<header>
-														<h3>
-															부서 캘린더 추가<span class="deptPopupClose">&times;</span>
-														</h3>
-													</header>
-													<div class="content">
-														<form id="deptCalendarForm"
-															action="/calendar/insertDepCalendar" method="post">
-															<input type="text" name="calendar_name"
-																id="depCalendarName"> <input type="hidden"
-																name="dept_code" value="${employee.dept_code}">
-															<input type="hidden" name="default_yn">
-														</form>
-													</div>
-													<footer>
-														<div class="btns">
-															<button id="sideDeptAdd" class="okBtn">확인</button>
-															<button id="sideDeptCancel" class="cancelBtn">취소</button>
-														</div>
-													</footer>
-												</div> </span>
-										</div>
-									</c:if>
+								    <div class="scrollableContent">  <!-- 스크롤 가능한 콘텐츠를 감싸는 div -->
+								        <c:forEach items="${dlist}" var="dto">
+								            <li>
+								                <input type="checkbox"
+								                    id="calendar_${dto.calendar_seq}"
+								                    name="calendar_${dto.calendar_seq}"
+								                    class="<c:out value="${dto.default_yn == 'Y' ? 'active' : ''}" />"
+								                    <c:if test="${dto.default_yn == 'Y'}">checked</c:if>>
+								                <label for="calendar_${dto.calendar_seq}">(${dto.dept_title}) ${dto.calendar_name}</label>
+								                <c:if test="${employee.role_code eq 'R2' and dto.default_yn ne 'Y'}">
+								                    <span class="sideDepSelectDel" data-seq="${dto.calendar_seq}" id="sideDepSelectDel">&times;</span>
+								                </c:if>
+								                <input type="hidden" id="${dto.calendar_seq}" value="${dto.calendar_seq}">
+								            </li>
+								        </c:forEach>
+								    </div>
+								    <c:if test="${employee.role_code eq 'R2'}">
+								        <div>
+								            <span class="sideCalendarAdd">
+								                <i class='bx bx-plus-medical'></i>
+								                <span class="deptCalendarAdd">부서 캘린더 추가</span>
+								                <div class="deptCalendarPopup">
+								                    <header>
+								                        <h3>부서 캘린더 추가<span class="deptPopupClose">&times;</span></h3>
+								                    </header>
+								                    <div class="content">
+								                        <form id="deptCalendarForm" action="/calendar/insertDepCalendar" method="post">
+								                            <input type="text" name="calendar_name" id="depCalendarName" maxlength="13" placeholder="최대 13글자">
+								                            <input type="hidden" name="dept_code" value="${employee.dept_code}">
+								                            <input type="hidden" name="default_yn">
+								                        </form>
+								                    </div>
+								                    <footer>
+								                        <div class="btns">
+								                            <button id="sideDeptAdd" class="okBtn">확인</button>
+								                            <button id="sideDeptCancel" class="cancelBtn">취소</button>
+								                        </div>
+								                    </footer>
+								                </div>
+								            </span>
+								        </div>
+								    </c:if>
 								</ul>
 							</li>
 						</ul>
@@ -146,14 +146,16 @@
 									<!-- 전사 일정 -->
 									<c:forEach var="cl" items="${clist}">
 					            		<li>
-					                		<input type="checkbox" id="calendar_${cl.calendar_seq}" name="calendar_${cl.calendar_seq}">
+					                		<input type="checkbox" id="calendar_${cl.calendar_seq}" name="calendar_${cl.calendar_seq}"
+					                		<c:if test="${cl.default_yn == 'Y'}">checked</c:if>>
 					                		<label for="calendar_${cl.calendar_seq}">${cl.calendar_name}</label>
 					            		</li>
 					        		</c:forEach>
 					        		<!-- 임원 일정 -->
 					        		<c:forEach var="el" items="${elist}">
 					            		<li>
-					                		<input type="checkbox" id="calendar_${el.calendar_seq}" name="calendar_${el.calendar_seq}">
+					                		<input type="checkbox" id="calendar_${el.calendar_seq}" name="calendar_${el.calendar_seq}"
+					                		<c:if test="${el.default_yn == 'Y'}">checked</c:if>>
 					                		<label for="calendar_${el.calendar_seq}">${el.calendar_name}</label>
 					            		</li>
 					        		</c:forEach>
@@ -195,10 +197,10 @@
                                 <!-- role_code가 'R2'인 경우 -->
                                 <c:if test="${employee.role_code eq 'R2'}">
                                     <c:forEach items="${plist}" var="dto">
-                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}(개인)</option>
                                     </c:forEach>
                                     <c:forEach items="${dlist}" var="dto">
-                                        <option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+                                        <option value="${dto.calendar_seq}">${dto.calendar_name}(부서)</option>
                                     </c:forEach>
                                 </c:if>
                                 <!-- role_code가 'R1'인 경우 -->
@@ -286,10 +288,10 @@
 									<!-- role_code가 'R2'인 경우 -->
 									<c:if test="${employee.role_code eq 'R2'}">
 										<c:forEach items="${plist}" var="dto">
-											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											<option value="${dto.calendar_seq}">${dto.calendar_name}(개인)</option>
 										</c:forEach>
 										<c:forEach items="${dlist}" var="dto">
-											<option value="${dto.calendar_seq}">${dto.calendar_name}</option>
+											<option value="${dto.calendar_seq}">${dto.calendar_name}(부서)</option>
 										</c:forEach>
 									</c:if>
 									<!-- role_code가 'R2'가 아닌 경우 -->
@@ -823,20 +825,19 @@
                     list: '목록'
                 },
                 events: function (fetchInfo, successCallback, failureCallback) {
-                	let checkedCalendars = getCheckedCalendars();
+                    let checkedCalendars = getCheckedCalendars();
                     $.ajax({
-                    	// 서버의 이벤트 데이터 엔드포인트
+                        // 서버의 이벤트 데이터 엔드포인트
                         url: '/events/all_event', 
                         method: 'GET',
                         dataType: 'json',
-                        data:{
-                        	// 체크된 캘린더 ID 목록을 서버로 전송
-                        	// 문자열로 변환하여 전달
-                        	calendars: checkedCalendars
-                        	
+                        data: {
+                            // 체크된 캘린더 ID 목록을 서버로 전송
+                            // 문자열로 변환하여 전달
+                            calendars: checkedCalendars
                         }, 
                         success: function (data) {
-                            console.log(data);// 서버로부터 받은 이벤트 데이터를 풀캘린더에 전달합니다.
+                            console.log(data); // 서버로부터 받은 이벤트 데이터를 풀캘린더에 전달
                             
                             // 날짜와 시간을 ISO 8601 형식으로 변환하는 함수
                             function formatDate(dateStr) {
@@ -856,19 +857,32 @@
 
                                 return isoString;
                             }                          
-                            successCallback(data.map(event => ({
-                                title: event.title,
-                             	// 변환된 시작 날짜
-                                start: formatDate(event.start_date), 
-                             	// 변환된 종료 날짜
-                                end: formatDate(event.end_date),     
-                                extendedProps: {
-                                	events_seq : event.events_seq,
-                                	calendar_seq: event.calendar_seq,
-                                    location: event.location,
-                                    content: event.content
+                            
+                            successCallback(data.map(event => {
+                                let color = '#3788D8'; // 기본 색상 설정
+
+                                // 전사 일정
+                                if (event.calendar_seq === 6) {
+                                    color = 'red'; 
                                 }
-                            })));
+                                // 임원 일정
+                                else if(event.calendar_seq === 7){
+                                	color = 'green';
+                                }
+
+                                return {
+                                    title: event.title,
+                                    start: formatDate(event.start_date), // 변환된 시작 날짜
+                                    end: formatDate(event.end_date), // 변환된 종료 날짜
+                                    color: color, // 색상 속성 추가
+                                    extendedProps: {
+                                        events_seq: event.events_seq,
+                                        calendar_seq: event.calendar_seq,
+                                        location: event.location,
+                                        content: event.content
+                                    }
+                                };
+                            }));
                         },
                         error: function () {
                             alert('이벤트를 불러오는데 실패했습니다.');
@@ -978,9 +992,7 @@
         	            }
         	        }).fail((jqXHR, textStatus, errorThrown) => {
         	            console.error('AJAX 요청 실패:', textStatus, errorThrown);
-        	        });
-                 
-                    
+        	        });                 
                 }
             });
             

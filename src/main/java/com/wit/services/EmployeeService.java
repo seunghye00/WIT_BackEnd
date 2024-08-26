@@ -193,8 +193,11 @@ public class EmployeeService {
 
 	// 주소록 검색 카운트 값 조회
 	@Transactional
-	public int totalCountPageSearch(String keyword) {
-		return dao.totalCountPageSearch(keyword);
+	public int totalCountPageSearch(String keyword, String dept_code) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("keyword", keyword);
+		params.put("dept_code", dept_code);
+		return dao.totalCountPageSearch(params);
 	}
 
 	// 주소록 검색값 레코드 조회
@@ -219,6 +222,11 @@ public class EmployeeService {
 	// 부서별 사원 목록 조회
 	public List<EmployeeDTO> getListByDept(String deptCode) {
 		return dao.getListByDept(deptCode);
+	}
+	
+	// 부서별 사원 수 조회
+	public List<Map<String, Integer>> getEmpNumByDept() {
+		return dao.getEmpNumByDept();
 	}
 
 	// 해당 사번을 가진 사원의 이름과 부서명 조회
@@ -309,5 +317,9 @@ public class EmployeeService {
 		params.put("photo", photoUrl);
 
 		dao.updateManage(params);
+	}
+
+	public List<Map<String, Object>> getEmpNumByRole() {
+		return dao.getEmpNumByRole();
 	}
 }

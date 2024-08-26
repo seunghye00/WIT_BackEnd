@@ -132,8 +132,8 @@ public class EmployeeDAO {
 	}
 
 	// 주소록 툴바 페이지네이션 총 카운트
-	public int totalCountPageSearch(String keyword) {
-		return mybatis.selectOne("employee.totalCountPageSearch", keyword);
+	public int totalCountPageSearch(Map<String, Object> params) {
+		return mybatis.selectOne("employee.totalCountPageSearch", params);
 	}
 
 	// 메신저 주소록 조히
@@ -169,6 +169,11 @@ public class EmployeeDAO {
 	// 부서별 사원 목록 조회
 	public List<EmployeeDTO> getListByDept(String deptCode) {
 		return mybatis.selectList("employee.selectByDept", deptCode);
+	}
+	
+	// 부서별 사원 수 조회
+	public List<Map<String, Integer>> getEmpNumByDept() {
+		return mybatis.selectList("employee.selectNumByDept");
 	}
 
 	// 해당 사번을 지닌 직원의 이름과 부서명 조회
@@ -224,5 +229,9 @@ public class EmployeeDAO {
 	// 직원 상세 업데이트
 	public void updateManage(Map<String, Object> params) {
 		mybatis.update("employee.updateManage", params);
+	}
+
+	public List<Map<String, Object>> getEmpNumByRole() {
+		return mybatis.selectList("employee.getEmpNumByRole");
 	}
 }

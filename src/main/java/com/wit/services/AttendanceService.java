@@ -120,24 +120,26 @@ public class AttendanceService {
 
 	// 근무 시간 계산
 	private String calculateWorkHours(String startTime, String endTime) {
-		LocalTime start = LocalTime.parse(startTime, timeFormatter);
-		LocalTime end = LocalTime.parse(endTime, timeFormatter);
-		Duration duration = Duration.between(start, end);
+	    LocalTime start = LocalTime.parse(startTime, timeFormatter);
+	    LocalTime end = LocalTime.parse(endTime, timeFormatter);
+	    
+	    // Duration을 분 단위로만 계산하도록 변경
+	    long minutesWorked = Duration.between(start, end).toMinutes();
+	    
+	    long hoursWorked = minutesWorked / 60;
+	    long remainingMinutes = minutesWorked % 60;
+	    
+	    // 점심시간 1시간 제외 (12:00 ~ 13:00)
+	    if (start.isBefore(LocalTime.NOON) && end.isAfter(LocalTime.NOON.plusHours(1))) {
+	        hoursWorked -= 1;
+	    }
 
-		long hoursWorked = duration.toHours();
-		long minutesWorked = duration.toMinutes() % 60;
-
-		// 점심시간 1시간 제외
-		if (start.isBefore(LocalTime.NOON) && end.isAfter(LocalTime.NOON.plusHours(1))) {
-			hoursWorked -= 1;
-		}
-
-		// 분이 0인 경우 분을 생략
-		if (minutesWorked == 0) {
-			return hoursWorked + "H";
-		} else {
-			return hoursWorked + "H " + minutesWorked + "M";
-		}
+	    // 분이 0인 경우 분을 생략
+	    if (remainingMinutes == 0) {
+	        return hoursWorked + "H";
+	    } else {
+	        return hoursWorked + "H " + remainingMinutes + "M";
+	    }
 	}
 
 	// 월간 근태현황 조회
@@ -148,6 +150,15 @@ public class AttendanceService {
 	// 월간 근무시간 조회
 	public Map<String, Object> monthlyWorkHours(String empNo) {
 		Map<String, Object> result = dao.monthlyWorkHours(empNo);
+		
+	    // 출퇴근 내역이 하나라도 없을때 에러페이지로 가는게 에러페이지 대신 0H 으로 설정
+	    if (result == null || result.get("TOTALWORKINGHOURS") == null) {
+	        result = new HashMap<>();
+	        result.put("totalWorkingHours", "0H"); // 기본값 설정
+	        result.put("WORKINGDAYS", 0);
+	        return result;
+	    }
+	    
 		BigDecimal totalHours = (BigDecimal) result.get("TOTALWORKINGHOURS");
 		int hours = totalHours.intValue();
 		int minutes = totalHours.subtract(new BigDecimal(hours)).multiply(new BigDecimal(60)).intValue();

@@ -45,8 +45,12 @@ public class AddressBookService {
 	
 	// 주소록 검색 카운트 값 조회
 	@Transactional
-	public int totalCountPageSearch(String keyword) {
-		return dao.totalCountPageSearch(keyword);
+	public int totalCountPageSearch(String emp_no, String keyword, int category_id) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("emp_no", emp_no);
+	    params.put("keyword", keyword);
+	    params.put("category_id", category_id);
+		return dao.totalCountPageSearch(params);
 	}
 	
 	// 주소록 검색값 레코드 조회

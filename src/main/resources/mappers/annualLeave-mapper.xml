@@ -116,7 +116,7 @@
 			AND e.name LIKE '%' || #{searchTxt} || '%'
 		</if>
 		ORDER BY
-		lr.start_date DESC
+		lr.start_date ASC
 		)
 		WHERE rnum BETWEEN #{start} AND #{end}
 	</select>

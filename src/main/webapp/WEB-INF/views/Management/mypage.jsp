@@ -34,17 +34,14 @@
 			<%@ include file="/WEB-INF/views/Includes/header.jsp"%>
 
 			<div class="contents">
-				<div class="sideAbout">
-					<div class="sideTxt">
-						<h2 class="sideTit">마이페이지</h2>
-					</div>
-				</div>
 				<div class="sideContents mypage">
 					<h2>마이페이지</h2>
 					<div class="form-container">
 						<form id="updateForm">
 							<div class="form-group-photo">
 								<span>프로필</span> <img src="${employee.photo}" alt="프로필 이미지">
+								<button type="button" id="checkNickname"
+									class="edit-nickname-button hidden">중복체크</button>
 							</div>
 							<div class="form-row">
 								<div class="form-group">
@@ -54,8 +51,6 @@
 								<div class="form-group">
 									<span>닉네임</span> <input type="text" name="nickname"
 										id="nickname" value="${employee.nickname}" readonly>
-									<button type="button" id="checkNickname"
-										class="edit-nickname-button hidden">중복체크</button>
 								</div>
 							</div>
 							<div class="form-row">
@@ -126,13 +121,6 @@
 		</div>
 	</div>
 	<script>
-		let btn = document.querySelector("#btn");
-		let sideBar = document.querySelector(".sideBar");
-
-		btn.onclick = function() {
-			sideBar.classList.toggle("active");
-		};
-
 		// 원래 닉네임을 저장
 		let originalNickname = "${employee.nickname}";
 
@@ -153,7 +141,7 @@
 					.querySelector('input[name="nickname"]');
 			if (nicknameField) {
 				nicknameField.readOnly = !isEditing;
-				
+
 				// 취소 버튼을 눌렀을 때 닉네임을 원래대로 복원
 				if (!isEditing) {
 					nicknameField.value = originalNickname;

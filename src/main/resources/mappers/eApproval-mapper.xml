@@ -119,7 +119,13 @@
 	
 	<!-- 휴가 신청서 문서의 정보를 업데이트하기 위한 쿼리문 -->
 	<update id="updateLeaveByDocuSeq">
-		update leave_requests set leave_type = #{leave_type}, start_date = #{start_date}, end_date = #{end_date},
+		update leave_requests set leave_type = #{leave_type}, 
+		<if test="start_date != null">
+			start_date = #{start_date},
+		</if>
+		<if test="end_date != null">
+			end_date = #{end_date},
+		</if>
 		start_day_checked = #{start_day_checked}, start_day_am_checked = #{start_day_am_checked},
 		start_day_pm_checked = #{start_day_pm_checked}, end_day_checked = #{end_day_checked},
 		end_day_am_checked = #{end_day_am_checked}, end_day_pm_checked = #{end_day_pm_checked},
@@ -202,7 +208,7 @@
 			select
 				d.document_seq document_seq, write_date, name, emer_yn, title, d.emp_no emp_no,
 				a.emp_no last_appr,
-				row_number() over (order by write_date desc, emer_yn desc) as rn 
+				row_number() over (order by	emer_yn desc, write_date desc) as rn 
 			from
 				documents d
 			join
@@ -527,5 +533,16 @@
 	<!-- 해당 문서의 작성자 사번을 조회하기 위한 쿼리문 -->
 	<select id="getEmpNoByDocuSeq" resultType="String">
 		select emp_no from documents where document_seq = #{docuSeq}
+	</select>
+	
+	<select id="getDocuStatus" resultType="map">
+		select 
+    		dl.name,
+    		coalesce(sum(case when d.status = '완료' then 1 else 0 end), 0) as approved_count,
+    		coalesce(sum(case when d.status = '반려' then 1 else 0 end), 0) as return_count
+		from 
+    		document_list dl
+		left outer join documents d on dl.docu_code = d.docu_code
+		group by dl.name
 	</select>
 </mapper>

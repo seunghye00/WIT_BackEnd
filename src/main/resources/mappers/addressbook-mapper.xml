@@ -90,7 +90,16 @@
     
     <!-- 주소록 검색 페이지네이션 총 카운트 -->
     <select id="totalCountPageSearch" resultType="int">
-        select count(*) from address_book where name like '%'||#{keyword}||'%'
+        <![CDATA[
+	        select count(*) from address_book ab
+	            left join
+	                categories c on ab.category_id = c.category_id
+	            where 
+	                ab.emp_no = #{emp_no}
+	            and name like '%'||#{keyword}||'%']]>
+            <if test="category_id != 0">
+                <![CDATA[and c.category_id = #{category_id}]]>
+            </if>
     </select>
     
     <!-- 주소록 검색 -->
@@ -160,7 +169,10 @@
     <insert id="addCategory">
         insert into categories values (categories_seq.nextval, #{emp_no}, #{category})
     </insert>
-
+    <!-- 기본 카테고리 추가  -->
+    <insert id="addBasicCategory">
+        insert into categories values (categories_seq.nextval, #{emp_no}, '전체')
+    </insert>
     <!-- 카테고리 수정 -->
     <update id="editCategory">
     	update categories set category_name = #{newCategory} where emp_no = #{emp_no} and category_name = #{oldCategory}

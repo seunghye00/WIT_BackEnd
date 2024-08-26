@@ -128,9 +128,7 @@ public class EmployeeController {
 		System.out.println(empNo);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("noticeList", noticeList);
-		
 
-		
 		// 직원 정보 가져오기
 		EmployeeDTO employee = service.employeeInfo(empNo);
 
@@ -159,6 +157,18 @@ public class EmployeeController {
 			return "redirect:/";
 		}
 	}
+	
+    @ResponseBody
+    @RequestMapping("/getEmpNumByDept")
+    public List<Map<String, Integer>> getEmpNumByDept() {
+        return service.getEmpNumByDept();
+    }
+	
+	@ResponseBody
+    @RequestMapping("/getEmpNumByRole")
+    public List<Map<String, Object>> getEmpNumByRole() {
+		return service.getEmpNumByRole();
+    }
 
 	// 추가 정보 업데이트
 	@RequestMapping("/update_info")
@@ -325,10 +335,16 @@ public class EmployeeController {
 		if (cpage == null) {
 			cpage = "1";
 		}
+		
+        if (dept_code == null || dept_code.isEmpty() || "전체".equals(dept_code)) {
+        	dept_code = "전체";
+        }
 		int cpage_num = Integer.parseInt(cpage);
-		List<Map<String, Object>> list = service.selectByCon(keyword, cpage_num, dept_code);
-		int totPage = service.totalCountPageSearch(keyword);
 
+		List<Map<String, Object>> list = service.selectByCon(keyword, cpage_num, dept_code);
+		int totPage = service.totalCountPageSearch(keyword, dept_code);
+		
+		System.out.println(totPage);	
 		Map<String, Object> response = new HashMap<>();
 		response.put("totPage", totPage);
 		response.put("cpage", cpage_num);

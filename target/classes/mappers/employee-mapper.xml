@@ -179,7 +179,19 @@
 		= #{deptCode} and quit_yn = 'N'
 		order by 3 desc
 	</select>
-
+	
+	<!-- 부서별 사원 수 조회 -->
+	<select id="selectNumByDept" resultType="map">
+		select
+    		d.dept_title, 
+    		count(*) as empNum
+		from 
+    		employee e
+		join dept d on e.dept_code = d.dept_code
+		where e.quit_yn = 'N'
+		group by d.dept_title
+	</select>
+	
 	<!-- 사원의 이름과 부서명 조회 -->
 	<select id="selectByEmpNo"
 		resultType="com.wit.dto.EmployeeInfoDTO">
@@ -373,8 +385,21 @@
 
 	<!-- 주소록 검색 페이지네이션 총 카운트 -->
 	<select id="totalCountPageSearch" resultType="int">
-		select count(*)
-		from employee where name like '%'||#{keyword}||'%'
+ 		<![CDATA[ 
+	 		select count(*) 
+			    from 
+			        employee em
+			    left join
+			        dept d on em.dept_code = d.dept_code
+			    left join
+			        role r on em.role_code = r.role_code
+			    where
+	                em.name like '%'||#{keyword}||'%'
+	                and em.quit_yn = 'N'
+	                ]]>
+         	<if test="dept_code != '전체'">
+                <![CDATA[and em.dept_code = #{dept_code}]]>
+            </if>
 	</select>
 
 	<!-- 주소록 검색 -->
@@ -389,8 +414,9 @@
 		            employee em
 		        left join
 		            dept d on em.dept_code = d.dept_code
-		        where 
-		            em.name like '%' || #{keyword} || '%']]>
+		        where
+		        	em.quit_yn = 'N' 
+		            and em.name like '%' || #{keyword} || '%']]>
 			    <if test="dept_code != '전체'">
 	                <![CDATA[and em.dept_code = #{dept_code}]]>
 	            </if>
@@ -515,4 +541,21 @@
 		quit_date = CASE WHEN #{quit_yn} = 'Y' THEN sysdate ELSE quit_date END
 		WHERE emp_no = #{emp_no}
 	</update>
+	
+	<select id="getEmpNumByRole" resultType="map">
+	select 
+    	e.role_code, r.role_title,
+    	count(*) as total_count,
+    	sum(case when substr(ssn, 8, 1) in ('1', '3') then 1 else 0 end) as male_count,
+    	sum(case when substr(ssn, 8, 1) in ('2', '4') then 1 else 0 end) as female_count
+	from 
+    	employee e
+	left outer join role r on e.role_code = r.role_code
+	where 
+    	e.quit_yn = 'N'
+	group by 
+    	e.role_code, r.role_title
+	order by 
+    	e.role_code
+	</select>
 </mapper>

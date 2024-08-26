@@ -77,10 +77,10 @@
 					</div>
 					<div class="dept_tabs">
 						<c:forEach var="dept" items="${departments}">
-							<div
+							<a href="?deptTitle=${dept.dept_title}&searchTxt=${searchTxt}"
 								class="dept_tab ${dept.dept_title == deptTitle ? 'active' : ''}">
-								<a href="?deptTitle=${dept.dept_title}&searchTxt=${searchTxt}">${dept.dept_title}</a>
-							</div>
+								<div>${dept.dept_title}</div>
+							</a>
 						</c:forEach>
 					</div>
 					<div class="attendance_table">

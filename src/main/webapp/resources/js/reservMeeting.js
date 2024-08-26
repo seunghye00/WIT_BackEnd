@@ -276,6 +276,6 @@ $(window).click(function(event) {
 		location.reload();
 	}
 	if ($(event.target).is($('#eventModal')[0])) {
-		$('#eventModal').hide();
+		location.reload();
 	}
 });

@@ -297,7 +297,7 @@ function startPrivateChat(emp_no1, chat_room_name) {
                 loadChatList();
                 // 여기서 채팅방으로 리다이렉트하거나 UI 업데이트를 할 수 있습니다.
             } else {
-                alert('채팅방 생성에 실패했습니다.');
+                alert('이미 생성된 채팅방입니다.');
             }
         },
         error: function(error) {
@@ -370,6 +370,7 @@ function clearCheckboxes() {
 // 채팅 시작 함수
 function startChat(chat_room_seq) {
     var chatRoomName = document.querySelector('#chatRoomPopup .chatRoomTitle h2').innerText;
+    document.querySelector('.chatFooter');
     // 모든 li 요소에서 active 클래스 제거
     document.querySelectorAll('.chatList li').forEach(function (li) {
         li.classList.remove('active');
@@ -380,7 +381,15 @@ function startChat(chat_room_seq) {
     if (activeLi) {
         activeLi.classList.add('active');
     }
+  	
+  	// 디폴트 메시지 제거 및 채팅 메시지 화면 비우기
+    var chatBody = document.getElementById('chatBody');
+    chatBody.innerHTML = ''; // 이전 메시지나 디폴트 메시지 제거
 
+    // chatFooter를 보이도록 설정
+    var chatFooter = document.querySelector('.chatFooter');
+    chatFooter.style.display = 'flex';
+    
     // 채팅방 제목 변경
     document.querySelector('.chatHeader .title').innerText = chatRoomName;
     closeChatRoomPopup(); // 팝업 닫기
@@ -679,7 +688,7 @@ function updateReadCountOnClient(chatRoomSeq, chatSeq, updatedReadCount) {
 // 메시지의 읽음 상태를 서버에 확인하고, 필요시 업데이트하는 함수
 function checkAndUpdateReadCount(chatRoomSeq, chatSeq) {
     $.ajax({
-        url: '/chatroom/checkRseadCount',
+        url: '/chatroom/checkReadCount',
         method: 'POST',
         data: {
             chatRoomSeq: chatRoomSeq,
