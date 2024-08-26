@@ -2516,11 +2516,16 @@
 	vertical-align: middle;
 	margin-left: -20px;
 	margin-top: 14px;
+	position: absolute;
+	right: 15px;
+	width: fit-content;
 }
 
 .form-container {
 	/* padding: 5%; */
-	margin-left: 10%;
+	margin-left: 5%;
+	/* display: flex; */
+	/* justify-content: flex-end; */
 }
 
 .form-group {
@@ -2529,6 +2534,7 @@
 	align-items: flex-start;
 	padding: auto;
 	position: relative;
+	justify-content: space-between;
 }
 
 .form-group span, .form-group-photo span {
@@ -2557,6 +2563,7 @@
 	flex-direction: column;
 	gap: 30px;
 	position: relative;
+	/* width: fit-content; */
 }
 
 .form-group-photo {
@@ -2574,21 +2581,22 @@
 .form-row {
 	display: flex;
 	justify-content: space-between;
+	gap: 30px;
 }
 
 .form-row .form-group {
 	flex: 1;
 	position: relative;
+	width: 50%;
 }
 
 .form-actions {
 	display: flex;
 	justify-content: flex-end;
-	margin-right: 13%;
-	gap: 10px;
 	position: fixed;
 	bottom: 85px;
-	right: 40px;
+	right: 60px;
+	gap: 5px;
 }
 
 .form-actions button {
@@ -2598,23 +2606,19 @@
 	color: white;
 	font-size: 15px;
 	border: 1px solid #ccc;
-	position: relative;
-	left: 35px;
+	/* position: relative; */
+	/* left: 35px; */
 }
 
 .form-container input[type="text"], .form-container input[type="password"]
 	{
-	width: 60%;
-}
-
-.form-container .hidden {
-	display: none;
+	width: calc(100% - 25px);
 }
 
 .edit-nickname-button {
 	position: absolute;
 	top: -65px;
-	right: 200px;
+	right: 0%;
 	padding: 10px 10px;
 	border-radius: 10px;
 	background-color: #9733c5;
@@ -2623,12 +2627,17 @@
 	border: 1px solid #ccc;
 }
 
+.edit-nickname-button:hover {
+	background-color: #9609cd;
+}
+
 .form-container .show {
 	display: inline;
 }
 
 .form-container .hidden {
 	display: none;
+	gap: 10px;
 }
 
 .form-container .success {
@@ -2645,6 +2654,10 @@
 
 .cancel button {
 	background-color: #c51221;
+}
+
+.cancel button:hover {
+	background-color: #e90619;
 }
 
 /* PW 찾기*/
