@@ -240,7 +240,7 @@
                         keyword: $('#searchInput').val(),
                         chosung: currentChosung,
                         category: currentCategory,
-                        dept_code: dept_code
+                        dept_code: $('#searchCate').val()
                     };
                     loadGroupPage(params, url);
                 });
@@ -263,7 +263,7 @@
 	    currentChosung = chosung;
 	    $('.toolBar a').removeClass('active');
 	    $(this).addClass('active');
-	    loadGroupPage({ chosung: chosung, cpage: 1, dept_code: dept_code }, '/employee/groupAddressTool');
+	    loadGroupPage({ chosung: chosung, cpage: 1,chosung: currentChosung }, '/employee/groupAddressTool');
 	}
 	
 	function handleSearchFormSubmit(event) {
@@ -280,7 +280,6 @@
 	 	
 	    // 검색 필드와 관련된 요소들을 초기화
 	    $('#searchInput').val('');  // 검색어 입력 필드를 비움
-	    $('#searchCate').val('');   // hidden input 필드를 초기화
 	    
 	    // 검색 후 결과를 비우고 싶다면, 결과 표시 영역도 비움
 	    $('#searchResults').empty();  // 검색 결과를 표시하는 div 또는 영역을 비움 (id는 실제 사용되는 id로 대체)
@@ -321,7 +320,7 @@
                 $(this).addClass('active');
             }
         });
-        loadGroupPage({ category: category, cpage: 1, chosung: currentChosung }, '/employee/groupAddressTool');
+        loadGroupPage({ category: category, cpage: 1, chosung: currentChosung}, '/employee/groupAddressTool');
     }
 	
 	// 주소록 상세 조회
