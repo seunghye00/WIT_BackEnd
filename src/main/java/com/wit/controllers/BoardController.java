@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -69,12 +70,12 @@ public class BoardController {
 				boardCode, report, adminReport);
 
 		EmployeeDTO employee = bserv.employeeInfo(empNo);
-		
+
 		// 신고현황 사장 만 접속 가능
-	    if ("true".equals(adminReport) && !"사장".equals(employee.getRole_code())) {
-	        return "redirect:/error";
-	    }
-		
+		if ("true".equals(adminReport) && !"사장".equals(employee.getRole_code())) {
+			return "redirect:/error";
+		}
+
 		model.addAttribute("board_code", boardCode);
 		model.addAttribute("report", report);
 		model.addAttribute("searchTarget", searchTarget);
@@ -102,11 +103,11 @@ public class BoardController {
 		String empNo = (String) session.getAttribute("loginID");
 
 		EmployeeDTO employee = bserv.employeeInfo(empNo);
-		
+
 		// 공지사항 작성 사장 만 접속 가능
-	    if (boardCode == 2 && !"사장".equals(employee.getRole_code())) {
-	        return "redirect:/error";
-	    }
+		if (boardCode == 2 && !"사장".equals(employee.getRole_code())) {
+			return "redirect:/error";
+		}
 
 		model.addAttribute("employee", employee);
 		// 처음 작성할 때는 파일 사이즈가 0으로 설정
@@ -143,7 +144,9 @@ public class BoardController {
 
 	// 게시물 상세 조회
 	@RequestMapping("detail")
-	public String detail(int board_seq, Model model, @RequestParam(defaultValue = "1") int boardCode) throws Exception {
+	public String detail(int board_seq, Model model, @RequestParam(defaultValue = "1") int boardCode,
+			@RequestParam(defaultValue = "false") String bookmark, @RequestParam(defaultValue = "false") String report,
+			@RequestParam(defaultValue = "false") String adminReport) throws Exception {
 
 		BoardDTO board = bserv.detailBoard(board_seq);
 		List<BoardFilesDTO> files = fserv.detailFile(board_seq);
@@ -164,9 +167,13 @@ public class BoardController {
 		model.addAttribute("Nickname", Nickname);
 		model.addAttribute("employee", employee);
 		model.addAttribute("board_code", boardCode);
+		model.addAttribute("bookmark", bookmark);
+		model.addAttribute("report", report);
+		model.addAttribute("adminReport", adminReport);
+
 		// 여기에다 북마크로 쿼리문을 보내서 사원번호랑, 보드 시퀀스 맞는 항목이 있으면 true,false 해서
 		// model 에 추가
-		model.addAttribute("bookmark", bmserv.isBookmarked(board_seq, empNo));
+		model.addAttribute("bookmarkCheck", bmserv.isBookmarked(board_seq, empNo));
 
 		// 댓글 리스트 model에 추가
 		model.addAttribute("replyList", replyList);
@@ -206,7 +213,7 @@ public class BoardController {
 		dto.setEmp_no(empNo);
 		dto.setBoard_code(boardCode);
 		// 파일 등록
-		String realPath = BoardConfig.realPath+"board";
+		String realPath = BoardConfig.realPath + "board";
 		System.out.println(realPath);
 		fserv.upload(dto, realPath, files);
 //			return "redirect:/board/list";
@@ -221,25 +228,42 @@ public class BoardController {
 
 	// 게시물 수정
 	@RequestMapping("/update")
-	public String update(BoardDTO dto, MultipartFile[] files) throws Exception {
+	public String update(    @RequestParam(name = "title") String title,
+		    @RequestParam(name = "contents") String contents,
+		    @RequestParam(name = "board_seq") int board_seq,
+		    @RequestParam(name = "files") MultipartFile[] files,
+		    @RequestParam(name = "boardCode", defaultValue = "1") int boardCode,
+		    @RequestParam(name = "bookmark", defaultValue = "false") String bookmark,
+		    @RequestParam(name = "report", defaultValue = "false") String report,
+		    @RequestParam(name = "adminReport", defaultValue = "false") String adminReport) throws Exception {
 		// 파일 수정
-		String realPath = BoardConfig.realPath+"board";
-		bserv.update(dto, files, realPath);
+		String realPath = BoardConfig.realPath + "board";
+		BoardDTO dto= new BoardDTO();
+		dto.setContents(contents);
+		dto.setTitle(title);
+		dto.setBoard_seq(board_seq);
+		dto.setBoard_code(boardCode);
 
-		return "redirect:/board/detail?board_seq=" + dto.getBoard_seq();
+		bserv.update(dto, files, realPath);
+		// 수정 후 해당 게시판으로 리다이렉트
+		// return "redirect:/board/detail?board_seq=" + dto.getBoard_seq();
+		// 게시판 코드에 따라 다른 페이지로 리다이렉트
+		return "redirect:/board/detail?boardCode=" + boardCode + "&bookmark=" + bookmark + "&report=" + report
+				+ "&adminReport=" + adminReport + "&board_seq=" + dto.getBoard_seq();
 	}
+
 	@RequestMapping("/uploadImg")
 	@ResponseBody
 	public String uploadImg(@RequestParam int boardSeq, @RequestParam MultipartFile file) throws Exception {
 		// 파일 수정
-		String realPath = BoardConfig.realPath+"board"+File.separator+"images";
+		String realPath = BoardConfig.realPath + "board" + File.separator + "images";
 		return fserv.uploadImages(boardSeq, realPath, file);
 	}
 
 	@RequestMapping("/download")
 	public void download(String oriName, String sysname, HttpServletResponse response) throws Exception {
 		System.out.println(oriName + ":" + sysname);
-		String realPath = BoardConfig.realPath+"board";
+		String realPath = BoardConfig.realPath + "board";
 		File target = new File(realPath + "/" + sysname);
 
 		oriName = new String(oriName.getBytes(), "ISO-8859-1");

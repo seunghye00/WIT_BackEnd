@@ -54,6 +54,14 @@ $(document).ready(function () {
                             )
 
                             // 추가적인 정보가 필요하다면, 이를 사용하여 다른 작업 수행
+                            // summernote 내부의 파일 입력 필드를 비운다
+                            let fileInput = $('#summernote')
+                                .siblings('.note-editor')
+                                .find('input[type="file"]')
+                            if (fileInput.length > 0) {
+                                fileInput.val('') // 파일 입력 필드 비우기
+                            }
+
                             //    const width = resp.width
                             //  const height = resp.height
                             // 예: 이미지 크기 조절, 추가 데이터 처리 등
@@ -71,11 +79,17 @@ $(document).ready(function () {
         })
 
     // sidebar 공통요소 script
-    let btn = document.querySelector('#btn')
-    let sideBar = document.querySelector('.sideBar')
-
-    btn.addEventListener('click', function () {
-        sideBar.classList.toggle('active')
+    let btn = $('#btn')
+    let sideBar = $('.sideBar')
+    let check = true
+    btn.on('click', function () {
+        if (check) {
+            sideBar.attr('class', 'sideBar active')
+            check = false
+        } else {
+            sideBar.attr('class', 'sideBar')
+            check = true
+        }
     })
 
     $('#submitForm').on('submit', function () {
