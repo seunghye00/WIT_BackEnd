@@ -2591,7 +2591,7 @@
 	display: flex;
 	justify-content: flex-end;
 	position: fixed;
-	bottom: 85px;
+	bottom: 95px;
 	right: 60px;
 	gap: 5px;
 }
