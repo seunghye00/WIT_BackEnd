@@ -2522,10 +2522,7 @@
 }
 
 .form-container {
-	/* padding: 5%; */
-	margin-left: 5%;
-	/* display: flex; */
-	/* justify-content: flex-end; */
+	margin-left: 7%;
 }
 
 .form-group {
@@ -2617,7 +2614,7 @@
 
 .edit-nickname-button {
 	position: absolute;
-	top: -65px;
+	top: 60px;
 	right: 0%;
 	padding: 10px 10px;
 	border-radius: 10px;
