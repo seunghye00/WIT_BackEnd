@@ -93,6 +93,10 @@
 											type="hidden" id="hiddenC" name="contents" value="${board.contents}"> <input
 											type="hidden" name="board_seq" value="${board.board_seq}">
 										<input type="file" id="file" multiple name="files">
+										<input type="hidden" name="adminReport" id="adminReport" value="false">
+										<input type="hidden" name="bookmark" id="bookmark">
+										<input type="hidden" name="boardCode" id="board_code" value="${board_code}">
+										<input type="hidden" name="report" id="report" value="false">
 									</form>
 									<c:choose>
 										<c:when test="${board_code=='1'}">
@@ -154,8 +158,8 @@
 												<c:if test="${board.emp_no eq Nickname || employee.role_code == '사장'}">
 													<button type="button" class="btn btn-outline-success" id="fboardCom"
 														style="display: none">완료</button>
-													<button type="button" class="btn btn-ouline-success" id="fboardCan"
-														style="display: none">취소</button>
+													<button type="button" clasfboardUpds="btn btn-ouline-success"
+														id="fboardCan" style="display: none">취소</button>
 													<button type="button" class="btn btn-outline-success"
 														id="fboardUpd">수정</button>
 													<button type="button" class="btn btn-outline-success" id="fboardDel"
@@ -202,7 +206,8 @@
 														<input type="hidden" name="board_seq"
 															value="${board.board_seq}">
 
-														<input type="hidden" name="boardCode" id="board_code" value="1">
+														<input type="hidden" name="boardCode" id="board_code"
+															value="${board_code}">
 														<input type="hidden" name="bookmark" id="bookmark">
 														<input type="hidden" name="report" id="report" value="false">
 													</div>
@@ -473,21 +478,6 @@
 								return;
 							}
 
-
-							// if (title === '') {
-							// 	alert("제목을 입력해 주세요.");
-							// }
-							// else if (title.length > 25) {
-							// 	alert("최대 제목 길이를 초과했습니다.");
-							// }
-							// else if (contentText === '') {
-							// 	alert("내용을 입력해 주세요.");
-							// }
-							// else (contentHtml.length > 1000) {
-							// 	alert("최대 내용 길이를 초과했습니다.");
-							// }
-
-
 							if (fileArr.length > 0) {
 								$.ajax({
 									url: "/uploadImage/delete",
@@ -509,7 +499,8 @@
 
 						// 취소 버튼 클릭 시
 						$("#fboardCan").on("click", function () {
-							location.href = "/board/detail?board_seq=${board.board_seq}";
+							location.href = "/board/detail?boardCode=${ board_code }&bookmark=${ bookmark }&report=${ report }&adminReport=${ adminReport }&board_seq=${board.board_seq}";
+							// location.href = "/board/detail?board_seq=${board.board_seq}";
 						});
 
 						// 글작성 버튼 누르면 글 작성 페이지로 이동
