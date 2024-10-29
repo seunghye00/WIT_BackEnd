@@ -41,18 +41,18 @@
 		SELECT *
 		FROM (
 		SELECT lr.*, ROWNUM rnum
-		FROM leave_requests
-		lr
+		FROM (
+		SELECT lr.*
+		FROM leave_requests lr
 		JOIN documents d ON lr.document_seq = d.document_seq
-		WHERE d.emp_no =
-		#{empNo}
+		WHERE d.emp_no = #{empNo}
 		AND d.status = '완료'
-		AND TO_CHAR(lr.start_date, 'YYYY') =
-		TO_CHAR(SYSDATE, 'YYYY')
-		ORDER BY lr.start_date DESC
+		AND TO_CHAR(lr.start_date, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+		ORDER BY lr.start_date ASC
+		) lr
+		WHERE ROWNUM &lt;= #{end}
 		)
-		WHERE rnum BETWEEN
-		#{start} AND #{end}
+		WHERE rnum &gt;= #{start}
 	</select>
 
 	<!-- 직원 정보 조회 -->
@@ -102,10 +102,13 @@
 		ROWNUM rnum
 		FROM
 		leave_requests lr
-		JOIN documents d ON lr.document_seq = d.document_seq
-		JOIN employee e ON d.emp_no = e.emp_no
+		JOIN
+		documents d ON lr.document_seq = d.document_seq
+		JOIN employee e ON
+		d.emp_no = e.emp_no
 		JOIN role r ON e.role_code = r.role_code
-		JOIN dept dpt ON e.dept_code = dpt.dept_code
+		JOIN dept
+		dpt ON e.dept_code = dpt.dept_code
 		WHERE
 		dpt.dept_title = #{deptTitle}
 		AND d.status = '완료'
@@ -113,7 +116,7 @@
 			AND e.name LIKE '%' || #{searchTxt} || '%'
 		</if>
 		ORDER BY
-		lr.start_date DESC
+		lr.start_date ASC
 		)
 		WHERE rnum BETWEEN #{start} AND #{end}
 	</select>

@@ -84,7 +84,7 @@ public class AddressBookController {
         List<Map<String, Object>> list = serv.selectByChosungAndCategory(cpage_num, emp_no, chosung, category);
         int totPage = serv.toolCountPageByCategory(emp_no, chosung, category);
         
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<String, Object>();
         response.put("totPage", totPage);
         response.put("cpage", cpage_num);
         response.put("addressBookList", list);
@@ -111,7 +111,7 @@ public class AddressBookController {
         List<Map<String, Object>> list = serv.selectByCon(keyword, cpage_num, emp_no, categoryId);
         int totPage = serv.totalCountPageSearch(emp_no, keyword, categoryId);
         System.out.println(totPage);
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<String, Object>();
         response.put("totPage", totPage);
         response.put("cpage", cpage_num);
         response.put("addressBookList", list);
@@ -202,7 +202,7 @@ public class AddressBookController {
         String photoFileName = contact.getPhoto() != null ? contact.getPhoto() : "default.jpg";
         System.out.println("Photo file name: " + photoFileName);
 
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<String, Object>();
         response.put("addr_book_seq", contact.getAddr_book_seq());
         response.put("name", contact.getName());
         response.put("phone", contact.getPhone());
@@ -218,7 +218,7 @@ public class AddressBookController {
     @RequestMapping("deleteContact")
     @ResponseBody
     public Map<String, Object> deleteContact(@RequestParam("addr_book_seq") List<Integer> addr_book_seqs) {
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<String, Object>();
         try {
             for (int addr_book_seq : addr_book_seqs) {
                 serv.deleteContact(addr_book_seq);

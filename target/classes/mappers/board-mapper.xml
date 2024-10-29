@@ -64,7 +64,8 @@
 		JOIN employee e ON b.emp_no = e.emp_no
 		<if test="report=='true'">
 			join report r on b.board_seq=r.board_seq
-			and r.emp_no = #{emp_no}
+			and r.emp_no =
+			#{emp_no}
 		</if>
 		<if test="adminReport=='true'">
 			join (select board_seq,count(*) as count from report group

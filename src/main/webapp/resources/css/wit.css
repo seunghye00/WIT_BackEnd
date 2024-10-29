@@ -5394,9 +5394,8 @@ button:nth-child(4) img {
 .adminCont .right .contBox {
 	flex: 1;
 	border-radius: 20px;
-	background-color: #ffffff52;
+	background-color: #fff;
 	display: flex;
-	padding: 20px;
 }
 
 .adminCont .right .contBox #doughNutChart {
