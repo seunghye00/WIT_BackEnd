@@ -7,7 +7,6 @@
 ### 호스팅: [Wit Works Hosting](http://15.165.69.26/)
 
 **Wit**은 "Whatever It Takes! 라는 뜻으로, 무슨 일이 있더라도 라는 뜻 입니다."
-"
 
 ---
 
