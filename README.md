@@ -1,10 +1,10 @@
 # 📌 K-Digital Academy Second-Project
 
-## [프로젝트 명: Wit](#프로젝트-명-Wit Works)
+## [프로젝트 명: Wit](#프로젝트-명-wit)
 
 ### 주제: 기업 관리 전산 시스템 (그룹웨어)  
 ### 기간: 2024.07.22 ~ 2024.08.26
-### 호스팅: [Wit Works Hosting](http://15.165.69.26/)
+### 호스팅: [Wit Hosting](http://15.165.69.26/)
 
 **Wit**은 "Whatever It Takes! 라는 뜻으로, 무슨 일이 있더라도 라는 뜻 입니다."
 
@@ -57,4 +57,4 @@
 ---
 
 ## [🔗 주요 링크](#주요-링크)
-- [Wit Works Hosting](http://15.165.69.26/)
+- [Wit Hosting](http://15.165.69.26/)
